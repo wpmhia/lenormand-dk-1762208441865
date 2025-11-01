@@ -16,28 +16,40 @@ export default function Home() {
     <div className="min-h-screen bg-slate-950">
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-8 max-w-5xl">
-        <div className="text-center mb-12">
-          <Badge className="mb-6 bg-slate-800 text-slate-200 border-slate-700 px-4 py-2 text-sm font-medium" variant="secondary">
-            AI-Powered Lenormand Analysis
-          </Badge>
-          <h1 className="text-5xl font-bold mb-6 text-white">
-            Lenormand Intelligence
-          </h1>
-          <p className="text-xl text-slate-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Advanced AI interpretation of traditional Lenormand cards.
-            Get personalized insights with machine learning-powered analysis of the 36-card deck.
-          </p>
-          <div className="flex gap-4 justify-center">
-            <Link href="/read/new">
-              <Button size="lg" className="px-8 bg-blue-600 hover:bg-blue-700 text-white shadow-lg">
-                Start AI Reading
-              </Button>
-            </Link>
-            <Link href="/cards">
-              <Button variant="outline" size="lg" className="px-8 border-slate-600 text-slate-300 hover:bg-slate-800">
-                Explore Cards
-              </Button>
-            </Link>
+        <div className="grid lg:grid-cols-2 gap-12 items-center mb-12">
+          <div className="text-center lg:text-left">
+            <Badge className="mb-6 bg-slate-800 text-slate-200 border-slate-700 px-4 py-2 text-sm font-medium" variant="secondary">
+              AI-Powered Lenormand Analysis
+            </Badge>
+            <h1 className="text-5xl font-bold mb-6 text-white">
+              Lenormand Intelligence
+            </h1>
+            <p className="text-xl text-slate-300 mb-8 max-w-3xl mx-auto lg:mx-0 leading-relaxed">
+              Advanced AI interpretation of traditional Lenormand cards.
+              Get personalized insights with machine learning-powered analysis of the 36-card deck.
+            </p>
+            <div className="flex gap-4 justify-center lg:justify-start">
+              <Link href="/read/new">
+                <Button size="lg" className="px-8 bg-blue-600 hover:bg-blue-700 text-white shadow-lg">
+                  Start AI Reading
+                </Button>
+              </Link>
+              <Link href="/cards">
+                <Button variant="outline" size="lg" className="px-8 border-slate-600 text-slate-300 hover:bg-slate-800">
+                  Explore Cards
+                </Button>
+              </Link>
+            </div>
+          </div>
+          <div className="flex justify-center lg:justify-end">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg blur-xl"></div>
+              <img
+                src="/images/cards/31-sun.png"
+                alt="Lenormand Sun Card"
+                className="relative w-64 h-96 object-contain rounded-lg shadow-2xl border border-slate-700"
+              />
+            </div>
           </div>
         </div>
 
