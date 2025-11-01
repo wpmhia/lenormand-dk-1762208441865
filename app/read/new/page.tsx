@@ -114,194 +114,82 @@ export default function NewReadingPage() {
     <div className="min-h-screen bg-slate-950">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <div className="mb-8">
-          <Badge className="mb-4 bg-slate-800 text-slate-200 border-slate-700 px-4 py-2 text-sm font-medium" variant="secondary">
-            AI Reading Setup
-          </Badge>
           <h1 className="text-3xl font-bold mb-2 text-white">New Lenormand Reading</h1>
           <p className="text-slate-300">
             Create a personalized Lenormand card reading with AI-powered analysis
           </p>
         </div>
 
-      {error && (
-        <Alert className="mb-6" variant="destructive">
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
+        {step === 'setup' && (
+          <Card className="border-slate-700 bg-slate-900/50">
+            <CardHeader>
+              <CardTitle className="text-white">Reading Setup</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="title" className="text-slate-300">Title *</Label>
+                <Input
+                  id="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="My Daily Reading"
+                  className="bg-slate-900 border-slate-700 text-white placeholder:text-slate-400"
+                />
+              </div>
 
-      {step === 'setup' && (
-        <Card className="border-slate-700 bg-slate-900/50">
-          <CardHeader>
-            <CardTitle className="text-white">Reading Setup</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-2">
-              <Label htmlFor="title" className="text-slate-300">Title *</Label>
-              <Input
-                id="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="My Daily Reading"
-                className="bg-slate-900 border-slate-700 text-white placeholder:text-slate-400"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="question" className="text-slate-300">Question (Optional)</Label>
-              <Textarea
-                id="question"
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-                placeholder="What guidance do I need today?"
-                rows={3}
-                className="bg-slate-900 border-slate-700 text-white placeholder:text-slate-400"
-              />
-            </div>
+              <Button
+                onClick={() => setStep('drawing')}
+                className="w-full bg-blue-600 hover:bg-blue-700"
+                disabled={!title.trim()}
+              >
+                Continue to Draw Cards
+              </Button>
+            </CardContent>
+          </Card>
+        )}
 
-            <div className="space-y-2">
-              <Label htmlFor="layout" className="text-slate-300">Layout Type</Label>
-              <Select value={layoutType.toString()} onValueChange={(value) => setLayoutType(parseInt(value) as 3 | 5 | 9 | 36)}>
-                <SelectTrigger className="bg-slate-900 border-slate-700 text-white">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="bg-slate-900 border-slate-700">
-                  {LAYOUTS.map((layout) => (
-                    <SelectItem key={layout.value} value={layout.value.toString()} className="text-white hover:bg-slate-800">
-                      {layout.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+        {step === 'drawing' && (
+          <div className="space-y-6">
+            <div className="text-center">
+              <h2 className="text-2xl font-semibold mb-2 text-white">Draw Your Cards</h2>
+              <p className="text-slate-300">
+                Drawing {layoutType} cards for your AI-powered reading
+              </p>
             </div>
 
-            <div className="flex items-center space-x-2">
-              <Switch
-                id="reversed"
-                checked={allowReversed}
-                onCheckedChange={setAllowReversed}
-              />
-              <Label htmlFor="reversed" className="text-slate-300">Allow reversed cards</Label>
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <Switch
-                id="public"
-                checked={isPublic}
-                onCheckedChange={setIsPublic}
-              />
-              <Label htmlFor="public" className="text-slate-300">Make reading public (shareable)</Label>
-            </div>
-
-            <Button
-              onClick={() => setStep('drawing')}
-              className="w-full bg-blue-600 hover:bg-blue-700"
-              disabled={!title.trim()}
-            >
-              Continue to Draw Cards
-            </Button>
-          </CardContent>
-        </Card>
-      )}
-
-      {step === 'drawing' && (
-        <div className="space-y-6">
-          <div className="text-center">
-            <h2 className="text-2xl font-semibold mb-2 text-white">Draw Your Cards</h2>
-            <p className="text-slate-300">
-              Drawing {layoutType} cards for your AI-powered reading
-            </p>
-          </div>
-
-          <Deck
-            cards={allCards}
-            drawCount={layoutType}
-            allowReversed={allowReversed}
-            onDraw={handleDraw}
-          />
-
-          <div className="flex justify-center">
-            <Button variant="outline" onClick={() => setStep('setup')} className="border-slate-600 text-slate-300 hover:bg-slate-800">
-              Back to Setup
-            </Button>
-          </div>
-        </div>
-      )}
-
-      {step === 'review' && !savedReading && (
-        <div className="space-y-6">
-          <div className="text-center">
-            <h2 className="text-2xl font-semibold mb-2 text-white">Review Your Reading</h2>
-            <p className="text-slate-300">
-              Click on cards to see their AI-analyzed meanings and combinations
-            </p>
-          </div>
-
-          <ReadingViewer
-            reading={{
-              id: 'temp',
-              title,
-              question,
-              layoutType,
-              cards: drawnCards,
-              slug: 'temp',
-              isPublic,
-              createdAt: new Date(),
-              updatedAt: new Date(),
-            }}
-            allCards={allCards}
-            showShareButton={false}
-          />
-
-          <div className="flex gap-4 justify-center">
-            <Button variant="outline" onClick={handleStartOver}>
-              Start Over
-            </Button>
-            <Button onClick={handleSave} disabled={isSaving}>
-              {isSaving ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Saving...
-                </>
-              ) : (
-                <>
-                  <Save className="w-4 h-4 mr-2" />
-                  Save Reading
-                </>
-              )}
-            </Button>
-          </div>
-        </div>
-      )}
-
-      {step === 'review' && savedReading && (
-        <div className="space-y-6">
-          <div className="text-center space-y-4">
-            <div className="text-green-400 text-lg font-semibold">
-              ✓ Reading saved successfully!
-            </div>
-            
-            <ReadingViewer
-              reading={savedReading}
-              allCards={allCards}
-              showShareButton={true}
-              onShare={() => {
-                const shareUrl = createShareableUrl(savedReading)
-                navigator.clipboard.writeText(shareUrl)
-                alert('Shareable link copied to clipboard!')
-              }}
+            <Deck
+              cards={allCards}
+              drawCount={layoutType}
+              allowReversed={allowReversed}
+              onDraw={handleDraw}
             />
-
-            <div className="flex gap-4 justify-center">
-              <Button variant="outline" onClick={handleStartOver} className="border-slate-600 text-slate-300 hover:bg-slate-800">
-                New Reading
-              </Button>
-              <Button onClick={handleViewReading} className="bg-blue-600 hover:bg-blue-700">
-                <Eye className="w-4 h-4 mr-2" />
-                View Reading
-              </Button>
-            </div>
           </div>
-        </div>
-      )}
+        )}
+
+        {step === 'review' && (
+          <div className="space-y-6">
+            <div className="text-center">
+              <h2 className="text-2xl font-semibold mb-2 text-white">Review Your Reading</h2>
+            </div>
+
+            <ReadingViewer
+              reading={{
+                id: 'temp',
+                title,
+                question,
+                layoutType,
+                cards: drawnCards,
+                slug: 'temp',
+                isPublic,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+              }}
+              allCards={allCards}
+              showShareButton={false}
+            />
+          </div>
+        )}
+      </div>
     </div>
   )
 }

@@ -6,6 +6,7 @@ import { ReadingViewer } from '@/components/ReadingViewer'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Calendar, User, Share2 } from 'lucide-react'
+import { useToast } from '@/hooks/use-toast'
 import { Reading, ReadingCard } from '@/lib/types'
 import { getCards, getReadingBySlug } from '@/lib/data'
 
@@ -16,6 +17,7 @@ interface PageProps {
 }
 
 export default function ReadingPage({ params }: PageProps) {
+  const { toast } = useToast()
   const [reading, setReading] = useState<Reading | null>(null)
   const [allCards, setAllCards] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -38,6 +40,7 @@ export default function ReadingPage({ params }: PageProps) {
       } catch (error) {
         console.error('Error loading reading:', error)
         notFound()
+        return
       } finally {
         setLoading(false)
       }
@@ -66,59 +69,30 @@ export default function ReadingPage({ params }: PageProps) {
     )
   }
 
+  if (!reading) {
+    return (
+      <div className="min-h-screen bg-slate-950">
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center text-slate-300">Reading not found</div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-slate-950">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-3xl font-bold text-white">Lenormand Reading</h1>
-            <Badge variant="secondary" className="bg-slate-800 text-slate-200 border-slate-700 text-sm">
-              {reading.layoutType} Cards
-            </Badge>
-          </div>
-
-          <div className="flex items-center gap-6 text-sm text-slate-400">
-          <div className="flex items-center gap-1">
-            <Calendar className="w-4 h-4" />
-            {new Date(reading.createdAt).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}
-          </div>
-          
-          <div className="flex items-center gap-1">
-            <User className="w-4 h-4" />
-            Anonymous
-          </div>
-          
-          {reading.isPublic && (
-            <button
-              onClick={handleShare}
-              className="flex items-center gap-1 text-blue-400 hover:text-blue-300 transition-colors"
-            >
-              <Share2 className="w-4 h-4" />
-              Share
-            </button>
-          )}
+          <h1 className="text-3xl font-bold text-white">Lenormand Reading</h1>
+          <p className="text-slate-300">{reading.title}</p>
         </div>
-      </div>
 
-      <ReadingViewer
-        reading={reading}
-        allCards={allCards}
-        showShareButton={reading.isPublic}
-        onShare={handleShare}
-      />
-
-      <div className="mt-12 text-center text-sm text-gray-500">
-        <p>
-          This is a Lenormand reading. 
-          Create your own reading at{' '}
-          <a href="/read/new" className="text-blue-600 hover:underline">
-            Lenormand.dk
-          </a>
-        </p>
+        <ReadingViewer
+          reading={reading}
+          allCards={allCards}
+          showShareButton={reading.isPublic}
+          onShare={handleShare}
+        />
       </div>
     </div>
   )

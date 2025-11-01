@@ -51,6 +51,7 @@ export default function SharedReadingPage({ params }: PageProps) {
       } catch (error) {
         console.error('Error loading shared reading:', error)
         notFound()
+        return
       } finally {
         setLoading(false)
       }
@@ -83,49 +84,16 @@ export default function SharedReadingPage({ params }: PageProps) {
     <div className="min-h-screen bg-slate-950">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-3xl font-bold text-white">Shared Lenormand Reading</h1>
-            <Badge variant="secondary" className="bg-slate-800 text-slate-200 border-slate-700 text-sm">
-              {reading.layoutType} Cards
-            </Badge>
-          </div>
-
-          <div className="flex items-center gap-6 text-sm text-slate-400">
-          <div className="flex items-center gap-1">
-            <Calendar className="w-4 h-4" />
-            Shared Reading
-          </div>
-          
-          <div className="flex items-center gap-1">
-            <User className="w-4 h-4" />
-            Anonymous
-          </div>
-          
-          <button
-            onClick={handleShare}
-            className="flex items-center gap-1 text-blue-400 hover:text-blue-300 transition-colors"
-          >
-            <Share2 className="w-4 h-4" />
-            Share
-          </button>
+          <h1 className="text-3xl font-bold text-white">Shared Lenormand Reading</h1>
+          <p className="text-slate-300">{reading.title}</p>
         </div>
-      </div>
 
-      <ReadingViewer
-        reading={reading}
-        allCards={allCards}
-        showShareButton={true}
-        onShare={handleShare}
-      />
-
-      <div className="mt-12 text-center text-sm text-gray-500">
-        <p>
-          This is a shared Lenormand reading. 
-          Create your own reading at{' '}
-          <a href="/read/new" className="text-blue-600 hover:underline">
-            Lenormand.dk
-          </a>
-        </p>
+        <ReadingViewer
+          reading={reading}
+          allCards={allCards}
+          showShareButton={true}
+          onShare={handleShare}
+        />
       </div>
     </div>
   )
