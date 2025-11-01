@@ -98,12 +98,11 @@ export default function Home() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Link href="/read/new">
               <Card className="hover:shadow-lg transition-all cursor-pointer group border-2 border-transparent hover:border-indigo-200">
-                <div className="aspect-[3/4] bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-t-lg flex items-center justify-center mb-4">
-                  <div className="text-center">
-                    <div className="text-4xl mb-2">🏇🍀⛵</div>
-                    <div className="text-xs text-indigo-600 font-medium">Past • Present • Future</div>
-                  </div>
-                </div>
+                 <div className="aspect-[3/4] bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-t-lg flex items-center justify-center mb-4">
+                   <div className="text-center">
+                     <div className="text-xs text-indigo-600 font-medium">Past • Present • Future</div>
+                   </div>
+                 </div>
                 <CardHeader className="pb-2">
                   <CardTitle className="flex items-center gap-2 group-hover:text-indigo-600 text-lg">
                     <Star className="w-5 h-5" />
@@ -123,12 +122,11 @@ export default function Home() {
 
             <Link href="/read/new">
               <Card className="hover:shadow-lg transition-all cursor-pointer group border-2 border-transparent hover:border-purple-200">
-                <div className="aspect-[3/4] bg-gradient-to-br from-purple-50 to-purple-100 rounded-t-lg flex items-center justify-center mb-4">
-                  <div className="text-center">
-                    <div className="text-4xl mb-2">🏇🍀⛵🏠🌳</div>
-                    <div className="text-xs text-purple-600 font-medium">Extended Layout</div>
-                  </div>
-                </div>
+                 <div className="aspect-[3/4] bg-gradient-to-br from-purple-50 to-purple-100 rounded-t-lg flex items-center justify-center mb-4">
+                   <div className="text-center">
+                     <div className="text-xs text-purple-600 font-medium">Extended Layout</div>
+                   </div>
+                 </div>
                 <CardHeader className="pb-2">
                   <CardTitle className="flex items-center gap-2 group-hover:text-purple-600 text-lg">
                     <Heart className="w-5 h-5" />
@@ -148,12 +146,11 @@ export default function Home() {
 
             <Link href="/read/new">
               <Card className="hover:shadow-lg transition-all cursor-pointer group border-2 border-transparent hover:border-pink-200">
-                <div className="aspect-[3/4] bg-gradient-to-br from-pink-50 to-pink-100 rounded-t-lg flex items-center justify-center mb-4">
-                  <div className="text-center">
-                    <div className="text-4xl mb-2">🏇🍀⛵🏠🌳☁️</div>
-                    <div className="text-xs text-pink-600 font-medium">Life Overview</div>
-                  </div>
-                </div>
+                 <div className="aspect-[3/4] bg-gradient-to-br from-pink-50 to-pink-100 rounded-t-lg flex items-center justify-center mb-4">
+                   <div className="text-center">
+                     <div className="text-xs text-pink-600 font-medium">Life Overview</div>
+                   </div>
+                 </div>
                 <CardHeader className="pb-2">
                   <CardTitle className="flex items-center gap-2 group-hover:text-pink-600 text-lg">
                     <Shield className="w-5 h-5" />
@@ -173,12 +170,11 @@ export default function Home() {
 
             <Link href="/read/new">
               <Card className="hover:shadow-lg transition-all cursor-pointer group border-2 border-transparent hover:border-orange-200">
-                <div className="aspect-[3/4] bg-gradient-to-br from-orange-50 to-orange-100 rounded-t-lg flex items-center justify-center mb-4">
-                  <div className="text-center">
-                    <div className="text-3xl mb-2">🏇🍀⛵🏠🌳☁️🐍⚰️💐</div>
-                    <div className="text-xs text-orange-600 font-medium">Complete Deck</div>
-                  </div>
-                </div>
+                 <div className="aspect-[3/4] bg-gradient-to-br from-orange-50 to-orange-100 rounded-t-lg flex items-center justify-center mb-4">
+                   <div className="text-center">
+                     <div className="text-xs text-orange-600 font-medium">Complete Deck</div>
+                   </div>
+                 </div>
                 <CardHeader className="pb-2">
                   <CardTitle className="flex items-center gap-2 group-hover:text-orange-600 text-lg">
                     <Sparkles className="w-5 h-5" />
