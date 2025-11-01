@@ -5,6 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Card as CardType } from '@/lib/types'
+import { getCards } from '@/lib/data'
 import { X } from 'lucide-react'
 
 interface CardModalProps {
@@ -15,6 +16,7 @@ interface CardModalProps {
 
 export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
   const combos = Array.isArray(card.combos) ? card.combos : []
+  const allCards = getCards()
 
   return (
     <Dialog open={true} onOpenChange={(isOpen) => {
@@ -97,22 +99,31 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
                 <Separator className="bg-slate-700" />
                 <div>
                   <h3 className="font-semibold mb-3 text-white">Card Combinations</h3>
-                  <div className="space-y-2 max-h-40 overflow-y-auto">
-                    {combos.slice(0, 5).map((combo: any, index: number) => (
-                      <div key={index} className="flex items-start gap-3 p-3 bg-slate-800 rounded-lg">
-                        <div className="flex-shrink-0 w-12 h-16 bg-slate-700 border border-slate-600 rounded flex items-center justify-center text-xs font-bold text-white">
-                          {combo.withCardId}
-                        </div>
-                        <div className="flex-1">
-                          <div className="font-medium text-sm text-white">
-                            Card {combo.withCardId}
+                  <div className="space-y-2">
+                    {combos.map((combo: any, index: number) => {
+                      const comboCard = allCards.find(c => c.id === combo.withCardId)
+                      return (
+                        <div key={index} className="flex items-start gap-3 p-3 bg-slate-800 rounded-lg">
+                          <div className="flex-shrink-0 w-12 h-16 bg-white border border-slate-600 rounded overflow-hidden">
+                            {comboCard && (
+                              <img
+                                src={comboCard.imageUrl || ''}
+                                alt={comboCard.name}
+                                className="w-full h-full object-cover"
+                              />
+                            )}
                           </div>
-                          <div className="text-sm text-slate-300">
-                            {combo.meaning}
+                          <div className="flex-1">
+                            <div className="font-medium text-sm text-white">
+                              {comboCard ? comboCard.name : `Card ${combo.withCardId}`}
+                            </div>
+                            <div className="text-sm text-slate-300">
+                              {combo.meaning}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      )
+                    })}
                   </div>
                 </div>
               </>
