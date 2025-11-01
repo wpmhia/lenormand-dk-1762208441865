@@ -49,7 +49,10 @@ export default function ReadingPage({ params }: PageProps) {
   const handleShare = () => {
     if (typeof window !== 'undefined') {
       navigator.clipboard.writeText(window.location.href)
-      alert('Reading link copied to clipboard!')
+      toast({
+        title: 'Link copied!',
+        description: 'Reading link copied to clipboard',
+      })
     }
   }
 
