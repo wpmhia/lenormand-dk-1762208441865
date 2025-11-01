@@ -9,3 +9,62 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  hashedPassword String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  readings      Reading[]
+  drawStats     DrawStat[]
+  
+  @@map("users")
+}
+
+model Reading {
+  id          String   @id @default(cuid())
+  userId      String?
+  title       String
+  question    String?
+  layoutType  Int      // 3, 5, 9, or 36
+  cards       Json     // Ordered list with positions and reversed status
+  slug        String   @unique
+  isPublic    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  @@map("readings")
+}
+
+model Card {
+  id               Int    @id
+  name             String
+  number           Int
+  keywords         String[]
+  uprightMeaning   String
+  reversedMeaning  String?
+  combos           Json   // Array of {withCardId, meaning}
+  imageUrl         String?
+  
+  drawStats        DrawStat[]
+  
+  @@map("cards")
+}
+
+model DrawStat {
+  id      String @id @default(cuid())
+  userId  String?
+  cardId  Int
+  count   Int    @default(1)
+  
+  user    User?  @relation(fields: [userId], references: [id], onDelete: SetNull)
+  card    Card   @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, cardId])
+  @@map("draw_stats")
+}

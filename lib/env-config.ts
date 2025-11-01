@@ -1,27 +1,24 @@
 // IMPORTANT: When adding new env variables to the codebase, update this array
 export const ENV_VARIABLES: EnvVariable[] = [
-  // Add your active environment variables here
+  {
+    name: "DATABASE_URL",
+    description: "PostgreSQL database connection string for migrations and server-side operations",
+    required: true,
+    instructions: "Set up a PostgreSQL database (local or cloud) and provide the full connection string in format: postgresql://username:password@host:port/database"
+  },
+  {
+    name: "NEXTAUTH_SECRET",
+    description: "Secret key for NextAuth.js session encryption and security",
+    required: true,
+    instructions: "Generate a secure random string: `openssl rand -base64 32` or use any secure random string generator"
+  },
+  {
+    name: "NEXTAUTH_URL",
+    description: "Base URL of your application for NextAuth.js callbacks",
+    required: false,
+    instructions: "Set to your application's base URL (e.g., http://localhost:3000 for development, https://yourdomain.com for production)"
+  }
 ];
-
-// SUPABASE/DATABASE VARIABLES (uncomment and add to ENV_VARIABLES array when adding database features)
-// {
-//   name: "DATABASE_URL",
-//   description: "Supabase PostgreSQL database connection string for migrations and server-side operations",
-//   required: true,
-//   instructions: "Go to [Supabase Dashboard](https://supabase.com/dashboard) → Your Project → Settings → Database → Connection string (URI format).\n Copy the full postgresql:// connection string.\n Make sure to replace [YOUR-PASSWORD] with actual password"
-// },
-// {
-//   name: "NEXT_PUBLIC_SUPABASE_URL",
-//   description: "Supabase project URL for client-side authentication and API calls",
-//   required: true,
-//   instructions: "Go to [Supabase Dashboard](https://supabase.com/dashboard) → Your Project → Settings → Data API → Copy the 'Project URL -> URL' field (format: https://[project-id].supabase.co)"
-// },
-// {
-//   name: "NEXT_PUBLIC_SUPABASE_ANON_KEY",
-//   description: "Supabase anonymous/publishable key for client-side authentication",
-//   required: true,
-//   instructions: "Go to [Supabase Dashboard](https://supabase.com/dashboard) → Your Project → Settings → API Keys → Copy 'Legacy API keys → anon public' key"
-// }
 
 export interface EnvVariable {
   name: string
