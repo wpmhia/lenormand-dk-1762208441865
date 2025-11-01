@@ -29,7 +29,7 @@ export default function NewReadingPage() {
   const [allCards, setAllCards] = useState<CardType[]>([])
   const [drawnCards, setDrawnCards] = useState<ReadingCard[]>([])
   const [layoutType, setLayoutType] = useState<3 | 5 | 9 | 36>(3)
-  const [title, setTitle] = useState('')
+
   const [question, setQuestion] = useState('')
   const [allowReversed, setAllowReversed] = useState(false)
   const [isPublic, setIsPublic] = useState(false)
@@ -62,8 +62,8 @@ export default function NewReadingPage() {
   }
 
   const handleSave = () => {
-    if (!title.trim()) {
-      setError('Please enter a title for your reading')
+    if (!question.trim()) {
+      setError('Please enter a question for your reading')
       return
     }
 
@@ -74,8 +74,8 @@ export default function NewReadingPage() {
       const now = new Date()
       const reading: Reading = {
         id: generateSlug(),
-        title: title.trim(),
-        question: question.trim() || undefined,
+        title: question.trim(),
+        question: question.trim(),
         layoutType,
         cards: drawnCards,
         slug: generateSlug(),
@@ -98,7 +98,6 @@ export default function NewReadingPage() {
     setDrawnCards([])
     setSavedReading(null)
     setStep('setup')
-    setTitle('')
     setQuestion('')
   }
 
@@ -123,24 +122,23 @@ export default function NewReadingPage() {
         {step === 'setup' && (
           <Card className="border-slate-700 bg-slate-900/50">
             <CardHeader>
-              <CardTitle className="text-white">Reading Setup</CardTitle>
+              <CardTitle className="text-white">Question:</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="title" className="text-slate-300">Title *</Label>
-                <Input
-                  id="title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="My Daily Reading"
-                  className="bg-slate-900 border-slate-700 text-white placeholder:text-slate-400"
+                <Textarea
+                  id="question"
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                  placeholder="What guidance do the cards have for me today?"
+                  className="bg-slate-900 border-slate-700 text-white placeholder:text-slate-400 min-h-[100px]"
                 />
               </div>
 
               <Button
                 onClick={() => setStep('drawing')}
                 className="w-full bg-blue-600 hover:bg-blue-700"
-                disabled={!title.trim()}
+                disabled={!question.trim()}
               >
                 Continue to Draw Cards
               </Button>
@@ -175,7 +173,7 @@ export default function NewReadingPage() {
             <ReadingViewer
               reading={{
                 id: 'temp',
-                title,
+                title: question,
                 question,
                 layoutType,
                 cards: drawnCards,
