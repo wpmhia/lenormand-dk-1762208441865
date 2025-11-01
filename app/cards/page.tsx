@@ -95,15 +95,13 @@ export default function CardsPage() {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
           {filteredCards.map((card) => (
-            <Link key={card.id} href={`/cards/${card.id}`}>
-              <div className="space-y-1 cursor-pointer group">
-                <Card card={card} size="md" className="group-hover:scale-105 transition-transform mx-auto" />
-                <div className="text-center">
-                  <div className="font-medium text-xs truncate text-white">{card.name}</div>
-                  <div className="text-xs text-slate-400">#{card.id}</div>
-                </div>
+            <div key={card.id} className="space-y-1 cursor-pointer group">
+              <Card card={card} size="md" className="group-hover:scale-105 transition-transform mx-auto" />
+              <div className="text-center">
+                <div className="font-medium text-xs truncate text-white">{card.name}</div>
+                <div className="text-xs text-slate-400">#{card.id}</div>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       </div>
