@@ -48,81 +48,81 @@ export default function Home() {
           <h2 className="text-2xl font-bold text-center mb-3 text-white">AI Reading Options</h2>
           <p className="text-center text-slate-300 mb-6 text-sm">Choose your analysis depth</p>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-             <Link href="/read/new">
-               <Card className="hover:shadow-md transition-all cursor-pointer group border border-slate-700 hover:border-slate-600 bg-slate-900/50">
-                 <CardHeader className="pb-3">
-                   <CardTitle className="flex items-center gap-2 group-hover:text-blue-400 text-base text-white">
-                     <Star className="w-4 h-4" />
-                     Quick Analysis
-                   </CardTitle>
-                 </CardHeader>
-                 <CardContent className="pt-0">
-                   <p className="text-xs text-slate-300 mb-2">
-                     Past, Present, Future
-                   </p>
-                   <div className="flex items-center text-slate-400 text-xs">
-                     3 Cards <ArrowRight className="w-3 h-3 ml-1" />
-                   </div>
-                 </CardContent>
-               </Card>
-             </Link>
+              <Link href="/read/new">
+                <Card className="hover:shadow-md transition-all cursor-pointer group border border-slate-700 hover:border-slate-600 bg-slate-900/50 min-h-[140px]">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="flex items-center gap-2 group-hover:text-blue-400 text-base text-white">
+                      <Star className="w-4 h-4" />
+                      Quick Analysis
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <p className="text-xs text-slate-300 mb-2">
+                      Past, Present, Future
+                    </p>
+                    <div className="flex items-center text-slate-400 text-xs">
+                      3 Cards <ArrowRight className="w-3 h-3 ml-1" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
 
-             <Link href="/read/new">
-               <Card className="hover:shadow-md transition-all cursor-pointer group border border-slate-700 hover:border-slate-600 bg-slate-900/50">
-                 <CardHeader className="pb-3">
-                   <CardTitle className="flex items-center gap-2 group-hover:text-blue-400 text-base text-white">
-                     <Heart className="w-4 h-4" />
-                     Deep Analysis
-                   </CardTitle>
-                 </CardHeader>
-                 <CardContent className="pt-0">
-                   <p className="text-xs text-slate-300 mb-2">
-                     Extended Reading with Challenges
-                   </p>
-                   <div className="flex items-center text-slate-400 text-xs">
-                     5 Cards <ArrowRight className="w-3 h-3 ml-1" />
-                   </div>
-                 </CardContent>
-               </Card>
-             </Link>
+              <Link href="/read/new">
+                <Card className="hover:shadow-md transition-all cursor-pointer group border border-slate-700 hover:border-slate-600 bg-slate-900/50 min-h-[140px]">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="flex items-center gap-2 group-hover:text-blue-400 text-base text-white">
+                      <Heart className="w-4 h-4" />
+                      Deep Analysis
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <p className="text-xs text-slate-300 mb-2">
+                      Extended Reading with Challenges
+                    </p>
+                    <div className="flex items-center text-slate-400 text-xs">
+                      5 Cards <ArrowRight className="w-3 h-3 ml-1" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
 
-             <Link href="/read/new">
-               <Card className="hover:shadow-md transition-all cursor-pointer group border border-slate-700 hover:border-slate-600 bg-slate-900/50">
-                 <CardHeader className="pb-3">
-                   <CardTitle className="flex items-center gap-2 group-hover:text-blue-400 text-base text-white">
-                     <Shield className="w-4 h-4" />
-                     Comprehensive
-                   </CardTitle>
-                 </CardHeader>
-                 <CardContent className="pt-0">
-                   <p className="text-xs text-slate-300 mb-2">
-                     Life Overview Analysis
-                   </p>
-                   <div className="flex items-center text-slate-400 text-xs">
-                     9 Cards <ArrowRight className="w-3 h-3 ml-1" />
-                   </div>
-                 </CardContent>
-               </Card>
-             </Link>
+              <Link href="/read/new">
+                <Card className="hover:shadow-md transition-all cursor-pointer group border border-slate-700 hover:border-slate-600 bg-slate-900/50 min-h-[140px]">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="flex items-center gap-2 group-hover:text-blue-400 text-base text-white">
+                      <Shield className="w-4 h-4" />
+                      Comprehensive
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <p className="text-xs text-slate-300 mb-2">
+                      Life Overview Analysis
+                    </p>
+                    <div className="flex items-center text-slate-400 text-xs">
+                      9 Cards <ArrowRight className="w-3 h-3 ml-1" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
 
-             <Link href="/read/new">
-               <Card className="hover:shadow-md transition-all cursor-pointer group border border-slate-700 hover:border-slate-600 bg-slate-900/50">
-                 <CardHeader className="pb-3">
-                   <CardTitle className="flex items-center gap-2 group-hover:text-blue-400 text-base text-white">
-                     <Sparkles className="w-4 h-4" />
-                     Grand Tableau
-                   </CardTitle>
-                 </CardHeader>
-                 <CardContent className="pt-0">
-                   <p className="text-xs text-slate-300 mb-2">
-                     Complete Deck Analysis
-                   </p>
-                   <div className="flex items-center text-slate-400 text-xs">
-                     36 Cards <ArrowRight className="w-3 h-3 ml-1" />
-                   </div>
-                 </CardContent>
-               </Card>
-             </Link>
+              <Link href="/read/new">
+                <Card className="hover:shadow-md transition-all cursor-pointer group border border-slate-700 hover:border-slate-600 bg-slate-900/50 min-h-[140px]">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="flex items-center gap-2 group-hover:text-blue-400 text-base text-white">
+                      <Sparkles className="w-4 h-4" />
+                      Grand Tableau
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0">
+                    <p className="text-xs text-slate-300 mb-2">
+                      Complete Deck Analysis
+                    </p>
+                    <div className="flex items-center text-slate-400 text-xs">
+                      36 Cards <ArrowRight className="w-3 h-3 ml-1" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
           </div>
         </div>
 
