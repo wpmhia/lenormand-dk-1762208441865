@@ -123,7 +123,7 @@ export default function CardDetailPage({ params }: PageProps) {
             <img
               src={card.imageUrl || ''}
               alt={card.name}
-              className="w-full h-full object-contain bg-white/95"
+              className="w-full h-full object-contain bg-white"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
                 target.style.display = 'none';

@@ -155,11 +155,11 @@ export default function CardsPage() {
 
       {/* Cards Display */}
       {viewMode === 'grid' ? (
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
           {filteredCards.map((card) => (
             <Link key={card.id} href={`/cards/${card.id}`}>
               <div className="space-y-1 cursor-pointer group">
-                <Card card={card} size="sm" className="group-hover:scale-105 transition-transform mx-auto" />
+                <Card card={card} size="md" className="group-hover:scale-105 transition-transform mx-auto" />
                 <div className="text-center">
                   <div className="font-medium text-xs truncate">{card.name}</div>
                   <div className="text-xs text-gray-500">#{card.id}</div>

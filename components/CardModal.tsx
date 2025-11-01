@@ -47,11 +47,11 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
         <div className="space-y-6">
           {/* Card Image */}
           <div className="flex justify-center">
-            <div className="relative w-64 h-80 card-mystical rounded-xl shadow-2xl overflow-hidden mystical-glow border border-purple-500/30">
+            <div className="relative w-56 h-72 card-mystical rounded-xl shadow-2xl overflow-hidden mystical-glow border border-purple-500/30">
               <img
                 src={card.imageUrl || ''}
                 alt={card.name}
-                className="w-full h-full object-contain bg-white/95"
+                className="w-full h-full object-contain bg-white"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';

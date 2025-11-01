@@ -84,8 +84,13 @@
   
   /* Ensure cards don't get cut off */
   .card-mystical img {
-    object-fit: cover;
+    object-fit: contain;
     object-position: center;
+  }
+  
+  /* Proper card aspect ratio */
+  .card-mystical {
+    aspect-ratio: 2.5/3.5;
   }
   
   .card-mystical {

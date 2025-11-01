@@ -84,9 +84,9 @@ export function Card({
   }
 
   const sizeClasses = {
-    sm: 'w-16 h-24 text-xs',
-    md: 'w-24 h-36 text-sm',
-    lg: 'w-32 h-48 text-base'
+    sm: 'w-20 h-32 text-xs',
+    md: 'w-28 h-40 text-sm',
+    lg: 'w-36 h-52 text-base'
   }
 
   if (showBack) {
@@ -121,11 +121,11 @@ export function Card({
         onClick={handleCardClick}
       >
         {/* Card Image */}
-        <div className="relative w-full h-full rounded-lg overflow-hidden">
+        <div className="relative w-full h-full rounded-lg overflow-hidden bg-white">
           <img
             src={card.imageUrl || ''}
             alt={card.name}
-            className="w-full h-full object-cover bg-white/95"
+            className="w-full h-full object-contain"
             onError={(e) => {
               // Fallback to mystical background if image fails to load
               const target = e.target as HTMLImageElement;
