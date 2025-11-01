@@ -7,7 +7,7 @@ import { Card } from './Card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { CardModal } from './CardModal'
-import { Share2, Calendar, User } from 'lucide-react'
+import { Share2, Calendar } from 'lucide-react'
 
 interface ReadingViewerProps {
   reading: Reading
@@ -161,10 +161,6 @@ export function ReadingViewer({
           <div className="flex items-center gap-1">
             <Calendar className="w-4 h-4" />
             {new Date(reading.createdAt).toLocaleDateString()}
-          </div>
-          <div className="flex items-center gap-1">
-            <User className="w-4 h-4" />
-            Anonymous
           </div>
           <Badge variant="secondary">
             {reading.layoutType} Cards
