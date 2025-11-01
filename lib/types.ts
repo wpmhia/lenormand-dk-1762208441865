@@ -1,7 +1,4 @@
-import { Card } from '@prisma/client'
-
-export type { Card }
-export interface CardWithCombos {
+export interface Card {
   id: number
   name: string
   number: number
@@ -27,7 +24,6 @@ export interface ReadingCard {
 
 export interface Reading {
   id: string
-  userId?: string
   title: string
   question?: string
   layoutType: 3 | 5 | 9 | 36
@@ -36,11 +32,6 @@ export interface Reading {
   isPublic: boolean
   createdAt: Date
   updatedAt: Date
-  user?: {
-    id: string
-    name: string | null
-    email: string
-  }
 }
 
 export interface LayoutConfig {
@@ -53,21 +44,6 @@ export interface LayoutConfig {
     label: string
     meaning: string
   }>
-}
-
-export interface DrawStat {
-  id: string
-  userId?: string
-  cardId: number
-  count: number
-  card: Card
-}
-
-export interface UserStats {
-  totalReadings: number
-  cardDraws: DrawStat[]
-  mostDrawnCard: DrawStat | null
-  leastDrawnCard: DrawStat | null
 }
 
 export interface Locale {

@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Search, Filter, Grid, List } from 'lucide-react'
 import Link from 'next/link'
+import { getCards } from '@/lib/data'
 
 export default function CardsPage() {
   const [cards, setCards] = useState<CardType[]>([])
@@ -28,9 +29,8 @@ export default function CardsPage() {
 
   const fetchCards = async () => {
     try {
-      const response = await fetch('/api/cards')
-      const data = await response.json()
-      setCards(data.cards)
+      const cardsData = await getCards()
+      setCards(cardsData)
       setLoading(false)
     } catch (error) {
       console.error('Error fetching cards:', error)

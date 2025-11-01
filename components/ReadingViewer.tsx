@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Reading, ReadingCard, Card as CardType } from '@/lib/types'
+import { getCardById, getCombinationMeaning, getLinearAdjacentCards, getGrandTableauAdjacentCards } from '@/lib/data'
 import { Card } from './Card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -74,45 +75,13 @@ export function ReadingViewer({
 }: ReadingViewerProps) {
   const [selectedCard, setSelectedCard] = useState<{ card: CardType; reversed: boolean } | null>(null)
 
-  const getCardById = (cardId: number): CardType | undefined => {
-    return allCards.find(card => card.id === cardId)
-  }
-
   const getAdjacentCards = (currentCard: ReadingCard): ReadingCard[] => {
-    const index = reading.cards.findIndex(c => c.position === currentCard.position)
-    const adjacent: ReadingCard[] = []
-
     if (reading.layoutType === 36) {
-      // Grand Tableau adjacency
-      const row = Math.floor(index / 4)
-      const col = index % 4
-      
-      // Adjacent positions in grid
-      const adjacentPositions = [
-        { r: row - 1, c: col },     // top
-        { r: row + 1, c: col },     // bottom
-        { r: row, c: col - 1 },     // left
-        { r: row, c: col + 1 },     // right
-      ].filter(pos => pos.r >= 0 && pos.r < 9 && pos.c >= 0 && pos.c < 4)
-      
-      adjacentPositions.forEach(pos => {
-        const adjIndex = pos.r * 4 + pos.c
-        const adjCard = reading.cards[adjIndex]
-        if (adjCard) adjacent.push(adjCard)
-      })
+      return getGrandTableauAdjacentCards(reading.cards, currentCard.position)
     } else {
-      // Linear adjacency for other layouts
-      if (index > 0) adjacent.push(reading.cards[index - 1])
-      if (index < reading.cards.length - 1) adjacent.push(reading.cards[index + 1])
+      const index = reading.cards.findIndex(c => c.position === currentCard.position)
+      return getLinearAdjacentCards(reading.cards, index)
     }
-
-    return adjacent
-  }
-
-  const getCombinationMeaning = (card1: CardType, card2: CardType): string | null => {
-    const combos = Array.isArray(card1.combos) ? card1.combos : []
-    const combo = combos.find((c: any) => c.withCardId === card2.id)
-    return (combo as any)?.meaning || null
   }
 
   const renderLayout = () => {
@@ -121,7 +90,7 @@ export function ReadingViewer({
       return (
         <div className="grid grid-cols-4 gap-2 max-w-4xl mx-auto">
           {reading.cards.map((readingCard, index) => {
-            const card = getCardById(readingCard.id)
+            const card = getCardById(allCards, readingCard.id)
             if (!card) return null
 
             const position = getGrandTableauPosition(index)
@@ -151,7 +120,7 @@ export function ReadingViewer({
           reading.layoutType === 9 ? 'max-w-6xl' : 'max-w-2xl'
         }`}>
           {reading.cards.map((readingCard, index) => {
-            const card = getCardById(readingCard.id)
+            const card = getCardById(allCards, readingCard.id)
             if (!card) return null
 
             const positionInfo = getPositionInfo(index, reading.layoutType)
@@ -195,7 +164,7 @@ export function ReadingViewer({
           </div>
           <div className="flex items-center gap-1">
             <User className="w-4 h-4" />
-            {reading.user?.name || 'Anonymous'}
+            Anonymous
           </div>
           <Badge variant="secondary">
             {reading.layoutType} Cards
@@ -239,7 +208,7 @@ export function ReadingViewer({
               const adjacentCards = getAdjacentCards(readingCard)
               
               return adjacentCards.map((adjCard, index) => {
-                const card = getCardById(adjCard.id)
+                const card = getCardById(allCards, adjCard.id)
                 if (!card) return null
 
                 const combination = getCombinationMeaning(selectedCard.card, card)

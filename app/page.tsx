@@ -71,7 +71,7 @@ export default function Home() {
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">
-                Create an account to save your readings and share insights with others through unique links.
+                Save your readings locally and share insights with others through unique links.
               </p>
             </CardContent>
           </Card>
@@ -202,9 +202,6 @@ export default function Home() {
             </Link>
             <Link href="/read/new" className="hover:text-indigo-600">
               New Reading
-            </Link>
-            <Link href="/me" className="hover:text-indigo-600">
-              Dashboard
             </Link>
           </div>
         </div>

@@ -1,11 +1,15 @@
+"use client"
+
 import { notFound } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, Home } from 'lucide-react'
 import Link from 'next/link'
-import { prisma } from '@/lib/db'
+import { Card as CardType } from '@/lib/types'
+import { getCards, getCardById } from '@/lib/data'
 
 interface PageProps {
   params: {
@@ -13,31 +17,54 @@ interface PageProps {
   }
 }
 
-async function getCard(id: string) {
-  const cardId = parseInt(id)
-  if (isNaN(cardId)) {
+export default function CardDetailPage({ params }: PageProps) {
+  const [card, setCard] = useState<CardType | null>(null)
+  const [allCards, setAllCards] = useState<CardType[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const cardId = parseInt(params.id)
+        if (isNaN(cardId)) {
+          notFound()
+          return
+        }
+
+        const cardsData = await getCards()
+        const cardData = getCardById(cardsData, cardId)
+
+        if (!cardData) {
+          notFound()
+          return
+        }
+
+        setAllCards(cardsData)
+        setCard(cardData)
+      } catch (error) {
+        console.error('Error loading card:', error)
+        notFound()
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadData()
+  }, [params.id])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+      </div>
+    )
+  }
+
+  if (!card) {
+    notFound()
     return null
   }
 
-  return await prisma.card.findUnique({
-    where: { id: cardId },
-  })
-}
-
-async function getAllCards() {
-  return await prisma.card.findMany({
-    orderBy: { id: 'asc' },
-  })
-}
-
-export default async function CardDetailPage({ params }: PageProps) {
-  const card = await getCard(params.id)
-  
-  if (!card) {
-    notFound()
-  }
-
-  const allCards = await getAllCards()
   const combos = Array.isArray(card.combos) ? card.combos : []
 
   const getCardName = (cardId: number) => {
@@ -154,7 +181,7 @@ export default async function CardDetailPage({ params }: PageProps) {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {combos.map((combo: any, index: number) => (
+                  {combos.map((combo, index: number) => (
                     <div key={index} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
                       <div className="flex-shrink-0">
                         <div className="w-12 h-16 bg-white border border-gray-300 rounded flex items-center justify-center text-xs font-bold">
@@ -219,8 +246,8 @@ export default async function CardDetailPage({ params }: PageProps) {
               <div className="pt-2">
                 <p className="text-gray-600 mb-2">In traditional Lenormand:</p>
                 <p className="text-xs">
-                  This card is part of the traditional 36-card Lenormand deck,
-                  used for divination and cartomancy since the 19th century.
+                  This card is part of traditional 36-card Lenormand deck,
+                  used for divination and cartomancy since 19th century.
                 </p>
               </div>
             </CardContent>
@@ -233,7 +260,7 @@ export default async function CardDetailPage({ params }: PageProps) {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                {combos.slice(0, 5).map((combo: any, index: number) => (
+                {combos.slice(0, 5).map((combo, index: number) => (
                   <Link
                     key={index}
                     href={`/cards/${combo.withCardId}`}

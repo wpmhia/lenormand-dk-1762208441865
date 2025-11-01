@@ -1,9 +1,8 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { Card as CardType, ReadingCard } from '@/lib/types'
+import { Card as CardType, ReadingCard, Reading } from '@/lib/types'
 import { Deck } from '@/components/Deck'
 import { ReadingViewer } from '@/components/ReadingViewer'
 import { Button } from '@/components/ui/button'
@@ -15,6 +14,7 @@ import { Switch } from '@/components/ui/switch'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Loader2, Save, Eye } from 'lucide-react'
+import { getCards, drawCards, saveReading, generateSlug, createShareableUrl } from '@/lib/data'
 
 const LAYOUTS = [
   { value: 3, label: "3 Cards - Past, Present, Future" },
@@ -24,7 +24,6 @@ const LAYOUTS = [
 ]
 
 export default function NewReadingPage() {
-  const { data: session, status } = useSession()
   const router = useRouter()
   
   const [allCards, setAllCards] = useState<CardType[]>([])
@@ -35,7 +34,7 @@ export default function NewReadingPage() {
   const [allowReversed, setAllowReversed] = useState(false)
   const [isPublic, setIsPublic] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
-  const [savedReading, setSavedReading] = useState<any>(null)
+  const [savedReading, setSavedReading] = useState<Reading | null>(null)
   const [error, setError] = useState('')
   const [step, setStep] = useState<'setup' | 'drawing' | 'review'>('setup')
 
@@ -45,9 +44,8 @@ export default function NewReadingPage() {
 
   const fetchCards = async () => {
     try {
-      const response = await fetch('/api/cards')
-      const data = await response.json()
-      setAllCards(data.cards)
+      const cards = await getCards()
+      setAllCards(cards)
     } catch (error) {
       console.error('Error fetching cards:', error)
       setError('Failed to load cards')
@@ -55,18 +53,15 @@ export default function NewReadingPage() {
   }
 
   const handleDraw = (cards: CardType[]) => {
-    const readingCards: ReadingCard[] = cards.map((card, index) => ({
-      id: card.id,
-      position: index,
-      reversed: allowReversed && Math.random() < 0.5,
-      x: layoutType === 36 ? index % 4 : undefined,
-      y: layoutType === 36 ? Math.floor(index / 4) : undefined,
-    }))
+    const readingCards = drawCards(cards, layoutType)
+    if (!allowReversed) {
+      readingCards.forEach(card => card.reversed = false)
+    }
     setDrawnCards(readingCards)
     setStep('review')
   }
 
-  const handleSave = async () => {
+  const handleSave = () => {
     if (!title.trim()) {
       setError('Please enter a title for your reading')
       return
@@ -76,33 +71,21 @@ export default function NewReadingPage() {
     setError('')
 
     try {
-      const response = await fetch('/api/readings', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title: title.trim(),
-          question: question.trim() || undefined,
-          layoutType,
-          cards: drawnCards,
-          isPublic,
-        }),
-      })
-
-      if (!response.ok) {
-        throw new Error('Failed to save reading')
+      const now = new Date()
+      const reading: Reading = {
+        id: generateSlug(),
+        title: title.trim(),
+        question: question.trim() || undefined,
+        layoutType,
+        cards: drawnCards,
+        slug: generateSlug(),
+        isPublic,
+        createdAt: now,
+        updatedAt: now,
       }
 
-      const savedData = await response.json()
-      setSavedReading(savedData)
-      
-      // Store in localStorage for anonymous users
-      if (!session) {
-        const localReadings = JSON.parse(localStorage.getItem('lenormand-readings') || '[]')
-        localReadings.push(savedData)
-        localStorage.setItem('lenormand-readings', JSON.stringify(localReadings))
-      }
+      saveReading(reading)
+      setSavedReading(reading)
     } catch (error) {
       console.error('Error saving reading:', error)
       setError('Failed to save reading')
@@ -125,13 +108,7 @@ export default function NewReadingPage() {
     }
   }
 
-  if (status === 'loading') {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin" />
-      </div>
-    )
-  }
+  
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
@@ -202,16 +179,14 @@ export default function NewReadingPage() {
               <Label htmlFor="reversed">Allow reversed cards</Label>
             </div>
 
-            {session && (
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id="public"
-                  checked={isPublic}
-                  onCheckedChange={setIsPublic}
-                />
-                <Label htmlFor="public">Make reading public (shareable)</Label>
-              </div>
-            )}
+            <div className="flex items-center space-x-2">
+              <Switch
+                id="public"
+                checked={isPublic}
+                onCheckedChange={setIsPublic}
+              />
+              <Label htmlFor="public">Make reading public (shareable)</Label>
+            </div>
 
             <Button 
               onClick={() => setStep('drawing')} 
@@ -304,10 +279,11 @@ export default function NewReadingPage() {
             <ReadingViewer
               reading={savedReading}
               allCards={allCards}
-              showShareButton={savedReading.isPublic}
+              showShareButton={true}
               onShare={() => {
-                navigator.clipboard.writeText(`${window.location.origin}/read/${savedReading.slug}`)
-                alert('Reading link copied to clipboard!')
+                const shareUrl = createShareableUrl(savedReading)
+                navigator.clipboard.writeText(shareUrl)
+                alert('Shareable link copied to clipboard!')
               }}
             />
 
@@ -315,12 +291,10 @@ export default function NewReadingPage() {
               <Button variant="outline" onClick={handleStartOver}>
                 New Reading
               </Button>
-              {savedReading.isPublic && (
-                <Button onClick={handleViewReading}>
-                  <Eye className="w-4 h-4 mr-2" />
-                  View Public Reading
-                </Button>
-              )}
+              <Button onClick={handleViewReading}>
+                <Eye className="w-4 h-4 mr-2" />
+                View Reading
+              </Button>
             </div>
           </div>
         </div>
