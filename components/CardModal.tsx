@@ -50,23 +50,6 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
                 src={card.imageUrl || ''}
                 alt={card.name}
                 className="w-full h-full object-contain bg-white"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  if (target.style.display !== 'none') {
-                    target.style.display = 'none';
-                    const parent = target.parentElement;
-                    if (parent && !parent.querySelector('.fallback-content')) {
-                      const fallback = document.createElement('div');
-                      fallback.className = 'fallback-content absolute inset-0 bg-gradient-to-br from-purple-600/20 to-blue-600/20 backdrop-blur-sm flex flex-col items-center justify-center text-white p-6 border border-purple-500/30 rounded-xl';
-                      fallback.innerHTML = `
-                        <div class="text-5xl mb-3 mystical-glow">✦</div>
-                        <div class="text-xl font-bold text-center">${card.name}</div>
-                        <div class="text-sm text-purple-200 mt-2">#${card.id}</div>
-                      `;
-                      parent.appendChild(fallback);
-                    }
-                  }
-                }}
               />
               {reversed && (
                 <div className="absolute top-3 right-3 bg-red-500 text-white text-sm font-bold rounded-full w-8 h-8 flex items-center justify-center border-2 border-white shadow-lg mystical-glow">

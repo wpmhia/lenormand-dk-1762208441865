@@ -24,51 +24,6 @@ export function Card({
 }: CardProps) {
   const [showModal, setShowModal] = useState(false)
 
-  const getCardSymbol = (cardName: string): string => {
-    const symbols: Record<string, string> = {
-      'Rider': '🏇',
-      'Clover': '🍀',
-      'Ship': '⛵',
-      'House': '🏠',
-      'Tree': '🌳',
-      'Clouds': '☁️',
-      'Snake': '🐍',
-      'Coffin': '⚰️',
-      'Bouquet': '💐',
-      'Scythe': '🔪',
-      'Whip': '🪢',
-      'Birds': '🐦',
-      'Child': '👶',
-      'Fox': '🦊',
-      'Bear': '🐻',
-      'Stars': '⭐',
-      'Stork': '🦢',
-      'Dog': '🐕',
-      'Tower': '🏰',
-      'Garden': '🌺',
-      'Mountain': '⛰️',
-      'Paths': '🛤️',
-      'Mice': '🐭',
-      'Heart': '❤️',
-      'Ring': '💍',
-      'Book': '📖',
-      'Letter': '📧',
-      'Gentleman': '👨',
-      'Lady': '👩',
-      'Man': '👨',
-      'Woman': '👩',
-      'Lily': '🌺',
-      'Lilies': '🌺',
-      'Sun': '☀️',
-      'Moon': '🌙',
-      'Key': '🔑',
-      'Fish': '🐟',
-      'Anchor': '⚓',
-      'Cross': '✝️'
-    }
-    return symbols[cardName] || '✦'
-  }
-
   const getCardColor = (cardId: number): string => {
     const colors = [
       'from-blue-400 to-blue-600', 'from-green-400 to-green-600', 'from-teal-400 to-teal-600',
@@ -129,24 +84,6 @@ export function Card({
             src={card.imageUrl || ''}
             alt={card.name}
             className="w-full h-full object-contain"
-            onError={(e) => {
-              // Fallback to mystical background if image fails to load
-              const target = e.target as HTMLImageElement;
-              if (target.style.display !== 'none') {
-                target.style.display = 'none';
-                const parent = target.parentElement;
-                if (parent && !parent.querySelector('.fallback-content')) {
-                  const fallback = document.createElement('div');
-                  fallback.className = 'fallback-content absolute inset-0 bg-gradient-to-br from-purple-600/20 to-blue-600/20 backdrop-blur-sm flex flex-col items-center justify-center text-white p-4 border border-purple-500/30 rounded-lg';
-                  fallback.innerHTML = `
-                    <div class="text-3xl mb-2">${getCardSymbol(card.name)}</div>
-                    <div class="text-sm font-bold text-center text-white/95">${card.name}</div>
-                    <div class="text-xs text-white/70 mt-1">#${card.id}</div>
-                  `;
-                  parent.appendChild(fallback);
-                }
-              }
-            }}
           />
           
           {/* Mystical Card Number */}
