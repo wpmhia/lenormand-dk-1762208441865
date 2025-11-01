@@ -96,18 +96,16 @@ export function ReadingViewer({
             const position = getGrandTableauPosition(index)
 
             return (
-              <div key={index} className="space-y-1">
+              <div key={index} className="flex flex-col items-center space-y-1">
                 <div className="text-xs text-center text-gray-600 font-medium">
                   {position.label}
                 </div>
-                <div className="flex justify-center">
-                  <Card
-                    card={card}
-                    reversed={readingCard.reversed}
-                    size="sm"
-                    onClick={() => setSelectedCard({ card, reversed: readingCard.reversed })}
-                  />
-                </div>
+                <Card
+                  card={card}
+                  reversed={readingCard.reversed}
+                  size="sm"
+                  onClick={() => setSelectedCard({ card, reversed: readingCard.reversed })}
+                />
               </div>
             )
           })}
@@ -126,7 +124,7 @@ export function ReadingViewer({
             const positionInfo = getPositionInfo(index, reading.layoutType)
 
             return (
-              <div key={index} className="space-y-2">
+              <div key={index} className="flex flex-col items-center space-y-2">
                 <div className="text-center">
                   <Badge variant="outline" className="text-xs">
                     {positionInfo.label}
