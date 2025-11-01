@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
@@ -16,7 +16,11 @@ interface CardModalProps {
 
 export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
   const combos = Array.isArray(card.combos) ? card.combos : []
-  const allCards = getCards()
+  const [allCards, setAllCards] = useState<any[]>([])
+
+  useEffect(() => {
+    getCards().then(setAllCards)
+  }, [])
 
   return (
     <Dialog open={true} onOpenChange={(isOpen) => {
