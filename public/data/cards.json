@@ -18,8 +18,44 @@
         "meaning": "News about clover - lucky message"
       },
       {
+        "withCardId": 3,
+        "meaning": "News about ship - travel announcement"
+      },
+      {
+        "withCardId": 4,
+        "meaning": "News about house - family message"
+      },
+      {
+        "withCardId": 5,
+        "meaning": "News about tree - health message"
+      },
+      {
+        "withCardId": 6,
+        "meaning": "News about clouds - uncertain message"
+      },
+      {
+        "withCardId": 7,
+        "meaning": "News about snake - betrayal warning"
+      },
+      {
+        "withCardId": 8,
+        "meaning": "News about coffin - serious message"
+      },
+      {
+        "withCardId": 9,
+        "meaning": "News about bouquet - positive message"
+      },
+      {
+        "withCardId": 10,
+        "meaning": "News about scythe - sudden change"
+      },
+      {
         "withCardId": 28,
         "meaning": "News from man - male messenger"
+      },
+      {
+        "withCardId": 29,
+        "meaning": "News from woman - female messenger"
       }
     ],
     "imageUrl": "/images/cards/01-rider.png"
@@ -145,6 +181,34 @@
       {
         "withCardId": 2,
         "meaning": "Uncertain luck - unclear opportunity"
+      },
+      {
+        "withCardId": 3,
+        "meaning": "Unclear journey - confusing travel"
+      },
+      {
+        "withCardId": 4,
+        "meaning": "Uncertain home - confusing family matters"
+      },
+      {
+        "withCardId": 5,
+        "meaning": "Unclear health - confusing medical issues"
+      },
+      {
+        "withCardId": 7,
+        "meaning": "Double confusion - very unclear situation"
+      },
+      {
+        "withCardId": 8,
+        "meaning": "Uncertain death - confusing end"
+      },
+      {
+        "withCardId": 9,
+        "meaning": "Uncertain flowers - confusing emotions"
+      },
+      {
+        "withCardId": 10,
+        "meaning": "Uncertain cut - confusing separation"
       }
     ],
     "imageUrl": "/images/cards/06-clouds.png"
