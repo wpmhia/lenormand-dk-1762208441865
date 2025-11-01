@@ -122,28 +122,27 @@ export function Card({
       >
         {/* Card Image */}
         <div className="relative w-full h-full rounded-lg overflow-hidden bg-white">
-          {/* Always show the mystical background with symbol */}
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-blue-600/20 backdrop-blur-sm flex flex-col items-center justify-center text-white p-4 border border-purple-500/30 rounded-lg">
-            <div className="text-3xl mb-2 mystical-glow">{getCardSymbol(card.name)}</div>
-            <div className="text-sm font-bold text-center text-white/95">{card.name}</div>
-            <div className="text-xs text-white/70 mt-1">#{card.id}</div>
-          </div>
-          
-          {/* Try to load image on top of fallback */}
           <img
             src={card.imageUrl || ''}
             alt={card.name}
-            className="w-full h-full object-contain absolute inset-0 z-10"
-            style={{ backgroundColor: 'transparent' }}
+            className="w-full h-full object-contain"
             onError={(e) => {
-              // Hide failed image to show the mystical background
+              // Fallback to mystical background if image fails to load
               const target = e.target as HTMLImageElement;
-              target.style.display = 'none';
-            }}
-            onLoad={(e) => {
-              // Show loaded image
-              const target = e.target as HTMLImageElement;
-              target.style.display = 'block';
+              if (target.style.display !== 'none') {
+                target.style.display = 'none';
+                const parent = target.parentElement;
+                if (parent && !parent.querySelector('.fallback-content')) {
+                  const fallback = document.createElement('div');
+                  fallback.className = 'fallback-content absolute inset-0 bg-gradient-to-br from-purple-600/20 to-blue-600/20 backdrop-blur-sm flex flex-col items-center justify-center text-white p-4 border border-purple-500/30 rounded-lg';
+                  fallback.innerHTML = `
+                    <div class="text-3xl mb-2">${getCardSymbol(card.name)}</div>
+                    <div class="text-sm font-bold text-center text-white/95">${card.name}</div>
+                    <div class="text-xs text-white/70 mt-1">#${card.id}</div>
+                  `;
+                  parent.appendChild(fallback);
+                }
+              }
             }}
           />
           
