@@ -15,31 +15,28 @@ import {
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <div className="container mx-auto px-4 py-16 max-w-6xl">
-        <div className="text-center mb-16">
-          <Badge className="mb-4 bg-purple-600/20 text-purple-200 border-purple-500/30" variant="secondary">
-            <Sparkles className="w-3 h-3 mr-1" />
-            Danish & English Mystical Readings
+      <div className="container mx-auto px-4 py-8 max-w-5xl">
+        <div className="text-center mb-12">
+          <Badge className="mb-6 bg-slate-100 text-slate-700 border-slate-200 px-4 py-2 text-sm font-medium" variant="secondary">
+            AI-Powered Lenormand Readings
           </Badge>
-          <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent mystical-glow">
-            Lenormand.dk
+          <h1 className="text-5xl font-bold mb-6 text-slate-900">
+            Lenormand Intelligence
           </h1>
-          <p className="text-xl text-purple-200 mb-8 max-w-2xl mx-auto leading-relaxed">
-            Discover guidance and insight through the mystical Lenormand cards. 
-            Create personalized readings, explore card meanings, and unlock the ancient wisdom of the 36-card deck.
+          <p className="text-xl text-slate-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+            Advanced AI interpretation of traditional Lenormand cards.
+            Get personalized insights with machine learning-powered analysis of the 36-card deck.
           </p>
           <div className="flex gap-4 justify-center">
             <Link href="/read/new">
-              <Button size="lg" className="px-8">
-                <Sparkles className="w-5 h-5 mr-2" />
-                Start Your Reading
+              <Button size="lg" className="px-8 bg-slate-900 hover:bg-slate-800 text-white shadow-lg">
+                Start AI Reading
               </Button>
             </Link>
             <Link href="/cards">
-              <Button variant="outline" size="lg" className="px-8">
-                <BookOpen className="w-5 h-5 mr-2" />
+              <Button variant="outline" size="lg" className="px-8 border-slate-300 text-slate-700 hover:bg-slate-50">
                 Explore Cards
               </Button>
             </Link>
@@ -47,126 +44,126 @@ export default function Home() {
         </div>
 
         {/* Features Grid */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
-          <Card className="text-center">
-            <CardHeader>
-              <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Sparkles className="w-6 h-6 text-indigo-600" />
+        <div className="grid md:grid-cols-3 gap-6 mb-12">
+          <Card className="text-center border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+            <CardHeader className="pb-4">
+              <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                <Sparkles className="w-5 h-5 text-slate-600" />
               </div>
-              <CardTitle>Multiple Layouts</CardTitle>
+              <CardTitle className="text-slate-900">AI Analysis</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600">
-                Choose from 3-card, 5-card, 9-card, or Grand Tableau spreads for different levels of insight.
+              <p className="text-slate-600 text-sm">
+                Machine learning algorithms analyze card combinations for deeper insights and patterns.
               </p>
             </CardContent>
           </Card>
 
-          <Card className="text-center">
-            <CardHeader>
-              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="w-6 h-6 text-purple-600" />
+          <Card className="text-center border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+            <CardHeader className="pb-4">
+              <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                <Share2 className="w-5 h-5 text-slate-600" />
               </div>
-              <CardTitle>Save & Share</CardTitle>
+              <CardTitle className="text-slate-900">Cloud Sync</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600">
-                Save your readings locally and share insights with others through unique links.
+              <p className="text-slate-600 text-sm">
+                Secure cloud storage with instant sharing capabilities and reading history.
               </p>
             </CardContent>
           </Card>
 
-          <Card className="text-center">
-            <CardHeader>
-              <div className="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <BookOpen className="w-6 h-6 text-pink-600" />
+          <Card className="text-center border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+            <CardHeader className="pb-4">
+              <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                <BookOpen className="w-5 h-5 text-slate-600" />
               </div>
-              <CardTitle>Card Meanings</CardTitle>
+              <CardTitle className="text-slate-900">Knowledge Base</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600">
-                Explore detailed meanings for all 36 Lenormand cards, including combinations and keywords.
+              <p className="text-slate-600 text-sm">
+                Comprehensive database of card meanings, historical context, and interpretive guidance.
               </p>
             </CardContent>
           </Card>
         </div>
 
         {/* Reading Types */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-4">Choose Your Lenormand Reading</h2>
-          <p className="text-center text-gray-600 mb-8">Select a spread for your free Lenormand card reading</p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold text-center mb-3 text-slate-900">AI Reading Options</h2>
+          <p className="text-center text-slate-600 mb-6 text-sm">Choose your analysis depth</p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
              <Link href="/read/new">
-               <Card className="hover:shadow-lg transition-all cursor-pointer group border-2 border-transparent hover:border-indigo-200">
-                 <CardHeader className="pb-2">
-                   <CardTitle className="flex items-center gap-2 group-hover:text-indigo-600 text-lg">
-                     <Star className="w-5 h-5" />
-                     3 Cards
+               <Card className="hover:shadow-md transition-all cursor-pointer group border border-slate-200 hover:border-slate-300 bg-white">
+                 <CardHeader className="pb-3">
+                   <CardTitle className="flex items-center gap-2 group-hover:text-slate-700 text-base text-slate-900">
+                     <Star className="w-4 h-4" />
+                     Quick Analysis
                    </CardTitle>
                  </CardHeader>
-                 <CardContent>
-                   <p className="text-sm text-gray-600 mb-3">
+                 <CardContent className="pt-0">
+                   <p className="text-xs text-slate-600 mb-2">
                      Past, Present, Future
                    </p>
-                   <div className="flex items-center text-indigo-600 text-sm font-medium">
-                     Quick Reading <ArrowRight className="w-4 h-4 ml-1" />
+                   <div className="flex items-center text-slate-500 text-xs">
+                     3 Cards <ArrowRight className="w-3 h-3 ml-1" />
                    </div>
                  </CardContent>
                </Card>
              </Link>
 
              <Link href="/read/new">
-               <Card className="hover:shadow-lg transition-all cursor-pointer group border-2 border-transparent hover:border-purple-200">
-                 <CardHeader className="pb-2">
-                   <CardTitle className="flex items-center gap-2 group-hover:text-purple-600 text-lg">
-                     <Heart className="w-5 h-5" />
-                     5 Cards
+               <Card className="hover:shadow-md transition-all cursor-pointer group border border-slate-200 hover:border-slate-300 bg-white">
+                 <CardHeader className="pb-3">
+                   <CardTitle className="flex items-center gap-2 group-hover:text-slate-700 text-base text-slate-900">
+                     <Heart className="w-4 h-4" />
+                     Deep Analysis
                    </CardTitle>
                  </CardHeader>
-                 <CardContent>
-                   <p className="text-sm text-gray-600 mb-3">
+                 <CardContent className="pt-0">
+                   <p className="text-xs text-slate-600 mb-2">
                      Extended Reading with Challenges
                    </p>
-                   <div className="flex items-center text-purple-600 text-sm font-medium">
-                     Detailed Insight <ArrowRight className="w-4 h-4 ml-1" />
+                   <div className="flex items-center text-slate-500 text-xs">
+                     5 Cards <ArrowRight className="w-3 h-3 ml-1" />
                    </div>
                  </CardContent>
                </Card>
              </Link>
 
              <Link href="/read/new">
-               <Card className="hover:shadow-lg transition-all cursor-pointer group border-2 border-transparent hover:border-pink-200">
-                 <CardHeader className="pb-2">
-                   <CardTitle className="flex items-center gap-2 group-hover:text-pink-600 text-lg">
-                     <Shield className="w-5 h-5" />
-                     9 Cards
+               <Card className="hover:shadow-md transition-all cursor-pointer group border border-slate-200 hover:border-slate-300 bg-white">
+                 <CardHeader className="pb-3">
+                   <CardTitle className="flex items-center gap-2 group-hover:text-slate-700 text-base text-slate-900">
+                     <Shield className="w-4 h-4" />
+                     Comprehensive
                    </CardTitle>
                  </CardHeader>
-                 <CardContent>
-                   <p className="text-sm text-gray-600 mb-3">
-                     Comprehensive Life Reading
+                 <CardContent className="pt-0">
+                   <p className="text-xs text-slate-600 mb-2">
+                     Life Overview Analysis
                    </p>
-                   <div className="flex items-center text-pink-600 text-sm font-medium">
-                     Deep Analysis <ArrowRight className="w-4 h-4 ml-1" />
+                   <div className="flex items-center text-slate-500 text-xs">
+                     9 Cards <ArrowRight className="w-3 h-3 ml-1" />
                    </div>
                  </CardContent>
                </Card>
              </Link>
 
              <Link href="/read/new">
-               <Card className="hover:shadow-lg transition-all cursor-pointer group border-2 border-transparent hover:border-orange-200">
-                 <CardHeader className="pb-2">
-                   <CardTitle className="flex items-center gap-2 group-hover:text-orange-600 text-lg">
-                     <Sparkles className="w-5 h-5" />
+               <Card className="hover:shadow-md transition-all cursor-pointer group border border-slate-200 hover:border-slate-300 bg-white">
+                 <CardHeader className="pb-3">
+                   <CardTitle className="flex items-center gap-2 group-hover:text-slate-700 text-base text-slate-900">
+                     <Sparkles className="w-4 h-4" />
                      Grand Tableau
                    </CardTitle>
                  </CardHeader>
-                 <CardContent>
-                   <p className="text-sm text-gray-600 mb-3">
-                     Full 36-Card Reading
+                 <CardContent className="pt-0">
+                   <p className="text-xs text-slate-600 mb-2">
+                     Complete Deck Analysis
                    </p>
-                   <div className="flex items-center text-orange-600 text-sm font-medium">
-                     Complete Picture <ArrowRight className="w-4 h-4 ml-1" />
+                   <div className="flex items-center text-slate-500 text-xs">
+                     36 Cards <ArrowRight className="w-3 h-3 ml-1" />
                    </div>
                  </CardContent>
                </Card>
@@ -175,88 +172,100 @@ export default function Home() {
         </div>
 
         {/* Testimonials Section */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-8">User Reviews of Lenormand Reading</h2>
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <Card className="text-center">
-              <CardContent className="pt-6">
-                <div className="text-2xl mb-4">⭐⭐⭐⭐⭐</div>
-                <p className="text-gray-600 mb-4 italic">
-                  "Lenormand Reading has helped me make many important decisions. The readings are always accurate, giving me confidence about the future. It has been especially helpful in guiding my career choices."
+        <div className="mb-12">
+          <h2 className="text-xl font-bold text-center mb-6 text-slate-900">User Feedback</h2>
+          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            <Card className="border-slate-200 shadow-sm">
+              <CardContent className="p-6">
+                <div className="flex mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <p className="text-slate-600 mb-4 text-sm leading-relaxed">
+                  "Lenormand Intelligence has helped me make many important decisions. The AI analysis provides accurate insights and confidence about the future."
                 </p>
-                <div className="font-semibold">Sarah L.</div>
-                <div className="text-sm text-gray-500">New York</div>
+                <div className="font-semibold text-slate-900 text-sm">Sarah L.</div>
+                <div className="text-xs text-slate-500">New York</div>
               </CardContent>
             </Card>
 
-            <Card className="text-center">
-              <CardContent className="pt-6">
-                <div className="text-2xl mb-4">⭐⭐⭐⭐⭐</div>
-                <p className="text-gray-600 mb-4 italic">
-                  "Through Lenormand Reading, I've learned how to better understand my circumstances. This form of fortune-telling is both mystical and practical, providing concrete guidance."
+            <Card className="border-slate-200 shadow-sm">
+              <CardContent className="p-6">
+                <div className="flex mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <p className="text-slate-600 mb-4 text-sm leading-relaxed">
+                  "The AI-powered analysis helps me understand my circumstances better. It's both insightful and practical, providing concrete guidance."
                 </p>
-                <div className="font-semibold">Emma W.</div>
-                <div className="text-sm text-gray-500">London</div>
+                <div className="font-semibold text-slate-900 text-sm">Emma W.</div>
+                <div className="text-xs text-slate-500">London</div>
               </CardContent>
             </Card>
 
-            <Card className="text-center">
-              <CardContent className="pt-6">
-                <div className="text-2xl mb-4">⭐⭐⭐⭐⭐</div>
-                <p className="text-gray-600 mb-4 italic">
-                  "I'm impressed by the accuracy of Lenormand card readings. Whether it's relationship or work issues, the insights have been invaluable. It has become an important tool in my life."
+            <Card className="border-slate-200 shadow-sm">
+              <CardContent className="p-6">
+                <div className="flex mb-3">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <p className="text-slate-600 mb-4 text-sm leading-relaxed">
+                  "The AI accuracy is impressive. Whether for relationships or work, the insights have been invaluable. It's become an essential tool."
                 </p>
-                <div className="font-semibold">Michael R.</div>
-                <div className="text-sm text-gray-500">Toronto</div>
+                <div className="font-semibold text-slate-900 text-sm">Michael R.</div>
+                <div className="text-xs text-slate-500">Toronto</div>
               </CardContent>
             </Card>
           </div>
         </div>
 
         {/* FAQ Section */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-8">Frequently Asked Questions</h2>
-          <div className="max-w-3xl mx-auto space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">What is Lenormand and how does it differ from Tarot?</CardTitle>
+        <div className="mb-12">
+          <h2 className="text-xl font-bold text-center mb-6 text-slate-900">FAQ</h2>
+          <div className="max-w-3xl mx-auto space-y-4">
+            <Card className="border-slate-200 shadow-sm">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base text-slate-900">What is Lenormand vs Tarot?</CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">
-                  Lenormand is a divination system using 36 cards, each with a specific symbol and meaning. Unlike Tarot, which has 78 cards and often deals with spiritual themes, Lenormand focuses on practical, everyday matters. Lenormand readings tend to be more direct and specific, making them ideal for online interpretations.
+              <CardContent className="pt-0">
+                <p className="text-slate-600 text-sm">
+                  Lenormand uses 36 cards with specific symbols for practical, everyday matters. Unlike Tarot's 78 cards and spiritual themes, Lenormand provides direct, specific guidance ideal for AI analysis.
                 </p>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">What are the benefits of using an online Lenormand reading service?</CardTitle>
+            <Card className="border-slate-200 shadow-sm">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base text-slate-900">Benefits of AI-powered readings?</CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">
-                  Online Lenormand readings offer several advantages: they're accessible 24/7, provide instant results, and allow for privacy and reflection. Our free online Lenormand service uses advanced algorithms to ensure randomness in card selection, mimicking the shuffle and draw process of physical cards.
+              <CardContent className="pt-0">
+                <p className="text-slate-600 text-sm">
+                  24/7 access with instant AI analysis. Advanced algorithms ensure true randomness while providing deeper insights through machine learning pattern recognition.
                 </p>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">How can I get a free Lenormand reading online?</CardTitle>
+            <Card className="border-slate-200 shadow-sm">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base text-slate-900">How to get a free reading?</CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">
-                  Our website offers completely free Lenormand readings online. Simply visit our 'Start Reading' page, focus on your question, and select your cards. The system will then provide an interpretation based on the Lenormand tradition. No sign-up or payment is required for these free online Lenormand readings.
+              <CardContent className="pt-0">
+                <p className="text-slate-600 text-sm">
+                  Click "Start AI Reading" above. Focus on your question and let our algorithms select and analyze your cards. No signup or payment required.
                 </p>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">How accurate are online Lenormand readings compared to in-person ones?</CardTitle>
+            <Card className="border-slate-200 shadow-sm">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base text-slate-900">Accuracy of AI readings?</CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">
-                  Online Lenormand readings can be just as accurate as in-person ones. The key to any divination practice is the reader's intention and interpretation. Our free online Lenormand system provides consistent, unbiased readings based on traditional Lenormand meanings, which you can then interpret in the context of your specific situation.
+              <CardContent className="pt-0">
+                <p className="text-slate-600 text-sm">
+                  AI readings are highly accurate, providing consistent analysis based on traditional meanings enhanced by machine learning pattern recognition.
                 </p>
               </CardContent>
             </Card>
@@ -264,35 +273,34 @@ export default function Home() {
         </div>
 
         {/* CTA Section */}
-        <div className="text-center card-mystical rounded-2xl p-6 mystical-glow border border-purple-500/30">
-          <h2 className="text-3xl font-bold mb-4 text-purple-100">
-            Ready to Discover What the Cards Hold?
+        <div className="text-center bg-slate-50 rounded-xl p-8 border border-slate-200">
+          <h2 className="text-2xl font-bold mb-3 text-slate-900">
+            Experience AI-Powered Insight
           </h2>
-          <p className="text-xl mb-8 text-purple-200 opacity-90">
-            Join thousands who find guidance through mystical Lenormand readings
+          <p className="text-slate-600 mb-6 text-sm">
+            Join thousands using advanced Lenormand analysis
           </p>
           <Link href="/read/new">
-            <Button size="lg" className="px-8 bg-purple-600 hover:bg-purple-700 text-white border-purple-500 mystical-glow">
-              <Sparkles className="w-5 h-5 mr-2" />
-              Begin Your Mystical Journey
-              <ArrowRight className="w-5 h-5 ml-2" />
+            <Button size="lg" className="px-6 bg-slate-900 hover:bg-slate-800 text-white shadow-sm">
+              Start Your Analysis
+              <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </Link>
         </div>
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-purple-500/30 bg-slate-900/80 py-8 backdrop-blur-sm">
-        <div className="container mx-auto px-4 text-center text-purple-300">
-          <p className="mb-2">
-            © 2024 Lenormand.dk - Mystical Danish & English Lenormand Readings
+      <footer className="border-t border-slate-200 bg-slate-50 py-6">
+        <div className="container mx-auto px-4 text-center text-slate-600">
+          <p className="mb-3 text-sm">
+            © 2024 Lenormand Intelligence - AI-Powered Lenormand Analysis
           </p>
-          <div className="flex gap-6 justify-center text-sm">
-            <Link href="/cards" className="hover:text-purple-100 transition-colors">
-              Card Meanings
+          <div className="flex gap-6 justify-center text-xs">
+            <Link href="/cards" className="hover:text-slate-900 transition-colors">
+              Knowledge Base
             </Link>
-            <Link href="/read/new" className="hover:text-purple-100 transition-colors">
-              New Reading
+            <Link href="/read/new" className="hover:text-slate-900 transition-colors">
+              New Analysis
             </Link>
           </div>
         </div>
