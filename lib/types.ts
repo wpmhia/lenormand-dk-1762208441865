@@ -1,7 +1,15 @@
 import { Card } from '@prisma/client'
 
-export interface CardWithCombos extends Card {
+export type { Card }
+export interface CardWithCombos {
+  id: number
+  name: string
+  number: number
+  keywords: string[]
+  uprightMeaning: string
+  reversedMeaning: string | null
   combos: CardCombo[]
+  imageUrl: string | null
 }
 
 export interface CardCombo {

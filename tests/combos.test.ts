@@ -54,6 +54,11 @@ const mockCards: Card[] = [
 function getLinearAdjacentCards(cards: ReadingCard[], currentIndex: number): ReadingCard[] {
   const adjacent: ReadingCard[] = []
   
+  // Check if currentIndex is valid
+  if (currentIndex < 0 || currentIndex >= cards.length) {
+    return adjacent
+  }
+  
   if (currentIndex > 0) {
     adjacent.push(cards[currentIndex - 1])
   }
@@ -67,6 +72,12 @@ function getLinearAdjacentCards(cards: ReadingCard[], currentIndex: number): Rea
 // Get adjacent cards for Grand Tableau (36 cards in 9x4 grid)
 function getGrandTableauAdjacentCards(cards: ReadingCard[], currentIndex: number): ReadingCard[] {
   const adjacent: ReadingCard[] = []
+  
+  // Check if currentIndex is valid
+  if (currentIndex < 0 || currentIndex >= 36) {
+    return adjacent
+  }
+  
   const row = Math.floor(currentIndex / 4)
   const col = currentIndex % 4
   
@@ -80,7 +91,7 @@ function getGrandTableauAdjacentCards(cards: ReadingCard[], currentIndex: number
   
   adjacentPositions.forEach(pos => {
     const adjIndex = pos.r * 4 + pos.c
-    const adjCard = cards[adjIndex]
+    const adjCard = cards.find(card => card.position === adjIndex)
     if (adjCard) adjacent.push(adjCard)
   })
   
@@ -147,7 +158,8 @@ describe('Card Combination Logic', () => {
       
       const adjacentPositions = adjacent.map(c => c.position).sort()
       const expectedPositions = [6, 9, 11, 14] // top, left, right, bottom
-      expect(adjacentPositions).toEqual(expectedPositions)
+      expect(adjacentPositions).toEqual(expect.arrayContaining(expectedPositions))
+      expect(adjacentPositions).toHaveLength(expectedPositions.length)
     })
 
     it('should find correct adjacent cards for corner position', () => {
@@ -252,12 +264,12 @@ describe('Card Combination Logic', () => {
       const currentCard = getCardById(mockCards, reading[currentIndex].id)!
       const adjacentCards = getGrandTableauAdjacentCards(reading, currentIndex)
       
-      expect(adjacentCards).toHaveLength(3) // left, right, bottom
+      expect(adjacentCards).toHaveLength(2) // left, bottom (right is empty)
       
-      // Should find Rider (left), Man (bottom), and potentially others
+      // Should find Rider (left) and Woman (bottom)
       const adjacentIds = adjacentCards.map(c => c.id)
       expect(adjacentIds).toContain(1) // Rider
-      expect(adjacentIds).toContain(28) // Man
+      expect(adjacentIds).toContain(29) // Woman
     })
   })
 

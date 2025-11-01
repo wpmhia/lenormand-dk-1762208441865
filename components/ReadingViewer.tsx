@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react'
-import { Reading, ReadingCard, Card } from '@/lib/types'
+import { Reading, ReadingCard, Card as CardType } from '@/lib/types'
 import { Card } from './Card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -10,7 +10,7 @@ import { Share2, Calendar, User } from 'lucide-react'
 
 interface ReadingViewerProps {
   reading: Reading
-  allCards: Card[]
+  allCards: CardType[]
   showShareButton?: boolean
   onShare?: () => void
 }
@@ -72,9 +72,9 @@ export function ReadingViewer({
   showShareButton = true,
   onShare 
 }: ReadingViewerProps) {
-  const [selectedCard, setSelectedCard] = useState<{ card: Card; reversed: boolean } | null>(null)
+  const [selectedCard, setSelectedCard] = useState<{ card: CardType; reversed: boolean } | null>(null)
 
-  const getCardById = (cardId: number): Card | undefined => {
+  const getCardById = (cardId: number): CardType | undefined => {
     return allCards.find(card => card.id === cardId)
   }
 
@@ -109,10 +109,10 @@ export function ReadingViewer({
     return adjacent
   }
 
-  const getCombinationMeaning = (card1: Card, card2: Card): string | null => {
+  const getCombinationMeaning = (card1: CardType, card2: CardType): string | null => {
     const combos = Array.isArray(card1.combos) ? card1.combos : []
     const combo = combos.find((c: any) => c.withCardId === card2.id)
-    return combo?.meaning || null
+    return (combo as any)?.meaning || null
   }
 
   const renderLayout = () => {

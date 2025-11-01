@@ -55,7 +55,7 @@ export function Deck({
 
     setIsDrawing(true)
     
-    const newDrawnCards = []
+    const newDrawnCards: Array<{card: CardType, reversed: boolean}> = []
     const remainingDeck = [...deck]
     
     for (let i = 0; i < drawCount; i++) {

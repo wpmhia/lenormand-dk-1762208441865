@@ -65,7 +65,7 @@ const lenormandCards = [
     combos: [
       { withCardId: 1, meaning: "Health news - medical results" },
       { withCardId: 26, meaning: "Health book - medical knowledge" },
-      { with withCardId: 3, meaning: "Health journey - medical travel" }
+      { withCardId: 3, meaning: "Health journey - medical travel" }
     ]
   },
   {

@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Calendar, User, Share2 } from 'lucide-react'
 import { prisma } from '@/lib/db'
+import { ReadingCard } from '@/lib/types'
 
 interface PageProps {
   params: {
@@ -29,7 +30,15 @@ async function getReading(slug: string) {
     return null
   }
 
-  return reading
+  // Convert null to undefined for type compatibility
+  return {
+    ...reading,
+    userId: reading.userId || undefined,
+    question: reading.question || undefined,
+    layoutType: reading.layoutType as 3 | 5 | 9 | 36,
+    cards: reading.cards as unknown as ReadingCard[],
+    user: reading.user || undefined,
+  }
 }
 
 async function getAllCards() {
