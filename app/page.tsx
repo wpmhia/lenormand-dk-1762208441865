@@ -45,8 +45,8 @@ export default function Home() {
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg blur-xl"></div>
               <img
-                src="/images/cards/31-sun.png"
-                alt="Lenormand Sun Card"
+                src="/28-gentleman.png"
+                alt="Lenormand Gentleman Card"
                 className="relative w-64 h-96 object-contain rounded-lg shadow-2xl border border-slate-700"
               />
             </div>
