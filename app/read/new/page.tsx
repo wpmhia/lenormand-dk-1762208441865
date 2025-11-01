@@ -111,13 +111,17 @@ export default function NewReadingPage() {
   
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">New Lenormand Reading</h1>
-        <p className="text-gray-600">
-          Create a personalized Lenormand card reading
-        </p>
-      </div>
+    <div className="min-h-screen bg-slate-950">
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
+        <div className="mb-8">
+          <Badge className="mb-4 bg-slate-800 text-slate-200 border-slate-700 px-4 py-2 text-sm font-medium" variant="secondary">
+            AI Reading Setup
+          </Badge>
+          <h1 className="text-3xl font-bold mb-2 text-white">New Lenormand Reading</h1>
+          <p className="text-slate-300">
+            Create a personalized Lenormand card reading with AI-powered analysis
+          </p>
+        </div>
 
       {error && (
         <Alert className="mb-6" variant="destructive">
@@ -126,43 +130,42 @@ export default function NewReadingPage() {
       )}
 
       {step === 'setup' && (
-        <Card>
+        <Card className="border-slate-700 bg-slate-900/50">
           <CardHeader>
-            <CardTitle>Reading Setup</CardTitle>
+            <CardTitle className="text-white">Reading Setup</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="title">Title *</Label>
+              <Label htmlFor="title" className="text-slate-300">Title *</Label>
               <Input
                 id="title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="My Daily Reading"
-                maxLength={100}
+                className="bg-slate-900 border-slate-700 text-white placeholder:text-slate-400"
               />
             </div>
-
             <div className="space-y-2">
-              <Label htmlFor="question">Question (Optional)</Label>
+              <Label htmlFor="question" className="text-slate-300">Question (Optional)</Label>
               <Textarea
                 id="question"
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
-                placeholder="What guidance do I need for today?"
-                maxLength={500}
+                placeholder="What guidance do I need today?"
                 rows={3}
+                className="bg-slate-900 border-slate-700 text-white placeholder:text-slate-400"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="layout">Layout Type</Label>
+              <Label htmlFor="layout" className="text-slate-300">Layout Type</Label>
               <Select value={layoutType.toString()} onValueChange={(value) => setLayoutType(parseInt(value) as 3 | 5 | 9 | 36)}>
-                <SelectTrigger>
+                <SelectTrigger className="bg-slate-900 border-slate-700 text-white">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-slate-900 border-slate-700">
                   {LAYOUTS.map((layout) => (
-                    <SelectItem key={layout.value} value={layout.value.toString()}>
+                    <SelectItem key={layout.value} value={layout.value.toString()} className="text-white hover:bg-slate-800">
                       {layout.label}
                     </SelectItem>
                   ))}
@@ -176,7 +179,7 @@ export default function NewReadingPage() {
                 checked={allowReversed}
                 onCheckedChange={setAllowReversed}
               />
-              <Label htmlFor="reversed">Allow reversed cards</Label>
+              <Label htmlFor="reversed" className="text-slate-300">Allow reversed cards</Label>
             </div>
 
             <div className="flex items-center space-x-2">
@@ -185,12 +188,12 @@ export default function NewReadingPage() {
                 checked={isPublic}
                 onCheckedChange={setIsPublic}
               />
-              <Label htmlFor="public">Make reading public (shareable)</Label>
+              <Label htmlFor="public" className="text-slate-300">Make reading public (shareable)</Label>
             </div>
 
-            <Button 
-              onClick={() => setStep('drawing')} 
-              className="w-full"
+            <Button
+              onClick={() => setStep('drawing')}
+              className="w-full bg-blue-600 hover:bg-blue-700"
               disabled={!title.trim()}
             >
               Continue to Draw Cards
@@ -202,9 +205,9 @@ export default function NewReadingPage() {
       {step === 'drawing' && (
         <div className="space-y-6">
           <div className="text-center">
-            <h2 className="text-2xl font-semibold mb-2">Draw Your Cards</h2>
-            <p className="text-gray-600">
-              Drawing {layoutType} cards for your reading
+            <h2 className="text-2xl font-semibold mb-2 text-white">Draw Your Cards</h2>
+            <p className="text-slate-300">
+              Drawing {layoutType} cards for your AI-powered reading
             </p>
           </div>
 
@@ -216,7 +219,7 @@ export default function NewReadingPage() {
           />
 
           <div className="flex justify-center">
-            <Button variant="outline" onClick={() => setStep('setup')}>
+            <Button variant="outline" onClick={() => setStep('setup')} className="border-slate-600 text-slate-300 hover:bg-slate-800">
               Back to Setup
             </Button>
           </div>
@@ -226,9 +229,9 @@ export default function NewReadingPage() {
       {step === 'review' && !savedReading && (
         <div className="space-y-6">
           <div className="text-center">
-            <h2 className="text-2xl font-semibold mb-2">Review Your Reading</h2>
-            <p className="text-gray-600">
-              Click on cards to see their meanings and combinations
+            <h2 className="text-2xl font-semibold mb-2 text-white">Review Your Reading</h2>
+            <p className="text-slate-300">
+              Click on cards to see their AI-analyzed meanings and combinations
             </p>
           </div>
 
@@ -272,7 +275,7 @@ export default function NewReadingPage() {
       {step === 'review' && savedReading && (
         <div className="space-y-6">
           <div className="text-center space-y-4">
-            <div className="text-green-600 text-lg font-semibold">
+            <div className="text-green-400 text-lg font-semibold">
               ✓ Reading saved successfully!
             </div>
             
@@ -288,10 +291,10 @@ export default function NewReadingPage() {
             />
 
             <div className="flex gap-4 justify-center">
-              <Button variant="outline" onClick={handleStartOver}>
+              <Button variant="outline" onClick={handleStartOver} className="border-slate-600 text-slate-300 hover:bg-slate-800">
                 New Reading
               </Button>
-              <Button onClick={handleViewReading}>
+              <Button onClick={handleViewReading} className="bg-blue-600 hover:bg-blue-700">
                 <Eye className="w-4 h-4 mr-2" />
                 View Reading
               </Button>

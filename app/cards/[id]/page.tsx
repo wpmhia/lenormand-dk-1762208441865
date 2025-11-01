@@ -54,61 +54,48 @@ export default function CardDetailPage({ params }: PageProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+      <div className="min-h-screen bg-slate-950">
+        <div className="container mx-auto px-4 py-8">
+          <div className="text-center text-slate-300">Loading card...</div>
+        </div>
       </div>
     )
   }
 
-  if (!card) {
-    notFound()
-    return null
-  }
-
-  const combos = Array.isArray(card.combos) ? card.combos : []
-
-  const getCardName = (cardId: number) => {
-    const foundCard = allCards.find(c => c.id === cardId)
-    return foundCard?.name || `Card ${cardId}`
-  }
-
-  const currentIndex = allCards.findIndex(c => c.id === card.id)
-  const previousCard = currentIndex > 0 ? allCards[currentIndex - 1] : null
-  const nextCard = currentIndex < allCards.length - 1 ? allCards[currentIndex + 1] : null
-
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
+    <div className="min-h-screen bg-slate-950">
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
       {/* Navigation */}
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-4">
           <Link href="/cards">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="border-slate-600 text-slate-300 hover:bg-slate-800">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Cards
             </Button>
           </Link>
           <Link href="/">
-            <Button variant="ghost" size="sm">
+            <Button variant="ghost" size="sm" className="text-slate-300 hover:bg-slate-800">
               <Home className="w-4 h-4 mr-2" />
               Home
             </Button>
           </Link>
         </div>
-        
+
         <div className="flex items-center gap-2">
           {previousCard && (
             <Link href={`/cards/${previousCard.id}`}>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="border-slate-600 text-slate-300 hover:bg-slate-800">
                 ← {previousCard.name}
               </Button>
             </Link>
           )}
-          <Badge className="bg-purple-600/20 text-purple-200 border-purple-500/30" variant="secondary">
+          <Badge className="bg-slate-800 text-slate-200 border-slate-700" variant="secondary">
             {card.id} / 36
           </Badge>
           {nextCard && (
             <Link href={`/cards/${nextCard.id}`}>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="border-slate-600 text-slate-300 hover:bg-slate-800">
                 {nextCard.name} →
               </Button>
             </Link>
@@ -118,35 +105,38 @@ export default function CardDetailPage({ params }: PageProps) {
 
       {/* Card Header */}
       <div className="text-center mb-8">
-        <div className="inline-block mb-4">
-          <div className="w-48 h-72 card-mystical rounded-xl shadow-2xl overflow-hidden relative mystical-glow border border-purple-500/30">
-            <img
-              src={card.imageUrl || ''}
-              alt={card.name}
-              className="w-full h-full object-contain bg-white"
-            />
-          </div>
-        </div>
-        <h1 className="text-5xl font-bold mb-2 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mystical-glow">{card.name}</h1>
-        <p className="text-purple-300 text-lg">Lenormand Card #{card.id}</p>
+        <h1 className="text-4xl font-bold mb-2 text-white">{card.name}</h1>
+        <p className="text-slate-400">Card #{card.id}</p>
       </div>
 
       <div className="grid md:grid-cols-3 gap-8">
         {/* Main Content */}
         <div className="md:col-span-2 space-y-6">
           {/* Keywords */}
-          <Card>
+          <Card className="border-slate-700 bg-slate-900/50">
             <CardHeader>
-              <CardTitle>Keywords</CardTitle>
+              <CardTitle className="text-white">Keywords</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">
                 {card.keywords.map((keyword, index) => (
-                  <Badge key={index} variant="secondary">
+                  <Badge key={index} variant="secondary" className="bg-slate-700 text-slate-200">
                     {keyword}
                   </Badge>
                 ))}
               </div>
+            </CardContent>
+          </Card>
+
+          {/* Upright Meaning */}
+          <Card className="border-slate-700 bg-slate-900/50">
+            <CardHeader>
+              <CardTitle className="text-white">Upright Meaning</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-slate-300 leading-relaxed">
+                {card.uprightMeaning}
+              </p>
             </CardContent>
           </Card>
 
@@ -164,12 +154,12 @@ export default function CardDetailPage({ params }: PageProps) {
 
           {/* Reversed Meaning */}
           {card.reversedMeaning && (
-            <Card>
+            <Card className="border-slate-700 bg-slate-900/50">
               <CardHeader>
-                <CardTitle>Reversed Meaning</CardTitle>
+                <CardTitle className="text-white">Reversed Meaning</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-700 leading-relaxed">
+                <p className="text-slate-300 leading-relaxed">
                   {card.reversedMeaning}
                 </p>
               </CardContent>
@@ -178,27 +168,27 @@ export default function CardDetailPage({ params }: PageProps) {
 
           {/* Combinations */}
           {combos.length > 0 && (
-            <Card>
+            <Card className="border-slate-700 bg-slate-900/50">
               <CardHeader>
-                <CardTitle>Card Combinations</CardTitle>
+                <CardTitle className="text-white">Card Combinations</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   {combos.map((combo, index: number) => (
-                    <div key={index} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                    <div key={index} className="flex items-start gap-3 p-3 bg-slate-800/50 rounded-lg border border-slate-700">
                       <div className="flex-shrink-0">
-                        <div className="w-12 h-16 bg-white border border-gray-300 rounded flex items-center justify-center text-xs font-bold">
+                        <div className="w-12 h-16 bg-slate-700 border border-slate-600 rounded flex items-center justify-center text-xs font-bold text-white">
                           {combo.withCardId}
                         </div>
-                        <div className="text-xs text-center mt-1 font-medium">
+                        <div className="text-xs text-center mt-1 font-medium text-slate-300">
                           {getCardName(combo.withCardId)}
                         </div>
                       </div>
                       <div className="flex-1">
-                        <div className="font-medium text-sm mb-1">
+                        <div className="font-medium text-sm mb-1 text-white">
                           {card.name} + {getCardName(combo.withCardId)}
                         </div>
-                        <div className="text-sm text-gray-600">
+                        <div className="text-sm text-slate-300">
                           {combo.meaning}
                         </div>
                       </div>
@@ -213,18 +203,18 @@ export default function CardDetailPage({ params }: PageProps) {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Quick Actions */}
-          <Card>
+          <Card className="border-slate-700 bg-slate-900/50">
             <CardHeader>
-              <CardTitle>Quick Actions</CardTitle>
+              <CardTitle className="text-white">Quick Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <Link href="/read/new">
-                <Button className="w-full">
+                <Button className="w-full bg-blue-600 hover:bg-blue-700">
                   New Reading with this Card
                 </Button>
               </Link>
               <Link href="/cards">
-                <Button variant="outline" className="w-full">
+                <Button variant="outline" className="w-full border-slate-600 text-slate-300 hover:bg-slate-800">
                   Browse All Cards
                 </Button>
               </Link>
@@ -232,23 +222,23 @@ export default function CardDetailPage({ params }: PageProps) {
           </Card>
 
           {/* Card Info */}
-          <Card>
+          <Card className="border-slate-700 bg-slate-900/50">
             <CardHeader>
-              <CardTitle>Card Information</CardTitle>
+              <CardTitle className="text-white">Card Information</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-600">Card Number:</span>
-                <span className="font-medium">{card.id}</span>
+                <span className="text-slate-400">Card Number:</span>
+                <span className="font-medium text-white">{card.id}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Sequence:</span>
-                <span className="font-medium">{card.number}</span>
+                <span className="text-slate-400">Sequence:</span>
+                <span className="font-medium text-white">{card.number}</span>
               </div>
-              <Separator />
+              <Separator className="bg-slate-700" />
               <div className="pt-2">
-                <p className="text-gray-600 mb-2">In traditional Lenormand:</p>
-                <p className="text-xs">
+                <p className="text-slate-400 mb-2">In traditional Lenormand:</p>
+                <p className="text-xs text-slate-300">
                   This card is part of traditional 36-card Lenormand deck,
                   used for divination and cartomancy since 19th century.
                 </p>
@@ -257,9 +247,9 @@ export default function CardDetailPage({ params }: PageProps) {
           </Card>
 
           {/* Related Cards */}
-          <Card>
+          <Card className="border-slate-700 bg-slate-900/50">
             <CardHeader>
-              <CardTitle>Related Cards</CardTitle>
+              <CardTitle className="text-white">Related Cards</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
@@ -267,12 +257,12 @@ export default function CardDetailPage({ params }: PageProps) {
                   <Link
                     key={index}
                     href={`/cards/${combo.withCardId}`}
-                    className="flex items-center gap-2 p-2 rounded hover:bg-gray-50 transition-colors"
+                    className="flex items-center gap-2 p-2 rounded hover:bg-slate-800 transition-colors"
                   >
-                    <div className="w-8 h-12 bg-white border border-gray-300 rounded flex items-center justify-center text-xs font-bold">
+                    <div className="w-8 h-12 bg-slate-700 border border-slate-600 rounded flex items-center justify-center text-xs font-bold text-white">
                       {combo.withCardId}
                     </div>
-                    <span className="text-sm">{getCardName(combo.withCardId)}</span>
+                    <span className="text-sm text-slate-300">{getCardName(combo.withCardId)}</span>
                   </Link>
                 ))}
               </div>
