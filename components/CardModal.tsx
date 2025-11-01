@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
@@ -14,9 +15,15 @@ interface CardModalProps {
 
 export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
   const combos = Array.isArray(card.combos) ? card.combos : []
+  const [open, setOpen] = useState(true)
+
+  const handleClose = () => {
+    setOpen(false)
+    onClose()
+  }
 
   return (
-    <Dialog open={true} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto card-mystical border-purple-500/30 mystical-glow">
         <DialogHeader>
           <div className="flex items-center justify-between">
@@ -28,7 +35,7 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
               )}
             </DialogTitle>
             <button
-              onClick={onClose}
+              onClick={handleClose}
               className="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
             >
               <X className="h-4 w-4" />
