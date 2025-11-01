@@ -129,17 +129,19 @@ export function Card({
             onError={(e) => {
               // Fallback to mystical background if image fails to load
               const target = e.target as HTMLImageElement;
-              target.style.display = 'none';
-              const parent = target.parentElement;
-              if (parent && !parent.querySelector('.fallback-content')) {
-                const fallback = document.createElement('div');
-                fallback.className = 'fallback-content absolute inset-0 bg-gradient-to-br from-purple-600/20 to-blue-600/20 backdrop-blur-sm flex flex-col items-center justify-center text-white p-4 border border-purple-500/30 rounded-lg';
-                fallback.innerHTML = `
-                  <div class="text-3xl mb-2">${getCardSymbol(card.name)}</div>
-                  <div class="text-sm font-bold text-center text-white/95">${card.name}</div>
-                  <div class="text-xs text-white/70 mt-1">#${card.id}</div>
-                `;
-                parent.appendChild(fallback);
+              if (target.style.display !== 'none') {
+                target.style.display = 'none';
+                const parent = target.parentElement;
+                if (parent && !parent.querySelector('.fallback-content')) {
+                  const fallback = document.createElement('div');
+                  fallback.className = 'fallback-content absolute inset-0 bg-gradient-to-br from-purple-600/20 to-blue-600/20 backdrop-blur-sm flex flex-col items-center justify-center text-white p-4 border border-purple-500/30 rounded-lg';
+                  fallback.innerHTML = `
+                    <div class="text-3xl mb-2">${getCardSymbol(card.name)}</div>
+                    <div class="text-sm font-bold text-center text-white/95">${card.name}</div>
+                    <div class="text-xs text-white/70 mt-1">#${card.id}</div>
+                  `;
+                  parent.appendChild(fallback);
+                }
               }
             }}
           />

@@ -15,15 +15,13 @@ interface CardModalProps {
 
 export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
   const combos = Array.isArray(card.combos) ? card.combos : []
-  const [open, setOpen] = useState(true)
-
-  const handleClose = () => {
-    setOpen(false)
-    onClose()
-  }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={true} onOpenChange={(isOpen) => {
+      if (!isOpen) {
+        onClose()
+      }
+    }}>
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto card-mystical border-purple-500/30 mystical-glow">
         <DialogHeader>
           <div className="flex items-center justify-between">
@@ -35,7 +33,7 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
               )}
             </DialogTitle>
             <button
-              onClick={handleClose}
+              onClick={onClose}
               className="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
             >
               <X className="h-4 w-4" />
@@ -54,17 +52,19 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
                 className="w-full h-full object-contain bg-white"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
-                  target.style.display = 'none';
-                  const parent = target.parentElement;
-                  if (parent && !parent.querySelector('.fallback-content')) {
-                    const fallback = document.createElement('div');
-                    fallback.className = 'fallback-content absolute inset-0 bg-gradient-to-br from-purple-600/20 to-blue-600/20 backdrop-blur-sm flex flex-col items-center justify-center text-white p-6 border border-purple-500/30 rounded-xl';
-                    fallback.innerHTML = `
-                      <div class="text-5xl mb-3 mystical-glow">✦</div>
-                      <div class="text-xl font-bold text-center">${card.name}</div>
-                      <div class="text-sm text-purple-200 mt-2">#${card.id}</div>
-                    `;
-                    parent.appendChild(fallback);
+                  if (target.style.display !== 'none') {
+                    target.style.display = 'none';
+                    const parent = target.parentElement;
+                    if (parent && !parent.querySelector('.fallback-content')) {
+                      const fallback = document.createElement('div');
+                      fallback.className = 'fallback-content absolute inset-0 bg-gradient-to-br from-purple-600/20 to-blue-600/20 backdrop-blur-sm flex flex-col items-center justify-center text-white p-6 border border-purple-500/30 rounded-xl';
+                      fallback.innerHTML = `
+                        <div class="text-5xl mb-3 mystical-glow">✦</div>
+                        <div class="text-xl font-bold text-center">${card.name}</div>
+                        <div class="text-sm text-purple-200 mt-2">#${card.id}</div>
+                      `;
+                      parent.appendChild(fallback);
+                    }
                   }
                 }}
               />

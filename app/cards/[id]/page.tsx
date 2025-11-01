@@ -126,17 +126,19 @@ export default function CardDetailPage({ params }: PageProps) {
               className="w-full h-full object-contain bg-white"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
-                target.style.display = 'none';
-                const parent = target.parentElement;
-                if (parent && !parent.querySelector('.fallback-content')) {
-                  const fallback = document.createElement('div');
-                  fallback.className = 'fallback-content absolute inset-0 bg-gradient-to-br from-purple-600/20 to-blue-600/20 backdrop-blur-sm flex flex-col items-center justify-center text-white p-6 border border-purple-500/30 rounded-xl';
-                  fallback.innerHTML = `
-                    <div class="text-4xl font-bold mb-3 mystical-glow">${card.id}</div>
-                    <div class="text-2xl font-bold text-center">${card.name}</div>
-                    <div class="text-sm text-purple-200 mt-2">Lenormand Card</div>
-                  `;
-                  parent.appendChild(fallback);
+                if (target.style.display !== 'none') {
+                  target.style.display = 'none';
+                  const parent = target.parentElement;
+                  if (parent && !parent.querySelector('.fallback-content')) {
+                    const fallback = document.createElement('div');
+                    fallback.className = 'fallback-content absolute inset-0 bg-gradient-to-br from-purple-600/20 to-blue-600/20 backdrop-blur-sm flex flex-col items-center justify-center text-white p-6 border border-purple-500/30 rounded-xl';
+                    fallback.innerHTML = `
+                      <div class="text-4xl font-bold mb-3 mystical-glow">${card.id}</div>
+                      <div class="text-2xl font-bold text-center">${card.name}</div>
+                      <div class="text-sm text-purple-200 mt-2">Lenormand Card</div>
+                    `;
+                    parent.appendChild(fallback);
+                  }
                 }
               }}
             />
