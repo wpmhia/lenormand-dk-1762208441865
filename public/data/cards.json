@@ -15,47 +15,47 @@
     "combos": [
       {
         "withCardId": 2,
-        "meaning": "News about clover - lucky message"
+        "meaning": "Good news or fortunate message arriving soon, lucky communication or delivery"
       },
       {
         "withCardId": 3,
-        "meaning": "News about ship - travel announcement"
+        "meaning": "News about travel or a journey, announcement of a trip or movement"
       },
       {
         "withCardId": 4,
-        "meaning": "News about house - family message"
+        "meaning": "Family news or message about home, communication from relatives"
       },
       {
         "withCardId": 5,
-        "meaning": "News about tree - health message"
+        "meaning": "Health-related news or message, communication about well-being"
       },
       {
         "withCardId": 6,
-        "meaning": "News about clouds - uncertain message"
+        "meaning": "Uncertain or confusing news, unclear message that needs clarification"
       },
       {
         "withCardId": 7,
-        "meaning": "News about snake - betrayal warning"
+        "meaning": "Warning about deceit or betrayal, news of someone untrustworthy"
       },
       {
         "withCardId": 8,
-        "meaning": "News about coffin - serious message"
+        "meaning": "Serious or grave news, important message about a difficult situation"
       },
       {
         "withCardId": 9,
-        "meaning": "News about bouquet - positive message"
+        "meaning": "Positive or happy news, joyful message or good communication"
       },
       {
         "withCardId": 10,
-        "meaning": "News about scythe - sudden change"
+        "meaning": "Sudden news or change, unexpected message or development"
       },
       {
         "withCardId": 28,
-        "meaning": "News from man - male messenger"
+        "meaning": "Message from a man, male visitor or communication from a gentleman"
       },
       {
         "withCardId": 29,
-        "meaning": "News from woman - female messenger"
+        "meaning": "Message from a woman, female visitor or communication from a lady"
       }
     ],
     "imageUrl": "/images/cards/01-rider.png"
@@ -176,39 +176,39 @@
     "combos": [
       {
         "withCardId": 1,
-        "meaning": "Confusing news - unclear message"
+        "meaning": "Confusing or unclear news, message that is difficult to understand"
       },
       {
         "withCardId": 2,
-        "meaning": "Uncertain luck - unclear opportunity"
+        "meaning": "Uncertain luck or opportunity, unclear chance or fortune"
       },
       {
         "withCardId": 3,
-        "meaning": "Unclear journey - confusing travel"
+        "meaning": "Unclear journey or travel plans, confusing trip or movement"
       },
       {
         "withCardId": 4,
-        "meaning": "Uncertain home - confusing family matters"
+        "meaning": "Uncertain home situation, confusing family or domestic matters"
       },
       {
         "withCardId": 5,
-        "meaning": "Unclear health - confusing medical issues"
+        "meaning": "Unclear health issues, confusing medical or wellness concerns"
       },
       {
         "withCardId": 7,
-        "meaning": "Double confusion - very unclear situation"
+        "meaning": "Double confusion or deception, very unclear and potentially dishonest situation"
       },
       {
         "withCardId": 8,
-        "meaning": "Uncertain death - confusing end"
+        "meaning": "Uncertain ending or conclusion, confusing final outcome"
       },
       {
         "withCardId": 9,
-        "meaning": "Uncertain flowers - confusing emotions"
+        "meaning": "Uncertain emotions or relationships, confusing feelings or romantic situation"
       },
       {
         "withCardId": 10,
-        "meaning": "Uncertain cut - confusing separation"
+        "meaning": "Uncertain separation or change, confusing break or division"
       }
     ],
     "imageUrl": "/images/cards/06-clouds.png"
