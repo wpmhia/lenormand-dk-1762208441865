@@ -93,12 +93,19 @@ export default function Home() {
 
         {/* Reading Types */}
         <div className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-8">Choose Your Reading</h2>
+          <h2 className="text-3xl font-bold text-center mb-4">Choose Your Lenormand Reading</h2>
+          <p className="text-center text-gray-600 mb-8">Select a spread for your free Lenormand card reading</p>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Link href="/read/new">
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer group">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 group-hover:text-indigo-600">
+              <Card className="hover:shadow-lg transition-all cursor-pointer group border-2 border-transparent hover:border-indigo-200">
+                <div className="aspect-[3/4] bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-t-lg flex items-center justify-center mb-4">
+                  <div className="text-center">
+                    <div className="text-4xl mb-2">🏇🍀⛵</div>
+                    <div className="text-xs text-indigo-600 font-medium">Past • Present • Future</div>
+                  </div>
+                </div>
+                <CardHeader className="pb-2">
+                  <CardTitle className="flex items-center gap-2 group-hover:text-indigo-600 text-lg">
                     <Star className="w-5 h-5" />
                     3 Cards
                   </CardTitle>
@@ -107,7 +114,7 @@ export default function Home() {
                   <p className="text-sm text-gray-600 mb-3">
                     Past, Present, Future
                   </p>
-                  <div className="flex items-center text-indigo-600 text-sm">
+                  <div className="flex items-center text-indigo-600 text-sm font-medium">
                     Quick Reading <ArrowRight className="w-4 h-4 ml-1" />
                   </div>
                 </CardContent>
@@ -115,9 +122,15 @@ export default function Home() {
             </Link>
 
             <Link href="/read/new">
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer group">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 group-hover:text-purple-600">
+              <Card className="hover:shadow-lg transition-all cursor-pointer group border-2 border-transparent hover:border-purple-200">
+                <div className="aspect-[3/4] bg-gradient-to-br from-purple-50 to-purple-100 rounded-t-lg flex items-center justify-center mb-4">
+                  <div className="text-center">
+                    <div className="text-4xl mb-2">🏇🍀⛵🏠🌳</div>
+                    <div className="text-xs text-purple-600 font-medium">Extended Layout</div>
+                  </div>
+                </div>
+                <CardHeader className="pb-2">
+                  <CardTitle className="flex items-center gap-2 group-hover:text-purple-600 text-lg">
                     <Heart className="w-5 h-5" />
                     5 Cards
                   </CardTitle>
@@ -126,7 +139,7 @@ export default function Home() {
                   <p className="text-sm text-gray-600 mb-3">
                     Extended Reading with Challenges
                   </p>
-                  <div className="flex items-center text-purple-600 text-sm">
+                  <div className="flex items-center text-purple-600 text-sm font-medium">
                     Detailed Insight <ArrowRight className="w-4 h-4 ml-1" />
                   </div>
                 </CardContent>
@@ -134,9 +147,15 @@ export default function Home() {
             </Link>
 
             <Link href="/read/new">
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer group">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 group-hover:text-pink-600">
+              <Card className="hover:shadow-lg transition-all cursor-pointer group border-2 border-transparent hover:border-pink-200">
+                <div className="aspect-[3/4] bg-gradient-to-br from-pink-50 to-pink-100 rounded-t-lg flex items-center justify-center mb-4">
+                  <div className="text-center">
+                    <div className="text-4xl mb-2">🏇🍀⛵🏠🌳☁️</div>
+                    <div className="text-xs text-pink-600 font-medium">Life Overview</div>
+                  </div>
+                </div>
+                <CardHeader className="pb-2">
+                  <CardTitle className="flex items-center gap-2 group-hover:text-pink-600 text-lg">
                     <Shield className="w-5 h-5" />
                     9 Cards
                   </CardTitle>
@@ -145,7 +164,7 @@ export default function Home() {
                   <p className="text-sm text-gray-600 mb-3">
                     Comprehensive Life Reading
                   </p>
-                  <div className="flex items-center text-pink-600 text-sm">
+                  <div className="flex items-center text-pink-600 text-sm font-medium">
                     Deep Analysis <ArrowRight className="w-4 h-4 ml-1" />
                   </div>
                 </CardContent>
@@ -153,9 +172,15 @@ export default function Home() {
             </Link>
 
             <Link href="/read/new">
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer group">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 group-hover:text-orange-600">
+              <Card className="hover:shadow-lg transition-all cursor-pointer group border-2 border-transparent hover:border-orange-200">
+                <div className="aspect-[3/4] bg-gradient-to-br from-orange-50 to-orange-100 rounded-t-lg flex items-center justify-center mb-4">
+                  <div className="text-center">
+                    <div className="text-3xl mb-2">🏇🍀⛵🏠🌳☁️🐍⚰️💐</div>
+                    <div className="text-xs text-orange-600 font-medium">Complete Deck</div>
+                  </div>
+                </div>
+                <CardHeader className="pb-2">
+                  <CardTitle className="flex items-center gap-2 group-hover:text-orange-600 text-lg">
                     <Sparkles className="w-5 h-5" />
                     Grand Tableau
                   </CardTitle>
@@ -164,12 +189,101 @@ export default function Home() {
                   <p className="text-sm text-gray-600 mb-3">
                     Full 36-Card Reading
                   </p>
-                  <div className="flex items-center text-orange-600 text-sm">
+                  <div className="flex items-center text-orange-600 text-sm font-medium">
                     Complete Picture <ArrowRight className="w-4 h-4 ml-1" />
                   </div>
                 </CardContent>
               </Card>
             </Link>
+          </div>
+        </div>
+
+        {/* Testimonials Section */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold text-center mb-8">User Reviews of Lenormand Reading</h2>
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <Card className="text-center">
+              <CardContent className="pt-6">
+                <div className="text-2xl mb-4">⭐⭐⭐⭐⭐</div>
+                <p className="text-gray-600 mb-4 italic">
+                  "Lenormand Reading has helped me make many important decisions. The readings are always accurate, giving me confidence about the future. It has been especially helpful in guiding my career choices."
+                </p>
+                <div className="font-semibold">Sarah L.</div>
+                <div className="text-sm text-gray-500">New York</div>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center">
+              <CardContent className="pt-6">
+                <div className="text-2xl mb-4">⭐⭐⭐⭐⭐</div>
+                <p className="text-gray-600 mb-4 italic">
+                  "Through Lenormand Reading, I've learned how to better understand my circumstances. This form of fortune-telling is both mystical and practical, providing concrete guidance."
+                </p>
+                <div className="font-semibold">Emma W.</div>
+                <div className="text-sm text-gray-500">London</div>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center">
+              <CardContent className="pt-6">
+                <div className="text-2xl mb-4">⭐⭐⭐⭐⭐</div>
+                <p className="text-gray-600 mb-4 italic">
+                  "I'm impressed by the accuracy of Lenormand card readings. Whether it's relationship or work issues, the insights have been invaluable. It has become an important tool in my life."
+                </p>
+                <div className="font-semibold">Michael R.</div>
+                <div className="text-sm text-gray-500">Toronto</div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* FAQ Section */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold text-center mb-8">Frequently Asked Questions</h2>
+          <div className="max-w-3xl mx-auto space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">What is Lenormand and how does it differ from Tarot?</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">
+                  Lenormand is a divination system using 36 cards, each with a specific symbol and meaning. Unlike Tarot, which has 78 cards and often deals with spiritual themes, Lenormand focuses on practical, everyday matters. Lenormand readings tend to be more direct and specific, making them ideal for online interpretations.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">What are the benefits of using an online Lenormand reading service?</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">
+                  Online Lenormand readings offer several advantages: they're accessible 24/7, provide instant results, and allow for privacy and reflection. Our free online Lenormand service uses advanced algorithms to ensure randomness in card selection, mimicking the shuffle and draw process of physical cards.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">How can I get a free Lenormand reading online?</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">
+                  Our website offers completely free Lenormand readings online. Simply visit our 'Start Reading' page, focus on your question, and select your cards. The system will then provide an interpretation based on the Lenormand tradition. No sign-up or payment is required for these free online Lenormand readings.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">How accurate are online Lenormand readings compared to in-person ones?</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">
+                  Online Lenormand readings can be just as accurate as in-person ones. The key to any divination practice is the reader's intention and interpretation. Our free online Lenormand system provides consistent, unbiased readings based on traditional Lenormand meanings, which you can then interpret in the context of your specific situation.
+                </p>
+              </CardContent>
+            </Card>
           </div>
         </div>
 

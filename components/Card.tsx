@@ -24,6 +24,57 @@ export function Card({
 }: CardProps) {
   const [showModal, setShowModal] = useState(false)
 
+  const getCardSymbol = (cardName: string): string => {
+    const symbols: Record<string, string> = {
+      'Rider': '🏇',
+      'Clover': '🍀',
+      'Ship': '⛵',
+      'House': '🏠',
+      'Tree': '🌳',
+      'Clouds': '☁️',
+      'Snake': '🐍',
+      'Coffin': '⚰️',
+      'Bouquet': '💐',
+      'Scythe': '🔪',
+      'Whip': '🪢',
+      'Birds': '🐦',
+      'Child': '👶',
+      'Fox': '🦊',
+      'Bear': '🐻',
+      'Stars': '⭐',
+      'Stork': '🦢',
+      'Dog': '🐕',
+      'Tower': '🏰',
+      'Garden': '🌺',
+      'Mountain': '⛰️',
+      'Paths': '🛤️',
+      'Mice': '🐭',
+      'Heart': '❤️',
+      'Ring': '💍',
+      'Book': '📖',
+      'Letter': '📧',
+      'Gentleman': '👨',
+      'Lady': '👩',
+      'Lilies': '🌺',
+      'Sun': '☀️',
+      'Moon': '🌙',
+      'Key': '🔑',
+      'Fish': '🐟',
+      'Anchor': '⚓',
+      'Cross': '✝️'
+    }
+    return symbols[cardName] || '✦'
+  }
+
+  const getCardColor = (cardId: number): string => {
+    const colors = [
+      'from-blue-400 to-blue-600', 'from-green-400 to-green-600', 'from-teal-400 to-teal-600',
+      'from-purple-400 to-purple-600', 'from-pink-400 to-pink-600', 'from-red-400 to-red-600',
+      'from-orange-400 to-orange-600', 'from-yellow-400 to-yellow-600', 'from-indigo-400 to-indigo-600'
+    ]
+    return colors[cardId % colors.length]
+  }
+
   const handleCardClick = () => {
     if (onClick) {
       onClick()
@@ -42,15 +93,15 @@ export function Card({
     return (
       <div
         className={cn(
-          'relative bg-gradient-to-br from-indigo-600 to-purple-700 rounded-lg shadow-lg cursor-pointer transform transition-all duration-200 hover:scale-105 flex items-center justify-center',
+          'relative bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg shadow-lg cursor-pointer transform transition-all duration-200 hover:scale-105 flex items-center justify-center border border-slate-700',
           sizeClasses[size],
           className
         )}
         onClick={handleCardClick}
       >
-        <div className="text-white font-bold text-center">
-          <div className="text-2xl mb-1">✦</div>
-          <div>Lenormand</div>
+        <div className="text-white text-center">
+          <div className="text-3xl mb-1 opacity-80">✦</div>
+          <div className="text-xs font-semibold tracking-wider opacity-90">LENORMAND</div>
         </div>
       </div>
     )
@@ -60,26 +111,26 @@ export function Card({
     <>
       <div
         className={cn(
-          'relative bg-white border-2 border-gray-300 rounded-lg shadow-lg cursor-pointer transform transition-all duration-200 hover:scale-105 hover:shadow-xl',
+          `relative bg-gradient-to-br ${getCardColor(card.id)} border-2 border-white rounded-lg shadow-lg cursor-pointer transform transition-all duration-200 hover:scale-105 hover:shadow-xl text-white`,
           sizeClasses[size],
           reversed && 'rotate-180',
           className
         )}
         onClick={handleCardClick}
       >
-        <div className="absolute top-1 left-1 font-bold text-gray-700">
+        <div className="absolute top-1 left-1 font-bold text-white/90 text-xs">
           {card.id}
         </div>
         <div className="flex flex-col items-center justify-center h-full p-2">
-          <div className="text-lg font-bold text-center mb-1">
-            {card.name}
+          <div className="text-2xl mb-1">
+            {getCardSymbol(card.name)}
           </div>
-          <div className="text-xs text-gray-600 text-center">
-            {card.keywords.slice(0, 2).join(', ')}
+          <div className="text-xs font-bold text-center text-white/95 leading-tight">
+            {card.name}
           </div>
         </div>
         {reversed && (
-          <div className="absolute bottom-1 right-1 text-xs text-red-500 font-bold">
+          <div className="absolute bottom-1 right-1 text-xs text-white font-bold bg-red-500 rounded-full w-4 h-4 flex items-center justify-center">
             R
           </div>
         )}
