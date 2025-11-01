@@ -137,9 +137,10 @@ export default function NewReadingPage() {
                   }}
                   placeholder="What guidance do the cards have for me today?"
                   className="bg-slate-900 border-slate-700 text-white placeholder:text-slate-400 min-h-[100px]"
+                  maxLength={200}
                 />
                 <div className="text-right text-xs text-slate-400">
-                  {questionCharCount} characters
+                  {questionCharCount}/200
                 </div>
               </div>
 
