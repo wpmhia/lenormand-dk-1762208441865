@@ -111,26 +111,51 @@ export function Card({
     <>
       <div
         className={cn(
-          `relative bg-gradient-to-br ${getCardColor(card.id)} border-2 border-white rounded-lg shadow-lg cursor-pointer transform transition-all duration-200 hover:scale-105 hover:shadow-xl text-white`,
+          'relative bg-white border-2 border-gray-300 rounded-lg shadow-lg cursor-pointer transform transition-all duration-200 hover:scale-105 hover:shadow-xl overflow-hidden',
           sizeClasses[size],
           reversed && 'rotate-180',
           className
         )}
         onClick={handleCardClick}
       >
-        <div className="absolute top-1 left-1 font-bold text-white/90 text-xs">
-          {card.id}
-        </div>
-        <div className="flex flex-col items-center justify-center h-full p-2">
-          <div className="text-2xl mb-1">
-            {getCardSymbol(card.name)}
+        {/* Card Image */}
+        <div className="relative w-full h-full">
+          <img
+            src={card.imageUrl || ''}
+            alt={card.name}
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              // Fallback to colored background if image fails to load
+              const target = e.target as HTMLImageElement;
+              target.style.display = 'none';
+              const parent = target.parentElement;
+              if (parent && !parent.querySelector('.fallback-content')) {
+                const fallback = document.createElement('div');
+                fallback.className = 'fallback-content absolute inset-0 bg-gradient-to-br from-indigo-400 to-indigo-600 flex flex-col items-center justify-center text-white p-2';
+                fallback.innerHTML = `
+                  <div class="text-2xl mb-1">${getCardSymbol(card.name)}</div>
+                  <div class="text-xs font-bold text-center text-white/95 leading-tight">${card.name}</div>
+                `;
+                parent.appendChild(fallback);
+              }
+            }}
+          />
+          
+          {/* Card Number Overlay */}
+          <div className="absolute top-1 left-1 bg-white/90 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold text-gray-800 border border-gray-300">
+            {card.id}
           </div>
-          <div className="text-xs font-bold text-center text-white/95 leading-tight">
-            {card.name}
+          
+          {/* Card Name Overlay */}
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-1">
+            <div className="text-xs font-bold text-white text-center truncate">
+              {card.name}
+            </div>
           </div>
         </div>
+        
         {reversed && (
-          <div className="absolute bottom-1 right-1 text-xs text-white font-bold bg-red-500 rounded-full w-4 h-4 flex items-center justify-center">
+          <div className="absolute top-1 right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center border-2 border-white">
             R
           </div>
         )}

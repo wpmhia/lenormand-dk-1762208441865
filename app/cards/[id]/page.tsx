@@ -119,9 +119,29 @@ export default function CardDetailPage({ params }: PageProps) {
       {/* Card Header */}
       <div className="text-center mb-8">
         <div className="inline-block mb-4">
-          <div className="w-32 h-44 bg-white border-2 border-gray-300 rounded-lg shadow-lg flex flex-col items-center justify-center p-2">
-            <div className="text-2xl font-bold mb-2">{card.id}</div>
-            <div className="text-lg font-bold text-center">{card.name}</div>
+          <div className="w-48 h-64 bg-white border-2 border-gray-300 rounded-lg shadow-lg overflow-hidden relative">
+            <img
+              src={card.imageUrl || ''}
+              alt={card.name}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.style.display = 'none';
+                const parent = target.parentElement;
+                if (parent && !parent.querySelector('.fallback-content')) {
+                  const fallback = document.createElement('div');
+                  fallback.className = 'fallback-content absolute inset-0 bg-gradient-to-br from-indigo-400 to-indigo-600 flex flex-col items-center justify-center text-white p-4';
+                  fallback.innerHTML = `
+                    <div class="text-3xl font-bold mb-2">${card.id}</div>
+                    <div class="text-xl font-bold text-center">${card.name}</div>
+                  `;
+                  parent.appendChild(fallback);
+                }
+              }}
+            />
+            <div className="absolute top-2 left-2 bg-white/90 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold text-gray-800 border border-gray-300">
+              {card.id}
+            </div>
           </div>
         </div>
         <h1 className="text-4xl font-bold mb-2">{card.name}</h1>

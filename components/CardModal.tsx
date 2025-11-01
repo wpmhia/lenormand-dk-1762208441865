@@ -38,6 +38,36 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
         </DialogHeader>
 
         <div className="space-y-6">
+          {/* Card Image */}
+          <div className="flex justify-center">
+            <div className="relative w-48 h-64 bg-white border-2 border-gray-300 rounded-lg shadow-lg overflow-hidden">
+              <img
+                src={card.imageUrl || ''}
+                alt={card.name}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                  const parent = target.parentElement;
+                  if (parent && !parent.querySelector('.fallback-content')) {
+                    const fallback = document.createElement('div');
+                    fallback.className = 'fallback-content absolute inset-0 bg-gradient-to-br from-indigo-400 to-indigo-600 flex flex-col items-center justify-center text-white p-4';
+                    fallback.innerHTML = `
+                      <div class="text-4xl mb-2">✦</div>
+                      <div class="text-lg font-bold text-center">${card.name}</div>
+                    `;
+                    parent.appendChild(fallback);
+                  }
+                }}
+              />
+              {reversed && (
+                <div className="absolute top-2 right-2 bg-red-500 text-white text-sm font-bold rounded-full w-6 h-6 flex items-center justify-center border-2 border-white">
+                  R
+                </div>
+              )}
+            </div>
+          </div>
+
           {/* Keywords */}
           <div>
             <h3 className="font-semibold mb-2">Keywords</h3>
