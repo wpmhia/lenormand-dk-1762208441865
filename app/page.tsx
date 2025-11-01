@@ -15,20 +15,20 @@ import {
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900">
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-16 max-w-6xl">
         <div className="text-center mb-16">
-          <Badge className="mb-4" variant="secondary">
+          <Badge className="mb-4 bg-purple-600/20 text-purple-200 border-purple-500/30" variant="secondary">
             <Sparkles className="w-3 h-3 mr-1" />
-            Danish & English Lenormand Readings
+            Danish & English Mystical Readings
           </Badge>
-          <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-6xl font-bold mb-6 bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent mystical-glow">
             Lenormand.dk
           </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-purple-200 mb-8 max-w-2xl mx-auto leading-relaxed">
             Discover guidance and insight through the mystical Lenormand cards. 
-            Create personalized readings, explore card meanings, and unlock the wisdom of the 36-card deck.
+            Create personalized readings, explore card meanings, and unlock the ancient wisdom of the 36-card deck.
           </p>
           <div className="flex gap-4 justify-center">
             <Link href="/read/new">
@@ -288,16 +288,17 @@ export default function Home() {
         </div>
 
         {/* CTA Section */}
-        <div className="text-center bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-12 text-white">
-          <h2 className="text-3xl font-bold mb-4">
+        <div className="text-center card-mystical rounded-2xl p-12 mystical-glow border border-purple-500/30">
+          <h2 className="text-3xl font-bold mb-4 text-purple-100">
             Ready to Discover What the Cards Hold?
           </h2>
-          <p className="text-xl mb-8 opacity-90">
-            Join thousands who find guidance through Lenormand readings
+          <p className="text-xl mb-8 text-purple-200 opacity-90">
+            Join thousands who find guidance through mystical Lenormand readings
           </p>
           <Link href="/read/new">
-            <Button size="lg" variant="secondary" className="px-8">
-              Begin Your Journey
+            <Button size="lg" className="px-8 bg-purple-600 hover:bg-purple-700 text-white border-purple-500 mystical-glow">
+              <Sparkles className="w-5 h-5 mr-2" />
+              Begin Your Mystical Journey
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
           </Link>
@@ -305,16 +306,16 @@ export default function Home() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t bg-gray-50 py-8">
-        <div className="container mx-auto px-4 text-center text-gray-600">
+      <footer className="border-t border-purple-500/30 bg-slate-900/80 py-8 backdrop-blur-sm">
+        <div className="container mx-auto px-4 text-center text-purple-300">
           <p className="mb-2">
-            © 2024 Lenormand.dk - Danish & English Lenormand Readings
+            © 2024 Lenormand.dk - Mystical Danish & English Lenormand Readings
           </p>
           <div className="flex gap-6 justify-center text-sm">
-            <Link href="/cards" className="hover:text-indigo-600">
+            <Link href="/cards" className="hover:text-purple-100 transition-colors">
               Card Meanings
             </Link>
-            <Link href="/read/new" className="hover:text-indigo-600">
+            <Link href="/read/new" className="hover:text-purple-100 transition-colors">
               New Reading
             </Link>
           </div>

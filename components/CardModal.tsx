@@ -17,7 +17,7 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto card-mystical border-purple-500/30 mystical-glow">
         <DialogHeader>
           <div className="flex items-center justify-between">
             <DialogTitle className="flex items-center gap-2">
@@ -40,28 +40,29 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
         <div className="space-y-6">
           {/* Card Image */}
           <div className="flex justify-center">
-            <div className="relative w-48 h-64 bg-white border-2 border-gray-300 rounded-lg shadow-lg overflow-hidden">
+            <div className="relative w-64 h-80 card-mystical rounded-xl shadow-2xl overflow-hidden mystical-glow border border-purple-500/30">
               <img
                 src={card.imageUrl || ''}
                 alt={card.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain bg-white/95"
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';
                   const parent = target.parentElement;
                   if (parent && !parent.querySelector('.fallback-content')) {
                     const fallback = document.createElement('div');
-                    fallback.className = 'fallback-content absolute inset-0 bg-gradient-to-br from-indigo-400 to-indigo-600 flex flex-col items-center justify-center text-white p-4';
+                    fallback.className = 'fallback-content absolute inset-0 bg-gradient-to-br from-purple-600/20 to-blue-600/20 backdrop-blur-sm flex flex-col items-center justify-center text-white p-6 border border-purple-500/30 rounded-xl';
                     fallback.innerHTML = `
-                      <div class="text-4xl mb-2">✦</div>
-                      <div class="text-lg font-bold text-center">${card.name}</div>
+                      <div class="text-5xl mb-3 mystical-glow">✦</div>
+                      <div class="text-xl font-bold text-center">${card.name}</div>
+                      <div class="text-sm text-purple-200 mt-2">#${card.id}</div>
                     `;
                     parent.appendChild(fallback);
                   }
                 }}
               />
               {reversed && (
-                <div className="absolute top-2 right-2 bg-red-500 text-white text-sm font-bold rounded-full w-6 h-6 flex items-center justify-center border-2 border-white">
+                <div className="absolute top-3 right-3 bg-red-500 text-white text-sm font-bold rounded-full w-8 h-8 flex items-center justify-center border-2 border-white shadow-lg mystical-glow">
                   R
                 </div>
               )}

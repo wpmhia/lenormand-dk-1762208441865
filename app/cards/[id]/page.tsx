@@ -103,7 +103,7 @@ export default function CardDetailPage({ params }: PageProps) {
               </Button>
             </Link>
           )}
-          <Badge variant="secondary">
+          <Badge className="bg-purple-600/20 text-purple-200 border-purple-500/30" variant="secondary">
             {card.id} / 36
           </Badge>
           {nextCard && (
@@ -119,33 +119,34 @@ export default function CardDetailPage({ params }: PageProps) {
       {/* Card Header */}
       <div className="text-center mb-8">
         <div className="inline-block mb-4">
-          <div className="w-48 h-64 bg-white border-2 border-gray-300 rounded-lg shadow-lg overflow-hidden relative">
+          <div className="w-64 h-80 card-mystical rounded-xl shadow-2xl overflow-hidden relative mystical-glow border border-purple-500/30">
             <img
               src={card.imageUrl || ''}
               alt={card.name}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain bg-white/95"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
                 target.style.display = 'none';
                 const parent = target.parentElement;
                 if (parent && !parent.querySelector('.fallback-content')) {
                   const fallback = document.createElement('div');
-                  fallback.className = 'fallback-content absolute inset-0 bg-gradient-to-br from-indigo-400 to-indigo-600 flex flex-col items-center justify-center text-white p-4';
+                  fallback.className = 'fallback-content absolute inset-0 bg-gradient-to-br from-purple-600/20 to-blue-600/20 backdrop-blur-sm flex flex-col items-center justify-center text-white p-6 border border-purple-500/30 rounded-xl';
                   fallback.innerHTML = `
-                    <div class="text-3xl font-bold mb-2">${card.id}</div>
-                    <div class="text-xl font-bold text-center">${card.name}</div>
+                    <div class="text-4xl font-bold mb-3 mystical-glow">${card.id}</div>
+                    <div class="text-2xl font-bold text-center">${card.name}</div>
+                    <div class="text-sm text-purple-200 mt-2">Lenormand Card</div>
                   `;
                   parent.appendChild(fallback);
                 }
               }}
             />
-            <div className="absolute top-2 left-2 bg-white/90 rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold text-gray-800 border border-gray-300">
+            <div className="absolute top-3 left-3 bg-purple-600/80 backdrop-blur-sm rounded-full w-10 h-10 flex items-center justify-center text-sm font-bold text-white border border-purple-400/50 shadow-lg">
               {card.id}
             </div>
           </div>
         </div>
-        <h1 className="text-4xl font-bold mb-2">{card.name}</h1>
-        <p className="text-gray-600">Lenormand Card #{card.id}</p>
+        <h1 className="text-5xl font-bold mb-2 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mystical-glow">{card.name}</h1>
+        <p className="text-purple-300 text-lg">Lenormand Card #{card.id}</p>
       </div>
 
       <div className="grid md:grid-cols-3 gap-8">
