@@ -15,47 +15,143 @@
     "combos": [
       {
         "withCardId": 2,
-        "meaning": "Good news or fortunate message arriving soon, lucky communication or delivery"
+        "meaning": "Winning $5 in the lottery"
       },
       {
         "withCardId": 3,
-        "meaning": "News about travel or a journey, announcement of a trip or movement"
+        "meaning": "A friend from overseas is coming to visit"
       },
       {
         "withCardId": 4,
-        "meaning": "Family news or message about home, communication from relatives"
+        "meaning": "Buying a house, the deal going through"
       },
       {
         "withCardId": 5,
-        "meaning": "Health-related news or message, communication about well-being"
+        "meaning": "The bonsai tree your friend promised to give you is on its way"
       },
       {
         "withCardId": 6,
-        "meaning": "Uncertain or confusing news, unclear message that needs clarification"
+        "meaning": "A work reorganization leaves you confused"
       },
       {
         "withCardId": 7,
-        "meaning": "Warning about deceit or betrayal, news of someone untrustworthy"
+        "meaning": "Your lover may be acting unfaithful"
       },
       {
         "withCardId": 8,
-        "meaning": "Serious or grave news, important message about a difficult situation"
+        "meaning": "The new project at work will die on the vine"
       },
       {
         "withCardId": 9,
-        "meaning": "Positive or happy news, joyful message or good communication"
+        "meaning": "An admirer has ordered flowers for you"
       },
       {
         "withCardId": 10,
-        "meaning": "Sudden news or change, unexpected message or development"
+        "meaning": "Yes, you'll need that surgical procedure"
+      },
+      {
+        "withCardId": 11,
+        "meaning": "You are athletic and work out constantly"
+      },
+      {
+        "withCardId": 12,
+        "meaning": "Your casual romantic interest will blossom into a relationship (being a couple)"
+      },
+      {
+        "withCardId": 13,
+        "meaning": "She's pregnant"
+      },
+      {
+        "withCardId": 14,
+        "meaning": "That problem you've been stuck on?"
+      },
+      {
+        "withCardId": 15,
+        "meaning": "A new boss"
+      },
+      {
+        "withCardId": 16,
+        "meaning": "Buying a new internet router"
+      },
+      {
+        "withCardId": 17,
+        "meaning": "An upcoming promotion"
+      },
+      {
+        "withCardId": 18,
+        "meaning": "A new best friend"
+      },
+      {
+        "withCardId": 19,
+        "meaning": "A period of isolation"
+      },
+      {
+        "withCardId": 20,
+        "meaning": "A lover who is a 'player'"
+      },
+      {
+        "withCardId": 21,
+        "meaning": "An upcoming trip to climb Kilimanjaro"
+      },
+      {
+        "withCardId": 22,
+        "meaning": "You're undecided about a job offer"
+      },
+      {
+        "withCardId": 23,
+        "meaning": "News about a robbery"
+      },
+      {
+        "withCardId": 24,
+        "meaning": "A new romance"
+      },
+      {
+        "withCardId": 25,
+        "meaning": "Engagement or wedding news"
+      },
+      {
+        "withCardId": 26,
+        "meaning": "Learning something new"
+      },
+      {
+        "withCardId": 27,
+        "meaning": "That emergency room visit bill is on the way"
       },
       {
         "withCardId": 28,
-        "meaning": "Message from a man, male visitor or communication from a gentleman"
+        "meaning": "A masculine lover"
       },
       {
         "withCardId": 29,
-        "meaning": "Message from a woman, female visitor or communication from a lady"
+        "meaning": "A feminine lover"
+      },
+      {
+        "withCardId": 30,
+        "meaning": "A new elder care center"
+      },
+      {
+        "withCardId": 31,
+        "meaning": "A news story exposing corruption"
+      },
+      {
+        "withCardId": 32,
+        "meaning": "A new romance"
+      },
+      {
+        "withCardId": 33,
+        "meaning": "Finding lost keys"
+      },
+      {
+        "withCardId": 34,
+        "meaning": "The gnome collection your friend gives you is enormous"
+      },
+      {
+        "withCardId": 35,
+        "meaning": "You read a news story that changes you forever"
+      },
+      {
+        "withCardId": 36,
+        "meaning": "The in-law you can't stand is coming to live with you"
       }
     ],
     "imageUrl": "/images/cards/01-rider.png"
