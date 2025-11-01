@@ -88,7 +88,7 @@ export function ReadingViewer({
     if (reading.layoutType === 36) {
       // Grand Tableau - 9x4 grid
       return (
-        <div className="grid grid-cols-4 gap-2 max-w-4xl mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 max-w-4xl mx-auto">
           {reading.cards.map((readingCard, index) => {
             const card = getCardById(allCards, readingCard.id)
             if (!card) return null
@@ -114,8 +114,10 @@ export function ReadingViewer({
     } else {
       // Linear layouts (3, 5, 9 cards)
       return (
-        <div className={`flex flex-wrap justify-center gap-4 ${
-          reading.layoutType === 9 ? 'max-w-6xl' : 'max-w-2xl'
+        <div className={`grid gap-4 mx-auto ${
+          reading.layoutType === 3 ? 'grid-cols-1 sm:grid-cols-3 max-w-4xl' :
+          reading.layoutType === 5 ? 'grid-cols-1 sm:grid-cols-3 md:grid-cols-5 max-w-6xl' :
+          'grid-cols-1 sm:grid-cols-3 max-w-6xl'
         }`}>
           {reading.cards.map((readingCard, index) => {
             const card = getCardById(allCards, readingCard.id)
