@@ -31,6 +31,7 @@ export default function NewReadingPage() {
   const [layoutType, setLayoutType] = useState<3 | 5 | 9 | 36>(3)
 
   const [question, setQuestion] = useState('')
+  const [questionCharCount, setQuestionCharCount] = useState(0)
   const [allowReversed, setAllowReversed] = useState(false)
   const [isPublic, setIsPublic] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
@@ -99,6 +100,7 @@ export default function NewReadingPage() {
     setSavedReading(null)
     setStep('setup')
     setQuestion('')
+    setQuestionCharCount(0)
   }
 
   const handleViewReading = () => {
@@ -129,10 +131,16 @@ export default function NewReadingPage() {
                 <Textarea
                   id="question"
                   value={question}
-                  onChange={(e) => setQuestion(e.target.value)}
+                  onChange={(e) => {
+                    setQuestion(e.target.value)
+                    setQuestionCharCount(e.target.value.length)
+                  }}
                   placeholder="What guidance do the cards have for me today?"
                   className="bg-slate-900 border-slate-700 text-white placeholder:text-slate-400 min-h-[100px]"
                 />
+                <div className="text-right text-xs text-slate-400">
+                  {questionCharCount} characters
+                </div>
               </div>
 
               <Button
