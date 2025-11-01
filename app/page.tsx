@@ -2,11 +2,10 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { 
-  Sparkles, 
-  BookOpen, 
-  Users, 
-  Share2, 
+import {
+  Sparkles,
+  Users,
+  Share2,
   ArrowRight,
   Star,
   Heart,
@@ -44,7 +43,7 @@ export default function Home() {
         </div>
 
         {/* Features Grid */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        <div className="grid md:grid-cols-2 gap-6 mb-12">
           <Card className="text-center border-slate-800 bg-slate-900/50 shadow-sm hover:shadow-md transition-shadow">
             <CardHeader className="pb-4">
               <div className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center mx-auto mb-3">
@@ -69,20 +68,6 @@ export default function Home() {
             <CardContent>
               <p className="text-slate-300 text-sm">
                 Secure cloud storage with instant sharing capabilities and reading history.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="text-center border-slate-800 bg-slate-900/50 shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader className="pb-4">
-              <div className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center mx-auto mb-3">
-                <BookOpen className="w-5 h-5 text-blue-400" />
-              </div>
-              <CardTitle className="text-white">Knowledge Base</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-slate-300 text-sm">
-                Comprehensive database of card meanings, historical context, and interpretive guidance.
               </p>
             </CardContent>
           </Card>
@@ -296,9 +281,6 @@ export default function Home() {
             © 2024 Lenormand Intelligence - AI-Powered Lenormand Analysis
           </p>
           <div className="flex gap-6 justify-center text-xs">
-            <Link href="/cards" className="hover:text-slate-200 transition-colors">
-              Knowledge Base
-            </Link>
             <Link href="/read/new" className="hover:text-slate-200 transition-colors">
               New Analysis
             </Link>

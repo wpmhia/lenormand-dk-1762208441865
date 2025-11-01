@@ -86,7 +86,6 @@ export default function CardsPage() {
     <div className="min-h-screen bg-slate-950">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="mb-8">
-          <div className="mb-4 bg-slate-800 text-slate-200 border border-slate-700 px-4 py-2 text-sm font-medium inline-block rounded">Knowledge Base</div>
           <h1 className="text-3xl font-bold mb-2 text-white">Lenormand Intelligence</h1>
           <p className="text-slate-300">
             Explore the 36 cards of the Lenormand deck with AI-powered analysis and traditional meanings
