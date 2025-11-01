@@ -5,7 +5,6 @@ import { Badge } from '@/components/ui/badge'
 import {
   Sparkles,
   Users,
-  Share2,
   ArrowRight,
   Star,
   Heart,
@@ -42,36 +41,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Features Grid */}
-        <div className="grid md:grid-cols-2 gap-6 mb-12">
-          <Card className="text-center border-slate-800 bg-slate-900/50 shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader className="pb-4">
-              <div className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center mx-auto mb-3">
-                <Sparkles className="w-5 h-5 text-blue-400" />
-              </div>
-              <CardTitle className="text-white">AI Analysis</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-slate-300 text-sm">
-                Machine learning algorithms analyze card combinations for deeper insights and patterns.
-              </p>
-            </CardContent>
-          </Card>
 
-          <Card className="text-center border-slate-800 bg-slate-900/50 shadow-sm hover:shadow-md transition-shadow">
-            <CardHeader className="pb-4">
-              <div className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center mx-auto mb-3">
-                <Share2 className="w-5 h-5 text-blue-400" />
-              </div>
-              <CardTitle className="text-white">Cloud Sync</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-slate-300 text-sm">
-                Secure cloud storage with instant sharing capabilities and reading history.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
 
         {/* Reading Types */}
         <div className="mb-12">
