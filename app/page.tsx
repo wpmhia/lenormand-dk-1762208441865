@@ -264,7 +264,7 @@ export default function Home() {
         </div>
 
         {/* CTA Section */}
-        <div className="text-center card-mystical rounded-2xl p-12 mystical-glow border border-purple-500/30">
+        <div className="text-center card-mystical rounded-2xl p-6 mystical-glow border border-purple-500/30">
           <h2 className="text-3xl font-bold mb-4 text-purple-100">
             Ready to Discover What the Cards Hold?
           </h2>
