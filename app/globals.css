@@ -82,6 +82,12 @@
     aspect-ratio: 2.5/3.5;
   }
   
+  /* Ensure cards don't get cut off */
+  .card-mystical img {
+    object-fit: cover;
+    object-position: center;
+  }
+  
   .card-mystical {
     background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(168, 85, 247, 0.1));
     backdrop-filter: blur(10px);

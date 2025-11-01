@@ -119,7 +119,7 @@ export default function CardDetailPage({ params }: PageProps) {
       {/* Card Header */}
       <div className="text-center mb-8">
         <div className="inline-block mb-4">
-          <div className="w-64 h-80 card-mystical rounded-xl shadow-2xl overflow-hidden relative mystical-glow border border-purple-500/30">
+          <div className="w-48 h-72 card-mystical rounded-xl shadow-2xl overflow-hidden relative mystical-glow border border-purple-500/30">
             <img
               src={card.imageUrl || ''}
               alt={card.name}

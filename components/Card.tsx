@@ -84,9 +84,9 @@ export function Card({
   }
 
   const sizeClasses = {
-    sm: 'w-20 h-28 text-xs',
-    md: 'w-32 h-44 text-sm',
-    lg: 'w-40 h-56 text-base'
+    sm: 'w-16 h-24 text-xs',
+    md: 'w-24 h-36 text-sm',
+    lg: 'w-32 h-48 text-base'
   }
 
   if (showBack) {
@@ -125,7 +125,7 @@ export function Card({
           <img
             src={card.imageUrl || ''}
             alt={card.name}
-            className="w-full h-full object-contain bg-white/95"
+            className="w-full h-full object-cover bg-white/95"
             onError={(e) => {
               // Fallback to mystical background if image fails to load
               const target = e.target as HTMLImageElement;
