@@ -85,18 +85,6 @@ export function Card({
             alt={card.name}
             className="w-full h-full object-contain"
           />
-          
-          {/* Mystical Card Number */}
-          <div className="absolute top-2 left-2 bg-purple-600/80 backdrop-blur-sm rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold text-white border border-purple-400/50 shadow-lg">
-            {card.id}
-          </div>
-          
-          {/* Card Name Banner */}
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/60 to-transparent p-2 backdrop-blur-sm">
-            <div className="text-sm font-bold text-white text-center tracking-wide">
-              {card.name}
-            </div>
-          </div>
         </div>
         
         {/* Reversed Indicator */}

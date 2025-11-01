@@ -125,9 +125,6 @@ export default function CardDetailPage({ params }: PageProps) {
               alt={card.name}
               className="w-full h-full object-contain bg-white"
             />
-            <div className="absolute top-3 left-3 bg-purple-600/80 backdrop-blur-sm rounded-full w-10 h-10 flex items-center justify-center text-sm font-bold text-white border border-purple-400/50 shadow-lg">
-              {card.id}
-            </div>
           </div>
         </div>
         <h1 className="text-5xl font-bold mb-2 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent mystical-glow">{card.name}</h1>
