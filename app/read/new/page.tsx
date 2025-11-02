@@ -37,7 +37,7 @@ export default function NewReadingPage() {
   const [isSaving, setIsSaving] = useState(false)
   const [savedReading, setSavedReading] = useState<Reading | null>(null)
   const [error, setError] = useState('')
-  const [step, setStep] = useState<'setup' | 'drawing' | 'review'>('setup')
+  const [step, setStep] = useState<'setup' | 'drawing' | 'review' | 'saved'>('setup')
 
   useEffect(() => {
     fetchCards()
@@ -86,7 +86,8 @@ export default function NewReadingPage() {
       }
 
       saveReading(reading)
-      setSavedReading(reading)
+       setSavedReading(reading)
+       setStep('saved')
     } catch (error) {
       console.error('Error saving reading:', error)
       setError('Failed to save reading')
@@ -101,6 +102,10 @@ export default function NewReadingPage() {
     setStep('setup')
     setQuestion('')
     setQuestionCharCount(0)
+    setLayoutType(3)
+    setAllowReversed(false)
+    setIsPublic(false)
+    setError('')
   }
 
   const handleViewReading = () => {
@@ -142,9 +147,45 @@ export default function NewReadingPage() {
                 <div className="text-right text-xs text-slate-400">
                   {questionCharCount}/200
                 </div>
-              </div>
+               </div>
 
-              <Button
+               <div className="space-y-4">
+                 <div className="space-y-2">
+                   <Label htmlFor="layout">Reading Type:</Label>
+                   <Select value={layoutType.toString()} onValueChange={(value) => setLayoutType(parseInt(value) as 3 | 5 | 9 | 36)}>
+                     <SelectTrigger className="bg-slate-900 border-slate-700 text-white">
+                       <SelectValue />
+                     </SelectTrigger>
+                     <SelectContent>
+                       {LAYOUTS.map((layout) => (
+                         <SelectItem key={layout.value} value={layout.value.toString()}>
+                           {layout.label}
+                         </SelectItem>
+                       ))}
+                     </SelectContent>
+                   </Select>
+                 </div>
+
+                 <div className="flex items-center justify-between">
+                   <Label htmlFor="allow-reversed">Allow reversed cards</Label>
+                   <Switch
+                     id="allow-reversed"
+                     checked={allowReversed}
+                     onCheckedChange={setAllowReversed}
+                   />
+                 </div>
+
+                 <div className="flex items-center justify-between">
+                   <Label htmlFor="is-public">Make reading shareable</Label>
+                   <Switch
+                     id="is-public"
+                     checked={isPublic}
+                     onCheckedChange={setIsPublic}
+                   />
+                 </div>
+               </div>
+
+               <Button
                 onClick={() => setStep('drawing')}
                 className="w-full bg-blue-600 hover:bg-blue-700"
                 disabled={!question.trim()}
@@ -179,24 +220,91 @@ export default function NewReadingPage() {
               <h2 className="text-2xl font-semibold mb-2 text-white">Review Your Reading</h2>
             </div>
 
-            <ReadingViewer
-              reading={{
-                id: 'temp',
-                title: question,
-                question,
-                layoutType,
-                cards: drawnCards,
-                slug: 'temp',
-                isPublic,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-              }}
-              allCards={allCards}
-              showShareButton={false}
-            />
-          </div>
-        )}
-      </div>
+             <ReadingViewer
+               reading={{
+                 id: 'temp',
+                 title: question,
+                 question,
+                 layoutType,
+                 cards: drawnCards,
+                 slug: 'temp',
+                 isPublic,
+                 createdAt: new Date(),
+                 updatedAt: new Date(),
+               }}
+               allCards={allCards}
+               showShareButton={false}
+             />
+
+             <div className="flex gap-4 justify-center">
+               <Button
+                 onClick={() => setStep('drawing')}
+                 variant="outline"
+                 className="border-slate-700 text-slate-300 hover:bg-slate-800"
+               >
+                 Draw Again
+               </Button>
+               <Button
+                 onClick={handleSave}
+                 disabled={isSaving}
+                 className="bg-blue-600 hover:bg-blue-700"
+               >
+                 {isSaving ? (
+                   <>
+                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                     Saving...
+                   </>
+                 ) : (
+                   <>
+                     <Save className="w-4 h-4 mr-2" />
+                     Save Reading
+                   </>
+                 )}
+               </Button>
+             </div>
+           </div>
+         )}
+
+         {step === 'saved' && savedReading && (
+           <div className="space-y-6">
+             <div className="text-center">
+               <h2 className="text-2xl font-semibold mb-2 text-white">Reading Saved!</h2>
+               <p className="text-slate-300">
+                 Your Lenormand reading has been saved successfully.
+               </p>
+             </div>
+
+             <Card className="border-slate-700 bg-slate-900/50">
+               <CardContent className="pt-6">
+                 <div className="text-center space-y-4">
+                   <div className="text-lg font-medium text-white">
+                     "{savedReading.title}"
+                   </div>
+                   <div className="text-slate-400">
+                     {savedReading.layoutType} cards • {savedReading.isPublic ? 'Shareable' : 'Private'}
+                   </div>
+                   <div className="flex gap-4 justify-center">
+                     <Button
+                       onClick={handleViewReading}
+                       className="bg-blue-600 hover:bg-blue-700"
+                     >
+                       <Eye className="w-4 h-4 mr-2" />
+                       View Reading
+                     </Button>
+                     <Button
+                       onClick={handleStartOver}
+                       variant="outline"
+                       className="border-slate-700 text-slate-300 hover:bg-slate-800"
+                     >
+                       Create New Reading
+                     </Button>
+                   </div>
+                 </div>
+               </CardContent>
+             </Card>
+           </div>
+         )}
+       </div>
     </div>
   )
 }
