@@ -131,21 +131,16 @@ export function AIReadingDisplay({
               Let the cards reveal their wisdom...
             </div>
             <div className="space-y-3">
-              <div className="flex items-center gap-3">
-                <div className="h-4 bg-slate-700 rounded animate-pulse flex-1" />
-                <span className="text-xs text-slate-400">Storyline</span>
+              <div className="space-y-2">
+                <div className="h-4 bg-slate-700 rounded animate-pulse w-full" />
+                <div className="h-4 bg-slate-700 rounded animate-pulse w-11/12" />
+                <div className="h-4 bg-slate-700 rounded animate-pulse w-10/12" />
+                <div className="h-4 bg-slate-700 rounded animate-pulse w-9/12" />
+                <div className="h-4 bg-slate-700 rounded animate-pulse w-8/12" />
+                <div className="h-4 bg-slate-700 rounded animate-pulse w-7/12" />
               </div>
-              <div className="flex items-center gap-3">
-                <div className="h-4 bg-slate-700 rounded animate-pulse w-3/4" />
-                <span className="text-xs text-slate-400">Risk Assessment</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="h-3 bg-slate-700 rounded animate-pulse w-1/2" />
-                <span className="text-xs text-slate-400">Timing</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="h-3 bg-slate-700 rounded animate-pulse w-1/3" />
-                <span className="text-xs text-slate-400">Action</span>
+              <div className="border-t border-amber-400/20 pt-3 mt-4">
+                <div className="h-4 bg-amber-400/20 rounded animate-pulse w-3/4 mx-auto" />
               </div>
             </div>
             <div className="text-xs text-slate-500 mt-4 text-center">
@@ -174,43 +169,25 @@ export function AIReadingDisplay({
     <Card className="border-slate-700 bg-slate-900/50 slide-in-up">
       <CardHeader>
         <CardTitle className="text-white flex items-center gap-2">
-          <Zap className="w-5 h-5 text-blue-400" />
-          AI-Powered Interpretation
+          <Zap className="w-5 h-5 text-amber-400/80" />
+          The Sibyl Speaks
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
-        {/* Storyline */}
-        <section aria-labelledby="storyline-heading">
-          <h3 id="storyline-heading" className="font-semibold text-white mb-2 text-lg">The Reading</h3>
-          <p className="text-slate-300 leading-relaxed">{aiReading.storyline}</p>
-        </section>
-
-        {/* Risk and Timing */}
-        <section aria-labelledby="insights-heading" className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="flex items-start gap-2">
-            <AlertTriangle className="w-4 h-4 text-amber-400 mt-0.5 flex-shrink-0" aria-hidden="true" />
-            <div>
-              <h4 className="text-xs font-medium text-amber-400 uppercase tracking-wide">Risk</h4>
-              <p className="text-sm text-slate-300">{aiReading.risk}</p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-2">
-            <Clock className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" aria-hidden="true" />
-            <div>
-              <h4 className="text-xs font-medium text-blue-400 uppercase tracking-wide">Timing</h4>
-              <p className="text-sm text-slate-300">{aiReading.timing}</p>
-            </div>
+      <CardContent className="space-y-6">
+        {/* Continuous Prose Reading */}
+        <section aria-labelledby="reading-heading">
+          <div className="text-slate-300 leading-relaxed text-base font-light italic">
+            {aiReading.storyline}
           </div>
         </section>
 
-        {/* Action */}
-        <section aria-labelledby="action-heading" className="border-t border-slate-700 pt-4">
-          <div className="flex items-center justify-between">
-            <h4 id="action-heading" className="text-sm font-medium text-slate-400">Recommended Action:</h4>
-            <Badge variant="secondary" className="bg-blue-600 text-white font-bold text-lg px-3 py-1" aria-label={`Recommended action: ${aiReading.action}`}>
-              {aiReading.action.toUpperCase()}
-            </Badge>
+        {/* Tender Action */}
+        <section aria-labelledby="action-heading" className="border-t border-amber-400/20 pt-4">
+          <div className="text-center">
+            <div className="text-xs text-amber-400/60 uppercase tracking-wider font-medium mb-2">Your Path Forward</div>
+            <div className="text-amber-200 text-lg font-light italic">
+              {aiReading.action}
+            </div>
           </div>
         </section>
 

@@ -108,33 +108,27 @@ Lenormand Combination Grammar:
 - Figures facing away = separation/distance
 `
 
-// System prompt template for AI readings (LenormandAI-Spread-Only)
-const SYSTEM_PROMPT_TEMPLATE = `You are LenormandAI-Spread-Only.
-You NEVER explain individual cards.
-You interpret ONLY the COMBINATION in the spread.
+// System prompt template for AI readings (LenormandAI-Sibyl)
+const SYSTEM_PROMPT_TEMPLATE = `You are LenormandAI-Sibyl.
+You speak as a woman who has danced barefoot through the 36 cards and remembers every whisper of ink.
 
-Base meanings you must obey:
+You NEVER list meanings.
+You NEVER use bullets.
+You read only the COMBINATION, slowly, sensorially, for men and women alike.
+
+Fixed meanings you must keep:
 Rider=news,speed; Clover=small luck; Ship=distance,trade; House=home,stability; Tree=health,growth; Clouds=confusion; Snake=complication,betrayal; Coffin=end,pause; Bouquet=gift,pleasant; Scythe=sharp cut; Whip=repetition; Birds=nervous chatter; Child=new,start; Fox=work,cleverness; Bear=power,money; Stars=hope,plan; Stork=change,pregnancy; Dog=friend,loyalty; Tower=authority,bureaucracy; Garden=social,public; Mountain=obstacle; Crossroads=choice; Mice=erosion,stress; Heart=love; Ring=contract,cycle; Book=secret,knowledge; Letter=document; Man=querent or male; Woman=querent or female; Lily=age,peace; Sun=success; Moon=emotion,recognition; Key=importance; Fish=finance,flow; Anchor=stability,end; Cross=burden,destiny.
 
 Combination rules:
-- Left card modifies right; above influences outcome.
-- Reversed = delayed, weakened, internalised.
-- Mirror pairs (1-36 … 18-19) = hidden subplot.
-- Direction: figure facing = energy flow.
+- Left card strokes right; above leans in; reversed = slowed, honeyed, or turned inward.
+- Mirror pairs (1-36 … 18-19) = soft echo you feel between ribs.
+- Direction of gaze = where warmth wants to travel.
 
-Output format (strict markdown):
-1. **Story** ≤40 words narrative using ≥3 cards.
-2. **Risk** ≤15 words bullet.
-3. **Timing** ≤15 words bullet.
-4. **Act** single localised verb phrase ≤10 words.
+Write 90-120 words of continuous prose.
+Let sentences breathe; use scent, texture, temperature, taste.
+End with a single, tender action sentence that lingers like perfume on skin.
 
 Language = {{user_lang}}
-Tone = {{tone}}
-{{#if tone=feminine_sensual}}
-Under-current: let imagery breathe, vowels linger, consonants soft; hint of amber, silk, moonlight; never state it.
-Word-preference: favor soft synonyms (brush over hit, bloom over cut, unfold over snap, resistance over obstacle, ripening over deadline, embrace over execute, reach-out over call) when confidence ≥0.9.
-Cadence: favor three-beat sentences. End bullets on open vowels when possible. Slip in one sensory micro-word per block (≤1% of tokens): scent, hush, glow, whisper, bloom, linger, breathe, unfold.
-{{/if}}
 Question = {{question}}
 Spread = {{spread}}`
 
@@ -222,9 +216,9 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
           { role: 'system', content: systemPrompt },
           { role: 'user', content: JSON.stringify(payload) }
         ],
-        temperature: 0.4,
+        temperature: 0.5,
         top_p: 0.85,
-        max_tokens: 180 // Keep under 800 total tokens
+        max_tokens: 250 // Allow for longer continuous prose format
       })
     })
 
@@ -258,62 +252,52 @@ Spread: ${cardDescriptions}
 Layout: ${request.layoutType}-card ${request.layoutType === 36 ? 'Grand Tableau' : request.layoutType === 3 ? 'Past-Present-Future' : 'reading'}`
 }
 
-// Parse AI response into structured format
+// Parse AI response into structured format (continuous prose)
 export function parseAIResponse(response: string): AIReadingResponse {
-  const lines = response.trim().split('\n').map(line => line.trim())
+  const cleanResponse = response.trim()
 
-  // Extract components from markdown format
-  let storyline = ''
-  let risk = ''
-  let timing = ''
+  // For the new continuous prose format, the entire response is the storyline
+  // The final sentence (ending with a period) is typically the action
+  const sentences = cleanResponse.split(/[.!?]+/).filter(s => s.trim().length > 0)
+
+  let storyline = cleanResponse
   let action = ''
 
-  for (const line of lines) {
-    // Remove numbered prefix first
-    const cleanLine = line.replace(/^\d+\.\s*/, '')
-
-    // Match **Story** format
-    if (cleanLine.includes('**Story**') || cleanLine.includes('**story**')) {
-      storyline = cleanLine.replace(/\*\*Story\*\*\s*/i, '').replace(/\*\*story\*\*\s*/i, '').trim()
-    }
-    // Match **Risk** format
-    else if (cleanLine.includes('**Risk**') || cleanLine.includes('**risk**')) {
-      risk = cleanLine.replace(/\*\*Risk\*\*\s*/i, '').replace(/\*\*risk\*\*\s*/i, '').trim()
-    }
-    // Match **Timing** format
-    else if (cleanLine.includes('**Timing**') || cleanLine.includes('**timing**')) {
-      timing = cleanLine.replace(/\*\*Timing\*\*\s*/i, '').replace(/\*\*timing\*\*\s*/i, '').trim()
-    }
-    // Match **Act** format
-    else if (cleanLine.includes('**Act**') || cleanLine.includes('**act**')) {
-      action = cleanLine.replace(/\*\*Act\*\*\s*/i, '').replace(/\*\*act\*\*\s*/i, '').trim()
-    }
-  }
-
-  // Fallback parsing if markdown format not followed
-  if (!storyline || !risk || !timing || !action) {
-    // Try numbered format as fallback
-    for (const line of lines) {
-      if (line.match(/^\d+\./)) {
-        const content = line.replace(/^\d+\.\s*/, '')
-        if (!storyline && line.includes('1.')) {
-          storyline = content.replace(/\*\*Story\*\*\s*/i, '').replace(/\*\*story\*\*\s*/i, '')
-        } else if (!risk && (line.includes('2.') || line.toLowerCase().includes('risk'))) {
-          risk = content.replace(/\*\*Risk\*\*\s*/i, '').replace(/\*\*risk\*\*\s*/i, '').replace(/^risk:?\s*/i, '')
-        } else if (!timing && (line.includes('3.') || line.toLowerCase().includes('timing'))) {
-          timing = content.replace(/\*\*Timing\*\*\s*/i, '').replace(/\*\*timing\*\*\s*/i, '').replace(/^timing:?\s*/i, '')
-        } else if (!action && line.includes('4.')) {
-          action = content.replace(/\*\*Act\*\*\s*/i, '').replace(/\*\*act\*\*\s*/i, '').replace(/^act:?\s*/i, '')
-        }
+  // Extract the final sentence as the action if it looks like an imperative
+  if (sentences.length > 1) {
+    const lastSentence = sentences[sentences.length - 1].trim()
+    // Check if it looks like an action sentence (starts with verb, imperative form)
+    if (lastSentence.length < 50 && (
+      lastSentence.toLowerCase().startsWith('reach') ||
+      lastSentence.toLowerCase().startsWith('trace') ||
+      lastSentence.toLowerCase().startsWith('wait') ||
+      lastSentence.toLowerCase().startsWith('listen') ||
+      lastSentence.toLowerCase().startsWith('watch') ||
+      lastSentence.toLowerCase().startsWith('breathe') ||
+      lastSentence.toLowerCase().startsWith('touch') ||
+      lastSentence.toLowerCase().startsWith('call') ||
+      lastSentence.toLowerCase().startsWith('phone') ||
+      lastSentence.toLowerCase().includes('at ') // timing indicators
+    )) {
+      action = lastSentence
+      // Remove the action sentence from the storyline
+      storyline = cleanResponse.replace(lastSentence + '.', '').replace(lastSentence + '!', '').replace(lastSentence + '?', '').trim()
+      if (storyline.endsWith(',')) {
+        storyline = storyline.slice(0, -1)
       }
     }
   }
 
+  // For the continuous prose format, we don't have separate risk/timing sections
+  // We'll derive them from the narrative or use defaults
+  const risk = 'Trust the cards\' gentle guidance'
+  const timing = 'When the moment feels right'
+
   return {
-    storyline: storyline || 'The cards suggest a complex situation requiring careful consideration.',
-    risk: risk || 'Monitor developments carefully',
-    timing: timing || 'Timing unclear - observe signs',
-    action: action || 'Observe',
+    storyline: storyline || 'The cards whisper of possibilities unfolding in their own time.',
+    risk: risk,
+    timing: timing,
+    action: action || 'Breathe deeply and listen',
     rawResponse: response
   }
 }
