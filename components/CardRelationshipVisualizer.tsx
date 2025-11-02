@@ -38,24 +38,22 @@ function CardNode({ data }: { data: { card: ReadingCard; fullCard: Card } }) {
   const { card, fullCard } = data
 
   return (
-    <TooltipProvider>
-      <Tooltip>
+    <Tooltip>
         <TooltipTrigger asChild>
-          <div className="bg-slate-800 border border-slate-600 rounded p-0.5 shadow-sm hover:shadow-md transition-shadow cursor-pointer w-4 h-4 flex flex-col items-center justify-center">
+          <div className="bg-slate-800 border border-slate-600 rounded shadow-sm hover:shadow-md transition-shadow cursor-pointer w-4 h-4 flex flex-col items-center justify-center">
             <div className="w-2 h-2 mb-0.5 bg-slate-700 rounded flex items-center justify-center overflow-hidden">
               <img
                 src={`/data/images/cards/${String(card.id).padStart(2, '0')}-${fullCard.name.toLowerCase()}.png`}
                 alt={fullCard.name}
                 className="w-full h-full object-cover"
                 onError={(e) => {
-                  // Fallback to text if image fails
+                  // Fallback: hide image if it fails to load
                   e.currentTarget.style.display = 'none'
-                  e.currentTarget.nextElementSibling!.textContent = fullCard.name.substring(0, 2)
                 }}
               />
-              <span className="text-[4px] text-slate-300 font-bold">{fullCard.name.substring(0, 2)}</span>
+              <span className="text-[6px] text-slate-300 font-bold">{fullCard.name.substring(0, 2)}</span>
             </div>
-            <div className="text-[4px] font-medium text-slate-300 leading-tight text-center">
+            <div className="text-[6px] font-medium text-slate-300 leading-tight text-center">
               {card.reversed ? `${fullCard.name.substring(0, 3)}*` : fullCard.name.substring(0, 4)}
             </div>
           </div>
@@ -71,7 +69,6 @@ function CardNode({ data }: { data: { card: ReadingCard; fullCard: Card } }) {
           </div>
         </TooltipContent>
       </Tooltip>
-    </TooltipProvider>
   )
 }
 
@@ -208,7 +205,8 @@ export function CardRelationshipVisualizer({
       </CardHeader>
       <CardContent>
         <div className="h-96 w-full border border-slate-600 rounded-lg overflow-hidden">
-          <ReactFlow
+          <TooltipProvider>
+            <ReactFlow
             nodes={nodes}
             edges={edges}
             onNodesChange={onNodesChange}
@@ -245,7 +243,8 @@ export function CardRelationshipVisualizer({
                 </div>
               </div>
             </Panel>
-          </ReactFlow>
+           </ReactFlow>
+          </TooltipProvider>
         </div>
 
         <div className="mt-4 text-xs text-slate-400">
