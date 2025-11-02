@@ -42,10 +42,16 @@ const STORAGE_KEY = 'lenormand-readings'
 
 export function saveReading(reading: Reading): void {
   if (typeof window === 'undefined') return
-  
-  const readings = getReadings()
-  readings.push(reading)
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(readings))
+
+  try {
+    const readings = getReadings()
+    readings.push(reading)
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(readings))
+    console.log('Reading saved successfully:', reading.id)
+  } catch (error) {
+    console.error('Failed to save reading to localStorage:', error)
+    throw error
+  }
 }
 
 export function getReadings(): Reading[] {

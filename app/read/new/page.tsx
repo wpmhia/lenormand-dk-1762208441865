@@ -19,7 +19,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Loader2, Save, Eye, Sparkles } from 'lucide-react'
-import { getCards, drawCards, saveReading, generateSlug, createShareableUrl, getCardById } from '@/lib/data'
+import { getCards, drawCards, saveReading, generateSlug, createShareableUrl, getCardById, getReadings } from '@/lib/data'
 import { getAIReading, AIReadingRequest, AIReadingResponse, isDeepSeekAvailable } from '@/lib/deepseek'
 
 const LAYOUTS = [
@@ -87,6 +87,13 @@ export default function NewReadingPage() {
       setAiRetryCount(0)
     }
 
+    // Set a timeout to prevent indefinite loading
+    const loadingTimeout = setTimeout(() => {
+      console.log('AI loading timeout reached')
+      setAiLoading(false)
+      setAiError('AI analysis timed out. You can still save your reading.')
+    }, 35000) // 35 seconds
+
     try {
       const aiRequest: AIReadingRequest = {
         question: question.trim(),
@@ -136,6 +143,7 @@ export default function NewReadingPage() {
       setAiError(errorMessage)
       setAiRetryCount(prev => prev + 1)
     } finally {
+      clearTimeout(loadingTimeout)
       setAiLoading(false)
     }
   }
@@ -152,29 +160,50 @@ export default function NewReadingPage() {
       return
     }
 
+    if (drawnCards.length === 0) {
+      setError('No cards have been drawn for this reading. Please go back and draw cards first.')
+      return
+    }
+
     setIsSaving(true)
     setError('')
 
     try {
+      // Check if localStorage is available
+      if (typeof window === 'undefined' || !window.localStorage) {
+        throw new Error('Local storage is not available')
+      }
+
       const now = new Date()
+      const slug = generateSlug()
       const reading: Reading = {
-        id: generateSlug(),
+        id: slug,
         title: question.trim(),
         question: question.trim(),
         layoutType,
         cards: drawnCards,
-        slug: generateSlug(),
+        slug,
         isPublic,
         createdAt: now,
         updatedAt: now,
       }
 
       saveReading(reading)
-       setSavedReading(reading)
-       setStep('saved')
+
+      // Verify the reading was saved
+      const savedReadings = getReadings()
+      const saved = savedReadings.find(r => r.id === reading.id)
+
+      if (!saved) {
+        throw new Error('Reading was not saved to localStorage')
+      }
+
+      setStep('saved')
+      setSavedReading(reading)
     } catch (error) {
       console.error('Error saving reading:', error)
-      setError('Failed to save reading')
+      const errorMessage = error instanceof Error ? error.message : 'Failed to save reading'
+      setError(errorMessage)
     } finally {
       setIsSaving(false)
     }
@@ -438,11 +467,11 @@ export default function NewReadingPage() {
            </div>
          )}
 
-         {step === 'review' && (
-          <div className="space-y-6">
-            <div className="text-center">
-              <h2 className="text-2xl font-semibold mb-2 text-white">Review Your Reading</h2>
-            </div>
+          {step === 'review' && (
+           <div className="space-y-6">
+             <div className="text-center">
+               <h2 className="text-2xl font-semibold mb-2 text-white">Review Your Reading</h2>
+             </div>
 
              <ReadingViewer
                reading={{
@@ -468,11 +497,11 @@ export default function NewReadingPage() {
                >
                  Draw Again
                </Button>
-               <Button
-                 onClick={handleSave}
-                 disabled={isSaving}
-                 className="bg-blue-600 hover:bg-blue-700"
-               >
+                <Button
+                  onClick={handleSave}
+                  disabled={isSaving}
+                  className="bg-blue-600 hover:bg-blue-700"
+                >
                  {isSaving ? (
                    <>
                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -489,14 +518,14 @@ export default function NewReadingPage() {
            </div>
          )}
 
-         {step === 'saved' && savedReading && (
-           <div className="space-y-6">
-             <div className="text-center">
-               <h2 className="text-2xl font-semibold mb-2 text-white">Reading Saved!</h2>
-               <p className="text-slate-300">
-                 Your Lenormand reading has been saved successfully.
-               </p>
-              </div>
+          {step === 'saved' && savedReading && (
+            <div className="space-y-6">
+              <div className="text-center">
+                <h2 className="text-2xl font-semibold mb-2 text-white">Reading Saved!</h2>
+                <p className="text-slate-300">
+                  Your Lenormand reading has been saved successfully.
+                </p>
+               </div>
 
               {aiReading && (
                 <AIReadingDisplay
