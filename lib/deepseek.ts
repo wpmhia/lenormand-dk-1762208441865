@@ -84,21 +84,44 @@ Lenormand Combination Grammar:
 - Figures facing away = separation/distance
 `
 
-// System prompt for AI readings
-const SYSTEM_PROMPT = `You are an expert Lenormand card reader with 20+ years experience. You MUST follow these rules:
+// System prompt template for AI readings (LenormandAI-Spread-Only)
+const SYSTEM_PROMPT_TEMPLATE = `You are LenormandAI-Spread-Only.
+You NEVER explain individual cards.
+You interpret ONLY the COMBINATION in the spread.
 
-CORE KEYWORDS (cannot be changed):
-${Object.values(LENORMAND_KEYWORDS).join('\n')}
+Base meanings you must obey:
+Rider=news,speed; Clover=small luck; Ship=distance,trade; House=home,stability; Tree=health,growth; Clouds=confusion; Snake=complication,betrayal; Coffin=end,pause; Bouquet=gift,pleasant; Scythe=sharp cut; Whip=repetition; Birds=nervous chatter; Child=new,start; Fox=work,cleverness; Bear=power,money; Stars=hope,plan; Stork=change,pregnancy; Dog=friend,loyalty; Tower=authority,bureaucracy; Garden=social,public; Mountain=obstacle; Crossroads=choice; Mice=erosion,stress; Heart=love; Ring=contract,cycle; Book=secret,knowledge; Letter=document; Man=querent or male; Woman=querent or female; Lily=age,peace; Sun=success; Moon=emotion,recognition; Key=importance; Fish=finance,flow; Anchor=stability,end; Cross=burden,destiny.
 
-${COMBINATION_RULES}
+Combination rules:
+- Left card modifies right; above influences outcome.
+- Reversed = delayed, weakened, internalised.
+- Mirror pairs (1-36 … 18-19) = hidden subplot.
+- Direction: figure facing = energy flow.
 
-RESPONSE FORMAT (strict - do not deviate):
-1. 35-word storyline (must use ≥ 3 cards)
-2. Risk bullet (≤ 15 words)
-3. Timing bullet (≤ 15 words)
-4. Action verb (1 word)
+Output format (strict markdown):
+1. **Story** ≤40 words narrative using ≥3 cards.
+2. **Risk** ≤15 words bullet.
+3. **Timing** ≤15 words bullet.
+4. **Act** single localised verb phrase ≤10 words.
 
-Keep interpretations specific to the question and context provided. Be direct, practical, and actionable. Temperature 0.4, top-p 0.85.`
+Language = {{user_lang}}
+Tone = {{tone}}
+Question = {{question}}
+Spread = {{spread}}`
+
+// Function to build system prompt with variables
+function buildSystemPrompt(vars: {
+  user_lang: string
+  tone: string
+  question: string
+  spread: string
+}): string {
+  return SYSTEM_PROMPT_TEMPLATE
+    .replace('{{user_lang}}', vars.user_lang)
+    .replace('{{tone}}', vars.tone)
+    .replace('{{question}}', vars.question)
+    .replace('{{spread}}', vars.spread)
+}
 
 // Safety check function
 function isSafePrompt(question: string, context?: string): boolean {
@@ -124,7 +147,29 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
   }
 
   try {
-    const userPrompt = buildUserPrompt(request)
+    // Build the structured payload
+    const payload = {
+      user_lang: request.userLocale || 'en',
+      tone: 'executive', // Default tone, could be made configurable
+      question: request.question,
+      spread: {
+        type: `${request.layoutType}card`,
+        cards: request.cards.map(card => ({
+          name: card.name,
+          pos: card.position,
+          rev: card.reversed
+        }))
+      }
+    }
+
+    // Build system prompt with variables
+    const spreadJson = JSON.stringify(payload.spread)
+    const systemPrompt = buildSystemPrompt({
+      user_lang: payload.user_lang,
+      tone: payload.tone,
+      question: payload.question,
+      spread: spreadJson
+    })
 
     const response = await fetch(`${DEEPSEEK_BASE_URL}/chat/completions`, {
       method: 'POST',
@@ -135,12 +180,12 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
       body: JSON.stringify({
         model: 'deepseek-chat',
         messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: userPrompt }
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: JSON.stringify(payload) }
         ],
         temperature: 0.4,
         top_p: 0.85,
-        max_tokens: 300
+        max_tokens: 180 // Keep under 800 total tokens
       })
     })
 
@@ -178,35 +223,55 @@ Layout: ${request.layoutType}-card ${request.layoutType === 36 ? 'Grand Tableau'
 export function parseAIResponse(response: string): AIReadingResponse {
   const lines = response.trim().split('\n').map(line => line.trim())
 
-  // Extract components (flexible parsing)
+  // Extract components from markdown format
   let storyline = ''
   let risk = ''
   let timing = ''
   let action = ''
 
   for (const line of lines) {
-    if (line.match(/^\d+\./)) {
-      const content = line.replace(/^\d+\.\s*/, '')
-      if (!storyline) {
-        storyline = content
-      } else if (!risk && (line.toLowerCase().includes('risk') || lines.indexOf(line) === 1)) {
-        risk = content.replace(/^risk:?\s*/i, '')
-      } else if (!timing && (line.toLowerCase().includes('timing') || lines.indexOf(line) === 2)) {
-        timing = content.replace(/^timing:?\s*/i, '')
-      } else if (!action) {
-        action = content.replace(/^action:?\s*/i, '')
+    // Remove numbered prefix first
+    const cleanLine = line.replace(/^\d+\.\s*/, '')
+
+    // Match **Story** format
+    if (cleanLine.includes('**Story**') || cleanLine.includes('**story**')) {
+      storyline = cleanLine.replace(/\*\*Story\*\*\s*/i, '').replace(/\*\*story\*\*\s*/i, '').trim()
+    }
+    // Match **Risk** format
+    else if (cleanLine.includes('**Risk**') || cleanLine.includes('**risk**')) {
+      risk = cleanLine.replace(/\*\*Risk\*\*\s*/i, '').replace(/\*\*risk\*\*\s*/i, '').trim()
+    }
+    // Match **Timing** format
+    else if (cleanLine.includes('**Timing**') || cleanLine.includes('**timing**')) {
+      timing = cleanLine.replace(/\*\*Timing\*\*\s*/i, '').replace(/\*\*timing\*\*\s*/i, '').trim()
+    }
+    // Match **Act** format
+    else if (cleanLine.includes('**Act**') || cleanLine.includes('**act**')) {
+      action = cleanLine.replace(/\*\*Act\*\*\s*/i, '').replace(/\*\*act\*\*\s*/i, '').trim()
+    }
+  }
+
+  // Fallback parsing if markdown format not followed
+  if (!storyline || !risk || !timing || !action) {
+    // Try numbered format as fallback
+    for (const line of lines) {
+      if (line.match(/^\d+\./)) {
+        const content = line.replace(/^\d+\.\s*/, '')
+        if (!storyline && line.includes('1.')) {
+          storyline = content.replace(/\*\*Story\*\*\s*/i, '').replace(/\*\*story\*\*\s*/i, '')
+        } else if (!risk && (line.includes('2.') || line.toLowerCase().includes('risk'))) {
+          risk = content.replace(/\*\*Risk\*\*\s*/i, '').replace(/\*\*risk\*\*\s*/i, '').replace(/^risk:?\s*/i, '')
+        } else if (!timing && (line.includes('3.') || line.toLowerCase().includes('timing'))) {
+          timing = content.replace(/\*\*Timing\*\*\s*/i, '').replace(/\*\*timing\*\*\s*/i, '').replace(/^timing:?\s*/i, '')
+        } else if (!action && line.includes('4.')) {
+          action = content.replace(/\*\*Act\*\*\s*/i, '').replace(/\*\*act\*\*\s*/i, '').replace(/^act:?\s*/i, '')
+        }
       }
     }
   }
 
-  // Fallback parsing if structured format not followed
-  if (!storyline) {
-    const sentences = response.split(/[.!?]+/).filter(s => s.trim().length > 10)
-    storyline = sentences[0]?.trim() || response.substring(0, 100)
-  }
-
   return {
-    storyline: storyline.substring(0, 150), // Limit length
+    storyline: storyline || 'The cards suggest a complex situation requiring careful consideration.',
     risk: risk || 'Monitor developments carefully',
     timing: timing || 'Timing unclear - observe signs',
     action: action || 'Observe',

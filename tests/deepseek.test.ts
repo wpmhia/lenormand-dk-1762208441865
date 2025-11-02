@@ -24,21 +24,35 @@ describe('DeepSeek Integration', () => {
   })
 
   describe('parseAIResponse', () => {
-    it('parses structured response correctly', () => {
-      const response = `1. Money releases within 24 hours, but FX fees will nibble; expect 98% of original sum.
-2. Risk: Delays from banking bureaucracy
-3. Timing: Within 48 hours
-4. ACT`
+    it('parses markdown structured response correctly', () => {
+      const response = `1. **Story** Rider races to Clover but reversed Ship blocks overseas transfer; luck arrives after delay.
+2. **Risk** FX fees nibble 2-3 %.
+3. **Timing** Confirmation before 4 pm, cash tomorrow morning.
+4. **Act** Call your bank today.`
 
       const result = parseAIResponse(response)
 
       expect(result).toEqual({
-        storyline: 'Money releases within 24 hours, but FX fees will nibble; expect 98% of original sum.',
-        risk: 'Delays from banking bureaucracy',
-        timing: 'Within 48 hours',
-        action: 'ACT',
+        storyline: 'Rider races to Clover but reversed Ship blocks overseas transfer; luck arrives after delay.',
+        risk: 'FX fees nibble 2-3 %.',
+        timing: 'Confirmation before 4 pm, cash tomorrow morning.',
+        action: 'Call your bank today.',
         rawResponse: response
       })
+    })
+
+    it('parses bold markdown format correctly', () => {
+      const response = `**Story** Rider races to Clover but reversed Ship blocks overseas transfer; luck arrives after delay.
+**Risk** FX fees nibble 2-3 %.
+**Timing** Confirmation before 4 pm, cash tomorrow morning.
+**Act** Call your bank today.`
+
+      const result = parseAIResponse(response)
+
+      expect(result.storyline).toBe('Rider races to Clover but reversed Ship blocks overseas transfer; luck arrives after delay.')
+      expect(result.risk).toBe('FX fees nibble 2-3 %.')
+      expect(result.timing).toBe('Confirmation before 4 pm, cash tomorrow morning.')
+      expect(result.action).toBe('Call your bank today.')
     })
 
     it('handles unstructured response gracefully', () => {
@@ -46,22 +60,24 @@ describe('DeepSeek Integration', () => {
 
       const result = parseAIResponse(response)
 
-      expect(result.storyline).toContain('This is a general reading')
+      expect(result.storyline).toBe('The cards suggest a complex situation requiring careful consideration.')
       expect(result.risk).toBe('Monitor developments carefully')
       expect(result.timing).toBe('Timing unclear - observe signs')
       expect(result.action).toBe('Observe')
     })
 
-    it('limits storyline length', () => {
-      const longStoryline = 'A'.repeat(200)
-      const response = `1. ${longStoryline}
-2. Risk: Something
-3. Timing: Soon
-4. ACT`
+    it('falls back to numbered format', () => {
+      const response = `1. Money releases within 24 hours, but FX fees will nibble; expect 98% of original sum.
+2. Risk: Delays from banking bureaucracy
+3. Timing: Within 48 hours
+4. Act: Call your bank today`
 
       const result = parseAIResponse(response)
 
-      expect(result.storyline.length).toBeLessThanOrEqual(150)
+      expect(result.storyline).toBe('Money releases within 24 hours, but FX fees will nibble; expect 98% of original sum.')
+      expect(result.risk).toBe('Delays from banking bureaucracy')
+      expect(result.timing).toBe('Within 48 hours')
+      expect(result.action).toBe('Call your bank today')
     })
   })
 })
