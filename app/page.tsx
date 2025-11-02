@@ -21,13 +21,13 @@ export default function Home() {
             <Badge className="mb-8 bg-gradient-to-r from-blue-600/20 to-purple-600/20 text-blue-300 border-blue-500/30 px-6 py-3 text-sm font-semibold tracking-wide uppercase" variant="secondary">
               ✨ AI-Powered Lenormand Analysis
             </Badge>
-            <h1 className="text-6xl lg:text-7xl font-bold mb-8 text-white leading-tight">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-12 text-white leading-tight">
               Lenormand
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
                 Intelligence
               </span>
             </h1>
-            <p className="text-xl lg:text-2xl text-slate-300 mb-10 max-w-3xl mx-auto lg:mx-0 leading-relaxed font-light">
+            <p className="text-lg sm:text-xl lg:text-2xl text-slate-300 mb-12 max-w-3xl mx-auto lg:mx-0 leading-relaxed font-light">
               Advanced AI interpretation of traditional Lenormand cards.
               Get personalized insights with machine learning-powered analysis of the 36-card deck.
             </p>
