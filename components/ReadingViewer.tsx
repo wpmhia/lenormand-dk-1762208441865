@@ -14,6 +14,7 @@ interface ReadingViewerProps {
   allCards: CardType[]
   showShareButton?: boolean
   onShare?: () => void
+  showReadingHeader?: boolean
 }
 
 interface PositionInfo {
@@ -67,11 +68,12 @@ const getGrandTableauPosition = (index: number): { x: number; y: number; label: 
   }
 }
 
-export function ReadingViewer({ 
-  reading, 
-  allCards, 
+export function ReadingViewer({
+  reading,
+  allCards,
   showShareButton = true,
-  onShare 
+  onShare,
+  showReadingHeader = true
 }: ReadingViewerProps) {
   const [selectedCard, setSelectedCard] = useState<{ card: CardType; reversed: boolean } | null>(null)
 
@@ -152,21 +154,23 @@ export function ReadingViewer({
   return (
     <div className="space-y-6">
       {/* Reading Header */}
-      <div className="text-center space-y-2">
-        <h2 className="text-2xl font-bold">{reading.title}</h2>
-        {reading.question && (
-          <p className="text-gray-600 italic">"{reading.question}"</p>
-        )}
-        <div className="flex items-center justify-center gap-4 text-sm text-gray-500">
-          <div className="flex items-center gap-1">
-            <Calendar className="w-4 h-4" />
-            {new Date(reading.createdAt).toLocaleDateString()}
+      {showReadingHeader && (
+        <div className="text-center space-y-2">
+          <h2 className="text-2xl font-bold">{reading.title}</h2>
+          {reading.question && reading.question !== reading.title && (
+            <p className="text-gray-600 italic">"{reading.question}"</p>
+          )}
+          <div className="flex items-center justify-center gap-4 text-sm text-gray-500">
+            <div className="flex items-center gap-1">
+              <Calendar className="w-4 h-4" />
+              {new Date(reading.createdAt).toLocaleDateString()}
+            </div>
+            <Badge variant="secondary">
+              {reading.layoutType} Cards
+            </Badge>
           </div>
-          <Badge variant="secondary">
-            {reading.layoutType} Cards
-          </Badge>
         </div>
-      </div>
+      )}
 
       {/* Share Button */}
       {showShareButton && onShare && (

@@ -93,6 +93,7 @@ export default function SharedReadingPage({ params }: PageProps) {
           allCards={allCards}
           showShareButton={true}
           onShare={handleShare}
+          showReadingHeader={false}
         />
       </div>
     </div>

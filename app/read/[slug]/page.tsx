@@ -92,6 +92,7 @@ export default function ReadingPage({ params }: PageProps) {
           allCards={allCards}
           showShareButton={reading.isPublic}
           onShare={handleShare}
+          showReadingHeader={false}
         />
       </div>
     </div>
