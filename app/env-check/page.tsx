@@ -6,19 +6,24 @@
  * it should automatically update the ENV_VARIABLES array in lib/env-config.ts.
  */
 
+"use client"
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { CheckCircle, XCircle, Code, Settings, Save, ArrowRight } from 'lucide-react';
+import { CheckCircle, XCircle, Code, Settings, Save, ArrowRight, Bug, Play } from 'lucide-react';
 import { ENV_VARIABLES } from '@/lib/env-config';
 import Link from 'next/link';
 
 export default function EnvCheckPage() {
   // Check environment variables on server side
   const envStatus: { [key: string]: boolean } = {};
+  const envValues: { [key: string]: string } = {};
   ENV_VARIABLES.forEach((envVar) => {
-    envStatus[envVar.name] = !!process.env[envVar.name];
+    const value = process.env[envVar.name];
+    envStatus[envVar.name] = !!value;
+    envValues[envVar.name] = value || '';
   });
 
   const getStatusIcon = (isSet: boolean) => {
@@ -113,7 +118,7 @@ export default function EnvCheckPage() {
                 <CardDescription>{envVar.description}</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <div>
                     <h4 className="font-semibold text-sm mb-1">How to get this variable:</h4>
                     <div 
@@ -128,12 +133,72 @@ export default function EnvCheckPage() {
                       }}
                     />
                   </div>
+                  {isSet && (
+                    <div>
+                      <h4 className="font-semibold text-sm mb-1">Current value (debug):</h4>
+                      <div className="text-xs font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded break-all">
+                        {envVar.name.includes('KEY') 
+                          ? `${envValues[envVar.name].substring(0, 8)}...${envValues[envVar.name].substring(envValues[envVar.name].length - 4)}`
+                          : envValues[envVar.name]
+                        }
+                      </div>
+                    </div>
+                  )}
+                  {!isSet && (
+                    <div className="text-xs text-red-600 dark:text-red-400">
+                      This variable is not set in the current environment
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
           );
         })}
       </div>
+
+      {/* Debug Section */}
+      <Card className="mt-8">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Bug className="h-5 w-5" />
+            Debug Tools
+          </CardTitle>
+          <CardDescription>
+            Test API endpoints and environment configuration
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex flex-wrap gap-3">
+            <Button 
+              variant="outline" 
+              onClick={() => window.open('/api/debug/env', '_blank')}
+              className="flex items-center gap-2"
+            >
+              <Code className="h-4 w-4" />
+              Check Environment
+            </Button>
+            <Button 
+              variant="outline" 
+              onClick={() => window.open('/api/debug/ai', '_blank')}
+              className="flex items-center gap-2"
+            >
+              <Settings className="h-4 w-4" />
+              Check AI Config
+            </Button>
+            <Button 
+              variant="outline" 
+              onClick={() => window.open('/api/debug/test-ai', '_blank')}
+              className="flex items-center gap-2"
+            >
+              <Play className="h-4 w-4" />
+              Test AI Call
+            </Button>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Click the buttons above to open debug endpoints in new tabs. These will show you exactly what&apos;s happening in your deployed environment.
+          </p>
+        </CardContent>
+      </Card>
 
     </div>
   );
