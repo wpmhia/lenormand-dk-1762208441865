@@ -46,7 +46,7 @@ export default function Home() {
           </div>
           <div className="flex justify-center lg:justify-end">
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg blur-xl"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg blur-xl breathing-glow"></div>
               <img
                 src="/images/hero-image.jpg"
                 alt="Hero Image"

@@ -103,6 +103,21 @@
     animation: mystical-glow 8s ease-in-out infinite;
   }
 
+  .breathing-glow {
+    animation: breathing 5s ease-in-out infinite;
+  }
+
+  @keyframes breathing {
+    0%, 100% {
+      opacity: 0.3;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.7;
+      transform: scale(1.05);
+    }
+  }
+
   .float-animation {
     animation: float 6s ease-in-out infinite;
   }
