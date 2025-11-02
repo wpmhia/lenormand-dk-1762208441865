@@ -5,6 +5,9 @@ import { useRouter } from 'next/navigation'
 import { Card as CardType, ReadingCard, Reading } from '@/lib/types'
 import { Deck } from '@/components/Deck'
 import { ReadingViewer } from '@/components/ReadingViewer'
+import { AIReadingDisplay } from '@/components/AIReadingDisplay'
+import { FeedbackButtons } from '@/components/FeedbackButtons'
+import { ContextInput } from '@/components/ContextInput'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -13,8 +16,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Loader2, Save, Eye } from 'lucide-react'
-import { getCards, drawCards, saveReading, generateSlug, createShareableUrl } from '@/lib/data'
+import { Loader2, Save, Eye, Sparkles } from 'lucide-react'
+import { getCards, drawCards, saveReading, generateSlug, createShareableUrl, getCardById } from '@/lib/data'
+import { getAIReading, AIReadingRequest, AIReadingResponse, isDeepSeekAvailable } from '@/lib/deepseek'
 
 const LAYOUTS = [
   { value: 3, label: "3 Cards - Past, Present, Future" },
@@ -32,12 +36,18 @@ export default function NewReadingPage() {
 
   const [question, setQuestion] = useState('')
   const [questionCharCount, setQuestionCharCount] = useState(0)
+  const [context, setContext] = useState('')
   const [allowReversed, setAllowReversed] = useState(false)
   const [isPublic, setIsPublic] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [savedReading, setSavedReading] = useState<Reading | null>(null)
   const [error, setError] = useState('')
-  const [step, setStep] = useState<'setup' | 'drawing' | 'review' | 'saved'>('setup')
+  const [step, setStep] = useState<'setup' | 'drawing' | 'review' | 'ai-analysis' | 'saved'>('setup')
+
+  // AI-related state
+  const [aiReading, setAiReading] = useState<AIReadingResponse | null>(null)
+  const [aiLoading, setAiLoading] = useState(false)
+  const [aiError, setAiError] = useState<string | null>(null)
 
   useEffect(() => {
     fetchCards()
@@ -53,13 +63,59 @@ export default function NewReadingPage() {
     }
   }
 
-  const handleDraw = (cards: CardType[]) => {
+  const handleDraw = async (cards: CardType[]) => {
     const readingCards = drawCards(cards, layoutType)
     if (!allowReversed) {
       readingCards.forEach(card => card.reversed = false)
     }
     setDrawnCards(readingCards)
-    setStep('review')
+
+    // Start AI analysis if available
+    if (isDeepSeekAvailable()) {
+      setStep('ai-analysis')
+      await performAIAnalysis(readingCards)
+    } else {
+      setStep('review')
+    }
+  }
+
+  const performAIAnalysis = async (readingCards: ReadingCard[]) => {
+    setAiLoading(true)
+    setAiError(null)
+
+    try {
+      const aiRequest: AIReadingRequest = {
+        question: question.trim(),
+        context: context.trim() || undefined,
+        cards: readingCards.map(card => ({
+          id: card.id,
+          name: getCardById(allCards, card.id)?.name || 'Unknown',
+          position: card.position,
+          reversed: card.reversed
+        })),
+        layoutType,
+        userLocale: navigator.language
+      }
+
+      const response = await fetch('/api/readings/interpret', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(aiRequest)
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'AI analysis failed')
+      }
+
+      const aiResult = await response.json()
+      setAiReading(aiResult)
+    } catch (error) {
+      console.error('AI analysis error:', error)
+      setAiError(error instanceof Error ? error.message : 'AI analysis failed')
+    } finally {
+      setAiLoading(false)
+    }
   }
 
   const handleSave = () => {
@@ -102,10 +158,14 @@ export default function NewReadingPage() {
     setStep('setup')
     setQuestion('')
     setQuestionCharCount(0)
+    setContext('')
     setLayoutType(3)
     setAllowReversed(false)
     setIsPublic(false)
     setError('')
+    setAiReading(null)
+    setAiLoading(false)
+    setAiError(null)
   }
 
   const handleViewReading = () => {
@@ -147,9 +207,14 @@ export default function NewReadingPage() {
                 <div className="text-right text-xs text-slate-400">
                   {questionCharCount}/200
                 </div>
-               </div>
+                </div>
 
-               <div className="space-y-4">
+                <ContextInput
+                  value={context}
+                  onChange={setContext}
+                />
+
+                <div className="space-y-4">
                  <div className="space-y-2">
                    <Label htmlFor="layout">Reading Type:</Label>
                    <Select value={layoutType.toString()} onValueChange={(value) => setLayoutType(parseInt(value) as 3 | 5 | 9 | 36)}>
@@ -212,9 +277,63 @@ export default function NewReadingPage() {
               onDraw={handleDraw}
             />
           </div>
-        )}
+         )}
 
-        {step === 'review' && (
+         {step === 'ai-analysis' && (
+           <div className="space-y-6">
+             <div className="text-center">
+               <h2 className="text-2xl font-semibold mb-2 text-white flex items-center justify-center gap-2">
+                 <Sparkles className="w-6 h-6 text-blue-400" />
+                 AI Analysis
+               </h2>
+               <p className="text-slate-300">
+                 Analyzing your {layoutType}-card spread with advanced AI
+               </p>
+             </div>
+
+             <ReadingViewer
+               reading={{
+                 id: 'temp',
+                 title: question,
+                 question,
+                 layoutType,
+                 cards: drawnCards,
+                 slug: 'temp',
+                 isPublic,
+                 createdAt: new Date(),
+                 updatedAt: new Date(),
+               }}
+               allCards={allCards}
+               showShareButton={false}
+             />
+
+             <AIReadingDisplay
+               aiReading={aiReading}
+               isLoading={aiLoading}
+               error={aiError}
+             />
+
+             {!aiLoading && (
+               <div className="flex gap-4 justify-center">
+                 <Button
+                   onClick={() => setStep('drawing')}
+                   variant="outline"
+                   className="border-slate-700 text-slate-300 hover:bg-slate-800"
+                 >
+                   Draw Again
+                 </Button>
+                 <Button
+                   onClick={() => setStep('review')}
+                   className="bg-blue-600 hover:bg-blue-700"
+                 >
+                   Continue to Save
+                 </Button>
+               </div>
+             )}
+           </div>
+         )}
+
+         {step === 'review' && (
           <div className="space-y-6">
             <div className="text-center">
               <h2 className="text-2xl font-semibold mb-2 text-white">Review Your Reading</h2>
@@ -272,9 +391,27 @@ export default function NewReadingPage() {
                <p className="text-slate-300">
                  Your Lenormand reading has been saved successfully.
                </p>
-             </div>
+              </div>
 
-             <Card className="border-slate-700 bg-slate-900/50">
+              {aiReading && (
+                <AIReadingDisplay
+                  aiReading={aiReading}
+                  isLoading={false}
+                  error={null}
+                />
+              )}
+
+              {aiReading && (
+                <FeedbackButtons
+                  readingId={savedReading.id}
+                  onFeedback={(rating) => {
+                    // Optional: handle feedback callback
+                    console.log('Feedback received:', rating)
+                  }}
+                />
+              )}
+
+              <Card className="border-slate-700 bg-slate-900/50">
                <CardContent className="pt-6">
                  <div className="text-center space-y-4">
                    <div className="text-lg font-medium text-white">

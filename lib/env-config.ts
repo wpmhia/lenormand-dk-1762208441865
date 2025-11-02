@@ -1,22 +1,16 @@
 // IMPORTANT: When adding new env variables to the codebase, update this array
 export const ENV_VARIABLES: EnvVariable[] = [
   {
-    name: "DATABASE_URL",
-    description: "PostgreSQL database connection string for migrations and server-side operations",
-    required: true,
-    instructions: "Set up a PostgreSQL database (local or cloud) and provide the full connection string in format: postgresql://username:password@host:port/database"
-  },
-  {
-    name: "NEXTAUTH_SECRET",
-    description: "Secret key for NextAuth.js session encryption and security",
-    required: true,
-    instructions: "Generate a secure random string: `openssl rand -base64 32` or use any secure random string generator"
-  },
-  {
-    name: "NEXTAUTH_URL",
-    description: "Base URL of your application for NextAuth.js callbacks",
+    name: "DEEPSEEK_API_KEY",
+    description: "API key for DeepSeek AI service for Lenormand reading interpretations",
     required: false,
-    instructions: "Set to your application's base URL (e.g., http://localhost:3000 for development, https://yourdomain.com for production)"
+    instructions: "Get your API key from DeepSeek platform. Optional - AI features will be disabled if not provided."
+  },
+  {
+    name: "DEEPSEEK_BASE_URL",
+    description: "Base URL for DeepSeek API (optional, defaults to official endpoint)",
+    required: false,
+    instructions: "Only set if using a custom DeepSeek endpoint. Leave empty for default."
   }
 ];
 
