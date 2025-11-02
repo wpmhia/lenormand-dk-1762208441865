@@ -1,10 +1,16 @@
 "use client"
 
+"use client"
+
+import { useState, useEffect } from 'react'
 import { AIReadingResponse } from '@/lib/deepseek'
+import { ReadingCard, Card as CardType } from '@/lib/types'
+import { CardRelationshipVisualizer } from '@/components/CardRelationshipVisualizer'
+import { CardRelationship, RelationshipAnalysisResponse } from '@/app/api/readings/relationships/route'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { AlertTriangle, Clock, Zap } from 'lucide-react'
+import { AlertTriangle, Clock, Zap, Network } from 'lucide-react'
 
 interface AIReadingDisplayProps {
   aiReading: AIReadingResponse | null
@@ -12,9 +18,66 @@ interface AIReadingDisplayProps {
   error?: string | null
   onRetry?: () => void
   retryCount?: number
+  cards?: ReadingCard[]
+  allCards?: CardType[]
+  layoutType?: number
+  question?: string
 }
 
-export function AIReadingDisplay({ aiReading, isLoading, error, onRetry, retryCount = 0 }: AIReadingDisplayProps) {
+export function AIReadingDisplay({
+  aiReading,
+  isLoading,
+  error,
+  onRetry,
+  retryCount = 0,
+  cards = [],
+  allCards = [],
+  layoutType = 3,
+  question = ''
+}: AIReadingDisplayProps) {
+  const [showRelationships, setShowRelationships] = useState(false)
+  const [relationshipData, setRelationshipData] = useState<RelationshipAnalysisResponse | null>(null)
+  const [relationshipLoading, setRelationshipLoading] = useState(false)
+  const [relationshipError, setRelationshipError] = useState<string | null>(null)
+
+  const analyzeRelationships = async () => {
+    if (!cards.length || relationshipData) return
+
+    setRelationshipLoading(true)
+    setRelationshipError(null)
+
+    try {
+      const response = await fetch('/api/readings/relationships', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cards,
+          layoutType,
+          question
+        })
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to analyze relationships')
+      }
+
+      const data = await response.json()
+      setRelationshipData(data)
+    } catch (error) {
+      console.error('Relationship analysis error:', error)
+      setRelationshipError(error instanceof Error ? error.message : 'Failed to analyze relationships')
+    } finally {
+      setRelationshipLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (showRelationships && !relationshipData && !relationshipLoading) {
+      analyzeRelationships()
+    }
+  }, [showRelationships])
+
   if (error) {
     return (
       <Card className="border-red-200 bg-red-50 slide-in-up">
@@ -150,6 +213,33 @@ export function AIReadingDisplay({ aiReading, isLoading, error, onRetry, retryCo
             </Badge>
           </div>
         </section>
+
+        {/* Relationship Visualizer Toggle */}
+        <section className="border-t border-slate-700 pt-4">
+          <Button
+            onClick={() => setShowRelationships(!showRelationships)}
+            variant="outline"
+            size="sm"
+            className="border-slate-600 text-slate-300 hover:bg-slate-800"
+          >
+            <Network className="w-4 h-4 mr-2" />
+            {showRelationships ? 'Hide' : 'Show'} Relationship Map
+          </Button>
+        </section>
+
+        {/* Relationship Visualizer */}
+        {showRelationships && (
+          <section className="mt-4">
+            <CardRelationshipVisualizer
+              cards={cards}
+              allCards={allCards}
+              relationships={relationshipData?.relationships || []}
+              summary={relationshipData?.summary || ''}
+              isLoading={relationshipLoading}
+              error={relationshipError}
+            />
+          </section>
+        )}
       </CardContent>
     </Card>
   )

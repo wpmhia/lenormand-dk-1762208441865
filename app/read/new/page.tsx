@@ -375,6 +375,15 @@ export default function NewReadingPage() {
                 error={aiError}
                 onRetry={retryAIAnalysis}
                 retryCount={aiRetryCount}
+                cards={drawnCards.map(card => ({
+                  id: card.id,
+                  name: getCardById(allCards, card.id)?.name || 'Unknown',
+                  position: card.position,
+                  reversed: card.reversed
+                }))}
+                allCards={allCards}
+                layoutType={layoutType}
+                question={question}
               />
 
              {!aiLoading && (
@@ -463,15 +472,24 @@ export default function NewReadingPage() {
                  showShareButton={false}
                />
 
-               {aiReading && (
-                 <AIReadingDisplay
-                   aiReading={aiReading}
-                   isLoading={false}
-                   error={null}
-                   onRetry={retryAIAnalysis}
-                   retryCount={aiRetryCount}
-                 />
-               )}
+                {aiReading && (
+                  <AIReadingDisplay
+                    aiReading={aiReading}
+                    isLoading={false}
+                    error={null}
+                    onRetry={retryAIAnalysis}
+                    retryCount={aiRetryCount}
+                    cards={drawnCards.map(card => ({
+                      id: card.id,
+                      name: getCardById(allCards, card.id)?.name || 'Unknown',
+                      position: card.position,
+                      reversed: card.reversed
+                    }))}
+                    allCards={allCards}
+                    layoutType={layoutType}
+                    question={question}
+                  />
+                )}
 
                <div className="flex gap-4 justify-center print:hidden">
                  <Button
