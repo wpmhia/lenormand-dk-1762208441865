@@ -86,16 +86,16 @@ export default function CardsPage() {
     <div className="min-h-screen bg-slate-950">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2 text-white">Lenormand Intelligence</h1>
-           <p className="text-slate-300 slow-glow">
-             Explore the 36 cards of the Lenormand deck with AI-powered analysis and traditional meanings
-           </p>
+          <h1 className="text-3xl font-bold mb-2 text-white">The Sacred Deck</h1>
+            <p className="text-slate-300 ethereal-glow">
+              Journey through the 36 archetypes that hold the keys to understanding
+            </p>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
           {filteredCards.map((card) => (
             <div key={card.id} className="space-y-1 cursor-pointer group">
-              <Card card={card} size="md" className="group-hover:scale-105 transition-transform mx-auto" />
+              <Card card={card} size="md" className="group-hover:scale-105 transition-all duration-500 mx-auto mystical-float" />
               <div className="text-center">
                 <div className="font-medium text-xs truncate text-white">{card.name}</div>
                 <div className="text-xs text-slate-400">#{card.id}</div>

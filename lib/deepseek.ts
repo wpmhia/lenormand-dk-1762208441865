@@ -150,7 +150,7 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
     // Build the structured payload
     const payload = {
       user_lang: request.userLocale || 'en',
-      tone: 'executive', // Default tone, could be made configurable
+      tone: 'mystical', // Mystical, engaging tone for deeper connection
       question: request.question,
       spread: {
         type: `${request.layoutType}card`,

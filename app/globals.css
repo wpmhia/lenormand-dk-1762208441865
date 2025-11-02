@@ -4,30 +4,30 @@
 
 @layer base {
   :root {
-    /* Dark Mystical Theme */
-    --background: 220 20% 8%;
-    --foreground: 210 40% 98%;
-    --card: 220 25% 12%;
-    --card-foreground: 210 40% 98%;
-    --popover: 220 25% 12%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 280 60% 60%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 220 30% 18%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 220 30% 15%;
-    --muted-foreground: 210 40% 70%;
-    --accent: 280 60% 60%;
-    --accent-foreground: 210 40% 98%;
+    /* Enhanced Dark Mystical Theme */
+    --background: 240 15% 6%;
+    --foreground: 210 45% 95%;
+    --card: 240 20% 10%;
+    --card-foreground: 210 45% 95%;
+    --popover: 240 20% 10%;
+    --popover-foreground: 210 45% 95%;
+    --primary: 280 65% 55%;
+    --primary-foreground: 210 45% 95%;
+    --secondary: 240 25% 15%;
+    --secondary-foreground: 210 45% 95%;
+    --muted: 240 25% 12%;
+    --muted-foreground: 210 35% 65%;
+    --accent: 320 60% 50%;
+    --accent-foreground: 210 45% 95%;
     --destructive: 0 70% 50%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 220 30% 20%;
-    --input: 220 30% 18%;
-    --ring: 280 60% 60%;
-    --chart-1: 280 60% 60%;
+    --destructive-foreground: 210 45% 95%;
+    --border: 240 25% 18%;
+    --input: 240 25% 15%;
+    --ring: 280 65% 55%;
+    --chart-1: 280 65% 55%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
+    --chart-4: 320 60% 50%;
     --chart-5: 340 75% 55%;
     --radius: 0.75rem;
   }
@@ -95,12 +95,46 @@
     100% { transform: scale(1) rotateY(0deg); opacity: 1; }
   }
 
+  @keyframes mystical-float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-12px) rotate(1deg); }
+    66% { transform: translateY(-6px) rotate(-0.5deg); }
+  }
+
+  @keyframes ethereal-glow {
+    0%, 100% {
+      box-shadow: 0 0 15px rgba(139, 92, 246, 0.3), 0 0 30px rgba(139, 92, 246, 0.1);
+      filter: brightness(1) saturate(1);
+    }
+    50% {
+      box-shadow: 0 0 25px rgba(139, 92, 246, 0.5), 0 0 50px rgba(139, 92, 246, 0.2);
+      filter: brightness(1.03) saturate(1.05);
+    }
+  }
+
+  @keyframes gentle-pulse {
+    0%, 100% { opacity: 0.8; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.02); }
+  }
+
   .mystical-glow {
-    animation: mystical-glow 8s ease-in-out infinite;
+    animation: mystical-glow 12s ease-in-out infinite;
   }
 
   .slow-glow {
     animation: mystical-glow 8s ease-in-out infinite;
+  }
+
+  .ethereal-glow {
+    animation: ethereal-glow 10s ease-in-out infinite;
+  }
+
+  .mystical-float {
+    animation: mystical-float 8s ease-in-out infinite;
+  }
+
+  .gentle-pulse {
+    animation: gentle-pulse 6s ease-in-out infinite;
   }
 
   .breathing-glow {

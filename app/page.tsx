@@ -28,18 +28,18 @@ export default function Home() {
               </span>
             </h1>
             <p className="text-lg sm:text-xl lg:text-2xl text-slate-300 mb-12 max-w-3xl mx-auto lg:mx-0 leading-relaxed font-light">
-              Advanced AI interpretation of traditional Lenormand cards.
-              Get personalized insights with machine learning-powered analysis of the 36-card deck.
+              Discover the ancient wisdom of Lenormand through AI-enhanced intuition.
+              Experience personalized guidance where technology meets mystical insight.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
               <Link href="/read/new">
-                <Button size="lg" className="px-10 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-2xl shadow-blue-500/25 font-semibold text-lg transition-all duration-300 hover:scale-105">
-                  ✨ Start AI Reading
+                <Button size="lg" className="px-10 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-2xl shadow-purple-500/25 font-semibold text-lg transition-all duration-500 hover:scale-105 mystical-float">
+                  ✨ Begin Your Journey
                 </Button>
               </Link>
               <Link href="/cards">
-                <Button variant="outline" size="lg" className="px-10 py-4 border-2 border-slate-600 text-slate-300 hover:bg-slate-800 hover:border-slate-500 font-semibold text-lg transition-all duration-300">
-                  🔮 Explore Cards
+                <Button variant="outline" size="lg" className="px-10 py-4 border-2 border-slate-600 text-slate-300 hover:bg-slate-800 hover:border-purple-500 font-semibold text-lg transition-all duration-500 hover:scale-105 gentle-pulse">
+                  🔮 Explore the Cards
                 </Button>
               </Link>
             </div>
@@ -61,8 +61,8 @@ export default function Home() {
         {/* Reading Types */}
         <div className="mb-20 fade-in-scale">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-center mb-4 text-white">AI Reading Options</h2>
-            <p className="text-center text-slate-300 text-lg max-w-2xl mx-auto leading-relaxed">Choose your analysis depth and unlock the wisdom of the cards</p>
+            <h2 className="text-4xl font-bold text-center mb-4 text-white">Choose Your Path</h2>
+            <p className="text-center text-slate-300 text-lg max-w-2xl mx-auto leading-relaxed">Select the depth of insight that calls to you</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               <Link href="/read/new">
@@ -73,14 +73,14 @@ export default function Home() {
                       Quick Analysis
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="pt-0">
-                    <p className="text-sm text-slate-300 mb-4 leading-relaxed">
-                      Past, Present, Future
-                    </p>
-                    <div className="flex items-center text-slate-400 text-sm font-medium">
-                      3 Cards <ArrowRight className="w-4 h-4 ml-2 text-blue-400" />
-                    </div>
-                  </CardContent>
+                   <CardContent className="pt-0">
+                     <p className="text-sm text-slate-300 mb-4 leading-relaxed">
+                       Journey through time's tapestry
+                     </p>
+                     <div className="flex items-center text-slate-400 text-sm font-medium">
+                       3 Cards <ArrowRight className="w-4 h-4 ml-2 text-blue-400" />
+                     </div>
+                   </CardContent>
                 </Card>
               </Link>
 
@@ -92,14 +92,14 @@ export default function Home() {
                       Deep Analysis
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="pt-0">
-                    <p className="text-sm text-slate-300 mb-4 leading-relaxed">
-                      Extended Reading with Challenges
-                    </p>
-                    <div className="flex items-center text-slate-400 text-sm font-medium">
-                      5 Cards <ArrowRight className="w-4 h-4 ml-2 text-purple-400" />
-                    </div>
-                  </CardContent>
+                   <CardContent className="pt-0">
+                     <p className="text-sm text-slate-300 mb-4 leading-relaxed">
+                       Deep exploration with hidden insights
+                     </p>
+                     <div className="flex items-center text-slate-400 text-sm font-medium">
+                       5 Cards <ArrowRight className="w-4 h-4 ml-2 text-purple-400" />
+                     </div>
+                   </CardContent>
                 </Card>
               </Link>
 
@@ -111,14 +111,14 @@ export default function Home() {
                       Comprehensive
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="pt-0">
-                    <p className="text-sm text-slate-300 mb-4 leading-relaxed">
-                      Life Overview Analysis
-                    </p>
-                    <div className="flex items-center text-slate-400 text-sm font-medium">
-                      9 Cards <ArrowRight className="w-4 h-4 ml-2 text-green-400" />
-                    </div>
-                  </CardContent>
+                   <CardContent className="pt-0">
+                     <p className="text-sm text-slate-300 mb-4 leading-relaxed">
+                       Complete life's grand design
+                     </p>
+                     <div className="flex items-center text-slate-400 text-sm font-medium">
+                       9 Cards <ArrowRight className="w-4 h-4 ml-2 text-green-400" />
+                     </div>
+                   </CardContent>
                 </Card>
               </Link>
 
@@ -130,14 +130,14 @@ export default function Home() {
                       Grand Tableau
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="pt-0">
-                    <p className="text-sm text-slate-300 mb-4 leading-relaxed">
-                      Complete Deck Analysis
-                    </p>
-                    <div className="flex items-center text-slate-400 text-sm font-medium">
-                      36 Cards <ArrowRight className="w-4 h-4 ml-2 text-yellow-400" />
-                    </div>
-                  </CardContent>
+                   <CardContent className="pt-0">
+                     <p className="text-sm text-slate-300 mb-4 leading-relaxed">
+                       The complete mystical revelation
+                     </p>
+                     <div className="flex items-center text-slate-400 text-sm font-medium">
+                       36 Cards <ArrowRight className="w-4 h-4 ml-2 text-yellow-400" />
+                     </div>
+                   </CardContent>
                 </Card>
               </Link>
           </div>
@@ -146,8 +146,8 @@ export default function Home() {
         {/* Testimonials Section */}
         <div className="mb-20 slide-in-left">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-center mb-4 text-white">What Our Users Say</h2>
-            <p className="text-center text-slate-300 text-lg max-w-2xl mx-auto leading-relaxed">Join thousands who have discovered clarity through AI-powered Lenormand readings</p>
+            <h2 className="text-4xl font-bold text-center mb-4 text-white">Voices of Discovery</h2>
+            <p className="text-center text-slate-300 text-lg max-w-2xl mx-auto leading-relaxed">Join those who have found deeper understanding through mystical guidance</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <Card className="border-slate-700 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300">
@@ -158,7 +158,7 @@ export default function Home() {
                   ))}
                 </div>
                 <p className="text-slate-300 mb-6 text-base leading-relaxed italic">
-                  "Lenormand Intelligence has helped me make many important decisions. The AI analysis provides accurate insights and confidence about the future."
+                  "Each reading feels like a conversation with ancient wisdom. The insights resonate deeply, guiding me with clarity and understanding."
                 </p>
                 <div className="font-semibold text-white text-lg">Sarah L.</div>
                 <div className="text-sm text-slate-400">New York</div>
@@ -173,7 +173,7 @@ export default function Home() {
                   ))}
                 </div>
                 <p className="text-slate-300 mb-6 text-base leading-relaxed italic">
-                  "The AI-powered analysis helps me understand my circumstances better. It's both insightful and practical, providing concrete guidance."
+                  "The cards speak to me in ways I never imagined. Each reading unfolds like a personal revelation, offering wisdom that feels profoundly true."
                 </p>
                 <div className="font-semibold text-white text-lg">Emma W.</div>
                 <div className="text-sm text-slate-400">London</div>
@@ -188,7 +188,7 @@ export default function Home() {
                   ))}
                 </div>
                 <p className="text-slate-300 mb-6 text-base leading-relaxed italic">
-                  "The AI accuracy is impressive. Whether for relationships or work, the insights have been invaluable. It's become an essential tool."
+                  "There's a magic in these readings that transcends technology. The guidance feels intuitive, wise, and deeply connected to my journey."
                 </p>
                 <div className="font-semibold text-white text-lg">Michael R.</div>
                 <div className="text-sm text-slate-400">Toronto</div>
@@ -200,30 +200,30 @@ export default function Home() {
         {/* FAQ Section */}
         <div className="mb-20 slide-in-up">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-center mb-4 text-white">Frequently Asked Questions</h2>
-            <p className="text-center text-slate-300 text-lg max-w-2xl mx-auto leading-relaxed">Everything you need to know about AI-powered Lenormand readings</p>
+            <h2 className="text-4xl font-bold text-center mb-4 text-white">Wisdom & Guidance</h2>
+            <p className="text-center text-slate-300 text-lg max-w-2xl mx-auto leading-relaxed">Answers to illuminate your journey</p>
           </div>
           <div className="max-w-4xl mx-auto space-y-6">
             <Card className="border-slate-700 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300">
-              <CardHeader className="pb-4">
-                <CardTitle className="text-lg text-white font-semibold">What is Lenormand vs Tarot?</CardTitle>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <p className="text-slate-300 text-base leading-relaxed">
-                  Lenormand uses 36 cards with specific symbols for practical, everyday matters. Unlike Tarot's 78 cards and spiritual themes, Lenormand provides direct, specific guidance ideal for AI analysis.
-                </p>
-              </CardContent>
+               <CardHeader className="pb-4">
+                 <CardTitle className="text-lg text-white font-semibold">The Essence of Lenormand</CardTitle>
+               </CardHeader>
+               <CardContent className="pt-0">
+                 <p className="text-slate-300 text-base leading-relaxed">
+                   Lenormand speaks in the language of everyday symbols - 36 cards that mirror life's practical wisdom. Where Tarot explores the soul's depths, Lenormand illuminates the path ahead with clarity and precision.
+                 </p>
+               </CardContent>
             </Card>
 
             <Card className="border-slate-700 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300">
-              <CardHeader className="pb-4">
-                <CardTitle className="text-lg text-white font-semibold">Benefits of AI-powered readings?</CardTitle>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <p className="text-slate-300 text-base leading-relaxed">
-                  24/7 access with instant AI analysis. Advanced algorithms ensure true randomness while providing deeper insights through machine learning pattern recognition.
-                </p>
-              </CardContent>
+               <CardHeader className="pb-4">
+                 <CardTitle className="text-lg text-white font-semibold">The AI Advantage</CardTitle>
+               </CardHeader>
+               <CardContent className="pt-0">
+                 <p className="text-slate-300 text-base leading-relaxed">
+                   Ancient wisdom meets modern insight. Our AI companions are available whenever intuition calls, blending traditional meanings with sophisticated pattern recognition for guidance that feels both timeless and profoundly personal.
+                 </p>
+               </CardContent>
             </Card>
 
             <Card className="border-slate-700 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300">
@@ -251,16 +251,16 @@ export default function Home() {
         </div>
 
         {/* CTA Section */}
-        <div className="text-center bg-gradient-to-r from-slate-900/50 to-slate-800/30 backdrop-blur-sm rounded-2xl p-12 border border-slate-700 fade-in-scale shadow-2xl">
+        <div className="text-center bg-gradient-to-r from-slate-900/50 to-slate-800/30 backdrop-blur-sm rounded-2xl p-12 border border-slate-700 fade-in-scale shadow-2xl ethereal-glow">
           <h2 className="text-4xl font-bold mb-6 text-white">
-            Experience AI-Powered Insight
+            Begin Your Mystical Journey
           </h2>
           <p className="text-slate-300 mb-8 text-xl max-w-2xl mx-auto leading-relaxed">
-            Join thousands using advanced Lenormand analysis to unlock the wisdom of the cards
+            Let the cards reveal what your soul already knows
           </p>
           <Link href="/read/new">
-            <Button size="lg" className="px-12 py-4 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-2xl shadow-blue-500/25 font-semibold text-lg transition-all duration-300 hover:scale-105">
-              Start Your Analysis
+            <Button size="lg" className="px-12 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-2xl shadow-purple-500/25 font-semibold text-lg transition-all duration-500 hover:scale-105 mystical-float">
+              Discover Your Path
               <ArrowRight className="w-5 h-5 ml-3" />
             </Button>
           </Link>
