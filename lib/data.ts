@@ -146,10 +146,24 @@ export function shuffleCards<T>(array: T[]): T[] {
   return shuffled
 }
 
-// Draw cards for reading
+// Draw cards for reading - ensures complete randomness with no repetition
 export function drawCards(cards: Card[], count: number): ReadingCard[] {
-  const shuffled = shuffleCards(cards).slice(0, count)
-  return shuffled.map((card, index) => ({
+  if (count > cards.length) {
+    throw new Error(`Cannot draw ${count} cards from a deck of ${cards.length}`)
+  }
+
+  // Create a copy of the cards array to avoid modifying the original
+  const availableCards = [...cards]
+  const drawnCards: Card[] = []
+
+  // Draw cards randomly without replacement for complete uniqueness
+  for (let i = 0; i < count; i++) {
+    const randomIndex = Math.floor(Math.random() * availableCards.length)
+    const drawnCard = availableCards.splice(randomIndex, 1)[0]
+    drawnCards.push(drawnCard)
+  }
+
+  return drawnCards.map((card, index) => ({
     id: card.id,
     position: index,
     reversed: Math.random() < 0.3 // 30% chance of reversed
