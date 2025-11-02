@@ -70,13 +70,9 @@ export default function NewReadingPage() {
     }
     setDrawnCards(readingCards)
 
-    // Start AI analysis if available
-    if (isDeepSeekAvailable()) {
-      setStep('ai-analysis')
-      await performAIAnalysis(readingCards)
-    } else {
-      setStep('review')
-    }
+    // Start AI analysis (API route handles availability)
+    setStep('ai-analysis')
+    await performAIAnalysis(readingCards)
   }
 
   const performAIAnalysis = async (readingCards: ReadingCard[]) => {

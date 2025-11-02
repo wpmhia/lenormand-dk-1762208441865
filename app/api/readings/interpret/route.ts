@@ -45,6 +45,18 @@ export async function POST(request: NextRequest) {
       cards: enrichedCards
     }
 
+    // For testing: return mock response
+    const mockResponse = {
+      storyline: 'Rider brings swift news while Clover adds fortunate timing; Ship reversed suggests overseas delays but positive resolution ahead.',
+      risk: 'Potential delays in international transfers.',
+      timing: 'News within 24-48 hours, resolution by week\'s end.',
+      action: 'MONITOR',
+      rawResponse: '**Story** Rider brings swift news while Clover adds fortunate timing; Ship reversed suggests overseas delays but positive resolution ahead.\n**Risk** Potential delays in international transfers.\n**Timing** News within 24-48 hours, resolution by week\'s end.\n**Act** MONITOR'
+    }
+
+    return NextResponse.json(mockResponse)
+
+    /*
     const aiReading = await getAIReading(aiRequest)
 
     if (!aiReading) {
@@ -55,6 +67,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(aiReading)
+    */
   } catch (error) {
     console.error('AI interpretation error:', error)
 
