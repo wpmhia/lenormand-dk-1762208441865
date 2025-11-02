@@ -184,42 +184,51 @@ export default function NewReadingPage() {
 
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-slate-950">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2 text-white">New Lenormand Reading</h1>
-          <p className="text-slate-300">
+      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 relative overflow-hidden">
+        {/* Sensual background elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-20 left-10 w-32 h-32 bg-rose-500/20 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute top-40 right-20 w-24 h-24 bg-amber-400/15 rounded-full blur-2xl animate-pulse" style={{animationDelay: '1s'}}></div>
+          <div className="absolute bottom-32 left-1/4 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
+        </div>
+      <div className="container mx-auto px-4 py-8 max-w-4xl relative z-10">
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-bold mb-4 text-white relative">
+            New Lenormand Reading
+            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-0.5 bg-gradient-to-r from-rose-400 to-purple-400 rounded-full"></div>
+          </h1>
+          <p className="text-slate-200 text-lg italic">
             Let the ancient cards reveal what your heart already knows
           </p>
 
           {/* Progress Indicator */}
-          <div className="mt-6 flex items-center justify-center space-x-4">
-            <div className={`flex items-center ${step === 'setup' ? 'text-blue-400' : 'text-green-400'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step === 'setup' ? 'bg-blue-600' : 'bg-green-600'}`}>
+          <div className="mt-8 flex items-center justify-center space-x-6">
+            <div className={`flex items-center ${step === 'setup' ? 'text-rose-400' : 'text-emerald-400'}`}>
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'setup' ? 'bg-rose-600 border-rose-400 shadow-lg shadow-rose-500/30' : 'bg-emerald-600 border-emerald-400'}`}>
                 1
               </div>
-              <span className="ml-2 text-sm">Setup</span>
+              <span className="ml-3 text-sm font-medium">Setup</span>
             </div>
-            <div className={`w-8 h-0.5 ${step === 'drawing' || step === 'ai-analysis' || step === 'review' || step === 'print' ? 'bg-green-400' : 'bg-slate-600'}`}></div>
-            <div className={`flex items-center ${step === 'drawing' ? 'text-blue-400' : 'text-green-400'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step === 'drawing' ? 'bg-blue-600' : 'bg-green-600'}`}>
+            <div className={`w-12 h-0.5 rounded-full ${step === 'drawing' || step === 'ai-analysis' || step === 'review' || step === 'print' ? 'bg-emerald-400' : 'bg-slate-600'}`}></div>
+            <div className={`flex items-center ${step === 'drawing' ? 'text-amber-400' : 'text-emerald-400'}`}>
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'drawing' ? 'bg-amber-600 border-amber-400 shadow-lg shadow-amber-500/30' : 'bg-emerald-600 border-emerald-400'}`}>
                 2
               </div>
-              <span className="ml-2 text-sm">Draw</span>
+              <span className="ml-3 text-sm font-medium">Draw</span>
             </div>
-            <div className={`w-8 h-0.5 ${step === 'ai-analysis' || step === 'review' || step === 'print' ? 'bg-green-400' : 'bg-slate-600'}`}></div>
-            <div className={`flex items-center ${step === 'ai-analysis' ? 'text-blue-400' : 'text-green-400'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step === 'ai-analysis' ? 'bg-blue-600' : 'bg-green-600'}`}>
+            <div className={`w-12 h-0.5 rounded-full ${step === 'ai-analysis' || step === 'review' || step === 'print' ? 'bg-emerald-400' : 'bg-slate-600'}`}></div>
+            <div className={`flex items-center ${step === 'ai-analysis' ? 'text-purple-400' : 'text-emerald-400'}`}>
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'ai-analysis' ? 'bg-purple-600 border-purple-400 shadow-lg shadow-purple-500/30' : 'bg-emerald-600 border-purple-400'}`}>
                 3
               </div>
-              <span className="ml-2 text-sm">Analyze</span>
+              <span className="ml-3 text-sm font-medium">Analyze</span>
             </div>
-            <div className={`w-8 h-0.5 ${step === 'review' || step === 'print' ? 'bg-green-400' : 'bg-slate-600'}`}></div>
-            <div className={`flex items-center ${step === 'review' ? 'text-blue-400' : 'text-green-400'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step === 'review' ? 'bg-blue-600' : 'bg-green-600'}`}>
+            <div className={`w-12 h-0.5 rounded-full ${step === 'review' || step === 'print' ? 'bg-emerald-400' : 'bg-slate-600'}`}></div>
+            <div className={`flex items-center ${step === 'review' ? 'text-blue-400' : 'text-emerald-400'}`}>
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'review' ? 'bg-blue-600 border-blue-400 shadow-lg shadow-blue-500/30' : 'bg-emerald-600 border-blue-400'}`}>
                 4
               </div>
-              <span className="ml-2 text-sm">Print</span>
+              <span className="ml-3 text-sm font-medium">Print</span>
             </div>
           </div>
         </div>
@@ -241,12 +250,13 @@ export default function NewReadingPage() {
         )}
 
         {step === 'setup' && (
-          <Card className="border-slate-700 bg-slate-900/50">
-            <CardHeader>
-              <CardTitle className="text-white">Question:</CardTitle>
+          <Card className="border-rose-400/20 bg-gradient-to-br from-slate-900/60 via-rose-950/20 to-slate-800/40 backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-transparent opacity-50"></div>
+            <CardHeader className="relative z-10">
+              <CardTitle className="text-rose-200 text-xl">Your Sacred Question:</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="space-y-2">
+            <CardContent className="space-y-6 relative z-10">
+              <div className="space-y-3">
                 <Textarea
                   id="question"
                   value={question}
@@ -255,15 +265,15 @@ export default function NewReadingPage() {
                     setQuestionCharCount(e.target.value.length)
                   }}
                   placeholder="What guidance do the cards have for me today?"
-                  className="bg-slate-900 border-slate-700 text-white placeholder:text-slate-400 min-h-[100px]"
+                  className="bg-slate-900/80 border-rose-400/30 text-white placeholder:text-rose-300/50 min-h-[120px] rounded-xl focus:border-rose-400/60 focus:ring-rose-400/20 resize-none backdrop-blur-sm"
                   maxLength={200}
                   aria-describedby="question-help question-count"
                   required
                 />
-                <div id="question-count" className="text-right text-xs text-slate-400" aria-live="polite">
+                <div id="question-count" className="text-right text-xs text-rose-300/60" aria-live="polite">
                   {questionCharCount}/200 characters
                 </div>
-                <div id="question-help" className="text-xs text-slate-500">
+                <div id="question-help" className="text-xs text-rose-200/70 italic">
                   Let your question breathe, and the cards will whisper their wisdom
                 </div>
                 </div>
@@ -276,34 +286,35 @@ export default function NewReadingPage() {
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="layout">Reading Type:</Label>
-                    <Select value={layoutType.toString()} onValueChange={(value) => setLayoutType(parseInt(value) as 3 | 5 | 9 | 36)}>
-                      <SelectTrigger className="bg-slate-900 border-slate-700 text-white" aria-describedby="layout-help">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {LAYOUTS.map((layout) => (
-                          <SelectItem key={layout.value} value={layout.value.toString()}>
-                            {layout.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <div id="layout-help" className="text-xs text-slate-500">
-                      Choose the number of cards for your reading spread
-                    </div>
+                     <Select value={layoutType.toString()} onValueChange={(value) => setLayoutType(parseInt(value) as 3 | 5 | 9 | 36)}>
+                       <SelectTrigger className="bg-slate-900/80 border-rose-400/30 text-white rounded-xl focus:border-rose-400/60 backdrop-blur-sm" aria-describedby="layout-help">
+                         <SelectValue />
+                       </SelectTrigger>
+                       <SelectContent className="bg-slate-900 border-rose-400/30">
+                         {LAYOUTS.map((layout) => (
+                           <SelectItem key={layout.value} value={layout.value.toString()} className="text-white hover:bg-rose-950/50 focus:bg-rose-950/50">
+                             {layout.label}
+                           </SelectItem>
+                         ))}
+                       </SelectContent>
+                     </Select>
+                     <div id="layout-help" className="text-xs text-rose-200/70 italic">
+                       Choose the number of cards for your reading spread
+                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="allow-reversed">Allow reversed cards</Label>
+                  <div className="flex items-center justify-between p-4 bg-slate-900/40 rounded-xl border border-rose-400/20">
+                    <Label htmlFor="allow-reversed" className="text-rose-200 font-medium">Allow reversed cards</Label>
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Switch
                           id="allow-reversed"
                           checked={allowReversed}
                           onCheckedChange={setAllowReversed}
+                          className="data-[state=checked]:bg-rose-600 data-[state=checked]:border-rose-600"
                         />
                       </TooltipTrigger>
-                      <TooltipContent>
+                      <TooltipContent className="bg-slate-900 border-rose-400/30 text-rose-200">
                         <p>When enabled, cards can appear upside down for additional meaning</p>
                       </TooltipContent>
                     </Tooltip>
@@ -312,22 +323,25 @@ export default function NewReadingPage() {
 
                </div>
 
-               <Button
-                onClick={() => setStep('drawing')}
-                className="w-full bg-blue-600 hover:bg-blue-700"
-                disabled={!question.trim()}
-              >
-                Continue to Draw Cards
-              </Button>
+                <Button
+                 onClick={() => setStep('drawing')}
+                 className="w-full bg-gradient-to-r from-rose-600 to-purple-600 hover:from-rose-700 hover:to-purple-700 text-white shadow-lg shadow-rose-500/30 rounded-xl py-3 font-semibold transition-all duration-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                 disabled={!question.trim()}
+               >
+                 Continue to Draw Cards
+               </Button>
             </CardContent>
           </Card>
         )}
 
         {step === 'drawing' && (
-          <div className="space-y-6">
+          <div className="space-y-8">
             <div className="text-center">
-              <h2 className="text-2xl font-semibold mb-2 text-white">Draw Your Cards</h2>
-              <p className="text-slate-300">
+              <h2 className="text-3xl font-semibold mb-4 text-white relative">
+                Draw Your Cards
+                <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-0.5 bg-gradient-to-r from-amber-400 to-purple-400 rounded-full"></div>
+              </h2>
+              <p className="text-slate-200 text-lg italic">
                 Drawing {layoutType} cards from the sacred deck
               </p>
             </div>
