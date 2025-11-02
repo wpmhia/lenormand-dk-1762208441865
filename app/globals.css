@@ -118,27 +118,27 @@
   }
 
   .mystical-glow {
-    animation: mystical-glow 18s ease-in-out infinite;
+    animation: mystical-glow 10s ease-in-out infinite;
   }
 
   .slow-glow {
-    animation: mystical-glow 12s ease-in-out infinite;
+    animation: mystical-glow 7s ease-in-out infinite;
   }
 
   .ethereal-glow {
-    animation: ethereal-glow 15s ease-in-out infinite;
+    animation: ethereal-glow 8s ease-in-out infinite;
   }
 
   .mystical-float {
-    animation: mystical-float 12s ease-in-out infinite;
+    animation: mystical-float 6s ease-in-out infinite;
   }
 
   .gentle-pulse {
-    animation: gentle-pulse 9s ease-in-out infinite;
+    animation: gentle-pulse 5s ease-in-out infinite;
   }
 
   .breathing-glow {
-    animation: breathing 8s ease-in-out infinite;
+    animation: breathing 6s ease-in-out infinite;
   }
 
   @keyframes breathing {
@@ -153,17 +153,17 @@
   }
 
   .float-animation {
-    animation: float 9s ease-in-out infinite;
+    animation: float 6s ease-in-out infinite;
   }
 
   .shimmer {
     background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.4), transparent);
     background-size: 200% 100%;
-    animation: shimmer 6s infinite;
+    animation: shimmer 4s infinite;
   }
 
   .pulse-glow {
-    animation: pulse-glow 4s ease-in-out infinite;
+    animation: pulse-glow 3s ease-in-out infinite;
   }
 
   .slide-in-up {
