@@ -50,7 +50,7 @@ export default function Home() {
               <img
                 src="/images/hero-image.jpg"
                 alt="Hero Image"
-                className="relative w-full max-w-sm h-auto object-cover rounded-lg shadow-2xl border border-slate-700"
+                className="relative w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg h-auto object-cover rounded-lg shadow-2xl border border-slate-700"
               />
             </div>
           </div>
