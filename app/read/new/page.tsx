@@ -189,7 +189,7 @@ export default function NewReadingPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2 text-white">New Lenormand Reading</h1>
           <p className="text-slate-300">
-            Create a personalized Lenormand card reading with AI-powered analysis
+            Let the ancient cards reveal what your heart already knows
           </p>
 
           {/* Progress Indicator */}
@@ -264,7 +264,7 @@ export default function NewReadingPage() {
                   {questionCharCount}/200 characters
                 </div>
                 <div id="question-help" className="text-xs text-slate-500">
-                  Enter your question to receive personalized guidance from the Lenormand cards
+                  Let your question breathe, and the cards will whisper their wisdom
                 </div>
                 </div>
 
@@ -452,7 +452,7 @@ export default function NewReadingPage() {
                <div className="text-center print:hidden">
                  <h2 className="text-2xl font-semibold mb-2 text-white">Print Your Reading</h2>
                  <p className="text-slate-300">
-                   Your Lenormand reading is ready to print.
+                    Your reading has unfurled, ready to be cherished.
                  </p>
                 </div>
 

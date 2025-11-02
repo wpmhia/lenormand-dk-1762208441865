@@ -39,20 +39,20 @@ export function FeedbackButtons({ readingId, onFeedback }: FeedbackButtonsProps)
 
       // Show success message
       const messages = {
-        positive: 'Thanks for the positive feedback! 👍',
-        neutral: 'Thanks for your feedback. 🤔',
-        negative: 'Thanks for helping us improve. 👎'
+        positive: 'Your kindness warms us. 🌸',
+        neutral: 'We hear you. 🤔',
+        negative: 'Your wisdom guides our growth. 🌱'
       }
 
       toast({
-        title: 'Feedback Recorded',
+        title: 'Whisper Received',
         description: messages[rating],
       })
     } catch (error) {
       console.error('Feedback submission error:', error)
       toast({
-        title: 'Feedback Error',
-        description: 'Could not save feedback. Please try again.',
+        title: 'Gentle Pause',
+        description: 'Your words wait to be heard. Please try again.',
         variant: 'destructive'
       })
       setSubmitted(false)

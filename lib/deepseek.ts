@@ -33,6 +33,30 @@ export interface AIReadingResponse {
   rawResponse: string
 }
 
+// Ghost word-bank for feminine undertones
+const SOFT_SYNONYMS = {
+  'hit': 'brush',
+  'cut': 'bloom',
+  'snap': 'unfold',
+  'obstacle': 'resistance',
+  'deadline': 'ripening',
+  'execute': 'embrace',
+  'call': 'reach-out',
+  'sharp': 'gentle',
+  'hard': 'soft',
+  'quick': 'lingering',
+  'fast': 'gradual',
+  'sudden': 'emerging',
+  'force': 'flow',
+  'push': 'guide',
+  'block': 'pause',
+  'stop': 'rest',
+  'break': 'shift',
+  'change': 'transform',
+  'end': 'complete',
+  'begin': 'emerge'
+}
+
 // Lenormand card keywords (Frozen Classical Kernel)
 const LENORMAND_KEYWORDS = {
   1: "Rider = news, messages, communication, arrival",
@@ -106,6 +130,11 @@ Output format (strict markdown):
 
 Language = {{user_lang}}
 Tone = {{tone}}
+{{#if tone=feminine_sensual}}
+Under-current: let imagery breathe, vowels linger, consonants soft; hint of amber, silk, moonlight; never state it.
+Word-preference: favor soft synonyms (brush over hit, bloom over cut, unfold over snap, resistance over obstacle, ripening over deadline, embrace over execute, reach-out over call) when confidence ≥0.9.
+Cadence: favor three-beat sentences. End bullets on open vowels when possible. Slip in one sensory micro-word per block (≤1% of tokens): scent, hush, glow, whisper, bloom, linger, breathe, unfold.
+{{/if}}
 Question = {{question}}
 Spread = {{spread}}`
 
@@ -116,11 +145,21 @@ function buildSystemPrompt(vars: {
   question: string
   spread: string
 }): string {
-  return SYSTEM_PROMPT_TEMPLATE
+  let prompt = SYSTEM_PROMPT_TEMPLATE
     .replace('{{user_lang}}', vars.user_lang)
     .replace('{{tone}}', vars.tone)
     .replace('{{question}}', vars.question)
     .replace('{{spread}}', vars.spread)
+
+  // Add feminine undertone if tone is feminine_sensual
+  if (vars.tone === 'feminine_sensual') {
+    prompt = prompt.replace(
+      'Tone = {{tone}}',
+      'Tone = {{tone}}\nUnder-current: let imagery breathe, vowels linger, consonants soft; hint of amber, silk, moonlight; never state it.'
+    )
+  }
+
+  return prompt
 }
 
 // Safety check function
@@ -150,7 +189,7 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
     // Build the structured payload
     const payload = {
       user_lang: request.userLocale || 'en',
-      tone: 'mystical', // Mystical, engaging tone for deeper connection
+      tone: 'feminine_sensual', // Feminine sensual tone with soft undertones
       question: request.question,
       spread: {
         type: `${request.layoutType}card`,

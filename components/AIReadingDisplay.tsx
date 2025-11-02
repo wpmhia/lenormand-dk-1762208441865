@@ -121,14 +121,14 @@ export function AIReadingDisplay({
       <Card className="border-slate-700 bg-slate-900/50 fade-in-scale">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
-            <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" aria-hidden="true" />
-            AI Analysis in Progress...
+            <div className="w-5 h-5 border-2 border-amber-400/60 border-t-transparent rounded-full gentle-spin" aria-hidden="true" />
+            Your reading unfolds...
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div className="text-sm text-slate-300 mb-4">
-              Analyzing your cards with advanced AI algorithms...
+              Let the cards reveal their wisdom...
             </div>
             <div className="space-y-3">
               <div className="flex items-center gap-3">

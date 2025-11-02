@@ -137,6 +137,17 @@
     animation: gentle-pulse 5s ease-in-out infinite;
   }
 
+  .gentle-spin {
+    animation: spin 2s linear infinite;
+  }
+
+  .grain-texture {
+    background-image:
+      radial-gradient(circle at 25% 25%, rgba(245, 158, 11, 0.02) 2px, transparent 2px),
+      radial-gradient(circle at 75% 75%, rgba(245, 158, 11, 0.01) 1px, transparent 1px);
+    background-size: 20px 20px, 15px 15px;
+  }
+
   .breathing-glow {
     animation: breathing 6s ease-in-out infinite;
   }
@@ -201,9 +212,9 @@
   }
   
   .card-mystical {
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(168, 85, 247, 0.1));
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.08), rgba(168, 85, 247, 0.08), rgba(245, 158, 11, 0.02));
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(139, 92, 246, 0.3);
+    border: 1px solid rgba(139, 92, 246, 0.25);
   }
   
   /* Scrollbar styling */

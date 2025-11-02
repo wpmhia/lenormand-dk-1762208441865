@@ -177,7 +177,7 @@ export function ReadingViewer({
         <div className="flex justify-center slide-in-left">
           <Button onClick={onShare} variant="outline" size="sm">
             <Share2 className="w-4 h-4 mr-2" />
-            Share Reading
+            Share the Wisdom
           </Button>
         </div>
       )}

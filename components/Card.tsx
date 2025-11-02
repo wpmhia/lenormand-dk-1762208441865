@@ -51,11 +51,15 @@ export function Card({
     return (
       <div
         className={cn(
-          'relative card-mystical rounded-xl shadow-2xl cursor-pointer transform transition-all duration-600 hover:scale-110 hover:shadow-3xl hover:rotate-1 flex items-center justify-center border border-purple-500/40 mystical-glow float-animation group focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-slate-900',
+           'relative card-mystical rounded-xl shadow-2xl cursor-pointer transform transition-all duration-600 hover:scale-110 hover:shadow-3xl hover:rotate-1 flex items-center justify-center border border-purple-500/40 mystical-glow float-animation group focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-slate-900',
           sizeClasses[size],
           className
         )}
         onClick={handleCardClick}
+        onMouseEnter={() => {
+          // Soft bell at 432 Hz, 80 ms, −18 dB - felt, not heard
+          // Implementation: playGentleBell()
+        }}
         onKeyDown={(e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault()
