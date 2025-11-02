@@ -87,9 +87,9 @@ export default function CardsPage() {
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2 text-white">Lenormand Intelligence</h1>
-          <p className="text-slate-300">
-            Explore the 36 cards of the Lenormand deck with AI-powered analysis and traditional meanings
-          </p>
+           <p className="text-slate-300 slow-glow">
+             Explore the 36 cards of the Lenormand deck with AI-powered analysis and traditional meanings
+           </p>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">

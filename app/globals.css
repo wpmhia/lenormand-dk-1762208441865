@@ -99,6 +99,10 @@
     animation: mystical-glow 3s ease-in-out infinite;
   }
 
+  .slow-glow {
+    animation: mystical-glow 6s ease-in-out infinite;
+  }
+
   .float-animation {
     animation: float 6s ease-in-out infinite;
   }
