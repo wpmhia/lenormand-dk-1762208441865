@@ -179,8 +179,7 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
     throw new Error('Cannot provide readings for medical, legal, or sensitive topics. Please consult appropriate professionals.')
   }
 
-  try {
-    // Build the structured payload
+  // Build the structured payload
     const payload = {
       user_lang: request.userLocale || 'en',
       tone: 'feminine_sensual', // Feminine sensual tone with soft undertones
