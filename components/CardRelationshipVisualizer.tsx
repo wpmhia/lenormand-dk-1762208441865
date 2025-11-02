@@ -28,12 +28,12 @@ interface CardRelationshipVisualizerProps {
   cards: ReadingCard[]
   allCards: Card[]
   relationships: CardRelationship[]
-  summary: string
+  summary?: string
   isLoading?: boolean
   error?: string | null
 }
 
-// Custom node component for cards
+// Custom node component for cards - very small as requested
 function CardNode({ data }: { data: { card: ReadingCard; fullCard: Card } }) {
   const { card, fullCard } = data
 
@@ -41,42 +41,33 @@ function CardNode({ data }: { data: { card: ReadingCard; fullCard: Card } }) {
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <div className="bg-slate-800 border border-slate-600 rounded-lg p-3 shadow-lg hover:shadow-xl transition-shadow cursor-pointer min-w-[120px]">
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-2 bg-slate-700 rounded flex items-center justify-center">
-                <img
-                  src={`/data/images/cards/${String(card.id).padStart(2, '0')}-${fullCard.name.toLowerCase()}.png`}
-                  alt={fullCard.name}
-                  className="w-full h-full object-cover rounded"
-                  onError={(e) => {
-                    // Fallback to text if image fails
-                    e.currentTarget.style.display = 'none'
-                    e.currentTarget.nextElementSibling!.textContent = fullCard.name
-                  }}
-                />
-                <span className="text-xs text-slate-300 hidden">{fullCard.name}</span>
-              </div>
-              <div className="text-xs font-medium text-slate-200">
-                {fullCard.name}
-              </div>
-              {card.reversed && (
-                <Badge variant="secondary" className="text-xs mt-1 bg-amber-600">
-                  Rev
-                </Badge>
-              )}
-              <div className="text-xs text-slate-400 mt-1">
-                Pos {card.position}
-              </div>
+          <div className="bg-slate-800 border border-slate-600 rounded p-0.5 shadow-sm hover:shadow-md transition-shadow cursor-pointer w-4 h-4 flex flex-col items-center justify-center">
+            <div className="w-2 h-2 mb-0.5 bg-slate-700 rounded flex items-center justify-center overflow-hidden">
+              <img
+                src={`/data/images/cards/${String(card.id).padStart(2, '0')}-${fullCard.name.toLowerCase()}.png`}
+                alt={fullCard.name}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  // Fallback to text if image fails
+                  e.currentTarget.style.display = 'none'
+                  e.currentTarget.nextElementSibling!.textContent = fullCard.name.substring(0, 2)
+                }}
+              />
+              <span className="text-[4px] text-slate-300 font-bold">{fullCard.name.substring(0, 2)}</span>
+            </div>
+            <div className="text-[4px] font-medium text-slate-300 leading-tight text-center">
+              {card.reversed ? `${fullCard.name.substring(0, 3)}*` : fullCard.name.substring(0, 4)}
             </div>
           </div>
         </TooltipTrigger>
         <TooltipContent>
           <div className="max-w-xs">
-            <div className="font-semibold">{fullCard.name}</div>
-            <div className="text-sm text-slate-300 mt-1">{fullCard.uprightMeaning}</div>
+            <div className="font-semibold text-sm">{fullCard.name}</div>
+            <div className="text-xs text-slate-300 mt-1">{fullCard.uprightMeaning}</div>
             {card.reversed && (
-              <div className="text-sm text-amber-400 mt-1">Reversed</div>
+              <div className="text-xs text-amber-400 mt-1">Reversed</div>
             )}
+            <div className="text-xs text-slate-400 mt-1">Position: {card.position}</div>
           </div>
         </TooltipContent>
       </Tooltip>
@@ -87,15 +78,6 @@ function CardNode({ data }: { data: { card: ReadingCard; fullCard: Card } }) {
 // Node types for React Flow
 const nodeTypes = {
   cardNode: CardNode,
-}
-
-interface CardRelationshipVisualizerProps {
-  cards: ReadingCard[]
-  allCards: Card[]
-  relationships: CardRelationship[]
-  summary: string
-  isLoading?: boolean
-  error?: string | null
 }
 
 export function CardRelationshipVisualizer({
@@ -114,7 +96,7 @@ export function CardRelationshipVisualizer({
 
       // Position cards in a circle or grid based on layout
       const angle = (index / cards.length) * 2 * Math.PI
-      const radius = 200
+      const radius = 120
       const x = 400 + radius * Math.cos(angle)
       const y = 300 + radius * Math.sin(angle)
 

@@ -99,7 +99,7 @@ export function AIReadingDisplay({
                 variant="outline"
                 size="sm"
                 className="border-red-300 text-red-600 hover:bg-red-50"
-                aria-label="Retry AI analysis"
+                aria-label="Seek wisdom again"
               >
                 <AlertTriangle className="w-4 h-4 mr-2" />
                 Retry Analysis
@@ -107,7 +107,7 @@ export function AIReadingDisplay({
             )}
             {retryCount >= 3 && (
               <p className="text-xs text-red-500">
-                Maximum retry attempts reached. Please try again later or continue without AI analysis.
+                The mystical connection needs a moment. Please try again later or continue with your intuition.
               </p>
             )}
           </div>

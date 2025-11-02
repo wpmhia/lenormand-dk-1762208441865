@@ -19,7 +19,7 @@ export default function Home() {
         <div className="grid lg:grid-cols-2 gap-16 items-center mb-20 slide-in-up">
           <div className="text-center lg:text-left space-y-8">
             <Badge className="mb-8 bg-gradient-to-r from-blue-600/20 to-purple-600/20 text-blue-300 border-blue-500/30 px-6 py-3 text-sm font-semibold tracking-wide uppercase" variant="secondary">
-              ✨ AI-Powered Lenormand Analysis
+              ✨ Mystical Lenormand Wisdom
             </Badge>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-12 text-white leading-tight">
               Lenormand
@@ -272,7 +272,7 @@ export default function Home() {
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto">
             <p className="text-slate-400 mb-6 text-lg font-light">
-              © 2024 Lenormand Intelligence - AI-Powered Lenormand Analysis
+              © 2024 Lenormand Intelligence - Mystical Card Wisdom
             </p>
             <div className="flex gap-8 justify-center text-sm">
               <Link href="/read/new" className="text-slate-400 hover:text-blue-400 transition-colors font-medium">

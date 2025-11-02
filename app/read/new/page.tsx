@@ -328,7 +328,7 @@ export default function NewReadingPage() {
             <div className="text-center">
               <h2 className="text-2xl font-semibold mb-2 text-white">Draw Your Cards</h2>
               <p className="text-slate-300">
-                Drawing {layoutType} cards for your AI-powered reading
+                Drawing {layoutType} cards from the sacred deck
               </p>
             </div>
 
@@ -348,9 +348,9 @@ export default function NewReadingPage() {
                  <Sparkles className="w-6 h-6 text-blue-400" />
                  AI Analysis
                </h2>
-               <p className="text-slate-300">
-                 Analyzing your {layoutType}-card spread with advanced AI
-               </p>
+                <p className="text-slate-300">
+                  The sibyl weaves wisdom from your {layoutType} sacred cards
+                </p>
              </div>
 
              <ReadingViewer
