@@ -281,7 +281,7 @@ export default function NewReadingPage() {
 
          {step === 'ai-analysis' && (
            <div className="space-y-6">
-             <div className="text-center">
+              <div className="text-center">
                <h2 className="text-2xl font-semibold mb-2 text-white flex items-center justify-center gap-2">
                  <Sparkles className="w-6 h-6 text-blue-400" />
                  AI Analysis
@@ -294,7 +294,7 @@ export default function NewReadingPage() {
              <ReadingViewer
                reading={{
                  id: 'temp',
-                 title: question,
+                 title: 'Your Reading',
                  question,
                  layoutType,
                  cards: drawnCards,

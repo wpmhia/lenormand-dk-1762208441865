@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
 
     if (!aiReading) {
       return NextResponse.json(
-        { error: 'AI interpretation unavailable. Please check your configuration.' },
+        { error: 'AI interpretation unavailable. Please add your DEEPSEEK_API_KEY to the .env file to enable AI-powered readings.' },
         { status: 503 }
       )
     }
