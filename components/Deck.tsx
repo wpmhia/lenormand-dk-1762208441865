@@ -88,14 +88,15 @@ export function Deck({
   return (
     <div className="space-y-6">
       {/* Controls */}
-      <div className="flex gap-3 justify-center">
+      <div className="flex gap-3 justify-center slide-in-up">
         <Button
           onClick={shuffle}
           disabled={isShuffling || deck.length < drawCount}
           variant="outline"
           size="sm"
+          aria-label={isShuffling ? 'Shuffling deck...' : 'Shuffle the deck to randomize card order'}
         >
-          <Shuffle className={`w-4 h-4 mr-2 ${isShuffling ? 'animate-spin' : ''}`} />
+          <Shuffle className={`w-4 h-4 mr-2 ${isShuffling ? 'animate-spin' : ''}`} aria-hidden="true" />
           Shuffle
         </Button>
         
@@ -103,8 +104,9 @@ export function Deck({
           onClick={drawCards}
           disabled={isDrawing || deck.length < drawCount}
           size="sm"
+          aria-label={isDrawing ? `Drawing ${drawCount} cards...` : `Draw ${drawCount} cards from the deck`}
         >
-          <Play className={`w-4 h-4 mr-2 ${isDrawing ? 'animate-pulse' : ''}`} />
+          <Play className={`w-4 h-4 mr-2 ${isDrawing ? 'animate-pulse' : ''}`} aria-hidden="true" />
           Draw {drawCount} Cards
         </Button>
         
@@ -113,6 +115,7 @@ export function Deck({
             onClick={reset}
             variant="outline"
             size="sm"
+            aria-label="Reset deck and clear drawn cards"
           >
             Reset
           </Button>
@@ -120,7 +123,7 @@ export function Deck({
       </div>
 
       {/* Deck Display */}
-      <div className="flex justify-center">
+      <div className="flex justify-center fade-in-scale">
         <div className="relative">
           {/* Stack effect for remaining cards */}
           {deck.length > 0 && (
@@ -163,7 +166,7 @@ export function Deck({
 
       {/* Drawn Cards */}
       {drawnCards.length > 0 && (
-        <div className="space-y-4">
+        <div className="space-y-4 slide-in-up">
           <h3 className="text-lg font-semibold text-center">Drawn Cards</h3>
           <div className="flex flex-wrap justify-center gap-4">
             {drawnCards.map((item, index) => (
@@ -188,7 +191,7 @@ export function Deck({
       )}
 
       {/* Status */}
-      <div className="text-center text-sm text-gray-600">
+      <div className="text-center text-sm text-gray-600 slide-in-left">
         {deck.length === 0 && drawnCards.length === 0 && (
           <p>No cards in deck</p>
         )}

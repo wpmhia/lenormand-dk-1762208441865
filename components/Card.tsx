@@ -51,11 +51,20 @@ export function Card({
     return (
       <div
         className={cn(
-          'relative card-mystical rounded-xl shadow-2xl cursor-pointer transform transition-all duration-500 hover:scale-110 hover:shadow-3xl hover:rotate-1 flex items-center justify-center border border-purple-500/40 mystical-glow float-animation group',
+          'relative card-mystical rounded-xl shadow-2xl cursor-pointer transform transition-all duration-500 hover:scale-110 hover:shadow-3xl hover:rotate-1 flex items-center justify-center border border-purple-500/40 mystical-glow float-animation group focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-slate-900',
           sizeClasses[size],
           className
         )}
         onClick={handleCardClick}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            handleCardClick()
+          }
+        }}
+        tabIndex={0}
+        role="button"
+        aria-label="Lenormand card back. Click to draw or select card"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-purple-900/90 via-blue-900/90 to-slate-900/90 shimmer rounded-xl"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-transparent via-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
@@ -73,12 +82,21 @@ export function Card({
     <>
       <div
         className={cn(
-          'relative card-mystical rounded-xl shadow-2xl cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-3xl overflow-hidden mystical-glow',
+          'relative card-mystical rounded-xl shadow-2xl cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-3xl overflow-hidden mystical-glow focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900',
           sizeClasses[size],
           reversed && 'rotate-180',
           className
         )}
         onClick={handleCardClick}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            handleCardClick()
+          }
+        }}
+        tabIndex={0}
+        role="button"
+        aria-label={`${card.name} card${reversed ? ' (reversed)' : ''}. Click to ${onClick ? 'select' : 'view details'}`}
       >
         {/* Card Image */}
         <div className="relative w-full h-full rounded-lg overflow-hidden bg-white">

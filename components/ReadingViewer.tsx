@@ -155,7 +155,7 @@ export function ReadingViewer({
     <div className="space-y-6">
       {/* Reading Header */}
       {showReadingHeader && (
-        <div className="text-center space-y-2">
+        <div className="text-center space-y-2 slide-in-up">
           <h2 className="text-2xl font-bold">{reading.title}</h2>
           {reading.question && reading.question !== reading.title && (
             <p className="text-gray-600 italic">"{reading.question}"</p>
@@ -174,7 +174,7 @@ export function ReadingViewer({
 
       {/* Share Button */}
       {showShareButton && onShare && (
-        <div className="flex justify-center">
+        <div className="flex justify-center slide-in-left">
           <Button onClick={onShare} variant="outline" size="sm">
             <Share2 className="w-4 h-4 mr-2" />
             Share Reading
@@ -183,7 +183,7 @@ export function ReadingViewer({
       )}
 
       {/* Cards Layout */}
-      <div className="py-6">
+      <div className="py-6 fade-in-scale">
         {renderLayout()}
       </div>
 
@@ -198,7 +198,7 @@ export function ReadingViewer({
 
       {/* Combinations Panel */}
       {selectedCard && (
-        <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+        <div className="mt-6 p-4 bg-gray-50 rounded-lg slide-in-up">
           <h3 className="font-semibold mb-3">Card Combinations</h3>
           <div className="space-y-2">
             {(() => {

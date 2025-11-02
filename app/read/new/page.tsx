@@ -16,6 +16,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Loader2, Save, Eye, Sparkles } from 'lucide-react'
 import { getCards, drawCards, saveReading, generateSlug, createShareableUrl, getCardById } from '@/lib/data'
 import { getAIReading, AIReadingRequest, AIReadingResponse, isDeepSeekAvailable } from '@/lib/deepseek'
@@ -48,6 +50,8 @@ export default function NewReadingPage() {
   const [aiReading, setAiReading] = useState<AIReadingResponse | null>(null)
   const [aiLoading, setAiLoading] = useState(false)
   const [aiError, setAiError] = useState<string | null>(null)
+  const [aiRetryCount, setAiRetryCount] = useState(0)
+  const [showStartOverConfirm, setShowStartOverConfirm] = useState(false)
 
   useEffect(() => {
     fetchCards()
@@ -75,9 +79,13 @@ export default function NewReadingPage() {
     await performAIAnalysis(readingCards)
   }
 
-  const performAIAnalysis = async (readingCards: ReadingCard[]) => {
+  const performAIAnalysis = async (readingCards: ReadingCard[], isRetry = false) => {
     setAiLoading(true)
     setAiError(null)
+
+    if (!isRetry) {
+      setAiRetryCount(0)
+    }
 
     try {
       const aiRequest: AIReadingRequest = {
@@ -93,11 +101,17 @@ export default function NewReadingPage() {
         userLocale: navigator.language
       }
 
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 30000) // 30 second timeout
+
       const response = await fetch('/api/readings/interpret', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(aiRequest)
+        body: JSON.stringify(aiRequest),
+        signal: controller.signal
       })
+
+      clearTimeout(timeoutId)
 
       if (!response.ok) {
         const errorData = await response.json()
@@ -106,11 +120,29 @@ export default function NewReadingPage() {
 
       const aiResult = await response.json()
       setAiReading(aiResult)
+      setAiRetryCount(0) // Reset on success
     } catch (error) {
       console.error('AI analysis error:', error)
-      setAiError(error instanceof Error ? error.message : 'AI analysis failed')
+      let errorMessage = 'AI analysis failed'
+
+      if (error instanceof Error) {
+        if (error.name === 'AbortError') {
+          errorMessage = 'AI analysis timed out. Please try again.'
+        } else {
+          errorMessage = error.message
+        }
+      }
+
+      setAiError(errorMessage)
+      setAiRetryCount(prev => prev + 1)
     } finally {
       setAiLoading(false)
+    }
+  }
+
+  const retryAIAnalysis = () => {
+    if (drawnCards.length > 0) {
+      performAIAnalysis(drawnCards, true)
     }
   }
 
@@ -149,6 +181,10 @@ export default function NewReadingPage() {
   }
 
   const handleStartOver = () => {
+    setShowStartOverConfirm(true)
+  }
+
+  const confirmStartOver = () => {
     setDrawnCards([])
     setSavedReading(null)
     setStep('setup')
@@ -162,6 +198,7 @@ export default function NewReadingPage() {
     setAiReading(null)
     setAiLoading(false)
     setAiError(null)
+    setShowStartOverConfirm(false)
   }
 
   const handleViewReading = () => {
@@ -173,14 +210,62 @@ export default function NewReadingPage() {
   
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <TooltipProvider>
+      <div className="min-h-screen bg-slate-950">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2 text-white">New Lenormand Reading</h1>
           <p className="text-slate-300">
             Create a personalized Lenormand card reading with AI-powered analysis
           </p>
+
+          {/* Progress Indicator */}
+          <div className="mt-6 flex items-center justify-center space-x-4">
+            <div className={`flex items-center ${step === 'setup' ? 'text-blue-400' : 'text-green-400'}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step === 'setup' ? 'bg-blue-600' : 'bg-green-600'}`}>
+                1
+              </div>
+              <span className="ml-2 text-sm">Setup</span>
+            </div>
+            <div className={`w-8 h-0.5 ${step === 'drawing' || step === 'ai-analysis' || step === 'review' || step === 'saved' ? 'bg-green-400' : 'bg-slate-600'}`}></div>
+            <div className={`flex items-center ${step === 'drawing' ? 'text-blue-400' : 'text-green-400'}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step === 'drawing' ? 'bg-blue-600' : 'bg-green-600'}`}>
+                2
+              </div>
+              <span className="ml-2 text-sm">Draw</span>
+            </div>
+            <div className={`w-8 h-0.5 ${step === 'ai-analysis' || step === 'review' || step === 'saved' ? 'bg-green-400' : 'bg-slate-600'}`}></div>
+            <div className={`flex items-center ${step === 'ai-analysis' ? 'text-blue-400' : 'text-green-400'}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step === 'ai-analysis' ? 'bg-blue-600' : 'bg-green-600'}`}>
+                3
+              </div>
+              <span className="ml-2 text-sm">Analyze</span>
+            </div>
+            <div className={`w-8 h-0.5 ${step === 'review' || step === 'saved' ? 'bg-green-400' : 'bg-slate-600'}`}></div>
+            <div className={`flex items-center ${step === 'review' ? 'text-blue-400' : 'text-green-400'}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step === 'review' ? 'bg-blue-600' : 'bg-green-600'}`}>
+                4
+              </div>
+              <span className="ml-2 text-sm">Save</span>
+            </div>
+          </div>
         </div>
+
+        {error && (
+          <Alert className="border-red-200 bg-red-50 mb-6">
+            <AlertDescription className="text-red-800">
+              {error}
+              <Button
+                variant="link"
+                size="sm"
+                onClick={() => setError('')}
+                className="ml-2 text-red-600 hover:text-red-800 p-0 h-auto"
+              >
+                Dismiss
+              </Button>
+            </AlertDescription>
+          </Alert>
+        )}
 
         {step === 'setup' && (
           <Card className="border-slate-700 bg-slate-900/50">
@@ -199,9 +284,14 @@ export default function NewReadingPage() {
                   placeholder="What guidance do the cards have for me today?"
                   className="bg-slate-900 border-slate-700 text-white placeholder:text-slate-400 min-h-[100px]"
                   maxLength={200}
+                  aria-describedby="question-help question-count"
+                  required
                 />
-                <div className="text-right text-xs text-slate-400">
-                  {questionCharCount}/200
+                <div id="question-count" className="text-right text-xs text-slate-400" aria-live="polite">
+                  {questionCharCount}/200 characters
+                </div>
+                <div id="question-help" className="text-xs text-slate-500">
+                  Enter your question to receive personalized guidance from the Lenormand cards
                 </div>
                 </div>
 
@@ -211,39 +301,56 @@ export default function NewReadingPage() {
                 />
 
                 <div className="space-y-4">
-                 <div className="space-y-2">
-                   <Label htmlFor="layout">Reading Type:</Label>
-                   <Select value={layoutType.toString()} onValueChange={(value) => setLayoutType(parseInt(value) as 3 | 5 | 9 | 36)}>
-                     <SelectTrigger className="bg-slate-900 border-slate-700 text-white">
-                       <SelectValue />
-                     </SelectTrigger>
-                     <SelectContent>
-                       {LAYOUTS.map((layout) => (
-                         <SelectItem key={layout.value} value={layout.value.toString()}>
-                           {layout.label}
-                         </SelectItem>
-                       ))}
-                     </SelectContent>
-                   </Select>
-                 </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="layout">Reading Type:</Label>
+                    <Select value={layoutType.toString()} onValueChange={(value) => setLayoutType(parseInt(value) as 3 | 5 | 9 | 36)}>
+                      <SelectTrigger className="bg-slate-900 border-slate-700 text-white" aria-describedby="layout-help">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {LAYOUTS.map((layout) => (
+                          <SelectItem key={layout.value} value={layout.value.toString()}>
+                            {layout.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <div id="layout-help" className="text-xs text-slate-500">
+                      Choose the number of cards for your reading spread
+                    </div>
+                  </div>
 
-                 <div className="flex items-center justify-between">
-                   <Label htmlFor="allow-reversed">Allow reversed cards</Label>
-                   <Switch
-                     id="allow-reversed"
-                     checked={allowReversed}
-                     onCheckedChange={setAllowReversed}
-                   />
-                 </div>
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="allow-reversed">Allow reversed cards</Label>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Switch
+                          id="allow-reversed"
+                          checked={allowReversed}
+                          onCheckedChange={setAllowReversed}
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>When enabled, cards can appear upside down for additional meaning</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
 
-                 <div className="flex items-center justify-between">
-                   <Label htmlFor="is-public">Make reading shareable</Label>
-                   <Switch
-                     id="is-public"
-                     checked={isPublic}
-                     onCheckedChange={setIsPublic}
-                   />
-                 </div>
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="is-public">Make reading shareable</Label>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Switch
+                          id="is-public"
+                          checked={isPublic}
+                          onCheckedChange={setIsPublic}
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Allow others to view this reading via a shareable link</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
                </div>
 
                <Button
@@ -303,11 +410,13 @@ export default function NewReadingPage() {
                showShareButton={false}
              />
 
-             <AIReadingDisplay
-               aiReading={aiReading}
-               isLoading={aiLoading}
-               error={aiError}
-             />
+              <AIReadingDisplay
+                aiReading={aiReading}
+                isLoading={aiLoading}
+                error={aiError}
+                onRetry={retryAIAnalysis}
+                retryCount={aiRetryCount}
+              />
 
              {!aiLoading && (
                <div className="flex gap-4 justify-center">
@@ -394,6 +503,8 @@ export default function NewReadingPage() {
                   aiReading={aiReading}
                   isLoading={false}
                   error={null}
+                  onRetry={retryAIAnalysis}
+                  retryCount={aiRetryCount}
                 />
               )}
 
@@ -435,9 +546,37 @@ export default function NewReadingPage() {
                  </div>
                </CardContent>
              </Card>
-           </div>
-         )}
-       </div>
-    </div>
-  )
-}
+            </div>
+          )}
+
+          {/* Start Over Confirmation Dialog */}
+          <Dialog open={showStartOverConfirm} onOpenChange={setShowStartOverConfirm}>
+            <DialogContent className="bg-slate-900 border-slate-700">
+              <DialogHeader>
+                <DialogTitle className="text-white">Start Over?</DialogTitle>
+                <DialogDescription className="text-slate-300">
+                  This will reset your current reading and all progress. This action cannot be undone.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowStartOverConfirm(false)}
+                  className="border-slate-700 text-slate-300 hover:bg-slate-800"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={confirmStartOver}
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  Start Over
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
+      </div>
+    </TooltipProvider>
+   )
+ }
