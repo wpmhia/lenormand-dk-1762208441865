@@ -22,7 +22,7 @@ export default function RootLayout({
           {children}
         </div>
         <Toaster />
-        <script src="https://cdn.jsdelivr.net/gh/IdeavoAI/ideavo-scripts@latest/scripts/ideavo.min.js"></script>
+
       </body>
     </html>
   );

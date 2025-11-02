@@ -158,7 +158,7 @@ export function ReadingViewer({
         <div className="text-center space-y-2 slide-in-up">
           <h2 className="text-2xl font-bold">{reading.title}</h2>
           {reading.question && reading.question !== reading.title && (
-            <p className="text-gray-600 italic">"{reading.question}"</p>
+             <p className="text-gray-600 italic">&ldquo;{reading.question}&rdquo;</p>
           )}
           <div className="flex items-center justify-center gap-4 text-sm text-gray-500">
             <div className="flex items-center gap-1">

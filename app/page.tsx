@@ -92,7 +92,7 @@ export default function Home() {
                   </CardHeader>
                    <CardContent className="pt-0 relative z-10">
                      <p className="text-sm text-slate-200 mb-4 leading-relaxed italic">
-                       Journey through time's tapestry
+                        Journey through time&apos;s tapestry
                      </p>
                      <div className="flex items-center text-rose-300/80 text-sm font-medium">
                        3 Cards <ArrowRight className="w-4 h-4 ml-2 text-rose-400 group-hover:translate-x-1 transition-transform duration-300" />
@@ -132,7 +132,7 @@ export default function Home() {
                   </CardHeader>
                    <CardContent className="pt-0 relative z-10">
                      <p className="text-sm text-slate-200 mb-4 leading-relaxed italic">
-                       Complete life's grand design
+                        Complete life&apos;s grand design
                      </p>
                      <div className="flex items-center text-emerald-300/80 text-sm font-medium">
                        9 Cards <ArrowRight className="w-4 h-4 ml-2 text-emerald-400 group-hover:translate-x-1 transition-transform duration-300" />
@@ -183,7 +183,7 @@ export default function Home() {
                   ))}
                 </div>
                 <p className="text-slate-200 mb-6 text-base leading-relaxed italic">
-                  "Each reading feels like a conversation with ancient wisdom. The insights resonate deeply, guiding me with clarity and understanding."
+                   &ldquo;Each reading feels like a conversation with ancient wisdom. The insights resonate deeply, guiding me with clarity and understanding.&rdquo;
                 </p>
                 <div className="font-semibold text-rose-200 text-lg">Sarah L.</div>
                 <div className="text-sm text-rose-300/60">New York</div>
@@ -199,7 +199,7 @@ export default function Home() {
                   ))}
                 </div>
                 <p className="text-slate-200 mb-6 text-base leading-relaxed italic">
-                  "The cards speak to me in ways I never imagined. Each reading unfolds like a personal revelation, offering wisdom that feels profoundly true."
+                   &ldquo;The cards speak to me in ways I never imagined. Each reading unfolds like a personal revelation, offering wisdom that feels profoundly true.&rdquo;
                 </p>
                 <div className="font-semibold text-amber-200 text-lg">Emma W.</div>
                 <div className="text-sm text-amber-300/60">London</div>
@@ -215,7 +215,7 @@ export default function Home() {
                   ))}
                 </div>
                 <p className="text-slate-200 mb-6 text-base leading-relaxed italic">
-                  "There's a magic in these readings that transcends technology. The guidance feels intuitive, wise, and deeply connected to my journey."
+                   &ldquo;There&apos;s a magic in these readings that transcends technology. The guidance feels intuitive, wise, and deeply connected to my journey.&rdquo;
                 </p>
                 <div className="font-semibold text-purple-200 text-lg">Michael R.</div>
                 <div className="text-sm text-purple-300/60">Toronto</div>
@@ -242,7 +242,7 @@ export default function Home() {
                </CardHeader>
                <CardContent className="pt-0 relative z-10">
                  <p className="text-slate-200 text-base leading-relaxed italic">
-                   Lenormand speaks in the language of everyday symbols - 36 cards that mirror life's practical wisdom. Where Tarot explores the soul's depths, Lenormand illuminates the path ahead with clarity and precision.
+                    Lenormand speaks in the language of everyday symbols &mdash; 36 cards that mirror life&apos;s practical wisdom. Where Tarot explores the soul&apos;s depths, Lenormand illuminates the path ahead with clarity and precision.
                  </p>
                </CardContent>
             </Card>
@@ -266,7 +266,7 @@ export default function Home() {
               </CardHeader>
               <CardContent className="pt-0 relative z-10">
                 <p className="text-slate-200 text-base leading-relaxed italic">
-                  Click "Start AI Reading" above. Focus on your question and let our algorithms select and analyze your cards. No signup or payment required.
+                   Click &ldquo;Start AI Reading&rdquo; above. Focus on your question and let our algorithms select and analyze your cards. No signup or payment required.
                 </p>
               </CardContent>
             </Card>
