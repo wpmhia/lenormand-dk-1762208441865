@@ -33,12 +33,12 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
               <Link href="/read/new">
-                <Button size="lg" className="px-10 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-2xl shadow-purple-500/25 font-semibold text-lg transition-all duration-500 hover:scale-105 mystical-float">
+                <Button size="lg" className="px-10 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-2xl shadow-purple-500/25 font-semibold text-lg transition-all duration-800 hover:scale-105 mystical-float">
                   ✨ Begin Your Journey
                 </Button>
               </Link>
               <Link href="/cards">
-                <Button variant="outline" size="lg" className="px-10 py-4 border-2 border-slate-600 text-slate-300 hover:bg-slate-800 hover:border-purple-500 font-semibold text-lg transition-all duration-500 hover:scale-105 gentle-pulse">
+                <Button variant="outline" size="lg" className="px-10 py-4 border-2 border-slate-600 text-slate-300 hover:bg-slate-800 hover:border-purple-500 font-semibold text-lg transition-all duration-800 hover:scale-105 gentle-pulse">
                   🔮 Explore the Cards
                 </Button>
               </Link>
@@ -66,7 +66,7 @@ export default function Home() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               <Link href="/read/new">
-                <Card className="hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-300 cursor-pointer group border border-slate-700 hover:border-blue-500/50 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm min-h-[160px] hover:scale-105">
+                <Card className="hover:shadow-xl hover:shadow-blue-500/10 transition-all duration-500 cursor-pointer group border border-slate-700 hover:border-blue-500/50 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm min-h-[160px] hover:scale-105">
                   <CardHeader className="pb-4">
                     <CardTitle className="flex items-center gap-3 group-hover:text-blue-400 text-lg text-white font-semibold">
                       <Star className="w-5 h-5 text-blue-400" />
@@ -85,7 +85,7 @@ export default function Home() {
               </Link>
 
               <Link href="/read/new">
-                <Card className="hover:shadow-xl hover:shadow-purple-500/10 transition-all duration-300 cursor-pointer group border border-slate-700 hover:border-purple-500/50 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm min-h-[160px] hover:scale-105">
+                <Card className="hover:shadow-xl hover:shadow-purple-500/10 transition-all duration-500 cursor-pointer group border border-slate-700 hover:border-purple-500/50 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm min-h-[160px] hover:scale-105">
                   <CardHeader className="pb-4">
                     <CardTitle className="flex items-center gap-3 group-hover:text-purple-400 text-lg text-white font-semibold">
                       <Heart className="w-5 h-5 text-purple-400" />
@@ -104,7 +104,7 @@ export default function Home() {
               </Link>
 
               <Link href="/read/new">
-                <Card className="hover:shadow-xl hover:shadow-green-500/10 transition-all duration-300 cursor-pointer group border border-slate-700 hover:border-green-500/50 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm min-h-[160px] hover:scale-105">
+                <Card className="hover:shadow-xl hover:shadow-green-500/10 transition-all duration-500 cursor-pointer group border border-slate-700 hover:border-green-500/50 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm min-h-[160px] hover:scale-105">
                   <CardHeader className="pb-4">
                     <CardTitle className="flex items-center gap-3 group-hover:text-green-400 text-lg text-white font-semibold">
                       <Shield className="w-5 h-5 text-green-400" />
@@ -123,7 +123,7 @@ export default function Home() {
               </Link>
 
               <Link href="/read/new">
-                <Card className="hover:shadow-xl hover:shadow-yellow-500/10 transition-all duration-300 cursor-pointer group border border-slate-700 hover:border-yellow-500/50 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm min-h-[160px] hover:scale-105">
+                <Card className="hover:shadow-xl hover:shadow-yellow-500/10 transition-all duration-500 cursor-pointer group border border-slate-700 hover:border-yellow-500/50 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm min-h-[160px] hover:scale-105">
                   <CardHeader className="pb-4">
                     <CardTitle className="flex items-center gap-3 group-hover:text-yellow-400 text-lg text-white font-semibold">
                       <Sparkles className="w-5 h-5 text-yellow-400" />
@@ -150,7 +150,7 @@ export default function Home() {
             <p className="text-center text-slate-300 text-lg max-w-2xl mx-auto leading-relaxed">Join those who have found deeper understanding through mystical guidance</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <Card className="border-slate-700 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300">
+            <Card className="border-slate-700 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-500">
               <CardContent className="p-8">
                 <div className="flex mb-4">
                   {[...Array(5)].map((_, i) => (
@@ -165,7 +165,7 @@ export default function Home() {
               </CardContent>
             </Card>
 
-            <Card className="border-slate-700 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300">
+            <Card className="border-slate-700 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-500">
               <CardContent className="p-8">
                 <div className="flex mb-4">
                   {[...Array(5)].map((_, i) => (
@@ -180,7 +180,7 @@ export default function Home() {
               </CardContent>
             </Card>
 
-            <Card className="border-slate-700 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300">
+            <Card className="border-slate-700 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-500">
               <CardContent className="p-8">
                 <div className="flex mb-4">
                   {[...Array(5)].map((_, i) => (
@@ -204,7 +204,7 @@ export default function Home() {
             <p className="text-center text-slate-300 text-lg max-w-2xl mx-auto leading-relaxed">Answers to illuminate your journey</p>
           </div>
           <div className="max-w-4xl mx-auto space-y-6">
-            <Card className="border-slate-700 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300">
+            <Card className="border-slate-700 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-500">
                <CardHeader className="pb-4">
                  <CardTitle className="text-lg text-white font-semibold">The Essence of Lenormand</CardTitle>
                </CardHeader>
@@ -215,7 +215,7 @@ export default function Home() {
                </CardContent>
             </Card>
 
-            <Card className="border-slate-700 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300">
+            <Card className="border-slate-700 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-500">
                <CardHeader className="pb-4">
                  <CardTitle className="text-lg text-white font-semibold">The AI Advantage</CardTitle>
                </CardHeader>
@@ -226,7 +226,7 @@ export default function Home() {
                </CardContent>
             </Card>
 
-            <Card className="border-slate-700 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300">
+            <Card className="border-slate-700 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-500">
               <CardHeader className="pb-4">
                 <CardTitle className="text-lg text-white font-semibold">How to get a free reading?</CardTitle>
               </CardHeader>
@@ -237,7 +237,7 @@ export default function Home() {
               </CardContent>
             </Card>
 
-            <Card className="border-slate-700 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300">
+            <Card className="border-slate-700 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-500">
               <CardHeader className="pb-4">
                 <CardTitle className="text-lg text-white font-semibold">Accuracy of AI readings?</CardTitle>
               </CardHeader>
@@ -259,7 +259,7 @@ export default function Home() {
             Let the cards reveal what your soul already knows
           </p>
           <Link href="/read/new">
-            <Button size="lg" className="px-12 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-2xl shadow-purple-500/25 font-semibold text-lg transition-all duration-500 hover:scale-105 mystical-float">
+            <Button size="lg" className="px-12 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-2xl shadow-purple-500/25 font-semibold text-lg transition-all duration-800 hover:scale-105 mystical-float">
               Discover Your Path
               <ArrowRight className="w-5 h-5 ml-3" />
             </Button>

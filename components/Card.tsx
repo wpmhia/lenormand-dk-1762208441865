@@ -51,7 +51,7 @@ export function Card({
     return (
       <div
         className={cn(
-          'relative card-mystical rounded-xl shadow-2xl cursor-pointer transform transition-all duration-500 hover:scale-110 hover:shadow-3xl hover:rotate-1 flex items-center justify-center border border-purple-500/40 mystical-glow float-animation group focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-slate-900',
+          'relative card-mystical rounded-xl shadow-2xl cursor-pointer transform transition-all duration-800 hover:scale-110 hover:shadow-3xl hover:rotate-1 flex items-center justify-center border border-purple-500/40 mystical-glow float-animation group focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-slate-900',
           sizeClasses[size],
           className
         )}
@@ -82,7 +82,7 @@ export function Card({
     <>
       <div
         className={cn(
-          'relative card-mystical rounded-xl shadow-2xl cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-3xl overflow-hidden mystical-glow focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900',
+          'relative card-mystical rounded-xl shadow-2xl cursor-pointer transform transition-all duration-500 hover:scale-105 hover:shadow-3xl overflow-hidden mystical-glow focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900',
           sizeClasses[size],
           reversed && 'rotate-180',
           className

@@ -172,7 +172,7 @@ export function Deck({
             {drawnCards.map((item, index) => (
               <div
                 key={`${item.card.id}-${index}`}
-                className={`transform transition-all duration-500 ${
+                className={`transform transition-all duration-800 ${
                   showAnimation ? 'animate-in slide-in-from-bottom' : ''
                 }`}
                 style={{
