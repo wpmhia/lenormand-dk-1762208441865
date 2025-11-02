@@ -51,18 +51,20 @@ export function Card({
     return (
       <div
         className={cn(
-          'relative card-mystical rounded-xl shadow-2xl cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-3xl flex items-center justify-center border border-purple-500/30 mystical-glow float-animation',
+          'relative card-mystical rounded-xl shadow-2xl cursor-pointer transform transition-all duration-500 hover:scale-110 hover:shadow-3xl hover:rotate-1 flex items-center justify-center border border-purple-500/40 mystical-glow float-animation group',
           sizeClasses[size],
           className
         )}
         onClick={handleCardClick}
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/80 via-blue-900/80 to-slate-900/80 shimmer"></div>
-        <div className="relative text-white text-center z-10">
-          <div className="text-4xl mb-2 opacity-90 mystical-glow">✦</div>
-          <div className="text-sm font-bold tracking-wider opacity-90 text-purple-200">LENORMAND</div>
-          <div className="text-xs text-purple-300 mt-1 opacity-70">MYSTICAL DIVINATION</div>
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/90 via-blue-900/90 to-slate-900/90 shimmer rounded-xl"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-transparent via-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+        <div className="relative text-white text-center z-10 transform group-hover:scale-105 transition-transform duration-300">
+          <div className="text-4xl mb-2 opacity-90 mystical-glow animate-pulse">✦</div>
+          <div className="text-sm font-bold tracking-wider opacity-90 text-purple-200 group-hover:text-purple-100 transition-colors duration-300">LENORMAND</div>
+          <div className="text-xs text-purple-300 mt-1 opacity-70 group-hover:opacity-90 transition-opacity duration-300">MYSTICAL DIVINATION</div>
         </div>
+        <div className="absolute inset-0 rounded-xl ring-2 ring-purple-500/20 group-hover:ring-purple-400/60 transition-all duration-300"></div>
       </div>
     )
   }
