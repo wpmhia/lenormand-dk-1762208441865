@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getAIReading, AIReadingRequest, canMakeAIRequest } from '@/lib/deepseek'
 import { getCardById, getCards } from '@/lib/data'
 
+// Force Node.js runtime for better AI API compatibility
+export const runtime = 'nodejs'
+
+// Configure function timeout for Vercel (30 seconds for DeepSeek API)
+export const maxDuration = 30
+
 export async function POST(request: NextRequest) {
   try {
     console.log('=== AI Interpretation Request Started ===')

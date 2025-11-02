@@ -204,26 +204,34 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
       spread: spreadJson
     })
 
-    const response = await fetch(`${DEEPSEEK_BASE_URL}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: JSON.stringify(payload) }
-        ],
-        temperature: 0.5,
-        top_p: 0.85,
-        max_tokens: 250 // Allow for longer continuous prose format
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 25000) // 25 second timeout
+
+    try {
+      const response = await fetch(`${DEEPSEEK_BASE_URL}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
+          'User-Agent': 'Lenormand-DK/1.0'
+        },
+        body: JSON.stringify({
+          model: 'deepseek-chat',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: JSON.stringify(payload) }
+          ],
+          temperature: 0.5,
+          top_p: 0.85,
+          max_tokens: 250 // Allow for longer continuous prose format
+        }),
+        signal: controller.signal
       })
-    })
+
+      clearTimeout(timeoutId)
 
     if (!response.ok) {
-      throw new Error(`DeepSeek API error: ${response.status}`)
+      throw new Error(`DeepSeek API error: ${response.status} ${response.statusText}`)
     }
 
     const data = await response.json()
@@ -236,6 +244,22 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
     return parseAIResponse(rawResponse)
   } catch (error) {
     console.error('AI Reading error:', error)
+    
+    // Enhanced error logging for Vercel debugging
+    if (error instanceof Error) {
+      console.error('Error details:', {
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+        isAbortError: error.name === 'AbortError',
+        envCheck: {
+          hasApiKey: !!process.env.DEEPSEEK_API_KEY,
+          baseUrl: process.env.DEEPSEEK_BASE_URL,
+          nodeEnv: process.env.NODE_ENV
+        }
+      })
+    }
+    
     return null
   }
 }
