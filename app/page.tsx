@@ -48,7 +48,7 @@ export default function Home() {
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-lg blur-xl"></div>
               <img
-                src="/data/images/hero-image.jpg"
+                src="/images/hero-image.jpg"
                 alt="Hero Image"
                 className="relative w-full max-w-sm h-auto object-cover rounded-lg shadow-2xl border border-slate-700"
               />
