@@ -1,15 +1,12 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { Card as CardType, ReadingCard, Reading } from '@/lib/types'
+import { Card as CardType, ReadingCard } from '@/lib/types'
 import { Deck } from '@/components/Deck'
 import { ReadingViewer } from '@/components/ReadingViewer'
 import { AIReadingDisplay } from '@/components/AIReadingDisplay'
-import { FeedbackButtons } from '@/components/FeedbackButtons'
 import { ContextInput } from '@/components/ContextInput'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -18,8 +15,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { Loader2, Save, Eye, Sparkles } from 'lucide-react'
-import { getCards, drawCards, saveReading, generateSlug, createShareableUrl, getCardById, getReadings } from '@/lib/data'
+import { Printer, Sparkles } from 'lucide-react'
+import { getCards, drawCards, getCardById } from '@/lib/data'
 import { getAIReading, AIReadingRequest, AIReadingResponse, isDeepSeekAvailable } from '@/lib/deepseek'
 
 const LAYOUTS = [
@@ -30,8 +27,6 @@ const LAYOUTS = [
 ]
 
 export default function NewReadingPage() {
-  const router = useRouter()
-  
   const [allCards, setAllCards] = useState<CardType[]>([])
   const [drawnCards, setDrawnCards] = useState<ReadingCard[]>([])
   const [layoutType, setLayoutType] = useState<3 | 5 | 9 | 36>(3)
@@ -40,11 +35,9 @@ export default function NewReadingPage() {
   const [questionCharCount, setQuestionCharCount] = useState(0)
   const [context, setContext] = useState('')
   const [allowReversed, setAllowReversed] = useState(false)
-  const [isPublic, setIsPublic] = useState(false)
-  const [isSaving, setIsSaving] = useState(false)
-  const [savedReading, setSavedReading] = useState<Reading | null>(null)
+
   const [error, setError] = useState('')
-  const [step, setStep] = useState<'setup' | 'drawing' | 'review' | 'ai-analysis' | 'saved'>('setup')
+  const [step, setStep] = useState<'setup' | 'drawing' | 'review' | 'ai-analysis' | 'print'>('setup')
 
   // AI-related state
   const [aiReading, setAiReading] = useState<AIReadingResponse | null>(null)
@@ -154,7 +147,7 @@ export default function NewReadingPage() {
     }
   }
 
-  const handleSave = () => {
+  const handlePrint = () => {
     if (!question.trim()) {
       setError('Please enter a question for your reading')
       return
@@ -165,48 +158,7 @@ export default function NewReadingPage() {
       return
     }
 
-    setIsSaving(true)
-    setError('')
-
-    try {
-      // Check if localStorage is available
-      if (typeof window === 'undefined' || !window.localStorage) {
-        throw new Error('Local storage is not available')
-      }
-
-      const now = new Date()
-      const slug = generateSlug()
-      const reading: Reading = {
-        id: slug,
-        title: question.trim(),
-        question: question.trim(),
-        layoutType,
-        cards: drawnCards,
-        slug,
-        isPublic,
-        createdAt: now,
-        updatedAt: now,
-      }
-
-      saveReading(reading)
-
-      // Verify the reading was saved
-      const savedReadings = getReadings()
-      const saved = savedReadings.find(r => r.id === reading.id)
-
-      if (!saved) {
-        throw new Error('Reading was not saved to localStorage')
-      }
-
-      setStep('saved')
-      setSavedReading(reading)
-    } catch (error) {
-      console.error('Error saving reading:', error)
-      const errorMessage = error instanceof Error ? error.message : 'Failed to save reading'
-      setError(errorMessage)
-    } finally {
-      setIsSaving(false)
-    }
+    setStep('print')
   }
 
   const handleStartOver = () => {
@@ -215,14 +167,12 @@ export default function NewReadingPage() {
 
   const confirmStartOver = () => {
     setDrawnCards([])
-    setSavedReading(null)
     setStep('setup')
     setQuestion('')
     setQuestionCharCount(0)
     setContext('')
     setLayoutType(3)
     setAllowReversed(false)
-    setIsPublic(false)
     setError('')
     setAiReading(null)
     setAiLoading(false)
@@ -230,13 +180,7 @@ export default function NewReadingPage() {
     setShowStartOverConfirm(false)
   }
 
-  const handleViewReading = () => {
-    if (savedReading) {
-      router.push(`/read/${savedReading.slug}`)
-    }
-  }
 
-  
 
   return (
     <TooltipProvider>
@@ -256,26 +200,26 @@ export default function NewReadingPage() {
               </div>
               <span className="ml-2 text-sm">Setup</span>
             </div>
-            <div className={`w-8 h-0.5 ${step === 'drawing' || step === 'ai-analysis' || step === 'review' || step === 'saved' ? 'bg-green-400' : 'bg-slate-600'}`}></div>
+            <div className={`w-8 h-0.5 ${step === 'drawing' || step === 'ai-analysis' || step === 'review' || step === 'print' ? 'bg-green-400' : 'bg-slate-600'}`}></div>
             <div className={`flex items-center ${step === 'drawing' ? 'text-blue-400' : 'text-green-400'}`}>
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step === 'drawing' ? 'bg-blue-600' : 'bg-green-600'}`}>
                 2
               </div>
               <span className="ml-2 text-sm">Draw</span>
             </div>
-            <div className={`w-8 h-0.5 ${step === 'ai-analysis' || step === 'review' || step === 'saved' ? 'bg-green-400' : 'bg-slate-600'}`}></div>
+            <div className={`w-8 h-0.5 ${step === 'ai-analysis' || step === 'review' || step === 'print' ? 'bg-green-400' : 'bg-slate-600'}`}></div>
             <div className={`flex items-center ${step === 'ai-analysis' ? 'text-blue-400' : 'text-green-400'}`}>
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step === 'ai-analysis' ? 'bg-blue-600' : 'bg-green-600'}`}>
                 3
               </div>
               <span className="ml-2 text-sm">Analyze</span>
             </div>
-            <div className={`w-8 h-0.5 ${step === 'review' || step === 'saved' ? 'bg-green-400' : 'bg-slate-600'}`}></div>
+            <div className={`w-8 h-0.5 ${step === 'review' || step === 'print' ? 'bg-green-400' : 'bg-slate-600'}`}></div>
             <div className={`flex items-center ${step === 'review' ? 'text-blue-400' : 'text-green-400'}`}>
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step === 'review' ? 'bg-blue-600' : 'bg-green-600'}`}>
                 4
               </div>
-              <span className="ml-2 text-sm">Save</span>
+              <span className="ml-2 text-sm">Print</span>
             </div>
           </div>
         </div>
@@ -365,21 +309,7 @@ export default function NewReadingPage() {
                     </Tooltip>
                   </div>
 
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="is-public">Make reading shareable</Label>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Switch
-                          id="is-public"
-                          checked={isPublic}
-                          onCheckedChange={setIsPublic}
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Allow others to view this reading via a shareable link</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </div>
+
                </div>
 
                <Button
@@ -431,7 +361,7 @@ export default function NewReadingPage() {
                  layoutType,
                  cards: drawnCards,
                  slug: 'temp',
-                 isPublic,
+                  isPublic: false,
                  createdAt: new Date(),
                  updatedAt: new Date(),
                }}
@@ -481,7 +411,7 @@ export default function NewReadingPage() {
                  layoutType,
                  cards: drawnCards,
                  slug: 'temp',
-                 isPublic,
+                  isPublic: false,
                  createdAt: new Date(),
                  updatedAt: new Date(),
                }}
@@ -497,86 +427,70 @@ export default function NewReadingPage() {
                >
                  Draw Again
                </Button>
-                <Button
-                  onClick={handleSave}
-                  disabled={isSaving}
-                  className="bg-blue-600 hover:bg-blue-700"
-                >
-                 {isSaving ? (
-                   <>
-                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                     Saving...
-                   </>
-                 ) : (
-                   <>
-                     <Save className="w-4 h-4 mr-2" />
-                     Save Reading
-                   </>
-                 )}
-               </Button>
+                 <Button
+                   onClick={handlePrint}
+                   className="bg-blue-600 hover:bg-blue-700"
+                 >
+                   <Printer className="w-4 h-4 mr-2" />
+                   Print Reading
+                 </Button>
              </div>
            </div>
          )}
 
-          {step === 'saved' && savedReading && (
-            <div className="space-y-6">
-              <div className="text-center">
-                <h2 className="text-2xl font-semibold mb-2 text-white">Reading Saved!</h2>
-                <p className="text-slate-300">
-                  Your Lenormand reading has been saved successfully.
-                </p>
+           {step === 'print' && (
+             <div className="space-y-6 print:space-y-4">
+               <div className="text-center print:hidden">
+                 <h2 className="text-2xl font-semibold mb-2 text-white">Print Your Reading</h2>
+                 <p className="text-slate-300">
+                   Your Lenormand reading is ready to print.
+                 </p>
+                </div>
+
+               <ReadingViewer
+                 reading={{
+                   id: 'print',
+                   title: question,
+                   question,
+                   layoutType,
+                   cards: drawnCards,
+                   slug: 'print',
+                   isPublic: false,
+                   createdAt: new Date(),
+                   updatedAt: new Date(),
+                 }}
+                 allCards={allCards}
+                 showShareButton={false}
+               />
+
+               {aiReading && (
+                 <AIReadingDisplay
+                   aiReading={aiReading}
+                   isLoading={false}
+                   error={null}
+                   onRetry={retryAIAnalysis}
+                   retryCount={aiRetryCount}
+                 />
+               )}
+
+               <div className="flex gap-4 justify-center print:hidden">
+                 <Button
+                   onClick={() => window.print()}
+                   className="bg-blue-600 hover:bg-blue-700"
+                 >
+                   <Printer className="w-4 h-4 mr-2" />
+                   Print Reading
+                 </Button>
+                 <Button
+                   onClick={handleStartOver}
+                   variant="outline"
+                   className="border-slate-700 text-slate-300 hover:bg-slate-800"
+                 >
+                   Create New Reading
+                 </Button>
                </div>
-
-              {aiReading && (
-                <AIReadingDisplay
-                  aiReading={aiReading}
-                  isLoading={false}
-                  error={null}
-                  onRetry={retryAIAnalysis}
-                  retryCount={aiRetryCount}
-                />
-              )}
-
-              {aiReading && (
-                <FeedbackButtons
-                  readingId={savedReading.id}
-                  onFeedback={(rating) => {
-                    // Optional: handle feedback callback
-                    console.log('Feedback received:', rating)
-                  }}
-                />
-              )}
-
-              <Card className="border-slate-700 bg-slate-900/50">
-               <CardContent className="pt-6">
-                 <div className="text-center space-y-4">
-                   <div className="text-lg font-medium text-white">
-                     "{savedReading.title}"
-                   </div>
-                   <div className="text-slate-400">
-                     {savedReading.layoutType} cards • {savedReading.isPublic ? 'Shareable' : 'Private'}
-                   </div>
-                   <div className="flex gap-4 justify-center">
-                     <Button
-                       onClick={handleViewReading}
-                       className="bg-blue-600 hover:bg-blue-700"
-                     >
-                       <Eye className="w-4 h-4 mr-2" />
-                       View Reading
-                     </Button>
-                     <Button
-                       onClick={handleStartOver}
-                       variant="outline"
-                       className="border-slate-700 text-slate-300 hover:bg-slate-800"
-                     >
-                       Create New Reading
-                     </Button>
-                   </div>
-                 </div>
-               </CardContent>
-             </Card>
-            </div>
-          )}
+             </div>
+           )}
 
           {/* Start Over Confirmation Dialog */}
           <Dialog open={showStartOverConfirm} onOpenChange={setShowStartOverConfirm}>
