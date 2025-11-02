@@ -334,151 +334,53 @@ export default function NewReadingPage() {
           </Card>
         )}
 
-        {step === 'drawing' && (
-          <div className="space-y-8">
-            <div className="text-center">
-              <h2 className="text-3xl font-semibold mb-4 text-white relative">
-                Draw Your Cards
-                <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-0.5 bg-gradient-to-r from-amber-400 to-purple-400 rounded-full"></div>
-              </h2>
-              <p className="text-slate-200 text-lg italic">
-                Drawing {layoutType} cards from the sacred deck
-              </p>
-            </div>
-
-            <Deck
-              cards={allCards}
-              drawCount={layoutType}
-              allowReversed={allowReversed}
-              onDraw={handleDraw}
-            />
-          </div>
-         )}
-
-         {step === 'ai-analysis' && (
-           <div className="space-y-6">
-              <div className="text-center">
-               <h2 className="text-2xl font-semibold mb-2 text-white flex items-center justify-center gap-2">
-                 <Sparkles className="w-6 h-6 text-blue-400" />
-                 AI Analysis
-               </h2>
-                <p className="text-slate-300">
-                  The sibyl weaves wisdom from your {layoutType} sacred cards
-                </p>
-             </div>
-
-             <ReadingViewer
-               reading={{
-                 id: 'temp',
-                 title: 'Your Reading',
-                 question,
-                 layoutType,
-                 cards: drawnCards,
-                 slug: 'temp',
-                  isPublic: false,
-                 createdAt: new Date(),
-                 updatedAt: new Date(),
-               }}
-               allCards={allCards}
-               showShareButton={false}
-             />
-
-              <AIReadingDisplay
-                aiReading={aiReading}
-                isLoading={aiLoading}
-                error={aiError}
-                onRetry={retryAIAnalysis}
-                retryCount={aiRetryCount}
-                cards={drawnCards.map(card => ({
-                  id: card.id,
-                  name: getCardById(allCards, card.id)?.name || 'Unknown',
-                  position: card.position,
-                  reversed: card.reversed
-                }))}
-                allCards={allCards}
-                layoutType={layoutType}
-                question={question}
-              />
-
-             {!aiLoading && (
-               <div className="flex gap-4 justify-center">
-                 <Button
-                   onClick={() => setStep('drawing')}
-                   variant="outline"
-                   className="border-slate-700 text-slate-300 hover:bg-slate-800"
-                 >
-                   Draw Again
-                 </Button>
-                 <Button
-                   onClick={() => setStep('review')}
-                   className="bg-blue-600 hover:bg-blue-700"
-                 >
-                   Continue to Save
-                 </Button>
-               </div>
-             )}
-           </div>
-         )}
-
-          {step === 'review' && (
-           <div className="space-y-6">
-             <div className="text-center">
-               <h2 className="text-2xl font-semibold mb-2 text-white">Review Your Reading</h2>
-             </div>
-
-             <ReadingViewer
-               reading={{
-                 id: 'temp',
-                 title: question,
-                 question,
-                 layoutType,
-                 cards: drawnCards,
-                 slug: 'temp',
-                  isPublic: false,
-                 createdAt: new Date(),
-                 updatedAt: new Date(),
-               }}
-               allCards={allCards}
-               showShareButton={false}
-             />
-
-             <div className="flex gap-4 justify-center">
-               <Button
-                 onClick={() => setStep('drawing')}
-                 variant="outline"
-                 className="border-slate-700 text-slate-300 hover:bg-slate-800"
-               >
-                 Draw Again
-               </Button>
-                 <Button
-                   onClick={handlePrint}
-                   className="bg-blue-600 hover:bg-blue-700"
-                 >
-                   <Printer className="w-4 h-4 mr-2" />
-                   Print Reading
-                 </Button>
-             </div>
-           </div>
-         )}
-
-           {step === 'print' && (
-             <div className="space-y-6 print:space-y-4">
-               <div className="text-center print:hidden">
-                 <h2 className="text-2xl font-semibold mb-2 text-white">Print Your Reading</h2>
-                 <p className="text-slate-300">
-                    Your reading has unfurled, ready to be cherished.
+         {step === 'drawing' && (
+           <Card className="border-amber-400/20 bg-gradient-to-br from-slate-900/60 via-amber-950/20 to-slate-800/40 backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
+             <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-50"></div>
+             <CardContent className="space-y-8 p-8 relative z-10">
+               <div className="text-center">
+                 <h2 className="text-3xl font-semibold mb-4 text-white relative">
+                   Draw Your Cards
+                   <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-0.5 bg-gradient-to-r from-amber-400 to-purple-400 rounded-full"></div>
+                 </h2>
+                 <p className="text-slate-200 text-lg italic">
+                   Drawing {layoutType} cards from the sacred deck
                  </p>
-                </div>
+               </div>
+
+               <Deck
+                 cards={allCards}
+                 drawCount={layoutType}
+                 allowReversed={allowReversed}
+                 onDraw={handleDraw}
+               />
+             </CardContent>
+           </Card>
+          )}
+
+          {step === 'ai-analysis' && (
+            <Card className="border-purple-400/20 bg-gradient-to-br from-slate-900/60 via-purple-950/20 to-slate-800/40 backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-50"></div>
+              <CardContent className="space-y-6 p-8 relative z-10">
+                <div className="text-center">
+                 <h2 className="text-2xl font-semibold mb-2 text-white flex items-center justify-center gap-2">
+                   <Sparkles className="w-6 h-6 text-purple-400" />
+                   AI Analysis
+                 </h2>
+                  <p className="text-slate-300">
+                    The sibyl weaves wisdom from your {layoutType} sacred cards
+                  </p>
+               </div>
 
                <ReadingViewer
                  reading={{
-                   id: 'print',
-                   title: question,
+                   id: 'temp',
+                   title: 'Your Reading',
                    question,
                    layoutType,
                    cards: drawnCards,
-                   slug: 'print',
-                   isPublic: false,
+                   slug: 'temp',
+                    isPublic: false,
                    createdAt: new Date(),
                    updatedAt: new Date(),
                  }}
@@ -486,43 +388,162 @@ export default function NewReadingPage() {
                  showShareButton={false}
                />
 
-                {aiReading && (
-                  <AIReadingDisplay
-                    aiReading={aiReading}
-                    isLoading={false}
-                    error={null}
-                    onRetry={retryAIAnalysis}
-                    retryCount={aiRetryCount}
-                    cards={drawnCards.map(card => ({
-                      id: card.id,
-                      name: getCardById(allCards, card.id)?.name || 'Unknown',
-                      position: card.position,
-                      reversed: card.reversed
-                    }))}
-                    allCards={allCards}
-                    layoutType={layoutType}
-                    question={question}
-                  />
-                )}
+                <AIReadingDisplay
+                  aiReading={aiReading}
+                  isLoading={aiLoading}
+                  error={aiError}
+                  onRetry={retryAIAnalysis}
+                  retryCount={aiRetryCount}
+                  cards={drawnCards.map(card => ({
+                    id: card.id,
+                    name: getCardById(allCards, card.id)?.name || 'Unknown',
+                    position: card.position,
+                    reversed: card.reversed
+                  }))}
+                  allCards={allCards}
+                  layoutType={layoutType}
+                  question={question}
+                />
 
-               <div className="flex gap-4 justify-center print:hidden">
-                 <Button
-                   onClick={() => window.print()}
-                   className="bg-blue-600 hover:bg-blue-700"
-                 >
-                   <Printer className="w-4 h-4 mr-2" />
-                   Print Reading
-                 </Button>
-                 <Button
-                   onClick={handleStartOver}
-                   variant="outline"
-                   className="border-slate-700 text-slate-300 hover:bg-slate-800"
-                 >
-                   Create New Reading
-                 </Button>
-               </div>
-             </div>
-           )}
+               {!aiLoading && (
+                 <div className="flex gap-4 justify-center">
+                   <Button
+                     onClick={() => setStep('drawing')}
+                     variant="outline"
+                     className="border-purple-400/30 text-purple-200 hover:bg-purple-950/50 rounded-xl py-3 font-semibold transition-all duration-300"
+                   >
+                     Draw Again
+                   </Button>
+                   <Button
+                     onClick={() => setStep('review')}
+                     className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg shadow-purple-500/30 rounded-xl py-3 font-semibold transition-all duration-500 hover:scale-105"
+                   >
+                     Continue to Save
+                   </Button>
+                 </div>
+               )}
+              </CardContent>
+            </Card>
+          )}
+
+           {step === 'review' && (
+            <Card className="border-blue-400/20 bg-gradient-to-br from-slate-900/60 via-blue-950/20 to-slate-800/40 backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-50"></div>
+              <CardContent className="space-y-6 p-8 relative z-10">
+                <div className="text-center">
+                  <h2 className="text-2xl font-semibold mb-2 text-white relative">
+                    Review Your Reading
+                    <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full"></div>
+                  </h2>
+                  <p className="text-slate-300 text-lg italic">
+                    Behold the wisdom your cards have revealed
+                  </p>
+                </div>
+
+                <ReadingViewer
+                  reading={{
+                    id: 'temp',
+                    title: question,
+                    question,
+                    layoutType,
+                    cards: drawnCards,
+                    slug: 'temp',
+                     isPublic: false,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                  }}
+                  allCards={allCards}
+                  showShareButton={false}
+                />
+
+                <div className="flex gap-4 justify-center">
+                  <Button
+                    onClick={() => setStep('drawing')}
+                    variant="outline"
+                    className="border-blue-400/30 text-blue-200 hover:bg-blue-950/50 rounded-xl py-3 font-semibold transition-all duration-300"
+                  >
+                    Draw Again
+                  </Button>
+                    <Button
+                      onClick={handlePrint}
+                      className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-lg shadow-blue-500/30 rounded-xl py-3 font-semibold transition-all duration-500 hover:scale-105"
+                    >
+                      <Printer className="w-4 h-4 mr-2" />
+                      Print Reading
+                    </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+            {step === 'print' && (
+              <Card className="border-emerald-400/20 bg-gradient-to-br from-slate-900/60 via-emerald-950/20 to-slate-800/40 backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-50"></div>
+                <CardContent className="space-y-6 p-8 print:space-y-4 relative z-10">
+                  <div className="text-center print:hidden">
+                    <h2 className="text-2xl font-semibold mb-2 text-white relative">
+                      Print Your Reading
+                      <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-0.5 bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-full"></div>
+                    </h2>
+                    <p className="text-slate-300 text-lg italic">
+                       Your reading has unfurled, ready to be cherished.
+                    </p>
+                   </div>
+
+                  <ReadingViewer
+                    reading={{
+                      id: 'print',
+                      title: question,
+                      question,
+                      layoutType,
+                      cards: drawnCards,
+                      slug: 'print',
+                      isPublic: false,
+                      createdAt: new Date(),
+                      updatedAt: new Date(),
+                    }}
+                    allCards={allCards}
+                    showShareButton={false}
+                  />
+
+                   {aiReading && (
+                     <AIReadingDisplay
+                       aiReading={aiReading}
+                       isLoading={false}
+                       error={null}
+                       onRetry={retryAIAnalysis}
+                       retryCount={aiRetryCount}
+                       cards={drawnCards.map(card => ({
+                         id: card.id,
+                         name: getCardById(allCards, card.id)?.name || 'Unknown',
+                         position: card.position,
+                         reversed: card.reversed
+                       }))}
+                       allCards={allCards}
+                       layoutType={layoutType}
+                       question={question}
+                     />
+                   )}
+
+                  <div className="flex gap-4 justify-center print:hidden">
+                    <Button
+                      onClick={() => window.print()}
+                      className="bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 text-white shadow-lg shadow-emerald-500/30 rounded-xl py-3 font-semibold transition-all duration-500 hover:scale-105"
+                    >
+                      <Printer className="w-4 h-4 mr-2" />
+                      Print Reading
+                    </Button>
+                    <Button
+                      onClick={handleStartOver}
+                      variant="outline"
+                      className="border-emerald-400/30 text-emerald-200 hover:bg-emerald-950/50 rounded-xl py-3 font-semibold transition-all duration-300"
+                    >
+                      Create New Reading
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
           {/* Start Over Confirmation Dialog */}
           <Dialog open={showStartOverConfirm} onOpenChange={setShowStartOverConfirm}>
