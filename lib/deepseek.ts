@@ -2,11 +2,11 @@ import { Card, ReadingCard } from './types'
 
 // DeepSeek API configuration
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY
-const DEEPSEEK_BASE_URL = process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com/v1'
+const DEEPSEEK_BASE_URL = process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com'
 
 // Check if DeepSeek is available
 export function isDeepSeekAvailable(): boolean {
-  return !!(DEEPSEEK_API_KEY || process.env.DEEPSEEK_API_KEY)
+  return !!process.env.DEEPSEEK_API_KEY
 }
 
 // AI Reading request interface

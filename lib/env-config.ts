@@ -8,9 +8,9 @@ export const ENV_VARIABLES: EnvVariable[] = [
   },
   {
     name: "DEEPSEEK_BASE_URL",
-    description: "Base URL for DeepSeek API (optional, defaults to official endpoint)",
+    description: "Base URL for DeepSeek API (optional, defaults to https://api.deepseek.com)",
     required: false,
-    instructions: "Only set if using a custom DeepSeek endpoint. Leave empty for default."
+    instructions: "Only set if using a custom DeepSeek endpoint. Default is the official API endpoint."
   }
 ];
 
