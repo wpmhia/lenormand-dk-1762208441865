@@ -146,14 +146,12 @@ export function Deck({
                   />
                 </div>
               ))}
-              <div className="relative">
+              <div className="relative cursor-pointer" onClick={drawCards}>
                 <Card
                   card={deck[deck.length - 1]}
                   showBack={true}
                   size="md"
-                  className={`cursor-pointer ${isDrawing || deck.length < drawCount ? 'cursor-not-allowed opacity-75' : ''}`}
-                  onClick={drawCards}
-                  aria-label={`Draw ${drawCount} cards from deck (${deck.length} cards remaining)`}
+                  className={isDrawing || deck.length < drawCount ? 'opacity-75' : ''}
                 />
                 <div className="absolute top-2 right-2 pointer-events-none">
                   <span className="bg-white/90 px-2 py-1 rounded text-sm font-bold">
