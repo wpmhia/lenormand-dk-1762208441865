@@ -62,6 +62,7 @@ export function Footer() {
                   aria-label="Open guide on how to read Lenormand cards"
                   aria-expanded={showGuide}
                   aria-controls="lenormand-guide-dialog"
+                  data-guide-trigger
                 >
                   <BookOpen className="w-4 h-4 mr-2" />
                   How to Read
