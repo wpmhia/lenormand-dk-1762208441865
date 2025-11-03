@@ -5,6 +5,7 @@ import { Card as CardType, ReadingCard } from '@/lib/types'
 import { Deck } from '@/components/Deck'
 import { ReadingViewer } from '@/components/ReadingViewer'
 import { AIReadingDisplay } from '@/components/AIReadingDisplay'
+import { CardInterpretation } from '@/components/CardInterpretation'
 
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
@@ -339,6 +340,7 @@ export default function NewReadingPage() {
                </Button>
             </CardContent>
           </Card>
+          </div>
         )}
 
          {step === 'drawing' && (
@@ -379,23 +381,33 @@ export default function NewReadingPage() {
                   </p>
                </div>
 
-               <ReadingViewer
-                 reading={{
-                   id: 'temp',
-                   title: 'Your Reading',
-                   question,
-                   layoutType,
-                   cards: drawnCards,
-                   slug: 'temp',
-                    isPublic: false,
-                   createdAt: new Date(),
-                   updatedAt: new Date(),
-                 }}
-                 allCards={allCards}
-                 showShareButton={false}
-               />
+<ReadingViewer
+                  reading={{
+                    id: 'temp',
+                    title: 'Your Reading',
+                    question,
+                    layoutType,
+                    cards: drawnCards,
+                    slug: 'temp',
+                     isPublic: false,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                  }}
+                  allCards={allCards}
+                  showShareButton={false}
+                />
 
-                <AIReadingDisplay
+                {/* Show traditional meanings while AI loads or if AI fails */}
+                {(aiLoading || (!aiReading && !aiLoading)) && (
+                  <CardInterpretation
+                    cards={drawnCards}
+                    allCards={allCards}
+                    layoutType={layoutType}
+                    question={question}
+                  />
+                )}
+
+                 <AIReadingDisplay
                   aiReading={aiReading}
                   isLoading={aiLoading}
                   error={aiError}

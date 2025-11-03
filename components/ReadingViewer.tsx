@@ -52,10 +52,6 @@ const getPositionInfo = (position: number, layoutType: number): PositionInfo => 
 
   return positions[layoutType]?.[position] || { label: `Position ${position + 1}`, meaning: "" }
 }
-  }
-
-  return positions[layoutType]?.[position] || { label: `Position ${position + 1}`, meaning: "" }
-}
 
 const getGrandTableauPosition = (index: number): { x: number; y: number; label: string } => {
   const row = Math.floor(index / 4)
