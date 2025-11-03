@@ -16,10 +16,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { Sparkles, BookOpen } from 'lucide-react'
+import { Sparkles } from 'lucide-react'
 import { getCards, drawCards, getCardById } from '@/lib/data'
 import { getAIReading, AIReadingRequest, AIReadingResponse, isDeepSeekAvailable } from '@/lib/deepseek'
-import { LenormandGuide } from '@/components/LenormandGuide'
+
 
 const LAYOUTS = [
   { value: 3, label: "3 Cards - Past, Present, Future" },
@@ -252,18 +252,11 @@ export default function NewReadingPage() {
 
         {step === 'setup' && (
           <div className="space-y-6">
-            {/* Educational Guide */}
-            <LenormandGuide />
-            
             <Card className="border-rose-400/20 bg-gradient-to-br from-slate-900/60 via-rose-950/20 to-slate-800/40 backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
               <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-transparent opacity-50"></div>
               <CardHeader className="relative z-10">
-                <CardTitle className="text-rose-200 text-xl flex items-center gap-2">
+                <CardTitle className="text-rose-200 text-xl">
                   Your Sacred Question:
-                  <div className="flex items-center gap-1 text-xs bg-rose-500/20 px-2 py-1 rounded-full">
-                    <BookOpen className="w-3 h-3" />
-                    <span>See guide above</span>
-                  </div>
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6 relative z-10">
