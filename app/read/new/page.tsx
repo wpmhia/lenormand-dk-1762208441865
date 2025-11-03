@@ -423,21 +423,31 @@ export default function NewReadingPage() {
                      </div>
                    )}
 
-                   <div className="flex items-center justify-between p-4 bg-muted/50 rounded-xl border border-border">
-                     <Label htmlFor="allow-reversed" className="text-card-foreground font-medium">Allow reversed cards</Label>
-                     <Tooltip>
-                       <TooltipTrigger asChild>
-                         <Switch
-                           id="allow-reversed"
-                           checked={allowReversed}
-                           onCheckedChange={setAllowReversed}
-                         />
-                       </TooltipTrigger>
-                       <TooltipContent className="bg-card border-border text-card-foreground">
-                         <p>When enabled, cards can appear upside down for additional meaning</p>
-                       </TooltipContent>
-                     </Tooltip>
-                   </div>
+                    <div className="flex items-center justify-between p-4 bg-muted/50 rounded-xl border border-border">
+                      {/* stronger contrast label */}
+                      <Label htmlFor="allow-reversed" className="text-foreground font-medium">
+                        Allow reversed cards
+                      </Label>
+
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Switch
+                            id="allow-reversed"
+                            checked={allowReversed}
+                            onCheckedChange={setAllowReversed}
+                            aria-label="Allow reversed cards"
+                            className="relative h-6 w-11 rounded-full transition-colors duration-150
+                                       bg-muted/30 dark:bg-muted/40
+                                       data-[state=checked]:bg-primary data-[state=checked]:dark:bg-primary
+                                       ring-1 ring-transparent dark:ring-transparent
+                                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent className="bg-card border-border text-card-foreground">
+                          <p>When enabled, cards can appear upside down for additional meaning</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
 
 
                </div>
