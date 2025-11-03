@@ -278,7 +278,7 @@ undefined
 
   /* Global page layouts */
   .page-layout {
-    @apply min-h-screen aged-paper relative overflow-hidden;
+    @apply min-h-screen bg-background relative overflow-hidden;
   }
 
   .page-header {
