@@ -49,7 +49,9 @@ export function Deck({
   }
 
   const drawCards = () => {
+    console.log('drawCards called, deck.length:', deck.length, 'drawCount:', drawCount)
     if (deck.length < drawCount) {
+      console.log('Not enough cards')
       return
     }
 
@@ -146,7 +148,7 @@ export function Deck({
                   />
                 </div>
               ))}
-              <div className="relative cursor-pointer" onClick={drawCards}>
+              <div className="relative cursor-pointer" onClick={() => { console.log('Deck clicked'); drawCards(); }}>
                 <Card
                   card={deck[deck.length - 1]}
                   showBack={true}
