@@ -15,7 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { Printer, Sparkles } from 'lucide-react'
+import { Sparkles } from 'lucide-react'
 import { getCards, drawCards, getCardById } from '@/lib/data'
 import { getAIReading, AIReadingRequest, AIReadingResponse, isDeepSeekAvailable } from '@/lib/deepseek'
 
@@ -37,7 +37,7 @@ export default function NewReadingPage() {
   const [allowReversed, setAllowReversed] = useState(false)
 
   const [error, setError] = useState('')
-  const [step, setStep] = useState<'setup' | 'drawing' | 'review' | 'ai-analysis' | 'print'>('setup')
+  const [step, setStep] = useState<'setup' | 'drawing' | 'review' | 'ai-analysis'>('setup')
 
   // AI-related state
   const [aiReading, setAiReading] = useState<AIReadingResponse | null>(null)
@@ -147,19 +147,7 @@ export default function NewReadingPage() {
     }
   }
 
-  const handlePrint = () => {
-    if (!question.trim()) {
-      setError('Please enter a question for your reading')
-      return
-    }
 
-    if (drawnCards.length === 0) {
-      setError('No cards have been drawn for this reading. Please go back and draw cards first.')
-      return
-    }
-
-    setStep('print')
-  }
 
   const handleStartOver = () => {
     setShowStartOverConfirm(true)
@@ -209,27 +197,21 @@ export default function NewReadingPage() {
               </div>
               <span className="ml-3 text-sm font-medium">Setup</span>
             </div>
-            <div className={`w-12 h-0.5 rounded-full ${step === 'drawing' || step === 'ai-analysis' || step === 'review' || step === 'print' ? 'bg-emerald-400' : 'bg-slate-600'}`}></div>
+            <div className={`w-12 h-0.5 rounded-full ${step === 'drawing' || step === 'ai-analysis' || step === 'review' ? 'bg-emerald-400' : 'bg-slate-600'}`}></div>
             <div className={`flex items-center ${step === 'drawing' ? 'text-amber-400' : 'text-emerald-400'}`}>
               <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'drawing' ? 'bg-amber-600 border-amber-400 shadow-lg shadow-amber-500/30' : 'bg-emerald-600 border-emerald-400'}`}>
                 2
               </div>
               <span className="ml-3 text-sm font-medium">Draw</span>
             </div>
-            <div className={`w-12 h-0.5 rounded-full ${step === 'ai-analysis' || step === 'review' || step === 'print' ? 'bg-emerald-400' : 'bg-slate-600'}`}></div>
+            <div className={`w-12 h-0.5 rounded-full ${step === 'ai-analysis' || step === 'review' ? 'bg-emerald-400' : 'bg-slate-600'}`}></div>
             <div className={`flex items-center ${step === 'ai-analysis' ? 'text-purple-400' : 'text-emerald-400'}`}>
               <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'ai-analysis' ? 'bg-purple-600 border-purple-400 shadow-lg shadow-purple-500/30' : 'bg-emerald-600 border-purple-400'}`}>
                 3
               </div>
               <span className="ml-3 text-sm font-medium">Analyze</span>
             </div>
-            <div className={`w-12 h-0.5 rounded-full ${step === 'review' || step === 'print' ? 'bg-emerald-400' : 'bg-slate-600'}`}></div>
-            <div className={`flex items-center ${step === 'review' ? 'text-blue-400' : 'text-emerald-400'}`}>
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'review' ? 'bg-blue-600 border-blue-400 shadow-lg shadow-blue-500/30' : 'bg-emerald-600 border-blue-400'}`}>
-                4
-              </div>
-              <span className="ml-3 text-sm font-medium">Print</span>
-            </div>
+
           </div>
         </div>
 
@@ -464,86 +446,13 @@ export default function NewReadingPage() {
                   >
                     Draw Again
                   </Button>
-                    <Button
-                      onClick={handlePrint}
-                      className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white shadow-lg shadow-blue-500/30 rounded-xl py-3 font-semibold transition-all duration-500 hover:scale-105"
-                    >
-                      <Printer className="w-4 h-4 mr-2" />
-                      Print Reading
-                    </Button>
+
                 </div>
               </CardContent>
             </Card>
           )}
 
-            {step === 'print' && (
-              <Card className="border-emerald-400/20 bg-gradient-to-br from-slate-900/60 via-emerald-950/20 to-slate-800/40 backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-50"></div>
-                <CardContent className="space-y-6 p-8 print:space-y-4 relative z-10">
-                  <div className="text-center print:hidden">
-                    <h2 className="text-2xl font-semibold mb-2 text-white relative">
-                      Print Your Reading
-                      <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-0.5 bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-full"></div>
-                    </h2>
-                    <p className="text-slate-300 text-lg italic">
-                       Your reading has unfurled, ready to be cherished.
-                    </p>
-                   </div>
 
-                  <ReadingViewer
-                    reading={{
-                      id: 'print',
-                      title: question,
-                      question,
-                      layoutType,
-                      cards: drawnCards,
-                      slug: 'print',
-                      isPublic: false,
-                      createdAt: new Date(),
-                      updatedAt: new Date(),
-                    }}
-                    allCards={allCards}
-                    showShareButton={false}
-                  />
-
-                   {aiReading && (
-                     <AIReadingDisplay
-                       aiReading={aiReading}
-                       isLoading={false}
-                       error={null}
-                       onRetry={retryAIAnalysis}
-                       retryCount={aiRetryCount}
-                       cards={drawnCards.map(card => ({
-                         id: card.id,
-                         name: getCardById(allCards, card.id)?.name || 'Unknown',
-                         position: card.position,
-                         reversed: card.reversed
-                       }))}
-                       allCards={allCards}
-                       layoutType={layoutType}
-                       question={question}
-                     />
-                   )}
-
-                  <div className="flex gap-4 justify-center print:hidden">
-                    <Button
-                      onClick={() => window.print()}
-                      className="bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-700 hover:to-cyan-700 text-white shadow-lg shadow-emerald-500/30 rounded-xl py-3 font-semibold transition-all duration-500 hover:scale-105"
-                    >
-                      <Printer className="w-4 h-4 mr-2" />
-                      Print Reading
-                    </Button>
-                    <Button
-                      onClick={handleStartOver}
-                      variant="outline"
-                      className="border-emerald-400/30 text-emerald-200 hover:bg-emerald-950/50 rounded-xl py-3 font-semibold transition-all duration-300"
-                    >
-                      Create New Reading
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
 
           {/* Start Over Confirmation Dialog */}
           <Dialog open={showStartOverConfirm} onOpenChange={setShowStartOverConfirm}>
