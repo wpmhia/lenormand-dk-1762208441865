@@ -148,13 +148,14 @@ export function Deck({
                   />
                 </div>
               ))}
-              <div className="relative cursor-pointer" onClick={() => { console.log('Deck clicked'); drawCards(); }}>
+              <div className="relative">
                 <Card
                   card={deck[deck.length - 1]}
                   showBack={true}
                   size="md"
                   className={isDrawing || deck.length < drawCount ? 'opacity-75' : ''}
                 />
+                <div className="absolute inset-0 cursor-pointer" onClick={drawCards} />
                 <div className="absolute top-2 right-2 pointer-events-none">
                   <span className="bg-white/90 px-2 py-1 rounded text-sm font-bold">
                     {deck.length}
