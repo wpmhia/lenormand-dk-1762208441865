@@ -16,6 +16,7 @@ interface ReadingViewerProps {
   showShareButton?: boolean
   onShare?: () => void
   showReadingHeader?: boolean
+  threeCardSpreadType?: string
 }
 
 interface PositionInfo {
@@ -23,7 +24,42 @@ interface PositionInfo {
   meaning: string
 }
 
-const getPositionInfo = (position: number, layoutType: number): PositionInfo => {
+const getPositionInfo = (position: number, layoutType: number, threeCardSpreadType?: string): PositionInfo => {
+  // Handle different 3-card spread types
+  if (layoutType === 3 && threeCardSpreadType) {
+    const threeCardPositions: Record<string, Record<number, PositionInfo>> = {
+      "past-present-future": {
+        0: { label: "Past", meaning: "Influences from your past that shaped your current situation" },
+        1: { label: "Present", meaning: "Your current circumstances and immediate challenges" },
+        2: { label: "Future", meaning: "Potential outcome based on your current path" }
+      },
+      "situation-challenge-advice": {
+        0: { label: "Situation", meaning: "The current situation or question you face" },
+        1: { label: "Challenge", meaning: "Obstacles or difficulties you may encounter" },
+        2: { label: "Advice", meaning: "Guidance for how to proceed" }
+      },
+      "mind-body-spirit": {
+        0: { label: "Mind", meaning: "Thoughts, mental state, and intellectual matters" },
+        1: { label: "Body", meaning: "Physical health, actions, and material concerns" },
+        2: { label: "Spirit", meaning: "Emotional well-being, spiritual growth, and inner wisdom" }
+      },
+      "yes-no-maybe": {
+        0: { label: "Yes", meaning: "Positive influences and supporting factors" },
+        1: { label: "No", meaning: "Negative influences and opposing factors" },
+        2: { label: "Maybe", meaning: "Neutral factors and possibilities to consider" }
+      },
+      "general-reading": {
+        0: { label: "Card 1", meaning: "First element of your reading" },
+        1: { label: "Card 2", meaning: "Second element of your reading" },
+        2: { label: "Card 3", meaning: "Third element of your reading" }
+      }
+    }
+
+    if (threeCardPositions[threeCardSpreadType]) {
+      return threeCardPositions[threeCardSpreadType][position] || { label: `Position ${position + 1}`, meaning: "" }
+    }
+  }
+
   const positions: Record<number, Record<number, PositionInfo>> = {
     3: {
       0: { label: "Past", meaning: "Influences from your past that shaped your current situation" },
@@ -74,7 +110,8 @@ export function ReadingViewer({
   allCards,
   showShareButton = true,
   onShare,
-  showReadingHeader = true
+  showReadingHeader = true,
+  threeCardSpreadType
 }: ReadingViewerProps) {
   const [selectedCard, setSelectedCard] = useState<{ card: CardType; reversed: boolean } | null>(null)
 
@@ -126,7 +163,7 @@ export function ReadingViewer({
             const card = getCardById(allCards, readingCard.id)
             if (!card) return null
 
-            const positionInfo = getPositionInfo(index, reading.layoutType)
+            const positionInfo = getPositionInfo(index, reading.layoutType, threeCardSpreadType)
 
             return (
               <TooltipProvider key={index}>
@@ -244,7 +281,7 @@ export function ReadingViewer({
                 const card = getCardById(allCards, adjCard.id)
                 if (!card) return null
 
-                const combination = getCombinationMeaning(selectedCard.card, card)
+                 const combination = getCombinationMeaning(selectedCard.card, card, readingCard.position, adjCard.position)
 
                 return (
                    <div key={index} className="flex items-center gap-4 p-4 bg-slate-900/40 rounded-lg border border-amber-400/20 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 backdrop-blur-sm">

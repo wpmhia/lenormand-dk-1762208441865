@@ -111,9 +111,17 @@ export function drawCards(cards: Card[], count: number): ReadingCard[] {
 }
 
 // Get combination meaning between two cards
-export function getCombinationMeaning(card1: Card, card2: Card): string | null {
-  const combos = Array.isArray(card1.combos) ? card1.combos : []
-  const combo = combos.find(c => c.withCardId === card2.id)
+export function getCombinationMeaning(card1: Card, card2: Card, card1Position?: number, card2Position?: number): string | null {
+  // For directional combinations, use the card that appears first in the spread
+  const useCard1Perspective = card1Position !== undefined && card2Position !== undefined
+    ? card1Position <= card2Position
+    : true // fallback to original behavior if positions not provided
+
+  const primaryCard = useCard1Perspective ? card1 : card2
+  const secondaryCard = useCard1Perspective ? card2 : card1
+
+  const combos = Array.isArray(primaryCard.combos) ? primaryCard.combos : []
+  const combo = combos.find(c => c.withCardId === secondaryCard.id)
   return combo?.meaning || null
 }
 

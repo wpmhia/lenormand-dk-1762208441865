@@ -22,16 +22,25 @@ import { getAIReading, AIReadingRequest, AIReadingResponse, isDeepSeekAvailable 
 
 
 const LAYOUTS = [
-  { value: 3, label: "3 Cards - Past, Present, Future" },
-  { value: 5, label: "5 Cards - Extended Reading" },
-  { value: 9, label: "9 Cards - Comprehensive Reading" },
-  { value: 36, label: "Grand Tableau - Full Deck" }
+  { value: 3, label: "3 Cards - Past, Present, Future", type: "past-present-future" },
+  { value: 5, label: "5 Cards - Extended Reading", type: "extended" },
+  { value: 9, label: "9 Cards - Comprehensive Reading", type: "comprehensive" },
+  { value: 36, label: "Grand Tableau - Full Deck", type: "grand-tableau" }
+]
+
+const THREE_CARD_SPREADS = [
+  { value: "past-present-future", label: "Past, Present, Future" },
+  { value: "situation-challenge-advice", label: "Situation, Challenge, Advice" },
+  { value: "mind-body-spirit", label: "Mind, Body, Spirit" },
+  { value: "yes-no-maybe", label: "Yes, No, Maybe" },
+  { value: "general-reading", label: "General Reading (Sentence)" }
 ]
 
 export default function NewReadingPage() {
   const [allCards, setAllCards] = useState<CardType[]>([])
   const [drawnCards, setDrawnCards] = useState<ReadingCard[]>([])
   const [layoutType, setLayoutType] = useState<3 | 5 | 9 | 36>(3)
+  const [threeCardSpreadType, setThreeCardSpreadType] = useState<string>("past-present-future")
 
   const [question, setQuestion] = useState('')
   const [questionCharCount, setQuestionCharCount] = useState(0)
@@ -299,12 +308,33 @@ export default function NewReadingPage() {
                          ))}
                        </SelectContent>
                      </Select>
-                     <div id="layout-help" className="text-xs text-rose-200/70 italic">
-                       Choose the number of cards for your reading spread
-                     </div>
-                  </div>
+                      <div id="layout-help" className="text-xs text-rose-200/70 italic">
+                        Choose the number of cards for your reading spread
+                      </div>
+                   </div>
 
-                  <div className="flex items-center justify-between p-4 bg-slate-900/40 rounded-xl border border-rose-400/20">
+                   {layoutType === 3 && (
+                     <div className="space-y-2">
+                       <Label htmlFor="three-card-spread">3-Card Spread Type:</Label>
+                       <Select value={threeCardSpreadType} onValueChange={setThreeCardSpreadType}>
+                         <SelectTrigger className="bg-slate-900/80 border-rose-400/30 text-white rounded-xl focus:border-rose-400/60 backdrop-blur-sm" aria-describedby="spread-help">
+                           <SelectValue />
+                         </SelectTrigger>
+                         <SelectContent className="bg-slate-900 border-rose-400/30">
+                           {THREE_CARD_SPREADS.map((spread) => (
+                             <SelectItem key={spread.value} value={spread.value} className="text-white hover:bg-rose-950/50 focus:bg-rose-950/50">
+                               {spread.label}
+                             </SelectItem>
+                           ))}
+                         </SelectContent>
+                       </Select>
+                       <div id="spread-help" className="text-xs text-rose-200/70 italic">
+                         Choose how to interpret your 3-card spread
+                       </div>
+                     </div>
+                   )}
+
+                   <div className="flex items-center justify-between p-4 bg-slate-900/40 rounded-xl border border-rose-400/20">
                     <Label htmlFor="allow-reversed" className="text-rose-200 font-medium">Allow reversed cards</Label>
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -374,20 +404,21 @@ export default function NewReadingPage() {
                   </p>
                </div>
 
-<ReadingViewer
-                  reading={{
-                    id: 'temp',
-                    title: 'Your Reading',
-                    question,
-                    layoutType,
-                    cards: drawnCards,
-                    slug: 'temp',
-                     isPublic: false,
-                    createdAt: new Date(),
-                    updatedAt: new Date(),
-                  }}
-                  allCards={allCards}
-                  showShareButton={false}
+                 <ReadingViewer
+                   reading={{
+                     id: 'temp',
+                     title: 'Your Reading',
+                     question,
+                     layoutType,
+                     cards: drawnCards,
+                     slug: 'temp',
+                      isPublic: false,
+                     createdAt: new Date(),
+                     updatedAt: new Date(),
+                   }}
+                   allCards={allCards}
+                   showShareButton={false}
+                   threeCardSpreadType={layoutType === 3 ? threeCardSpreadType : undefined}
                 />
 
                 {/* Show traditional meanings while AI loads or if AI fails */}
