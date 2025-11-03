@@ -14,13 +14,13 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-amber-50 via-rose-50 to-purple-50 dark:from-slate-900 dark:via-purple-900 dark:to-slate-900 relative overflow-hidden" role="main">
       {/* Hero Section */}
-      <div className="container mx-auto px-4 py-16 max-w-6xl">
-        <div className="grid lg:grid-cols-2 gap-16 items-center mb-20 slide-in-up relative">
+      <div className="container mx-auto px-4 py-10 max-w-6xl">
+        <div className="grid lg:grid-cols-2 gap-12 items-center mb-12 slide-in-up relative">
           <div className="text-center lg:text-left space-y-8 relative z-10">
-            <Badge className="mb-8 bg-gradient-to-r from-amber-600/40 via-rose-500/40 to-purple-600/40 dark:from-amber-600/60 dark:via-rose-500/60 dark:to-purple-600/60 text-amber-900 dark:text-amber-100 border-amber-600/50 dark:border-amber-400/50 px-8 py-4 text-sm font-semibold tracking-wide uppercase rounded-full backdrop-blur-sm shadow-lg shadow-amber-500/20 dark:shadow-amber-500/30" variant="secondary">
+            <Badge className="mb-6 bg-gradient-to-r from-amber-600/40 via-rose-500/40 to-purple-600/40 dark:from-amber-600/60 dark:via-rose-500/60 dark:to-purple-600/60 text-amber-900 dark:text-amber-100 border-amber-600/50 dark:border-amber-400/50 px-8 py-4 text-sm font-semibold tracking-wide uppercase rounded-full backdrop-blur-sm shadow-lg shadow-amber-500/20 dark:shadow-amber-500/30" variant="secondary">
               ✨ Mystical Lenormand Wisdom
             </Badge>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-12 text-amber-900 dark:text-amber-100 leading-tight relative">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-8 text-amber-900 dark:text-amber-100 leading-tight relative">
               <span className="relative inline-block">
                 Lenormand
                 <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-amber-600 via-rose-600 to-purple-600 rounded-full opacity-80"></div>
@@ -29,7 +29,7 @@ export default function Home() {
                 Intelligence
               </span>
             </h1>
-            <p className="text-lg sm:text-xl lg:text-2xl text-amber-800 dark:text-amber-200 mb-12 max-w-3xl mx-auto lg:mx-0 leading-relaxed font-light">
+            <p className="text-lg sm:text-xl lg:text-2xl text-amber-800 dark:text-amber-200 mb-8 max-w-3xl mx-auto lg:mx-0 leading-relaxed font-light">
               Discover the ancient wisdom of Lenormand through AI-enhanced intuition.
               <span className="text-amber-700 block mt-2">Experience personalized guidance where technology meets mystical insight.</span>
             </p>
@@ -63,7 +63,7 @@ export default function Home() {
 
       {/* Reading Types */}
       <div className="container mx-auto px-6 py-20 max-w-6xl">
-        <div className="mb-20 fade-in-scale relative">
+        <div className="mb-12 fade-in-scale relative">
           <div className="absolute inset-0 bg-gradient-to-r from-rose-500/5 via-transparent to-purple-500/5 rounded-3xl"></div>
           <div className="text-center mb-12 relative z-10">
             <h2 className="text-4xl font-bold text-center mb-4 text-amber-900 dark:text-amber-100 relative">
@@ -159,8 +159,8 @@ export default function Home() {
       
 
       {/* FAQ Section */}
-      <div className="container mx-auto px-6 py-20 max-w-4xl">
-        <div className="mb-20 slide-in-up relative">
+      <div className="container mx-auto px-6 py-12 max-w-4xl">
+        <div className="mb-12 slide-in-up relative">
           <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-transparent to-rose-500/5 rounded-3xl"></div>
           <div className="text-center mb-12 relative z-10">
             <h2 className="text-4xl font-bold text-center mb-4 text-amber-900 dark:text-amber-100 relative">
@@ -222,8 +222,8 @@ export default function Home() {
       </div>
 
       {/* CTA Section */}
-      <div className="container mx-auto px-6 py-20 max-w-4xl">
-        <div className="text-center bg-gradient-to-r from-white via-rose-50/50 to-amber-50 dark:from-slate-950 dark:via-rose-950/40 dark:to-slate-900 backdrop-blur-sm rounded-3xl p-12 border border-rose-400/20 dark:border-rose-400/30 fade-in-scale shadow-2xl relative overflow-hidden">
+      <div className="container mx-auto px-6 py-12 max-w-4xl">
+        <div className="text-center bg-gradient-to-r from-white via-rose-50/50 to-amber-50 dark:from-slate-950 dark:via-rose-950/40 dark:to-slate-900 backdrop-blur-sm rounded-3xl p-8 border border-rose-400/20 dark:border-rose-400/30 fade-in-scale shadow-2xl relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-rose-500/10 via-amber-400/5 to-purple-500/10 rounded-3xl"></div>
           <div className="absolute top-4 left-4 w-16 h-16 bg-rose-500/20 rounded-full blur-xl animate-pulse"></div>
           <div className="absolute bottom-4 right-4 w-12 h-12 bg-purple-500/20 rounded-full blur-lg animate-pulse" style={{animationDelay: '1s'}}></div>
