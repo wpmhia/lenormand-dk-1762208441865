@@ -41,7 +41,7 @@ export default function NewReadingPage() {
   const [allCards, setAllCards] = useState<CardType[]>([])
   const [drawnCards, setDrawnCards] = useState<ReadingCard[]>([])
   const [layoutType, setLayoutType] = useState<3 | 5 | 9 | 36 | "physical">(3)
-  const [threeCardSpreadType, setThreeCardSpreadType] = useState<string>("past-present-future")
+  const [threeCardSpreadType, setThreeCardSpreadType] = useState<string>("general-reading")
   const [physicalCards, setPhysicalCards] = useState<string>("")
   const [physicalCardCount, setPhysicalCardCount] = useState<number>(3)
 
@@ -248,6 +248,7 @@ export default function NewReadingPage() {
     setQuestionCharCount(0)
 
     setLayoutType(3)
+    setThreeCardSpreadType("general-reading")
     setAllowReversed(false)
     setError('')
     setAiReading(null)
