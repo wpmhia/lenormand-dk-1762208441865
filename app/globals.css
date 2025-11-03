@@ -6,32 +6,60 @@
 
 @layer base {
   :root {
-    /* High Contrast Theme */
-    --background: 45 25% 98%;
-    --foreground: 25 35% 15%;
-    --card: 45 20% 99%;
-    --card-foreground: 25 35% 15%;
-    --popover: 45 20% 98%;
-    --popover-foreground: 25 35% 15%;
-    --primary: 35 40% 50%;
-    --primary-foreground: 45 25% 98%;
-    --secondary: 45 15% 95%;
-    --secondary-foreground: 25 35% 15%;
-    --muted: 45 10% 92%;
-    --muted-foreground: 25 25% 35%;
-    --accent: 30 35% 55%;
-    --accent-foreground: 45 25% 98%;
-    --destructive: 15 60% 45%;
-    --destructive-foreground: 45 25% 98%;
-    --border: 45 15% 80%;
-    --input: 45 15% 95%;
-    --ring: 35 40% 50%;
-    --chart-1: 35 40% 50%;
-    --chart-2: 25 35% 45%;
-    --chart-3: 45 30% 50%;
-    --chart-4: 30 35% 55%;
-    --chart-5: 40 25% 50%;
+    /* Light Theme - High Contrast */
+    --background: 0 0% 100%;
+    --foreground: 25 35% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 25 35% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 25 35% 10%;
+    --primary: 25 35% 25%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 45 15% 96%;
+    --secondary-foreground: 25 35% 10%;
+    --muted: 45 10% 94%;
+    --muted-foreground: 25 25% 40%;
+    --accent: 25 35% 30%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 45 15% 75%;
+    --input: 45 15% 96%;
+    --ring: 25 35% 25%;
+    --chart-1: 25 35% 25%;
+    --chart-2: 30 25% 30%;
+    --chart-3: 35 20% 35%;
+    --chart-4: 25 30% 30%;
+    --chart-5: 30 25% 25%;
     --radius: 0.5rem;
+  }
+
+  .dark {
+    /* Dark Theme */
+    --background: 25 35% 8%;
+    --foreground: 45 20% 90%;
+    --card: 25 35% 10%;
+    --card-foreground: 45 20% 90%;
+    --popover: 25 35% 10%;
+    --popover-foreground: 45 20% 90%;
+    --primary: 45 20% 70%;
+    --primary-foreground: 25 35% 8%;
+    --secondary: 25 35% 15%;
+    --secondary-foreground: 45 20% 90%;
+    --muted: 25 35% 15%;
+    --muted-foreground: 45 15% 60%;
+    --accent: 30 25% 60%;
+    --accent-foreground: 25 35% 8%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 25 35% 8%;
+    --border: 25 35% 20%;
+    --input: 25 35% 15%;
+    --ring: 45 20% 70%;
+    --chart-1: 45 20% 70%;
+    --chart-2: 30 25% 60%;
+    --chart-3: 35 20% 65%;
+    --chart-4: 25 30% 60%;
+    --chart-5: 30 25% 55%;
   }
 }
 
@@ -42,9 +70,7 @@
   body {
     @apply bg-background text-foreground;
     font-family: 'Crimson Text', serif;
-    background: linear-gradient(135deg, #f5f2e8 0%, #e8dcc0 50%, #f0e6d2 100%);
     min-height: 100vh;
-    background-attachment: fixed;
     position: relative;
   }
 
