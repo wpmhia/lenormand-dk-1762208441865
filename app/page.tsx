@@ -13,46 +13,35 @@ import {
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 relative overflow-hidden">
-      {/* Sensual background elements */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-rose-500/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-amber-400/15 rounded-full blur-2xl animate-pulse" style={{animationDelay: '1s'}}></div>
-        <div className="absolute bottom-32 left-1/4 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
-        <div className="absolute bottom-20 right-10 w-28 h-28 bg-pink-400/15 rounded-full blur-2xl animate-pulse" style={{animationDelay: '0.5s'}}></div>
+    <div className="min-h-screen aged-paper relative overflow-hidden">
+      {/* Subtle background texture */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute top-20 left-10 w-24 h-24 bg-amber-900/10 rounded-full blur-2xl"></div>
+        <div className="absolute top-40 right-20 w-16 h-16 bg-amber-800/08 rounded-full blur-xl"></div>
+        <div className="absolute bottom-32 left-1/4 w-32 h-32 bg-amber-900/06 rounded-full blur-2xl"></div>
       </div>
-      {/* Hero Section */}
-      <div className="container mx-auto px-4 py-16 max-w-6xl">
-        <div className="grid lg:grid-cols-2 gap-16 items-center mb-20 slide-in-up relative">
-          <div className="text-center lg:text-left space-y-8 relative z-10">
-            <Badge className="mb-8 bg-gradient-to-r from-rose-500/20 via-amber-400/20 to-purple-600/20 text-rose-200 border-rose-400/30 px-8 py-4 text-sm font-semibold tracking-wide uppercase rounded-full backdrop-blur-sm shadow-lg shadow-rose-500/10" variant="secondary">
-              ✨ Mystical Lenormand Wisdom
-            </Badge>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-12 text-white leading-tight relative">
-              <span className="relative inline-block">
-                Lenormand
-                <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-rose-400 via-amber-300 to-purple-400 rounded-full opacity-60"></div>
-              </span>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-rose-400 via-amber-300 to-purple-400 animate-pulse">
-                Intelligence
-              </span>
-            </h1>
-            <p className="text-lg sm:text-xl lg:text-2xl text-slate-200 mb-12 max-w-3xl mx-auto lg:mx-0 leading-relaxed font-light italic">
-              Discover the ancient wisdom of Lenormand through AI-enhanced intuition.
-              <span className="text-rose-200/80">Experience personalized guidance where technology meets mystical insight.</span>
-            </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
-              <Link href="/read/new">
-                <Button size="lg" className="px-12 py-5 bg-gradient-to-r from-rose-600 via-amber-500 to-purple-600 hover:from-rose-700 hover:via-amber-600 hover:to-purple-700 text-white shadow-2xl shadow-rose-500/30 font-semibold text-lg transition-all duration-700 hover:scale-105 rounded-full border border-rose-400/20 backdrop-blur-sm mystical-float">
-                  ✨ Begin Your Journey
-                </Button>
-              </Link>
-              <Link href="/cards">
-                <Button variant="outline" size="lg" className="px-12 py-5 border-2 border-rose-400/30 text-rose-200 hover:bg-rose-950/50 hover:border-rose-400/60 font-semibold text-lg transition-all duration-700 hover:scale-105 rounded-full backdrop-blur-sm gentle-pulse shadow-lg shadow-rose-500/10">
-                  🔮 Explore the Cards
-                </Button>
-              </Link>
-            </div>
+{/* Hero Section */}
+      <div className="container mx-auto px-6 py-20 max-w-4xl">
+        <div className="text-center mb-16 gentle-fade-in">
+          <h1 className="text-5xl md:text-6xl font-serif mb-8 text-amber-900 leading-tight">
+            Lenormand Wisdom
+          </h1>
+          <p className="text-xl md:text-2xl mb-12 text-amber-800 max-w-2xl mx-auto leading-relaxed font-light">
+            Ancient guidance for modern souls. Let the cards reveal what your heart already knows.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <Link href="/read/new">
+              <Button size="lg" className="px-10 py-4 bg-amber-800 hover:bg-amber-900 text-amber-100 font-medium text-lg transition-colors duration-300 rounded-lg border-2 border-amber-900">
+                Begin Your Reading
+              </Button>
+            </Link>
+            <Link href="/cards">
+              <Button variant="outline" size="lg" className="px-10 py-4 border-2 border-amber-700 text-amber-800 hover:bg-amber-50 font-medium text-lg transition-colors duration-300 rounded-lg">
+                Explore the Cards
+              </Button>
+            </Link>
+          </div>
+        </div>
           </div>
           <div className="flex justify-center lg:justify-end relative z-10">
             <div className="relative group">
