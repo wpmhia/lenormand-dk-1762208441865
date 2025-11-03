@@ -13,8 +13,6 @@ import {
 export default function Home() {
   return (
     <main className="min-h-screen aged-paper relative overflow-hidden" role="main">
-Subtle mystical background orbs for visual atmosphere
-
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-16 max-w-6xl">
         <div className="grid lg:grid-cols-2 gap-16 items-center mb-20 slide-in-up relative">
@@ -266,6 +264,6 @@ Subtle mystical background orbs for visual atmosphere
           </div>
         </div>
       </footer>
-    </div>
+    </main>
   )
 }
