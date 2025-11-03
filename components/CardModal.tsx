@@ -61,7 +61,7 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
                 className="w-full h-full object-contain bg-white"
               />
               {reversed && (
-                <div className="absolute top-3 right-3 bg-red-500 text-white text-sm font-bold rounded-full w-8 h-8 flex items-center justify-center border-2 border-white shadow-lg">
+                <div className="absolute top-3 right-3 bg-destructive text-destructive-foreground text-sm font-bold rounded-full w-8 h-8 flex items-center justify-center border-2 border-white shadow-lg">
                   R
                 </div>
               )}

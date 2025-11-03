@@ -109,9 +109,9 @@ export function AIReadingDisplay({
     }
 
     return (
-      <Card className="border-red-200 bg-red-50 slide-in-up">
+      <Card className="border-destructive bg-destructive/10 slide-in-up">
         <CardContent className="pt-6">
-          <div className="text-center text-red-600 space-y-4">
+          <div className="text-center text-destructive space-y-4">
             {getErrorIcon()}
             <div>
               <p className="font-medium">{getErrorTitle()}</p>
@@ -119,30 +119,30 @@ export function AIReadingDisplay({
               
               {/* Specific error guidance */}
               {errorDetails?.type === 'rate_limit' && (
-                <div className="mt-3 p-3 bg-red-100 rounded-lg border border-red-200">
-                  <p className="text-sm text-red-700">
+                <div className="mt-3 p-3 border-destructive/20 rounded-lg border border-red-200">
+                  <p className="text-sm text-destructive">
                     <strong>Why?</strong> To ensure quality readings for everyone, we limit requests to 1 every 2 seconds.
                   </p>
-                  <p className="text-sm text-red-700 mt-1">
+                  <p className="text-sm text-destructive mt-1">
                     <strong>What to do:</strong> Wait a moment, then try again.
                   </p>
                 </div>
               )}
 
               {errorDetails?.type === 'configuration_needed' && (
-                <div className="mt-3 p-3 bg-red-100 rounded-lg border border-red-200">
-                  <p className="text-sm text-red-700">
+                <div className="mt-3 p-3 border-destructive/20 rounded-lg border border-red-200">
+                  <p className="text-sm text-destructive">
                     <strong>Why?</strong> AI readings require a DeepSeek API key.
                   </p>
                   <div className="mt-2 space-y-2">
-                    <p className="text-sm text-red-700">
+                    <p className="text-sm text-destructive">
                       <strong>What to do:</strong> Add DEEPSEEK_API_KEY to your .env file
                     </p>
                     {errorDetails.helpUrl && (
                       <Button
                         variant="outline"
                         size="sm"
-                        className="border-red-300 text-red-600 hover:bg-red-50"
+                        className="border-destructive text-destructive hover:bg-red-50"
                         asChild
                       >
                         <a href={errorDetails.helpUrl} target="_blank" rel="noopener noreferrer">
@@ -156,29 +156,29 @@ export function AIReadingDisplay({
               )}
 
               {errorDetails?.type === 'service_unavailable' && (
-                <div className="mt-3 p-3 bg-red-100 rounded-lg border border-red-200">
-                  <p className="text-sm text-red-700">
+                <div className="mt-3 p-3 border-destructive/20 rounded-lg border border-red-200">
+                  <p className="text-sm text-destructive">
                     <strong>Why?</strong> The AI service is temporarily experiencing issues.
                   </p>
-                  <p className="text-sm text-red-700 mt-1">
+                  <p className="text-sm text-destructive mt-1">
                     <strong>What to do:</strong> Try again in a few minutes.
                   </p>
                 </div>
               )}
 
               {errorDetails?.type === 'safety_violation' && (
-                <div className="mt-3 p-3 bg-red-100 rounded-lg border border-red-200">
-                  <p className="text-sm text-red-700">
+                <div className="mt-3 p-3 border-destructive/20 rounded-lg border border-red-200">
+                  <p className="text-sm text-destructive">
                     <strong>Why?</strong> Your question touches on sensitive topics.
                   </p>
-                  <p className="text-sm text-red-700 mt-1">
+                  <p className="text-sm text-destructive mt-1">
                     <strong>What to do:</strong> {errorDetails.suggestion}
                   </p>
                 </div>
               )}
 
               {retryCount > 0 && (
-                <p className="text-xs text-red-500 mt-3">
+                <p className="text-xs text-destructive mt-3">
                   Attempt {retryCount} of 3
                 </p>
               )}
@@ -189,7 +189,7 @@ export function AIReadingDisplay({
                 onClick={onRetry}
                 variant="outline"
                 size="sm"
-                className="border-red-300 text-red-600 hover:bg-red-50"
+                className="border-destructive text-destructive hover:bg-red-50"
                 aria-label="Seek wisdom again"
               >
                 <AlertTriangle className="w-4 h-4 mr-2" />
@@ -198,7 +198,7 @@ export function AIReadingDisplay({
             )}
             
             {retryCount >= 3 && (
-              <p className="text-xs text-red-500">
+              <p className="text-xs text-destructive">
                 The mystical connection needs a moment. Please try again later or continue with your intuition.
               </p>
             )}
@@ -232,7 +232,7 @@ export function AIReadingDisplay({
                 <div className="h-4 bg-slate-700 rounded w-7/12" />
               </div>
               <div className="border-t border-amber-400/20 pt-3 mt-4">
-                <div className="h-4 bg-amber-400/20 rounded w-3/4 mx-auto" />
+                <div className="h-4 bg-primary/20 rounded w-3/4 mx-auto" />
               </div>
             </div>
             <div className="text-xs text-slate-500 mt-4 text-center">
@@ -261,7 +261,7 @@ export function AIReadingDisplay({
     <Card className="border-slate-700 bg-slate-900/50 slide-in-up">
       <CardHeader>
         <CardTitle className="text-white flex items-center gap-2">
-          <Zap className="w-5 h-5 text-amber-400/80" />
+          <Zap className="w-5 h-5 text-primary/80" />
           The Sibyl Speaks
         </CardTitle>
       </CardHeader>
@@ -276,8 +276,8 @@ export function AIReadingDisplay({
         {/* Tender Action */}
         <section aria-labelledby="action-heading" className="border-t border-amber-400/20 pt-4">
           <div className="text-center">
-            <div className="text-xs text-amber-400/60 uppercase tracking-wider font-medium mb-2">Your Path Forward</div>
-            <div className="text-amber-200 text-lg font-light italic">
+            <div className="text-xs text-primary/60 uppercase tracking-wider font-medium mb-2">Your Path Forward</div>
+            <div className="text-muted-foreground text-lg font-light italic">
               {aiReading.action}
             </div>
           </div>

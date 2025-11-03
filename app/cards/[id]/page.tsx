@@ -57,7 +57,7 @@ export default function CardDetailPage({ params }: PageProps) {
     return (
       <div className="page-layout">
         <div className="container mx-auto px-4 py-8">
-          <div className="text-center text-amber-900">Loading card...</div>
+          <div className="text-center text-foreground">Loading card...</div>
         </div>
       </div>
     )
@@ -67,7 +67,7 @@ export default function CardDetailPage({ params }: PageProps) {
     return (
       <div className="page-layout">
         <div className="container mx-auto px-4 py-8">
-          <div className="text-center text-amber-900">Card not found</div>
+          <div className="text-center text-foreground">Card not found</div>
         </div>
       </div>
     )
@@ -83,17 +83,17 @@ export default function CardDetailPage({ params }: PageProps) {
     <div className="page-layout">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2 text-amber-900">{card.name}</h1>
-          <p className="text-amber-700">Card #{card.id}</p>
+          <h1 className="text-4xl font-bold mb-2 text-foreground">{card.name}</h1>
+          <p className="text-muted-foreground">Card #{card.id}</p>
         </div>
 
         <div className="max-w-2xl mx-auto">
-          <Card className="border-amber-200 bg-amber-50/50">
+          <Card className="border-border bg-muted">
             <CardHeader>
-              <CardTitle className="text-amber-900">Upright Meaning</CardTitle>
+              <CardTitle className="text-foreground">Upright Meaning</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-amber-900 leading-relaxed">
+              <p className="text-foreground leading-relaxed">
                 {card.uprightMeaning}
               </p>
             </CardContent>

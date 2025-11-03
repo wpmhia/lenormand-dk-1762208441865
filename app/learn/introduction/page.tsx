@@ -93,7 +93,7 @@ export default function IntroductionPage() {
         <Card className="mb-8 border-border bg-card">
           <CardHeader>
             <CardTitle className="text-2xl text-foreground flex items-center">
-              <Star className="w-6 h-6 mr-3 text-purple-600" />
+              <Star className="w-6 h-6 mr-3 text-primary" />
               Lenormand vs. Tarot
             </CardTitle>
           </CardHeader>
@@ -127,7 +127,7 @@ export default function IntroductionPage() {
         <Card className="mb-8 border-border bg-card">
           <CardHeader>
             <CardTitle className="text-2xl text-foreground flex items-center">
-              <Heart className="w-6 h-6 mr-3 text-emerald-600" />
+              <Heart className="w-6 h-6 mr-3 text-primary" />
               Why Learn Lenormand?
             </CardTitle>
           </CardHeader>
@@ -135,7 +135,7 @@ export default function IntroductionPage() {
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
-                  <Target className="w-5 h-5 text-emerald-600 mt-0.5 flex-shrink-0" />
+                  <Target className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                   <div>
                     <h4 className="font-semibold text-foreground">Direct Answers</h4>
                     <p className="text-sm text-muted-foreground">
@@ -144,7 +144,7 @@ export default function IntroductionPage() {
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <Users className="w-5 h-5 text-emerald-600 mt-0.5 flex-shrink-0" />
+                  <Users className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                   <div>
                     <h4 className="font-semibold text-foreground">Relationship Focus</h4>
                     <p className="text-sm text-muted-foreground">
@@ -155,7 +155,7 @@ export default function IntroductionPage() {
               </div>
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
-                  <Clock className="w-5 h-5 text-emerald-600 mt-0.5 flex-shrink-0" />
+                  <Clock className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                   <div>
                     <h4 className="font-semibold text-foreground">Timing Insights</h4>
                     <p className="text-sm text-muted-foreground">
@@ -164,7 +164,7 @@ export default function IntroductionPage() {
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <BookOpen className="w-5 h-5 text-emerald-600 mt-0.5 flex-shrink-0" />
+                  <BookOpen className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                   <div>
                     <h4 className="font-semibold text-foreground">Accessible Learning</h4>
                     <p className="text-sm text-muted-foreground">
@@ -181,7 +181,7 @@ export default function IntroductionPage() {
         <Card className="mb-8 border-border bg-card">
           <CardHeader>
             <CardTitle className="text-2xl text-foreground flex items-center">
-              <Star className="w-6 h-6 mr-3 text-rose-600" />
+              <Star className="w-6 h-6 mr-3 text-primary" />
               What You&apos;ll Learn in This Course
             </CardTitle>
           </CardHeader>

@@ -48,20 +48,20 @@ export default function EnvCheckPage() {
     <div className="page-layout">
       <div className="container mx-auto p-6 max-w-4xl">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold mb-2 text-amber-900">Environment Variables Status</h1>
+          <h1 className="text-3xl font-bold mb-2 text-foreground">Environment Variables Status</h1>
         <p className="text-base mt-2 text-muted-foreground flex items-center flex-wrap gap-1">
-          <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-2 py-1 rounded-md font-semibold">Steps</span> Switch to{' '}
-          <span className="text-purple-600 dark:text-purple-400 font-medium inline-flex items-center gap-1">
+          <span className="bg-muted text-muted-foreground px-2 py-1 rounded-md font-semibold">Steps</span> Switch to{' '}
+          <span className="text-primary font-medium inline-flex items-center gap-1">
             <Code className="h-4 w-4" />
             Code
           </span>
           {' '}tab → Select{' '}
-          <span className="text-purple-600 dark:text-purple-400 font-medium inline-flex items-center gap-1">
+          <span className="text-primary font-medium inline-flex items-center gap-1">
             <Settings className="h-4 w-4" />
             .env
           </span>
           {' '}file → Add/Update the missing variables →{' '}
-          <span className="text-purple-600 dark:text-purple-400 font-medium inline-flex items-center gap-1">
+          <span className="text-primary font-medium inline-flex items-center gap-1">
             <Save className="h-4 w-4" />
             Save
           </span>
@@ -70,7 +70,7 @@ export default function EnvCheckPage() {
 
       {missingCount > 0 && (
         <>
-          <Alert className="mb-3 border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-950/50 dark:text-red-100 p-3">
+          <Alert className="mb-3 border-destructive bg-destructive/10 text-destructive p-3">
             <div className="flex items-center gap-2">
               <XCircle className="h-4 w-4 flex-shrink-0" />
               <AlertDescription>
@@ -94,7 +94,7 @@ export default function EnvCheckPage() {
               </AlertDescription>
             </div>
             <Link href="/">
-              <Button className="bg-green-600 hover:bg-green-700 text-white">
+              <Button className="bg-primary hover:bg-primary/90 text-white">
                 Go to App
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
@@ -129,7 +129,7 @@ export default function EnvCheckPage() {
                           .replace(/\n/g, '<br>')
                           .replace(
                             /\[([^\]]+)\]\(([^)]+)\)/g,
-                            '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 underline">$1</a>'
+                            '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary/80 underline">$1</a>'
                           )
                       }}
                     />
@@ -146,7 +146,7 @@ export default function EnvCheckPage() {
                     </div>
                   )}
                   {!isSet && (
-                    <div className="text-xs text-red-600 dark:text-red-400">
+                    <div className="text-xs text-destructive">
                       This variable is not set in the current environment
                     </div>
                   )}

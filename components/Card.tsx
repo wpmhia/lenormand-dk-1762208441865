@@ -74,8 +74,8 @@ export function Card({
         <div className="absolute inset-0 bg-gradient-to-t from-transparent via-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
         <div className="relative text-white text-center z-10">
           <div className="text-4xl mb-2 opacity-90">✦</div>
-          <div className="text-sm font-bold tracking-wider opacity-90 text-purple-200 group-hover:text-purple-100 transition-colors duration-300">LENORMAND</div>
-          <div className="text-xs text-purple-300 mt-1 opacity-70 group-hover:opacity-90 transition-opacity duration-300">MYSTICAL DIVINATION</div>
+          <div className="text-sm font-bold tracking-wider opacity-90 text-muted-foreground group-hover:text-foreground transition-colors duration-300">LENORMAND</div>
+          <div className="text-xs text-muted-foreground mt-1 opacity-70 group-hover:opacity-90 transition-opacity duration-300">MYSTICAL DIVINATION</div>
         </div>
         <div className="absolute inset-0 rounded-xl ring-2 ring-purple-500/20 group-hover:ring-purple-400/60 transition-all duration-300"></div>
       </div>

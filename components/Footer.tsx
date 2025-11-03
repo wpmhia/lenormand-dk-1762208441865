@@ -23,7 +23,7 @@ export function Footer() {
             {/* Brand Section */}
             <div className="space-y-4">
               <h3 className="text-white font-semibold flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-amber-400" aria-hidden="true" />
+                <Sparkles className="w-5 h-5 text-primary" aria-hidden="true" />
                 Lenormand Intelligence
               </h3>
               <p className="text-slate-400 text-sm leading-relaxed">
@@ -31,7 +31,7 @@ export function Footer() {
               </p>
               <div className="flex items-center gap-1 text-slate-500 text-xs">
                 <span>Made with</span>
-                <Heart className="w-3 h-3 text-rose-400" aria-hidden="true" />
+                <Heart className="w-3 h-3 text-primary" aria-hidden="true" />
                 <span>for divination enthusiasts</span>
               </div>
             </div>
@@ -121,7 +121,7 @@ export function Footer() {
               id="guide-dialog-title"
               className="text-white flex items-center gap-2"
             >
-              <BookOpen className="w-5 h-5 text-amber-400" aria-hidden="true" />
+              <BookOpen className="w-5 h-5 text-primary" aria-hidden="true" />
               How to Read Lenormand Cards
             </DialogTitle>
           </DialogHeader>

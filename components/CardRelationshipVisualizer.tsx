@@ -63,7 +63,7 @@ function CardNode({ data }: { data: { card: ReadingCard; fullCard: Card } }) {
             <div className="font-semibold text-sm">{fullCard.name}</div>
             <div className="text-xs text-slate-300 mt-1">{fullCard.uprightMeaning}</div>
             {card.reversed && (
-              <div className="text-xs text-amber-400 mt-1">Reversed</div>
+              <div className="text-xs text-primary mt-1">Reversed</div>
             )}
             <div className="text-xs text-slate-400 mt-1">Position: {card.position}</div>
           </div>
@@ -196,7 +196,7 @@ export function CardRelationshipVisualizer({
     <UICard className="border-slate-700 bg-slate-900/50">
       <CardHeader>
         <CardTitle className="text-white flex items-center gap-2">
-          <Network className="w-5 h-5 text-blue-400" />
+          <Network className="w-5 h-5 text-primary" />
           Card Relationship Map
         </CardTitle>
         {summary && (
@@ -226,11 +226,11 @@ export function CardRelationshipVisualizer({
             <Panel position="top-right" className="bg-slate-800 border border-slate-600 rounded p-2">
               <div className="text-xs text-slate-300 space-y-1">
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-0.5 bg-green-500"></div>
+                  <div className="w-3 h-0.5 bg-primary"></div>
                   <span>Strong</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-0.5 bg-blue-500"></div>
+                  <div className="w-3 h-0.5 bg-primary"></div>
                   <span>Moderate</span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -238,7 +238,7 @@ export function CardRelationshipVisualizer({
                   <span>Weak</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-0.5 bg-red-500 border-dashed border-t"></div>
+                  <div className="w-3 h-0.5 bg-destructive border-dashed border-t"></div>
                   <span>Conflicting</span>
                 </div>
               </div>

@@ -71,7 +71,7 @@ export function CardInterpretation({ cards, allCards, layoutType, question }: Ca
     <Card className="border-slate-700 bg-slate-900/50 slide-in-left">
       <CardHeader>
         <CardTitle className="text-white flex items-center gap-2">
-          <BookOpen className="w-5 h-5 text-amber-400/80" />
+          <BookOpen className="w-5 h-5 text-primary/80" />
           Traditional Card Meanings
         </CardTitle>
         <p className="text-slate-400 text-sm">
@@ -105,7 +105,7 @@ export function CardInterpretation({ cards, allCards, layoutType, question }: Ca
                         </Badge>
                       )}
                     </h3>
-                    <p className="text-amber-400 text-sm font-medium">
+                    <p className="text-primary text-sm font-medium">
                       {positionInfo.title}
                     </p>
                   </div>
@@ -142,8 +142,8 @@ export function CardInterpretation({ cards, allCards, layoutType, question }: Ca
           )
         })}
         
-        <div className="mt-6 p-4 bg-amber-950/20 border border-amber-400/20 rounded-lg">
-          <p className="text-amber-200 text-sm leading-relaxed">
+        <div className="mt-6 p-4 bg-muted/20 border border-primary/20 rounded-lg">
+          <p className="text-muted-foreground text-sm leading-relaxed">
             <strong>Traditional Wisdom:</strong> These classic interpretations provide the foundation for understanding your reading. 
             The AI analysis above weaves these individual meanings into a cohesive narrative tailored to your specific question.
           </p>

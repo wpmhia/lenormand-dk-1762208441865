@@ -137,7 +137,7 @@ export function ReadingViewer({
 
             return (
               <div key={index} className="flex flex-col items-center space-y-1">
-                 <div className="text-xs text-center text-amber-200/80 font-medium">
+                 <div className="text-xs text-center text-muted-foreground/80 font-medium">
                   {position.label}
                 </div>
                 <Card
@@ -171,7 +171,7 @@ export function ReadingViewer({
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <div className="flex flex-col items-center space-y-2">
-                         <div className="text-sm font-medium text-amber-200/90 bg-slate-900/60 px-3 py-1 rounded-full border border-amber-400/30 backdrop-blur-sm">
+                         <div className="text-sm font-medium text-muted-foreground/90 bg-slate-900/60 px-3 py-1 rounded-full border border-primary/30 backdrop-blur-sm">
                            {positionInfo.label}
                          </div>
                         <Card
@@ -183,11 +183,11 @@ export function ReadingViewer({
                         />
                       </div>
                     </TooltipTrigger>
-                     <TooltipContent className="max-w-xs bg-slate-900/95 border-amber-400/30 text-amber-100 backdrop-blur-sm">
+                     <TooltipContent className="max-w-xs bg-slate-900/95 border-primary/30 text-muted-foreground backdrop-blur-sm">
                        <div className="space-y-2">
-                         <p className="font-semibold text-amber-200">{positionInfo.label}</p>
-                         <p className="text-sm text-amber-100/80">{positionInfo.meaning}</p>
-                         <div className="flex items-center gap-1 text-xs text-amber-200/60">
+                         <p className="font-semibold text-muted-foreground">{positionInfo.label}</p>
+                         <p className="text-sm text-muted-foreground/80">{positionInfo.meaning}</p>
+                         <div className="flex items-center gap-1 text-xs text-muted-foreground/60">
                            <Info className="w-3 h-3" />
                            <span>Click card for details</span>
                          </div>
@@ -208,19 +208,19 @@ export function ReadingViewer({
       {/* Reading Header */}
       {showReadingHeader && (
         <div className="text-center space-y-2 slide-in-up">
-           <h2 className="text-3xl font-bold text-amber-100 relative">
+           <h2 className="text-3xl font-bold text-muted-foreground relative">
              {reading.title}
              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-0.5 bg-gradient-to-r from-amber-400 to-rose-400 rounded-full"></div>
            </h2>
            {reading.question && reading.question !== reading.title && (
-              <p className="text-amber-200/80 italic text-lg mt-4">&ldquo;{reading.question}&rdquo;</p>
+              <p className="text-muted-foreground/80 italic text-lg mt-4">&ldquo;{reading.question}&rdquo;</p>
            )}
-           <div className="flex items-center justify-center gap-6 text-sm text-amber-300/70 mt-4">
+           <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground/70 mt-4">
              <div className="flex items-center gap-2">
-               <Calendar className="w-4 h-4 text-amber-400" />
+               <Calendar className="w-4 h-4 text-primary" />
                {new Date(reading.createdAt).toLocaleDateString()}
              </div>
-             <Badge className="bg-gradient-to-r from-amber-600/20 to-rose-600/20 text-amber-200 border-amber-400/30 px-3 py-1">
+             <Badge className="bg-gradient-to-r from-primary/20 to-primary/20 text-muted-foreground border-primary/30 px-3 py-1">
                {reading.layoutType} Cards
              </Badge>
            </div>
@@ -230,7 +230,7 @@ export function ReadingViewer({
       {/* Share Button */}
       {showShareButton && onShare && (
         <div className="flex justify-center slide-in-left">
-           <Button onClick={onShare} variant="outline" size="sm" className="border-amber-400/30 text-amber-200 hover:bg-amber-950/50 hover:border-amber-400/60 backdrop-blur-sm">
+           <Button onClick={onShare} variant="outline" size="sm" className="border-primary/30 text-muted-foreground hover:bg-muted/50 hover:border-primary/60 backdrop-blur-sm">
              <Share2 className="w-4 h-4 mr-2" />
              Share Wisdom
            </Button>
@@ -253,10 +253,10 @@ export function ReadingViewer({
 
       {/* Combinations Panel */}
       {selectedCard && (
-         <div className="mt-6 p-6 bg-gradient-to-br from-slate-900/60 via-amber-950/20 to-slate-800/40 rounded-xl slide-in-up border border-amber-400/20 backdrop-blur-sm">
+         <div className="mt-6 p-6 bg-gradient-to-br from-slate-900/60 via-amber-950/20 to-slate-800/40 rounded-xl slide-in-up border border-primary/20 backdrop-blur-sm">
            <div className="flex items-center gap-2 mb-4">
-             <h3 className="font-semibold text-lg text-amber-200">Card Combinations</h3>
-             <div className="flex items-center gap-1 text-xs text-amber-300/60">
+             <h3 className="font-semibold text-lg text-muted-foreground">Card Combinations</h3>
+             <div className="flex items-center gap-1 text-xs text-muted-foreground/60">
                <Info className="w-3 h-3" />
                <span>How this card interacts with nearby cards</span>
              </div>
@@ -270,7 +270,7 @@ export function ReadingViewer({
               
               if (adjacentCards.length === 0) {
                 return (
-                   <div className="text-center py-8 text-amber-300/60">
+                   <div className="text-center py-8 text-muted-foreground/60">
                      <p className="mb-2 italic">No adjacent cards in this layout</p>
                      <p className="text-sm">In larger spreads, this card would interact with nearby cards</p>
                    </div>
@@ -284,17 +284,17 @@ export function ReadingViewer({
                  const combination = getCombinationMeaning(selectedCard.card, card, readingCard.position, adjCard.position)
 
                 return (
-                   <div key={index} className="flex items-center gap-4 p-4 bg-slate-900/40 rounded-lg border border-amber-400/20 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 backdrop-blur-sm">
+                   <div key={index} className="flex items-center gap-4 p-4 bg-slate-900/40 rounded-lg border border-primary/20 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 backdrop-blur-sm">
                      <div className="flex items-center gap-3">
                        <Card card={selectedCard.card} size="sm" />
-                       <span className="text-amber-400 font-medium text-lg">+</span>
+                       <span className="text-primary font-medium text-lg">+</span>
                        <Card card={card} size="sm" />
                      </div>
                      <div className="flex-1">
-                       <div className="font-medium text-amber-200 mb-1">
+                       <div className="font-medium text-muted-foreground mb-1">
                          {selectedCard.card.name} + {card.name}
                        </div>
-                       <div className="text-sm text-amber-300/80">
+                       <div className="text-sm text-muted-foreground/80">
                          {combination || 'These cards work together to create a unique meaning in your reading.'}
                        </div>
                      </div>

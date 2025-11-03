@@ -154,7 +154,7 @@ export default function SpreadsPage() {
         {/* Module Header */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center mb-4">
-            <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center">
+            <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center">
               <Compass className="w-8 h-8 text-white" />
             </div>
           </div>
@@ -245,37 +245,37 @@ export default function SpreadsPage() {
         </Card>
 
         {/* Advanced Techniques */}
-        <Card className="mb-8 border-blue-400/20 dark:border-blue-400/30 bg-gradient-to-br from-white via-blue-50/50 to-cyan-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+        <Card className="mb-8 border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-2xl text-blue-900 dark:text-blue-100 flex items-center">
-              <Target className="w-6 h-6 mr-3 text-blue-600" />
+            <CardTitle className="text-2xl text-foreground flex items-center">
+              <Target className="w-6 h-6 mr-3 text-primary" />
               Advanced Reading Techniques
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-6">
               {techniques.map((technique, index) => (
-                <Card key={index} className="border border-blue-200 dark:border-blue-700 bg-blue-50/50 dark:bg-blue-900/20">
+                <Card key={index} className="border border-border bg-muted">
                   <CardContent className="p-6">
                     <div className="flex items-center space-x-3 mb-4">
-                      <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center">
+                      <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center">
                         <technique.icon className="w-5 h-5 text-white" />
                       </div>
-                      <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100">
+                      <h3 className="text-lg font-semibold text-foreground">
                         {technique.name}
                       </h3>
                     </div>
 
-                    <p className="text-blue-800 dark:text-blue-200 text-sm mb-4">
+                    <p className="text-muted-foreground text-sm mb-4">
                       {technique.description}
                     </p>
 
                     <div>
-                      <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2 text-sm">Examples:</h4>
+                      <h4 className="font-semibold text-foreground mb-2 text-sm">Examples:</h4>
                       <ul className="space-y-1">
                         {technique.examples.map((example, exIndex) => (
-                          <li key={exIndex} className="text-blue-700 dark:text-blue-300 text-sm flex items-start">
-                            <span className="text-blue-500 mr-2">•</span>
+                          <li key={exIndex} className="text-muted-foreground text-sm flex items-start">
+                            <span className="text-primary mr-2">•</span>
                             {example}
                           </li>
                         ))}
