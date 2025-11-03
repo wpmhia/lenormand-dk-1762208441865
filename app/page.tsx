@@ -20,7 +20,8 @@ export default function Home() {
         <div className="absolute top-40 right-20 w-16 h-16 bg-amber-800/08 rounded-full blur-xl"></div>
         <div className="absolute bottom-32 left-1/4 w-32 h-32 bg-amber-900/06 rounded-full blur-2xl"></div>
       </div>
-{/* Hero Section */}
+
+      {/* Hero Section */}
       <div className="container mx-auto px-6 py-20 max-w-4xl">
         <div className="text-center mb-16 gentle-fade-in">
           <h1 className="text-5xl md:text-6xl font-serif mb-8 text-amber-900 leading-tight">
@@ -42,24 +43,10 @@ export default function Home() {
             </Link>
           </div>
         </div>
-          </div>
-          <div className="flex justify-center lg:justify-end relative z-10">
-            <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-r from-rose-500/30 via-amber-400/20 to-purple-500/30 rounded-2xl blur-2xl breathing-glow opacity-60 group-hover:opacity-80 transition-opacity duration-1000"></div>
-              <div className="absolute inset-0 bg-gradient-to-br from-pink-400/10 to-purple-600/10 rounded-2xl blur-xl animate-pulse"></div>
-              <img
-                src="/images/hero-image.jpg"
-                alt="Hero Image"
-                className="relative w-full max-w-xs sm:max-w-sm h-auto object-cover rounded-2xl shadow-2xl border border-rose-400/20 backdrop-blur-sm transition-all duration-700 group-hover:scale-105 group-hover:rotate-1"
-              />
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-            </div>
-          </div>
-        </div>
+      </div>
 
-
-
-        {/* Reading Types */}
+      {/* Reading Types */}
+      <div className="container mx-auto px-6 py-20 max-w-6xl">
         <div className="mb-20 fade-in-scale relative">
           <div className="absolute inset-0 bg-gradient-to-r from-rose-500/5 via-transparent to-purple-500/5 rounded-3xl"></div>
           <div className="text-center mb-12 relative z-10">
@@ -151,8 +138,10 @@ export default function Home() {
               </Link>
           </div>
         </div>
+      </div>
 
-        {/* Testimonials Section */}
+      {/* Testimonials Section */}
+      <div className="container mx-auto px-6 py-20 max-w-6xl">
         <div className="mb-20 slide-in-left relative">
           <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-transparent to-rose-500/5 rounded-3xl"></div>
           <div className="text-center mb-12 relative z-10">
@@ -212,8 +201,10 @@ export default function Home() {
             </Card>
           </div>
         </div>
+      </div>
 
-        {/* FAQ Section */}
+      {/* FAQ Section */}
+      <div className="container mx-auto px-6 py-20 max-w-4xl">
         <div className="mb-20 slide-in-up relative">
           <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-transparent to-rose-500/5 rounded-3xl"></div>
           <div className="text-center mb-12 relative z-10">
@@ -273,8 +264,10 @@ export default function Home() {
             </Card>
           </div>
         </div>
+      </div>
 
-        {/* CTA Section */}
+      {/* CTA Section */}
+      <div className="container mx-auto px-6 py-20 max-w-4xl">
         <div className="text-center bg-gradient-to-r from-slate-900/60 via-rose-950/20 to-slate-800/40 backdrop-blur-sm rounded-3xl p-12 border border-rose-400/20 fade-in-scale shadow-2xl relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-rose-500/10 via-amber-400/5 to-purple-500/10 rounded-3xl"></div>
           <div className="absolute top-4 left-4 w-16 h-16 bg-rose-500/20 rounded-full blur-xl animate-pulse"></div>

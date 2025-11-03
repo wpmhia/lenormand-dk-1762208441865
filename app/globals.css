@@ -209,38 +209,4 @@
       border-color: #333 !important;
     }
   }
-
-    .print\\:hidden {
-      display: none !important;
-    }
-
-    .print\\:space-y-4 > * + * {
-      margin-top: 1rem !important;
-    }
-
-    /* Ensure cards are visible in print */
-    .card-mystical {
-      border: 1px solid #ccc !important;
-      background: white !important;
-    }
-
-    /* Make text readable in print */
-    h1, h2, h3, h4, h5, h6 {
-      color: black !important;
-    }
-
-    p, span, div {
-      color: black !important;
-    }
-
-    /* Hide background gradients and effects */
-    .bg-slate-950, .bg-slate-900, .bg-slate-800 {
-      background: white !important;
-    }
-
-    /* Ensure borders are visible */
-    .border-slate-700, .border-slate-600 {
-      border-color: #ccc !important;
-    }
-  }
 }
