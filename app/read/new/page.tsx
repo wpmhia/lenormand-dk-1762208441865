@@ -290,7 +290,7 @@ export default function NewReadingPage() {
                           id="allow-reversed"
                           checked={allowReversed}
                           onCheckedChange={setAllowReversed}
-                          className="data-[state=unchecked]:bg-rose-900/50 data-[state=unchecked]:border-rose-800/50 data-[state=unchecked]:thumb:bg-rose-300 data-[state=checked]:bg-rose-600 data-[state=checked]:border-rose-500 data-[state=checked]:thumb:bg-rose-100 data-[state=checked]:shadow-rose-500/50 hover:data-[state=unchecked]:bg-rose-900/70 hover:data-[state=checked]:bg-rose-500 focus-visible:ring-rose-400 focus-visible:ring-offset-2 transition-all duration-200"
+                          className="!data-[state=unchecked]:bg-rose-900/50 !data-[state=unchecked]:border-rose-800/50 !data-[state=unchecked]:thumb:bg-rose-300 !data-[state=checked]:bg-rose-600 !data-[state=checked]:border-rose-500 !data-[state=checked]:thumb:bg-rose-100 !data-[state=checked]:shadow-rose-500/50 hover:!data-[state=unchecked]:bg-rose-900/70 hover:!data-[state=checked]:bg-rose-500 focus-visible:!ring-rose-400 focus-visible:ring-offset-2 transition-all duration-200"
                         />
                       </TooltipTrigger>
                       <TooltipContent className="bg-slate-900 border-rose-400/30 text-rose-200">
