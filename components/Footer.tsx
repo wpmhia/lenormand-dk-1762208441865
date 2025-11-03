@@ -20,7 +20,7 @@ export function Footer() {
             {/* Brand Section */}
             <div className="space-y-4">
               <h3 className="text-white font-semibold flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-amber-400" />
+                <Sparkles className="w-5 h-5 text-amber-400" aria-hidden="true" />
                 Lenormand Intelligence
               </h3>
               <p className="text-slate-400 text-sm leading-relaxed">
@@ -28,7 +28,7 @@ export function Footer() {
               </p>
               <div className="flex items-center gap-1 text-slate-500 text-xs">
                 <span>Made with</span>
-                <Heart className="w-3 h-3 text-rose-400" />
+                <Heart className="w-3 h-3 text-rose-400" aria-hidden="true" />
                 <span>for divination enthusiasts</span>
               </div>
             </div>
@@ -36,16 +36,18 @@ export function Footer() {
             {/* Navigation Section */}
             <div className="space-y-4">
               <h4 className="text-white font-medium">Navigation</h4>
-              <div className="space-y-2">
+              <nav className="space-y-2" aria-label="Main navigation">
                 <Link 
                   href="/read/new" 
                   className="block text-slate-400 hover:text-slate-200 text-sm transition-colors"
+                  aria-label="Start a new Lenormand reading analysis"
                 >
                   New Analysis
                 </Link>
                 <Link 
                   href="/cards" 
                   className="block text-slate-400 hover:text-slate-200 text-sm transition-colors"
+                  aria-label="Explore all Lenormand cards and their meanings"
                 >
                   Explore Cards
                 </Link>
@@ -54,20 +56,24 @@ export function Footer() {
                   size="sm"
                   onClick={() => setShowGuide(true)}
                   className="text-slate-400 hover:text-slate-200 hover:bg-slate-800 p-0 h-auto justify-start"
+                  aria-label="Open guide on how to read Lenormand cards"
+                  aria-expanded={showGuide}
+                  aria-controls="lenormand-guide-dialog"
                 >
                   <BookOpen className="w-4 h-4 mr-2" />
                   How to Read
                 </Button>
-              </div>
+              </nav>
             </div>
 
             {/* Legal & Privacy Section */}
             <div className="space-y-4">
               <h4 className="text-white font-medium">Legal & Privacy</h4>
-              <div className="space-y-2">
+              <nav className="space-y-2" aria-label="Legal and privacy links">
                 <Link 
                   href="/privacy" 
                   className="flex items-center gap-2 text-slate-400 hover:text-slate-200 text-sm transition-colors"
+                  aria-label="Read our privacy policy and data protection practices"
                 >
                   <Shield className="w-4 h-4" />
                   Privacy Policy
@@ -75,11 +81,12 @@ export function Footer() {
                 <Link 
                   href="/terms" 
                   className="flex items-center gap-2 text-slate-400 hover:text-slate-200 text-sm transition-colors"
+                  aria-label="Read our terms of service and usage guidelines"
                 >
                   <Eye className="w-4 h-4" />
                   Terms of Service
                 </Link>
-              </div>
+              </nav>
             </div>
           </div>
 
@@ -100,14 +107,21 @@ export function Footer() {
 
       {/* Guide Dialog */}
       <Dialog open={showGuide} onOpenChange={setShowGuide}>
-        <DialogContent className="bg-slate-900 border-slate-700 max-w-4xl max-h-[80vh] overflow-y-auto">
+        <DialogContent 
+          className="bg-slate-900 border-slate-700 max-w-4xl max-h-[80vh] overflow-y-auto"
+          aria-labelledby="guide-dialog-title"
+          id="lenormand-guide-dialog"
+        >
           <DialogHeader>
-            <DialogTitle className="text-white flex items-center gap-2">
-              <BookOpen className="w-5 h-5 text-amber-400" />
+            <DialogTitle 
+              id="guide-dialog-title"
+              className="text-white flex items-center gap-2"
+            >
+              <BookOpen className="w-5 h-5 text-amber-400" aria-hidden="true" />
               How to Read Lenormand Cards
             </DialogTitle>
           </DialogHeader>
-          <div className="mt-4">
+          <div className="mt-4" role="document">
             <LenormandGuide />
           </div>
         </DialogContent>
