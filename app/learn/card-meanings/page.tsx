@@ -120,7 +120,7 @@ export default function CardMeaningsPage() {
         </div>
 
         {/* Search and View Controls */}
-        <Card className="mb-8 border-amber-400/20 dark:border-amber-400/30 bg-gradient-to-br from-white via-amber-50/50 to-rose-50 dark:from-slate-950 dark:via-amber-950/40 dark:to-slate-900">
+        <Card className="mb-8 border-amber-400/20 dark:border-amber-400/30 bg-gradient-to-br from-white via-amber-50/50 to-rose-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
           <CardContent className="p-6">
             <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
               <div className="relative flex-1 max-w-md">
@@ -161,7 +161,7 @@ export default function CardMeaningsPage() {
         {viewMode === 'grid' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
             {filteredCards.map((card) => (
-              <Card key={card.number} className="hover:shadow-lg hover:shadow-amber-500/20 dark:hover:shadow-amber-500/30 transition-all duration-300 cursor-pointer group border border-amber-400/20 dark:border-amber-400/30 bg-gradient-to-br from-white via-amber-50/50 to-rose-50 dark:from-slate-950 dark:via-amber-950/40 dark:to-slate-900">
+              <Card key={card.number} className="hover:shadow-lg hover:shadow-amber-500/20 dark:hover:shadow-amber-500/30 transition-all duration-300 cursor-pointer group border border-amber-400/20 dark:border-amber-400/30 bg-gradient-to-br from-white via-amber-50/50 to-rose-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <Badge className="bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 text-xs">
@@ -201,7 +201,7 @@ export default function CardMeaningsPage() {
         ) : (
           <div className="space-y-3 mb-8">
             {filteredCards.map((card) => (
-              <Card key={card.number} className="border border-amber-400/20 dark:border-amber-400/30 bg-gradient-to-br from-white via-amber-50/50 to-rose-50 dark:from-slate-950 dark:via-amber-950/40 dark:to-slate-900">
+              <Card key={card.number} className="border border-amber-400/20 dark:border-amber-400/30 bg-gradient-to-br from-white via-amber-50/50 to-rose-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
@@ -232,7 +232,7 @@ export default function CardMeaningsPage() {
         )}
 
         {/* Learning Tips */}
-        <Card className="mb-8 border-purple-400/20 dark:border-purple-400/30 bg-gradient-to-br from-white via-purple-50/50 to-indigo-50 dark:from-slate-950 dark:via-purple-950/40 dark:to-slate-900">
+        <Card className="mb-8 border-purple-400/20 dark:border-purple-400/30 bg-gradient-to-br from-white via-purple-50/50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
           <CardHeader>
             <CardTitle className="text-2xl text-purple-900 dark:text-purple-100 flex items-center">
               <BookOpen className="w-6 h-6 mr-3 text-purple-600" />

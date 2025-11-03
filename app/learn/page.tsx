@@ -142,7 +142,7 @@ export default function LearnPage() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {modules.map((module, index) => (
-            <Card key={module.id} className="hover:shadow-2xl hover:shadow-amber-500/20 dark:hover:shadow-amber-500/30 transition-all duration-500 cursor-pointer group border border-amber-400/20 dark:border-amber-400/30 hover:border-amber-400/60 dark:hover:border-amber-400/70 bg-gradient-to-br from-white via-amber-50/50 to-rose-50 dark:from-slate-950 dark:via-amber-950/40 dark:to-slate-900 backdrop-blur-sm min-h-[200px] hover:scale-105 rounded-2xl overflow-hidden relative">
+            <Card key={module.id} className="hover:shadow-2xl hover:shadow-amber-500/20 dark:hover:shadow-amber-500/30 transition-all duration-500 cursor-pointer group border border-amber-400/20 dark:border-amber-400/30 hover:border-amber-400/60 dark:hover:border-amber-400/70 bg-gradient-to-br from-white via-amber-50/50 to-rose-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 backdrop-blur-sm min-h-[200px] hover:scale-105 rounded-2xl overflow-hidden relative">
               <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <CardHeader className="pb-4 relative z-10">
                 <div className="flex items-center justify-between mb-3">
@@ -179,7 +179,7 @@ export default function LearnPage() {
         </div>
 
         {/* Why Learn Lenormand */}
-        <div className="bg-gradient-to-r from-white via-amber-50/50 to-rose-50 dark:from-slate-950 dark:via-amber-950/40 dark:to-slate-900 backdrop-blur-sm rounded-3xl p-8 border border-amber-400/20 dark:border-amber-400/30 shadow-2xl">
+        <div className="bg-gradient-to-r from-white via-amber-50/50 to-rose-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 backdrop-blur-sm rounded-3xl p-8 border border-amber-400/20 dark:border-amber-400/30 shadow-2xl">
           <div className="text-center mb-8">
             <h3 className="text-2xl font-bold text-amber-900 dark:text-amber-100 mb-4">
               Why Learn Lenormand?

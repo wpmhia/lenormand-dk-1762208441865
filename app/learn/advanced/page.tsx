@@ -139,7 +139,7 @@ export default function AdvancedPage() {
         </div>
 
         {/* Time Associations */}
-        <Card className="mb-8 border-indigo-400/20 dark:border-indigo-400/30 bg-gradient-to-br from-white via-indigo-50/50 to-blue-50 dark:from-slate-950 dark:via-indigo-950/40 dark:to-slate-900">
+        <Card className="mb-8 border-indigo-400/20 dark:border-indigo-400/30 bg-gradient-to-br from-white via-indigo-50/50 to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
           <CardHeader>
             <CardTitle className="text-2xl text-indigo-900 dark:text-indigo-100 flex items-center">
               <Clock className="w-6 h-6 mr-3 text-indigo-600" />
@@ -180,7 +180,7 @@ export default function AdvancedPage() {
         </Card>
 
         {/* Playing Card Associations */}
-        <Card className="mb-8 border-emerald-400/20 dark:border-emerald-400/30 bg-gradient-to-br from-white via-emerald-50/50 to-teal-50 dark:from-slate-950 dark:via-emerald-950/40 dark:to-slate-900">
+        <Card className="mb-8 border-emerald-400/20 dark:border-emerald-400/30 bg-gradient-to-br from-white via-emerald-50/50 to-teal-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
           <CardHeader>
             <CardTitle className="text-2xl text-emerald-900 dark:text-emerald-100 flex items-center">
               <Spade className="w-6 h-6 mr-3 text-emerald-600" />
@@ -230,7 +230,7 @@ export default function AdvancedPage() {
         </Card>
 
         {/* Cultural Interpretations */}
-        <Card className="mb-8 border-rose-400/20 dark:border-rose-400/30 bg-gradient-to-br from-white via-rose-50/50 to-pink-50 dark:from-slate-950 dark:via-rose-950/40 dark:to-slate-900">
+        <Card className="mb-8 border-rose-400/20 dark:border-rose-400/30 bg-gradient-to-br from-white via-rose-50/50 to-pink-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
           <CardHeader>
             <CardTitle className="text-2xl text-rose-900 dark:text-rose-100 flex items-center">
               <Globe className="w-6 h-6 mr-3 text-rose-600" />
@@ -269,7 +269,7 @@ export default function AdvancedPage() {
         </Card>
 
         {/* Advanced Practice Tips */}
-        <Card className="mb-8 border-purple-400/20 dark:border-purple-400/30 bg-gradient-to-br from-white via-purple-50/50 to-indigo-50 dark:from-slate-950 dark:via-purple-950/40 dark:to-slate-900">
+        <Card className="mb-8 border-purple-400/20 dark:border-purple-400/30 bg-gradient-to-br from-white via-purple-50/50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
           <CardHeader>
             <CardTitle className="text-2xl text-purple-900 dark:text-purple-100 flex items-center">
               <Lightbulb className="w-6 h-6 mr-3 text-purple-600" />

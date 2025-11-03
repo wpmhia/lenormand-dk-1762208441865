@@ -72,7 +72,7 @@ export default function IntroductionPage() {
         </div>
 
         {/* What is Lenormand */}
-        <Card className="mb-8 border-amber-400/20 dark:border-amber-400/30 bg-gradient-to-br from-white via-amber-50/50 to-rose-50 dark:from-slate-950 dark:via-amber-950/40 dark:to-slate-900">
+        <Card className="mb-8 border-amber-400/20 dark:border-amber-400/30 bg-gradient-to-br from-white via-amber-50/50 to-rose-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
           <CardHeader>
             <CardTitle className="text-2xl text-amber-900 dark:text-amber-100 flex items-center">
               <Sparkles className="w-6 h-6 mr-3 text-amber-600" />
@@ -90,7 +90,7 @@ export default function IntroductionPage() {
         </Card>
 
         {/* Lenormand vs Tarot */}
-        <Card className="mb-8 border-purple-400/20 dark:border-purple-400/30 bg-gradient-to-br from-white via-purple-50/50 to-indigo-50 dark:from-slate-950 dark:via-purple-950/40 dark:to-slate-900">
+        <Card className="mb-8 border-purple-400/20 dark:border-purple-400/30 bg-gradient-to-br from-white via-purple-50/50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
           <CardHeader>
             <CardTitle className="text-2xl text-purple-900 dark:text-purple-100 flex items-center">
               <Star className="w-6 h-6 mr-3 text-purple-600" />
@@ -124,7 +124,7 @@ export default function IntroductionPage() {
         </Card>
 
         {/* Why Learn Lenormand */}
-        <Card className="mb-8 border-emerald-400/20 dark:border-emerald-400/30 bg-gradient-to-br from-white via-emerald-50/50 to-teal-50 dark:from-slate-950 dark:via-emerald-950/40 dark:to-slate-900">
+        <Card className="mb-8 border-emerald-400/20 dark:border-emerald-400/30 bg-gradient-to-br from-white via-emerald-50/50 to-teal-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
           <CardHeader>
             <CardTitle className="text-2xl text-emerald-900 dark:text-emerald-100 flex items-center">
               <Heart className="w-6 h-6 mr-3 text-emerald-600" />
@@ -178,7 +178,7 @@ export default function IntroductionPage() {
         </Card>
 
         {/* What You'll Learn */}
-        <Card className="mb-8 border-rose-400/20 dark:border-rose-400/30 bg-gradient-to-br from-white via-rose-50/50 to-pink-50 dark:from-slate-950 dark:via-rose-950/40 dark:to-slate-900">
+        <Card className="mb-8 border-rose-400/20 dark:border-rose-400/30 bg-gradient-to-br from-white via-rose-50/50 to-pink-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
           <CardHeader>
             <CardTitle className="text-2xl text-rose-900 dark:text-rose-100 flex items-center">
               <Star className="w-6 h-6 mr-3 text-rose-600" />
