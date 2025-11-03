@@ -210,7 +210,7 @@ export function ReadingViewer({
         <div className="text-center space-y-2 slide-in-up">
            <h2 className="text-3xl font-bold text-muted-foreground relative">
              {reading.title}
-             <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-0.5 bg-gradient-to-r from-amber-400 to-rose-400 rounded-full"></div>
+              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-0.5 bg-gradient-to-r from-primary to-primary/80 rounded-full"></div>
            </h2>
            {reading.question && reading.question !== reading.title && (
               <p className="text-muted-foreground/80 italic text-lg mt-4">&ldquo;{reading.question}&rdquo;</p>
@@ -253,7 +253,7 @@ export function ReadingViewer({
 
       {/* Combinations Panel */}
       {selectedCard && (
-         <div className="mt-6 p-6 bg-gradient-to-br from-slate-900/60 via-amber-950/20 to-slate-800/40 rounded-xl slide-in-up border border-primary/20 backdrop-blur-sm">
+          <div className="mt-6 p-6 bg-gradient-to-br from-card/60 via-muted/20 to-background/40 rounded-xl slide-in-up border border-primary/20 backdrop-blur-sm">
            <div className="flex items-center gap-2 mb-4">
              <h3 className="font-semibold text-lg text-muted-foreground">Card Combinations</h3>
              <div className="flex items-center gap-1 text-xs text-muted-foreground/60">

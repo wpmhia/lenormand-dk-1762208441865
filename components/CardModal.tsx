@@ -58,7 +58,7 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
               <img
                 src={card.imageUrl || ''}
                 alt={card.name}
-                className="w-full h-full object-contain bg-white"
+                className="w-full h-full object-contain bg-card"
               />
               {reversed && (
                 <div className="absolute top-3 right-3 bg-destructive text-destructive-foreground text-sm font-bold rounded-full w-8 h-8 flex items-center justify-center border-2 border-white shadow-lg">
@@ -108,7 +108,7 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
                       const comboCard = allCards.find(c => c.id === combo.withCardId)
                       return (
                         <div key={index} className="flex items-start gap-3 p-3 bg-muted rounded-lg">
-                          <div className="flex-shrink-0 w-12 h-16 bg-white border border-slate-600 rounded overflow-hidden">
+                          <div className="flex-shrink-0 w-12 h-16 bg-card border border-border rounded overflow-hidden">
                             {comboCard && (
                               <img
                                 src={comboCard.imageUrl || ''}

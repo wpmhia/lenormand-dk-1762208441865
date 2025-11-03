@@ -188,7 +188,7 @@ export default function IntroductionPage() {
           <CardContent>
             <div className="space-y-4">
               <div className="flex items-start space-x-3">
-                <div className="w-6 h-6 bg-gradient-to-r from-rose-500 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="w-6 h-6 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                   <span className="text-white text-xs font-bold">1</span>
                 </div>
                 <div>
@@ -199,7 +199,7 @@ export default function IntroductionPage() {
                 </div>
               </div>
               <div className="flex items-start space-x-3">
-                <div className="w-6 h-6 bg-gradient-to-r from-rose-500 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="w-6 h-6 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                   <span className="text-white text-xs font-bold">2</span>
                 </div>
                 <div>
@@ -210,7 +210,7 @@ export default function IntroductionPage() {
                 </div>
               </div>
               <div className="flex items-start space-x-3">
-                <div className="w-6 h-6 bg-gradient-to-r from-rose-500 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="w-6 h-6 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                   <span className="text-white text-xs font-bold">3</span>
                 </div>
                 <div>
@@ -221,7 +221,7 @@ export default function IntroductionPage() {
                 </div>
               </div>
               <div className="flex items-start space-x-3">
-                <div className="w-6 h-6 bg-gradient-to-r from-rose-500 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="w-6 h-6 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                   <span className="text-white text-xs font-bold">4</span>
                 </div>
                 <div>
@@ -232,7 +232,7 @@ export default function IntroductionPage() {
                 </div>
               </div>
               <div className="flex items-start space-x-3">
-                <div className="w-6 h-6 bg-gradient-to-r from-rose-500 to-pink-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                <div className="w-6 h-6 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                   <span className="text-white text-xs font-bold">5</span>
                 </div>
                 <div>

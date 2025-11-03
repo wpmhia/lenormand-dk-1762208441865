@@ -157,7 +157,7 @@ export function Deck({
                 />
                 <div className="absolute inset-0 cursor-pointer" onClick={drawCards} />
                 <div className="absolute top-2 right-2 pointer-events-none">
-                  <span className="bg-white/90 px-2 py-1 rounded text-sm font-bold">
+                  <span className="bg-card/90 px-2 py-1 rounded text-sm font-bold">
                     {deck.length}
                   </span>
                 </div>

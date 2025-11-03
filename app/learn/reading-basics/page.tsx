@@ -148,14 +148,14 @@ export default function ReadingBasicsPage() {
                 <div className="text-center">
                   <div className="inline-flex items-center space-x-4 bg-card p-4 rounded-lg shadow-sm">
                     <div className="text-center">
-                      <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center mb-2">
+                      <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary/80 rounded-lg flex items-center justify-center mb-2">
                         <span className="text-white font-bold">1</span>
                       </div>
                       <p className="text-sm font-medium text-foreground">The Rider</p>
                       <p className="text-xs text-muted-foreground">News, Messages</p>
                     </div>
                     <div className="text-center">
-                      <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-pink-500 rounded-lg flex items-center justify-center mb-2">
+                      <div className="w-16 h-16 bg-gradient-to-r from-muted to-muted/80 rounded-lg flex items-center justify-center mb-2">
                         <span className="text-white font-bold">2</span>
                       </div>
                       <p className="text-sm font-medium text-foreground">The Snake</p>

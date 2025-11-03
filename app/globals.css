@@ -17,6 +17,19 @@
     --muted-foreground: 25 15% 40%;
     --border: 45 15% 85%;
     --radius: 0.5rem;
+    --gradient-start: hsl(35 77% 49%);
+    --gradient-mid: hsl(330 79% 56%);
+    --gradient-end: hsl(270 83% 69%);
+    --badge-start: hsl(35 77% 89%);
+    --badge-end: hsl(330 79% 89%);
+    --section-gradient-start: hsl(35 77% 69%);
+    --section-gradient-mid: hsl(330 79% 69%);
+    --section-gradient-end: hsl(270 83% 79%);
+    --nav-start: hsl(35 77% 89% / 0.9);
+    --nav-end: hsl(330 79% 89% / 0.9);
+    --mystical-start: hsl(35 77% 95%);
+    --mystical-mid: hsl(330 79% 95%);
+    --mystical-end: hsl(270 83% 95%);
   }
 
   .dark {
@@ -30,6 +43,19 @@
     --muted: 25 30% 18%;
     --muted-foreground: 45 10% 65%;
     --border: 25 30% 20%;
+    --gradient-start: hsl(35 40% 65%);
+    --gradient-mid: hsl(330 40% 65%);
+    --gradient-end: hsl(270 40% 65%);
+    --badge-start: hsl(35 40% 20%);
+    --badge-end: hsl(330 40% 20%);
+    --section-gradient-start: hsl(35 40% 75%);
+    --section-gradient-mid: hsl(330 40% 75%);
+    --section-gradient-end: hsl(270 40% 75%);
+    --nav-start: hsl(35 40% 20% / 0.9);
+    --nav-end: hsl(330 40% 20% / 0.9);
+    --mystical-start: hsl(35 40% 15%);
+    --mystical-mid: hsl(330 40% 15%);
+    --mystical-end: hsl(270 40% 15%);
   }
 
   /* apply to <body> */
@@ -81,12 +107,16 @@ undefined
 
   /* Global cards */
   .card {
-    @apply bg-gradient-to-br from-amber-50 to-amber-100 border-2 border-amber-300 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300;
+    @apply bg-card border-2 border-border rounded-xl shadow-lg hover:shadow-xl transition-all duration-300;
   }
 
   /* Global buttons */
   .btn-primary {
-    @apply bg-gradient-to-r from-amber-600 via-rose-500 to-purple-600 hover:from-amber-700 hover:via-rose-600 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 font-semibold;
+    @apply bg-gradient-to-r text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 font-semibold;
+    background: linear-gradient(to right, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+  }
+  .btn-primary:hover {
+    background: linear-gradient(to right, hsl(35 77% 39%), hsl(330 79% 46%), hsl(270 83% 59%));
   }
 
   .btn-secondary {
@@ -100,7 +130,10 @@ undefined
 
   /* Global badges */
   .badge {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-amber-100 to-rose-100 text-amber-900 border border-amber-300;
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border;
+    background: linear-gradient(to right, var(--badge-start), var(--badge-end));
+    color: hsl(var(--foreground));
+    border-color: hsl(var(--border));
   }
 
   /* Global sections */
@@ -118,7 +151,8 @@ undefined
 
   .section-title::after {
     content: '';
-    @apply absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-amber-400 via-rose-400 to-purple-400 rounded-full;
+    @apply absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 rounded-full;
+    background: linear-gradient(to right, var(--section-gradient-start), var(--section-gradient-mid), var(--section-gradient-end));
   }
 
 undefined
@@ -248,12 +282,16 @@ undefined
   }
 
   .page-footer {
-    @apply border-t border-amber-200 bg-gradient-to-t from-amber-50 to-transparent py-8 mt-16;
+    @apply border-t py-8 mt-16;
+    background: linear-gradient(to top, hsl(var(--card)), transparent);
+    border-color: hsl(var(--border));
   }
 
   /* Global navigation */
   .nav-header {
-    @apply bg-gradient-to-r from-amber-100/90 to-rose-100/90 backdrop-blur-sm border-b border-amber-200 sticky top-0 z-50;
+    @apply backdrop-blur-sm border-b sticky top-0 z-50;
+    background: linear-gradient(to right, var(--nav-start), var(--nav-end));
+    border-color: hsl(var(--border));
   }
 
   .nav-container {
@@ -304,7 +342,7 @@ undefined
   }
 
   .modal-content {
-    @apply bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto;
+    @apply bg-background rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto;
   }
 
   .modal-header {
@@ -339,11 +377,12 @@ undefined
 
   /* Global utility classes */
   .text-gradient {
-    @apply text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-rose-500 to-purple-600;
+    @apply text-transparent bg-clip-text;
+    background: linear-gradient(to right, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
   }
 
   .bg-mystical {
-    @apply bg-gradient-to-br from-amber-50 via-rose-50 to-purple-50;
+    background: linear-gradient(to bottom right, var(--mystical-start), var(--mystical-mid), var(--mystical-end));
   }
 
   .border-mystical {

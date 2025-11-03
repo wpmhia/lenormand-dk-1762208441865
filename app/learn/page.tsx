@@ -33,7 +33,7 @@ export default function LearnPage() {
       icon: Clock,
       duration: '20 min',
       difficulty: 'Beginner',
-      color: 'from-purple-500 to-indigo-500'
+      color: 'from-primary to-primary/80'
     },
     {
       id: 'reading-basics',
@@ -42,7 +42,7 @@ export default function LearnPage() {
       icon: Target,
       duration: '25 min',
       difficulty: 'Beginner',
-      color: 'from-emerald-500 to-teal-500'
+      color: 'from-primary to-primary/80'
     },
     {
       id: 'card-meanings',
@@ -51,7 +51,7 @@ export default function LearnPage() {
       icon: Sparkles,
       duration: '45 min',
       difficulty: 'Intermediate',
-      color: 'from-rose-500 to-pink-500'
+      color: 'from-primary to-primary/80'
     },
     {
       id: 'spreads',
@@ -60,7 +60,7 @@ export default function LearnPage() {
       icon: Compass,
       duration: '30 min',
       difficulty: 'Intermediate',
-      color: 'from-blue-500 to-cyan-500'
+      color: 'from-primary to-primary/80'
     },
     {
       id: 'advanced',
@@ -69,7 +69,7 @@ export default function LearnPage() {
       icon: Lightbulb,
       duration: '35 min',
       difficulty: 'Advanced',
-      color: 'from-violet-500 to-purple-500'
+      color: 'from-primary to-primary/80'
     }
   ]
 

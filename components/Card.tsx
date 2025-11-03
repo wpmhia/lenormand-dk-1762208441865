@@ -103,7 +103,7 @@ export function Card({
         aria-label={`${card.name} card${reversed ? ' (reversed)' : ''}. Click to ${onClick ? 'select' : 'view details'}`}
       >
         {/* Card Image */}
-        <div className="relative w-full h-full rounded-lg overflow-hidden bg-white">
+        <div className="relative w-full h-full rounded-lg overflow-hidden bg-card">
           <img
             src={card.imageUrl || ''}
             alt={card.name}
