@@ -89,7 +89,7 @@ export default function LearnPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10"></div>
         <div className="relative container mx-auto px-4 py-16 max-w-6xl">
           <div className="text-center space-y-8">
-            <Badge className="bg-primary/20 text-primary-foreground border-primary/50 px-6 py-3 text-sm font-semibold tracking-wide uppercase rounded-full backdrop-blur-sm">
+            <Badge className="badge-hero">
               ✨ Master Lenormand Divination
             </Badge>
 
