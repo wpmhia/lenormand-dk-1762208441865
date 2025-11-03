@@ -155,7 +155,7 @@ export function Deck({
                   onClick={drawCards}
                   aria-label={`Draw ${drawCount} cards from deck (${deck.length} cards remaining)`}
                 />
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="absolute top-2 right-2 pointer-events-none">
                   <span className="bg-white/90 px-2 py-1 rounded text-sm font-bold">
                     {deck.length}
                   </span>
