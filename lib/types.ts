@@ -27,7 +27,7 @@ export interface Reading {
   id: string
   title: string
   question?: string
-  layoutType: 3 | 5 | 9 | 36
+  layoutType: number // Allow any number of cards
   cards: ReadingCard[]
   slug: string
   isPublic: boolean

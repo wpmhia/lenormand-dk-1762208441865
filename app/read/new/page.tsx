@@ -25,7 +25,8 @@ const LAYOUTS = [
   { value: 3, label: "3 Cards - Past, Present, Future", type: "past-present-future" },
   { value: 5, label: "5 Cards - Extended Reading", type: "extended" },
   { value: 9, label: "9 Cards - Comprehensive Reading", type: "comprehensive" },
-  { value: 36, label: "Grand Tableau - Full Deck", type: "grand-tableau" }
+  { value: 36, label: "Grand Tableau - Full Deck", type: "grand-tableau" },
+  { value: "physical", label: "Physical Reading - Enter Cards Manually", type: "physical" }
 ]
 
 const THREE_CARD_SPREADS = [
@@ -39,8 +40,10 @@ const THREE_CARD_SPREADS = [
 export default function NewReadingPage() {
   const [allCards, setAllCards] = useState<CardType[]>([])
   const [drawnCards, setDrawnCards] = useState<ReadingCard[]>([])
-  const [layoutType, setLayoutType] = useState<3 | 5 | 9 | 36>(3)
+  const [layoutType, setLayoutType] = useState<3 | 5 | 9 | 36 | "physical">(3)
   const [threeCardSpreadType, setThreeCardSpreadType] = useState<string>("past-present-future")
+  const [physicalCards, setPhysicalCards] = useState<string>("")
+  const [physicalCardCount, setPhysicalCardCount] = useState<number>(3)
 
   const [question, setQuestion] = useState('')
   const [questionCharCount, setQuestionCharCount] = useState(0)
@@ -78,11 +81,69 @@ export default function NewReadingPage() {
     }
   }
 
-  const handleDraw = async (cards: CardType[]) => {
-    const readingCards = drawCards(cards, layoutType)
-    if (!allowReversed) {
-      readingCards.forEach(card => card.reversed = false)
+  const parsePhysicalCards = (allCards: CardType[]): ReadingCard[] => {
+    const input = physicalCards.trim()
+    if (!input) {
+      throw new Error('Please enter card numbers or names')
     }
+
+    // Split by commas, spaces, or newlines
+    const cardInputs = input.split(/[,;\s\n]+/).map(s => s.trim()).filter(s => s.length > 0)
+
+    if (cardInputs.length !== physicalCardCount) {
+      throw new Error(`Please enter exactly ${physicalCardCount} cards. You entered ${cardInputs.length}.`)
+    }
+
+    const readingCards: ReadingCard[] = []
+
+    for (let i = 0; i < cardInputs.length; i++) {
+      const input = cardInputs[i].toLowerCase()
+      let card: CardType | undefined
+
+      // Try to find by number first
+      const cardNumber = parseInt(input)
+      if (!isNaN(cardNumber) && cardNumber >= 1 && cardNumber <= 36) {
+        card = allCards.find(c => c.id === cardNumber)
+      }
+
+      // If not found by number, try to find by name
+      if (!card) {
+        card = allCards.find(c => c.name.toLowerCase() === input || c.name.toLowerCase().includes(input))
+      }
+
+      if (!card) {
+        throw new Error(`Card "${cardInputs[i]}" not found. Please use card numbers (1-36) or card names.`)
+      }
+
+      // Check for duplicates
+      if (readingCards.some(rc => rc.id === card!.id)) {
+        throw new Error(`Duplicate card: ${card.name}. Each card can only be used once.`)
+      }
+
+      readingCards.push({
+        id: card.id,
+        position: i,
+        reversed: allowReversed ? Math.random() < 0.3 : false // Still allow some randomness for reversed cards
+      })
+    }
+
+    return readingCards
+  }
+
+  const handleDraw = async (cards: CardType[]) => {
+    let readingCards: ReadingCard[]
+
+    if (layoutType === "physical") {
+      // Parse physical card input
+      readingCards = parsePhysicalCards(cards)
+    } else {
+      // Draw random cards
+      readingCards = drawCards(cards, layoutType)
+      if (!allowReversed) {
+        readingCards.forEach(card => card.reversed = false)
+      }
+    }
+
     setDrawnCards(readingCards)
 
     // Start AI analysis (API route handles availability)
@@ -116,7 +177,7 @@ export default function NewReadingPage() {
           position: card.position,
           reversed: card.reversed
         })),
-        layoutType,
+        layoutType: layoutType === "physical" ? physicalCardCount : layoutType,
         userLocale: navigator.language
       }
 
@@ -296,7 +357,7 @@ export default function NewReadingPage() {
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="layout">Reading Type:</Label>
-                     <Select value={layoutType.toString()} onValueChange={(value) => setLayoutType(parseInt(value) as 3 | 5 | 9 | 36)}>
+                      <Select value={layoutType.toString()} onValueChange={(value) => setLayoutType(value === "physical" ? "physical" : parseInt(value) as 3 | 5 | 9 | 36)}>
                        <SelectTrigger className="bg-slate-900/80 border-rose-400/30 text-white rounded-xl focus:border-rose-400/60 backdrop-blur-sm" aria-describedby="layout-help">
                          <SelectValue />
                        </SelectTrigger>
@@ -332,6 +393,41 @@ export default function NewReadingPage() {
                          Choose how to interpret your 3-card spread
                        </div>
                      </div>
+                    )}
+
+                   {layoutType === "physical" && (
+                     <div className="space-y-4">
+                       <div className="space-y-2">
+                         <Label htmlFor="card-count">Number of Cards:</Label>
+                         <Select value={physicalCardCount.toString()} onValueChange={(value) => setPhysicalCardCount(parseInt(value))}>
+                           <SelectTrigger className="bg-slate-900/80 border-rose-400/30 text-white rounded-xl focus:border-rose-400/60 backdrop-blur-sm">
+                             <SelectValue />
+                           </SelectTrigger>
+                           <SelectContent className="bg-slate-900 border-rose-400/30">
+                             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+                               <SelectItem key={num} value={num.toString()} className="text-white hover:bg-rose-950/50 focus:bg-rose-950/50">
+                                 {num} Card{num !== 1 ? 's' : ''}
+                               </SelectItem>
+                             ))}
+                           </SelectContent>
+                         </Select>
+                       </div>
+
+                       <div className="space-y-2">
+                         <Label htmlFor="physical-cards">Enter Your Cards:</Label>
+                         <Textarea
+                           id="physical-cards"
+                           value={physicalCards}
+                           onChange={(e) => setPhysicalCards(e.target.value)}
+                           placeholder={`Enter ${physicalCardCount} card numbers (1-36) separated by commas, spaces, or new lines.&#10;Example: 1, 15, 28&#10;Or: Rider, Sun, Key`}
+                           className="bg-slate-900/80 border-rose-400/30 text-white placeholder:text-rose-300/50 min-h-[120px] rounded-xl focus:border-rose-400/60 focus:ring-rose-400/20 resize-none backdrop-blur-sm"
+                           rows={4}
+                         />
+                         <div className="text-xs text-rose-200/70 italic">
+                           Enter card numbers (1-36) or names separated by commas, spaces, or new lines
+                         </div>
+                       </div>
+                     </div>
                    )}
 
                    <div className="flex items-center justify-between p-4 bg-slate-900/40 rounded-xl border border-rose-400/20">
@@ -354,13 +450,13 @@ export default function NewReadingPage() {
 
                </div>
 
-                <Button
-                 onClick={() => setStep('drawing')}
-                 className="w-full bg-gradient-to-r from-rose-600 to-purple-600 hover:from-rose-700 hover:to-purple-700 text-white shadow-lg shadow-rose-500/30 rounded-xl py-3 font-semibold transition-all duration-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                 disabled={!question.trim()}
-               >
-                 Continue to Draw Cards
-               </Button>
+                 <Button
+                  onClick={() => setStep('drawing')}
+                  className="w-full bg-gradient-to-r from-rose-600 to-purple-600 hover:from-rose-700 hover:to-purple-700 text-white shadow-lg shadow-rose-500/30 rounded-xl py-3 font-semibold transition-all duration-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                  disabled={!question.trim() || (layoutType === "physical" && !physicalCards.trim())}
+                >
+                  {layoutType === "physical" ? "Continue to Reading" : "Continue to Draw Cards"}
+                </Button>
             </CardContent>
           </Card>
           </div>
@@ -380,12 +476,29 @@ export default function NewReadingPage() {
                  </p>
                </div>
 
-               <Deck
-                 cards={allCards}
-                 drawCount={layoutType}
-                 allowReversed={allowReversed}
-                 onDraw={handleDraw}
-               />
+                {layoutType === "physical" ? (
+                  <div className="text-center space-y-4">
+                    <div className="p-6 bg-slate-900/40 rounded-xl border border-amber-400/20">
+                      <h3 className="text-lg font-semibold text-amber-200 mb-2">Your Physical Cards</h3>
+                      <div className="text-sm text-amber-300/80 mb-4">
+                        Ready to analyze your {physicalCardCount} manually drawn cards
+                      </div>
+                      <Button
+                        onClick={() => handleDraw(allCards)}
+                        className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white shadow-lg shadow-amber-500/30"
+                      >
+                        Analyze My Cards
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <Deck
+                    cards={allCards}
+                    drawCount={layoutType}
+                    allowReversed={allowReversed}
+                    onDraw={handleDraw}
+                  />
+                )}
              </CardContent>
            </Card>
           )}
@@ -399,9 +512,9 @@ export default function NewReadingPage() {
                    <Sparkles className="w-6 h-6 text-purple-400" />
                    AI Analysis
                  </h2>
-                  <p className="text-slate-300">
-                    The sibyl weaves wisdom from your {layoutType} sacred cards
-                  </p>
+                   <p className="text-slate-300">
+                     The sibyl weaves wisdom from your {layoutType === "physical" ? physicalCardCount : layoutType} sacred cards
+                   </p>
                </div>
 
                  <ReadingViewer
@@ -409,7 +522,7 @@ export default function NewReadingPage() {
                      id: 'temp',
                      title: 'Your Reading',
                      question,
-                     layoutType,
+                      layoutType: layoutType === "physical" ? physicalCardCount : layoutType,
                      cards: drawnCards,
                      slug: 'temp',
                       isPublic: false,
@@ -426,7 +539,7 @@ export default function NewReadingPage() {
                   <CardInterpretation
                     cards={drawnCards}
                     allCards={allCards}
-                    layoutType={layoutType}
+                     layoutType={layoutType === "physical" ? physicalCardCount : layoutType}
                     question={question}
                   />
                 )}
@@ -445,7 +558,7 @@ export default function NewReadingPage() {
                     reversed: card.reversed
                   }))}
                   allCards={allCards}
-                  layoutType={layoutType}
+                   layoutType={layoutType === "physical" ? physicalCardCount : layoutType}
                   question={question}
                 />
 
