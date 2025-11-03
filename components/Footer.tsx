@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useTheme } from 'next-themes'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { BookOpen, Heart, Shield, Sparkles, Eye } from 'lucide-react'
@@ -9,6 +10,8 @@ import { LenormandGuide } from '@/components/LenormandGuide'
 
 export function Footer() {
   const [showGuide, setShowGuide] = useState(false)
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
 
   return (
     <>
@@ -122,7 +125,7 @@ export function Footer() {
             </DialogTitle>
           </DialogHeader>
           <div className="mt-4" role="document">
-            <LenormandGuide darkTheme={true} />
+            <LenormandGuide darkTheme={isDark} />
           </div>
         </DialogContent>
       </Dialog>
