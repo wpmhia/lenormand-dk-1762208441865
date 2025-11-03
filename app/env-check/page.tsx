@@ -137,7 +137,7 @@ export default function EnvCheckPage() {
                   {isSet && (
                     <div>
                       <h4 className="font-semibold text-sm mb-1">Current value (debug):</h4>
-                      <div className="text-xs font-mono bg-gray-100 dark:bg-gray-800 p-2 rounded break-all">
+                      <div className="text-xs font-mono bg-muted p-2 rounded break-all">
                         {envVar.name.includes('KEY') 
                           ? `${envValues[envVar.name].substring(0, 8)}...${envValues[envVar.name].substring(envValues[envVar.name].length - 4)}`
                           : envValues[envVar.name]

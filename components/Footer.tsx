@@ -15,7 +15,7 @@ export function Footer() {
 
   return (
     <>
-      <footer className="border-t border-slate-800 bg-slate-900/50 backdrop-blur-sm mt-auto">
+      <footer className="border-t border-border bg-card backdrop-blur-sm mt-auto">
         <div className="container mx-auto px-4 py-8">
           {/* Main Footer Content */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
@@ -26,10 +26,10 @@ export function Footer() {
                 <Sparkles className="w-5 h-5 text-primary" aria-hidden="true" />
                 Lenormand Intelligence
               </h3>
-              <p className="text-slate-400 text-sm leading-relaxed">
+              <p className="text-muted-foreground text-sm leading-relaxed">
                 Mystical Card Wisdom for modern seekers. Discover guidance through the ancient art of Lenormand divination.
               </p>
-              <div className="flex items-center gap-1 text-slate-500 text-xs">
+              <div className="flex items-center gap-1 text-muted-foreground text-xs">
                 <span>Made with</span>
                 <Heart className="w-3 h-3 text-primary" aria-hidden="true" />
                 <span>for divination enthusiasts</span>
@@ -42,14 +42,14 @@ export function Footer() {
               <nav className="space-y-2" aria-label="Main navigation">
                 <Link 
                   href="/read/new" 
-                  className="block text-slate-400 hover:text-slate-200 text-sm transition-colors"
+                  className="block text-muted-foreground hover:text-foreground text-sm transition-colors"
                   aria-label="Start a new Lenormand reading analysis"
                 >
                   New Analysis
                 </Link>
                 <Link 
                   href="/cards" 
-                  className="block text-slate-400 hover:text-slate-200 text-sm transition-colors"
+                  className="block text-muted-foreground hover:text-foreground text-sm transition-colors"
                   aria-label="Explore all Lenormand cards and their meanings"
                 >
                   Explore Cards
@@ -58,7 +58,7 @@ export function Footer() {
                   variant="ghost"
                   size="sm"
                   onClick={() => setShowGuide(true)}
-                  className="text-slate-400 hover:text-slate-200 hover:bg-slate-800 p-0 h-auto justify-start"
+                  className="text-muted-foreground hover:text-foreground hover:bg-muted p-0 h-auto justify-start"
                   aria-label="Open guide on how to read Lenormand cards"
                   aria-expanded={showGuide}
                   aria-controls="lenormand-guide-dialog"
@@ -76,7 +76,7 @@ export function Footer() {
               <nav className="space-y-2" aria-label="Legal and privacy links">
                 <Link 
                   href="/privacy" 
-                  className="flex items-center gap-2 text-slate-400 hover:text-slate-200 text-sm transition-colors"
+                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground text-sm transition-colors"
                   aria-label="Read our privacy policy and data protection practices"
                 >
                   <Shield className="w-4 h-4" />
@@ -84,7 +84,7 @@ export function Footer() {
                 </Link>
                 <Link 
                   href="/terms" 
-                  className="flex items-center gap-2 text-slate-400 hover:text-slate-200 text-sm transition-colors"
+                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground text-sm transition-colors"
                   aria-label="Read our terms of service and usage guidelines"
                 >
                   <Eye className="w-4 h-4" />
@@ -95,13 +95,13 @@ export function Footer() {
           </div>
 
           {/* Bottom Bar */}
-          <div className="border-t border-slate-800 pt-6">
+          <div className="border-t border-border pt-6">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="text-slate-400 text-sm">
+              <div className="text-muted-foreground text-sm">
                 © 2024 Lenormand.dk - Danish & English Lenormand Readings
               </div>
               
-              <div className="text-slate-500 text-xs">
+              <div className="text-muted-foreground text-xs">
                 For entertainment and spiritual guidance purposes only
               </div>
             </div>
@@ -112,7 +112,7 @@ export function Footer() {
       {/* Guide Dialog */}
       <Dialog open={showGuide} onOpenChange={setShowGuide}>
         <DialogContent 
-          className="bg-slate-900 border-slate-700 max-w-4xl max-h-[80vh] overflow-y-auto"
+          className="bg-card border-border max-w-4xl max-h-[80vh] overflow-y-auto"
           aria-labelledby="guide-dialog-title"
           id="lenormand-guide-dialog"
         >

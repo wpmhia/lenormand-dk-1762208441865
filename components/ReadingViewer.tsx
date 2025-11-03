@@ -171,7 +171,7 @@ export function ReadingViewer({
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <div className="flex flex-col items-center space-y-2">
-                         <div className="text-sm font-medium text-muted-foreground/90 bg-slate-900/60 px-3 py-1 rounded-full border border-primary/30 backdrop-blur-sm">
+                         <div className="text-sm font-medium text-muted-foreground/90 bg-card/60 px-3 py-1 rounded-full border border-primary/30 backdrop-blur-sm">
                            {positionInfo.label}
                          </div>
                         <Card
@@ -183,7 +183,7 @@ export function ReadingViewer({
                         />
                       </div>
                     </TooltipTrigger>
-                     <TooltipContent className="max-w-xs bg-slate-900/95 border-primary/30 text-muted-foreground backdrop-blur-sm">
+                     <TooltipContent className="max-w-xs bg-card/95 border-primary/30 text-muted-foreground backdrop-blur-sm">
                        <div className="space-y-2">
                          <p className="font-semibold text-muted-foreground">{positionInfo.label}</p>
                          <p className="text-sm text-muted-foreground/80">{positionInfo.meaning}</p>
@@ -284,7 +284,7 @@ export function ReadingViewer({
                  const combination = getCombinationMeaning(selectedCard.card, card, readingCard.position, adjCard.position)
 
                 return (
-                   <div key={index} className="flex items-center gap-4 p-4 bg-slate-900/40 rounded-lg border border-primary/20 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 backdrop-blur-sm">
+                   <div key={index} className="flex items-center gap-4 p-4 bg-card/40 rounded-lg border border-primary/20 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 backdrop-blur-sm">
                      <div className="flex items-center gap-3">
                        <Card card={selectedCard.card} size="sm" />
                        <span className="text-primary font-medium text-lg">+</span>

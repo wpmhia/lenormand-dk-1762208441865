@@ -68,13 +68,13 @@ export function CardInterpretation({ cards, allCards, layoutType, question }: Ca
   }
 
   return (
-    <Card className="border-slate-700 bg-slate-900/50 slide-in-left">
+    <Card className="border-border bg-card slide-in-left">
       <CardHeader>
         <CardTitle className="text-white flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-primary/80" />
           Traditional Card Meanings
         </CardTitle>
-        <p className="text-slate-400 text-sm">
+        <p className="text-muted-foreground text-sm">
           Classic Lenormand interpretations for your question: &quot;{question}&quot;
         </p>
       </CardHeader>
@@ -88,7 +88,7 @@ export function CardInterpretation({ cards, allCards, layoutType, question }: Ca
           return (
             <div 
               key={`${card.id}-${index}`} 
-              className="border border-slate-700 rounded-lg p-4 bg-slate-800/30 hover:bg-slate-800/50 transition-colors"
+              className="border border-slate-700 rounded-lg p-4 bg-muted/30 hover:bg-muted/50 transition-colors"
             >
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-3">
@@ -110,18 +110,18 @@ export function CardInterpretation({ cards, allCards, layoutType, question }: Ca
                     </p>
                   </div>
                 </div>
-                <Badge variant="outline" className="text-slate-400 border-slate-600">
+                <Badge variant="outline" className="text-muted-foreground border-border">
                   #{card.id}
                 </Badge>
               </div>
               
               {positionInfo.description && (
-                <p className="text-slate-400 text-xs mb-2 italic">
+                <p className="text-muted-foreground text-xs mb-2 italic">
                   {positionInfo.description}
                 </p>
               )}
               
-              <p className="text-slate-300 text-sm leading-relaxed mb-3">
+              <p className="text-muted-foreground text-sm leading-relaxed mb-3">
                 {meaning}
               </p>
               
@@ -131,7 +131,7 @@ export function CardInterpretation({ cards, allCards, layoutType, question }: Ca
                     <Badge 
                       key={keywordIndex} 
                       variant="secondary" 
-                      className="text-xs bg-slate-700/50 text-slate-300 border-slate-600"
+                      className="text-xs bg-muted/50 text-muted-foreground border-border"
                     >
                       {keyword}
                     </Badge>

@@ -192,7 +192,7 @@ export function Deck({
       )}
 
       {/* Status */}
-      <div className="text-center text-sm text-gray-600 slide-in-left">
+      <div className="text-center text-sm text-muted-foreground slide-in-left">
         {deck.length === 0 && drawnCards.length === 0 && (
           <p>No cards in deck</p>
         )}

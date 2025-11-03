@@ -62,7 +62,7 @@ export function FeedbackButtons({ readingId, onFeedback }: FeedbackButtonsProps)
   if (submitted) {
     return (
       <div className="text-center py-4">
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-muted-foreground">
           {selectedRating === 'positive' && 'Glad this reading resonated with you!'}
           {selectedRating === 'neutral' && 'Thanks for your honest feedback.'}
           {selectedRating === 'negative' && 'We appreciate your input to improve our AI.'}
@@ -73,7 +73,7 @@ export function FeedbackButtons({ readingId, onFeedback }: FeedbackButtonsProps)
 
   return (
     <div className="space-y-3">
-      <p className="text-sm text-center text-slate-400">
+      <p className="text-sm text-center text-muted-foreground">
         How accurate was this AI interpretation?
       </p>
       <div className="flex justify-center gap-2">

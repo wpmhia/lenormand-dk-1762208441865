@@ -28,7 +28,7 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
         onClose()
       }
     }}>
-      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-slate-900 border-slate-700 text-white">
+      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-card border-border text-white">
         <DialogHeader>
           <div className="flex items-center justify-between">
             <DialogTitle className="flex items-center gap-2">
@@ -75,21 +75,21 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
               <h3 className="font-semibold mb-2 text-white">Keywords</h3>
               <div className="flex flex-wrap gap-2">
                 {card.keywords.map((keyword, index) => (
-                  <Badge key={index} variant="secondary" className="bg-slate-700 text-slate-200">
+                  <Badge key={index} variant="secondary" className="bg-muted text-muted-foreground">
                     {keyword}
                   </Badge>
                 ))}
               </div>
             </div>
 
-            <Separator className="bg-slate-700" />
+            <Separator className="bg-muted" />
 
             {/* Meaning */}
             <div>
               <h3 className="font-semibold mb-2 text-white">
                 {reversed ? 'Reversed Meaning' : 'Upright Meaning'}
               </h3>
-              <p className="text-slate-300">
+              <p className="text-muted-foreground">
                 {reversed && card.reversedMeaning
                   ? card.reversedMeaning
                   : card.uprightMeaning
@@ -100,14 +100,14 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
             {/* Combinations */}
             {combos.length > 0 && (
               <>
-                <Separator className="bg-slate-700" />
+                <Separator className="bg-muted" />
                 <div>
                   <h3 className="font-semibold mb-3 text-white">Card Combinations</h3>
                   <div className="space-y-2">
                     {combos.map((combo: any, index: number) => {
                       const comboCard = allCards.find(c => c.id === combo.withCardId)
                       return (
-                        <div key={index} className="flex items-start gap-3 p-3 bg-slate-800 rounded-lg">
+                        <div key={index} className="flex items-start gap-3 p-3 bg-muted rounded-lg">
                           <div className="flex-shrink-0 w-12 h-16 bg-white border border-slate-600 rounded overflow-hidden">
                             {comboCard && (
                               <img
@@ -121,7 +121,7 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
                             <div className="font-medium text-sm text-white">
                               {comboCard ? comboCard.name : `Card ${combo.withCardId}`}
                             </div>
-                            <div className="text-sm text-slate-300">
+                            <div className="text-sm text-muted-foreground">
                               {combo.meaning}
                             </div>
                           </div>
@@ -134,8 +134,8 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
             )}
 
             {/* Card Info */}
-            <Separator className="bg-slate-700" />
-            <div className="text-sm text-slate-400">
+            <Separator className="bg-muted" />
+            <div className="text-sm text-muted-foreground">
               <div>Card Number: {card.number}</div>
               <div>Lenormand Card #{card.id} of 36</div>
             </div>

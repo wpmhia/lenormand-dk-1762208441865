@@ -304,7 +304,7 @@ export default function SpreadsPage() {
             <div className="bg-muted p-6 rounded-lg">
               <h4 className="font-semibold text-foreground mb-3">Traditional Layout:</h4>
               <div className="text-center">
-                <div className="inline-block bg-white dark:bg-slate-800 p-4 rounded-lg shadow-sm">
+                <div className="inline-block bg-card p-4 rounded-lg shadow-sm">
                   <div className="grid grid-cols-8 gap-1 text-xs">
                     {Array.from({ length: 36 }, (_, i) => (
                       <div key={i} className="w-6 h-6 bg-muted rounded flex items-center justify-center text-card-foreground font-bold">

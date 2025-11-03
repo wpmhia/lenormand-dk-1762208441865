@@ -113,7 +113,7 @@ export function Card({
         
         {/* Reversed Indicator */}
         {reversed && (
-          <div className="absolute top-2 right-2 bg-red-500 text-white text-sm font-bold rounded-full w-7 h-7 flex items-center justify-center border-2 border-white shadow-lg">
+          <div className="absolute top-2 right-2 bg-destructive text-destructive-foreground text-sm font-bold rounded-full w-7 h-7 flex items-center justify-center border-2 border-white shadow-lg">
             R
           </div>
         )}
@@ -124,7 +124,7 @@ export function Card({
         <div className="text-sm font-bold text-white">
           {card.name}
         </div>
-        <div className="text-xs text-slate-300">
+        <div className="text-xs text-muted-foreground">
           #{card.id}
         </div>
       </div>

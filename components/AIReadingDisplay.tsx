@@ -142,7 +142,7 @@ export function AIReadingDisplay({
                       <Button
                         variant="outline"
                         size="sm"
-                        className="border-destructive text-destructive hover:bg-red-50"
+                        className="border-destructive text-destructive hover:bg-destructive/10"
                         asChild
                       >
                         <a href={errorDetails.helpUrl} target="_blank" rel="noopener noreferrer">
@@ -189,7 +189,7 @@ export function AIReadingDisplay({
                 onClick={onRetry}
                 variant="outline"
                 size="sm"
-                className="border-destructive text-destructive hover:bg-red-50"
+                className="border-destructive text-destructive hover:bg-destructive/10"
                 aria-label="Seek wisdom again"
               >
                 <AlertTriangle className="w-4 h-4 mr-2" />
@@ -210,7 +210,7 @@ export function AIReadingDisplay({
 
   if (isLoading) {
     return (
-      <Card className="border-slate-700 bg-slate-900/50 fade-in-scale">
+      <Card className="border-border bg-card fade-in-scale">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <div className="w-5 h-5 border-2 border-amber-400/60 border-t-transparent rounded-full" aria-hidden="true" />
@@ -219,23 +219,23 @@ export function AIReadingDisplay({
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <div className="text-sm text-slate-300 mb-4">
+            <div className="text-sm text-muted-foreground mb-4">
               Let the cards reveal their wisdom...
             </div>
             <div className="space-y-3">
               <div className="space-y-2">
-                <div className="h-4 bg-slate-700 rounded w-full" />
-                <div className="h-4 bg-slate-700 rounded w-11/12" />
-                <div className="h-4 bg-slate-700 rounded w-10/12" />
-                <div className="h-4 bg-slate-700 rounded w-9/12" />
-                <div className="h-4 bg-slate-700 rounded w-8/12" />
-                <div className="h-4 bg-slate-700 rounded w-7/12" />
+                <div className="h-4 bg-muted rounded w-full" />
+                <div className="h-4 bg-muted rounded w-11/12" />
+                <div className="h-4 bg-muted rounded w-10/12" />
+                <div className="h-4 bg-muted rounded w-9/12" />
+                <div className="h-4 bg-muted rounded w-8/12" />
+                <div className="h-4 bg-muted rounded w-7/12" />
               </div>
               <div className="border-t border-amber-400/20 pt-3 mt-4">
                 <div className="h-4 bg-primary/20 rounded w-3/4 mx-auto" />
               </div>
             </div>
-            <div className="text-xs text-slate-500 mt-4 text-center">
+            <div className="text-xs text-muted-foreground mt-4 text-center">
               This may take a few moments...
             </div>
           </div>
@@ -246,9 +246,9 @@ export function AIReadingDisplay({
 
   if (!aiReading) {
     return (
-      <Card className="border-slate-700 bg-slate-900/50 slide-in-left">
+      <Card className="border-border bg-card slide-in-left">
         <CardContent className="pt-6">
-          <div className="text-center text-slate-400">
+          <div className="text-center text-muted-foreground">
             <p>AI analysis not available for this reading.</p>
             <p className="text-sm mt-1">Traditional card meanings are shown below.</p>
           </div>
@@ -258,7 +258,7 @@ export function AIReadingDisplay({
   }
 
   return (
-    <Card className="border-slate-700 bg-slate-900/50 slide-in-up">
+    <Card className="border-border bg-card slide-in-up">
       <CardHeader>
         <CardTitle className="text-white flex items-center gap-2">
           <Zap className="w-5 h-5 text-primary/80" />
@@ -268,7 +268,7 @@ export function AIReadingDisplay({
       <CardContent className="space-y-6">
         {/* Continuous Prose Reading */}
         <section aria-labelledby="reading-heading">
-          <div className="text-slate-300 leading-relaxed text-base font-light italic">
+          <div className="text-muted-foreground leading-relaxed text-base font-light italic">
             {aiReading.storyline}
           </div>
         </section>
@@ -289,7 +289,7 @@ export function AIReadingDisplay({
             onClick={() => setShowRelationships(!showRelationships)}
             variant="outline"
             size="sm"
-            className="border-slate-600 text-slate-300 hover:bg-slate-800"
+            className="border-border text-muted-foreground hover:bg-muted"
           >
             <Network className="w-4 h-4 mr-2" />
             {showRelationships ? 'Hide' : 'Show'} Relationship Map

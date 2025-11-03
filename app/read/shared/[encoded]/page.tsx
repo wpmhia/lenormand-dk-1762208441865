@@ -69,7 +69,7 @@ export default function SharedReadingPage({ params }: PageProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-slate-300"></div>
       </div>
     )
@@ -81,11 +81,11 @@ export default function SharedReadingPage({ params }: PageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white">Shared Lenormand Reading</h1>
-          <p className="text-slate-300">{reading.title}</p>
+          <p className="text-muted-foreground">{reading.title}</p>
         </div>
 
         <ReadingViewer

@@ -40,8 +40,8 @@ function CardNode({ data }: { data: { card: ReadingCard; fullCard: Card } }) {
   return (
     <Tooltip>
         <TooltipTrigger asChild>
-          <div className="bg-slate-800 border border-slate-600 rounded shadow-sm hover:shadow-md transition-shadow cursor-pointer w-4 h-4 flex flex-col items-center justify-center">
-            <div className="w-2 h-2 mb-0.5 bg-slate-700 rounded flex items-center justify-center overflow-hidden">
+          <div className="bg-muted border border-border rounded shadow-sm hover:shadow-md transition-shadow cursor-pointer w-4 h-4 flex flex-col items-center justify-center">
+            <div className="w-2 h-2 mb-0.5 bg-muted rounded flex items-center justify-center overflow-hidden">
               <img
                 src={`/data/images/cards/${String(card.id).padStart(2, '0')}-${fullCard.name.toLowerCase()}.png`}
                 alt={fullCard.name}
@@ -51,9 +51,9 @@ function CardNode({ data }: { data: { card: ReadingCard; fullCard: Card } }) {
                   e.currentTarget.style.display = 'none'
                 }}
               />
-              <span className="text-[6px] text-slate-300 font-bold">{fullCard.name.substring(0, 2)}</span>
+              <span className="text-[6px] text-muted-foreground font-bold">{fullCard.name.substring(0, 2)}</span>
             </div>
-            <div className="text-[6px] font-medium text-slate-300 leading-tight text-center">
+            <div className="text-[6px] font-medium text-muted-foreground leading-tight text-center">
               {card.reversed ? `${fullCard.name.substring(0, 3)}*` : fullCard.name.substring(0, 4)}
             </div>
           </div>
@@ -61,11 +61,11 @@ function CardNode({ data }: { data: { card: ReadingCard; fullCard: Card } }) {
         <TooltipContent>
           <div className="max-w-xs">
             <div className="font-semibold text-sm">{fullCard.name}</div>
-            <div className="text-xs text-slate-300 mt-1">{fullCard.uprightMeaning}</div>
+            <div className="text-xs text-muted-foreground mt-1">{fullCard.uprightMeaning}</div>
             {card.reversed && (
               <div className="text-xs text-primary mt-1">Reversed</div>
             )}
-            <div className="text-xs text-slate-400 mt-1">Position: {card.position}</div>
+            <div className="text-xs text-muted-foreground mt-1">Position: {card.position}</div>
           </div>
         </TooltipContent>
       </Tooltip>
@@ -148,9 +148,9 @@ export function CardRelationshipVisualizer({
 
   if (error) {
     return (
-      <UICard className="border-red-200 bg-red-50">
+      <UICard className="border-destructive bg-destructive/10">
         <CardContent className="pt-6">
-          <div className="text-center text-red-600">
+          <div className="text-center text-destructive">
             <Network className="w-8 h-8 mx-auto mb-2" />
             <p className="font-medium">Relationship Analysis Unavailable</p>
             <p className="text-sm">{error}</p>
@@ -162,7 +162,7 @@ export function CardRelationshipVisualizer({
 
   if (isLoading) {
     return (
-      <UICard className="border-slate-700 bg-slate-900/50">
+      <UICard className="border-border bg-card">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
             <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full" />
@@ -170,7 +170,7 @@ export function CardRelationshipVisualizer({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-sm text-slate-300">
+          <div className="text-sm text-muted-foreground">
             AI is analyzing card connections and relationships...
           </div>
         </CardContent>
@@ -180,9 +180,9 @@ export function CardRelationshipVisualizer({
 
   if (relationships.length === 0) {
     return (
-      <UICard className="border-slate-700 bg-slate-900/50">
+      <UICard className="border-border bg-card">
         <CardContent className="pt-6">
-          <div className="text-center text-slate-400">
+          <div className="text-center text-muted-foreground">
             <Network className="w-8 h-8 mx-auto mb-2" />
             <p>No relationship data available</p>
             <p className="text-sm mt-1">Try refreshing or check your AI configuration</p>
@@ -193,14 +193,14 @@ export function CardRelationshipVisualizer({
   }
 
   return (
-    <UICard className="border-slate-700 bg-slate-900/50">
+    <UICard className="border-border bg-card">
       <CardHeader>
         <CardTitle className="text-white flex items-center gap-2">
           <Network className="w-5 h-5 text-primary" />
           Card Relationship Map
         </CardTitle>
         {summary && (
-          <p className="text-sm text-slate-300">{summary}</p>
+          <p className="text-sm text-muted-foreground">{summary}</p>
         )}
       </CardHeader>
       <CardContent>
@@ -216,15 +216,15 @@ export function CardRelationshipVisualizer({
             fitView
             attributionPosition="bottom-left"
           >
-            <Controls className="bg-slate-800 border-slate-600" />
+            <Controls className="bg-card border-border" />
             <Background color="#1e293b" gap={20} />
             <MiniMap
               nodeColor="#3b82f6"
               maskColor="rgba(15, 23, 42, 0.8)"
-              className="bg-slate-800 border-slate-600"
+              className="bg-card border-border"
             />
-            <Panel position="top-right" className="bg-slate-800 border border-slate-600 rounded p-2">
-              <div className="text-xs text-slate-300 space-y-1">
+            <Panel position="top-right" className="bg-muted border border-border rounded p-2">
+              <div className="text-xs text-muted-foreground space-y-1">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-0.5 bg-primary"></div>
                   <span>Strong</span>
@@ -234,7 +234,7 @@ export function CardRelationshipVisualizer({
                   <span>Moderate</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-0.5 bg-slate-500"></div>
+                  <div className="w-3 h-0.5 bg-primary"></div>
                   <span>Weak</span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -247,7 +247,7 @@ export function CardRelationshipVisualizer({
           </TooltipProvider>
         </div>
 
-        <div className="mt-4 text-xs text-slate-400">
+        <div className="mt-4 text-xs text-muted-foreground">
           <p>💡 <strong>Tip:</strong> Drag cards to rearrange. Hover over connections for explanations.</p>
         </div>
       </CardContent>

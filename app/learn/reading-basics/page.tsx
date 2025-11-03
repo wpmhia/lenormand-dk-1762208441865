@@ -146,27 +146,27 @@ export default function ReadingBasicsPage() {
               <h4 className="font-semibold text-foreground mb-3">Example: Three-Card Spread</h4>
               <div className="space-y-3">
                 <div className="text-center">
-                  <div className="inline-flex items-center space-x-4 bg-white dark:bg-slate-800 p-4 rounded-lg shadow-sm">
+                  <div className="inline-flex items-center space-x-4 bg-card p-4 rounded-lg shadow-sm">
                     <div className="text-center">
                       <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center mb-2">
                         <span className="text-white font-bold">1</span>
                       </div>
-                      <p className="text-sm font-medium text-slate-700 dark:text-slate-300">The Rider</p>
-                      <p className="text-xs text-slate-600 dark:text-slate-400">News, Messages</p>
+                      <p className="text-sm font-medium text-foreground">The Rider</p>
+                      <p className="text-xs text-muted-foreground">News, Messages</p>
                     </div>
                     <div className="text-center">
                       <div className="w-16 h-16 bg-gradient-to-r from-red-500 to-pink-500 rounded-lg flex items-center justify-center mb-2">
                         <span className="text-white font-bold">2</span>
                       </div>
-                      <p className="text-sm font-medium text-slate-700 dark:text-slate-300">The Snake</p>
-                      <p className="text-xs text-slate-600 dark:text-slate-400">Deception, Wisdom</p>
+                      <p className="text-sm font-medium text-foreground">The Snake</p>
+                      <p className="text-xs text-muted-foreground">Deception, Wisdom</p>
                     </div>
                     <div className="text-center">
                       <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary/80 rounded-lg flex items-center justify-center mb-2">
                         <span className="text-white font-bold">3</span>
                       </div>
-                      <p className="text-sm font-medium text-slate-700 dark:text-slate-300">The Bouquet</p>
-                      <p className="text-xs text-slate-600 dark:text-slate-400">Gift, Celebration</p>
+                      <p className="text-sm font-medium text-foreground">The Bouquet</p>
+                      <p className="text-xs text-muted-foreground">Gift, Celebration</p>
                     </div>
                   </div>
                 </div>
