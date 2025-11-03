@@ -22,25 +22,49 @@ export default function Home() {
       </div>
 
       {/* Hero Section */}
-      <div className="container mx-auto px-6 py-20 max-w-4xl">
-        <div className="text-center mb-16 gentle-fade-in">
-          <h1 className="text-5xl md:text-6xl font-serif mb-8 text-amber-900 leading-tight">
-            Lenormand Wisdom
-          </h1>
-          <p className="text-xl md:text-2xl mb-12 text-amber-800 max-w-2xl mx-auto leading-relaxed font-light">
-            Ancient guidance for modern souls. Let the cards reveal what your heart already knows.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <Link href="/read/new">
-              <Button size="lg" className="px-10 py-4 bg-amber-800 hover:bg-amber-900 text-amber-100 font-medium text-lg transition-colors duration-300 rounded-lg border-2 border-amber-900">
-                Begin Your Reading
-              </Button>
-            </Link>
-            <Link href="/cards">
-              <Button variant="outline" size="lg" className="px-10 py-4 border-2 border-amber-700 text-amber-800 hover:bg-amber-50 font-medium text-lg transition-colors duration-300 rounded-lg">
-                Explore the Cards
-              </Button>
-            </Link>
+      <div className="container mx-auto px-4 py-16 max-w-6xl">
+        <div className="grid lg:grid-cols-2 gap-16 items-center mb-20 slide-in-up relative">
+          <div className="text-center lg:text-left space-y-8 relative z-10">
+            <Badge className="mb-8 bg-gradient-to-r from-amber-600/20 via-rose-500/20 to-purple-600/20 text-amber-800 border-amber-600/30 px-8 py-4 text-sm font-semibold tracking-wide uppercase rounded-full backdrop-blur-sm shadow-lg shadow-amber-500/10" variant="secondary">
+              ✨ Mystical Lenormand Wisdom
+            </Badge>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-12 text-amber-900 leading-tight relative">
+              <span className="relative inline-block">
+                Lenormand
+                <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-amber-600 via-rose-500 to-purple-600 rounded-full opacity-60"></div>
+              </span>
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-rose-500 to-purple-600 animate-pulse">
+                Intelligence
+              </span>
+            </h1>
+            <p className="text-lg sm:text-xl lg:text-2xl text-amber-800 mb-12 max-w-3xl mx-auto lg:mx-0 leading-relaxed font-light italic">
+              Discover the ancient wisdom of Lenormand through AI-enhanced intuition.
+              <span className="text-amber-700/80">Experience personalized guidance where technology meets mystical insight.</span>
+            </p>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
+              <Link href="/read/new">
+                <Button size="lg" className="px-12 py-5 bg-gradient-to-r from-amber-600 via-rose-500 to-purple-600 hover:from-amber-700 hover:via-rose-600 hover:to-purple-700 text-white shadow-2xl shadow-amber-500/30 font-semibold text-lg transition-all duration-700 hover:scale-105 rounded-full border border-amber-400/20 backdrop-blur-sm mystical-float">
+                  ✨ Begin Your Journey
+                </Button>
+              </Link>
+              <Link href="/cards">
+                <Button variant="outline" size="lg" className="px-12 py-5 border-2 border-amber-400/30 text-amber-800 hover:bg-amber-50 hover:border-amber-400/60 font-semibold text-lg transition-all duration-700 hover:scale-105 rounded-full backdrop-blur-sm gentle-pulse shadow-lg shadow-amber-500/10">
+                  🔮 Explore the Cards
+                </Button>
+              </Link>
+            </div>
+          </div>
+          <div className="flex justify-center lg:justify-end relative z-10">
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-500/30 via-rose-400/20 to-purple-500/30 rounded-2xl blur-2xl breathing-glow opacity-60 group-hover:opacity-80 transition-opacity duration-1000"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-rose-400/10 to-purple-600/10 rounded-2xl blur-xl animate-pulse"></div>
+              <img
+                src="/images/hero-image.jpg"
+                alt="Hero Image"
+                className="relative w-full max-w-xs sm:max-w-sm h-auto object-cover rounded-2xl shadow-2xl border border-amber-400/20 backdrop-blur-sm transition-all duration-700 group-hover:scale-105 group-hover:rotate-1"
+              />
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+            </div>
           </div>
         </div>
       </div>

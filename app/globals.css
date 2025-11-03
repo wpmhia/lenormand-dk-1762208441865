@@ -49,44 +49,154 @@
 }
 
 @layer components {
-  /* Subtle, Gentle animations */
+  /* Enhanced animations with mystical effects */
   @keyframes gentle-fade-in {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  @keyframes soft-glow {
+  @keyframes mystical-glow {
     0%, 100% {
-      box-shadow: 0 2px 8px rgba(139, 69, 19, 0.1);
-      border-color: rgba(139, 69, 19, 0.2);
+      box-shadow: 0 0 20px rgba(139, 69, 19, 0.4), 0 0 40px rgba(139, 69, 19, 0.15);
+      filter: brightness(1) saturate(1);
     }
     50% {
-      box-shadow: 0 4px 12px rgba(139, 69, 19, 0.15);
-      border-color: rgba(139, 69, 19, 0.3);
+      box-shadow: 0 0 30px rgba(139, 69, 19, 0.6), 0 0 60px rgba(139, 69, 19, 0.25);
+      filter: brightness(1.05) saturate(1.1);
     }
   }
 
-  @keyframes card-reveal {
-    0% { transform: scale(0.95) rotate(-1deg); opacity: 0; }
-    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-8px) rotate(0.5deg); }
+    50% { transform: translateY(-15px) rotate(0deg); }
+    75% { transform: translateY(-8px) rotate(-0.5deg); }
   }
 
-  @keyframes parchment-texture {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+  }
+
+  @keyframes slide-in-up {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slide-in-left {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  @keyframes fade-in-scale {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes card-draw {
+    0% { transform: scale(0) rotateY(180deg); opacity: 0; }
+    50% { transform: scale(1.1) rotateY(90deg); opacity: 0.7; }
+    100% { transform: scale(1) rotateY(0deg); opacity: 1; }
+  }
+
+  @keyframes mystical-float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-12px) rotate(1deg); }
+    66% { transform: translateY(-6px) rotate(-0.5deg); }
+  }
+
+  @keyframes ethereal-glow {
+    0%, 100% {
+      box-shadow: 0 0 15px rgba(139, 69, 19, 0.3), 0 0 30px rgba(139, 69, 19, 0.1);
+      filter: brightness(1) saturate(1);
+    }
+    50% {
+      box-shadow: 0 0 25px rgba(139, 69, 19, 0.5), 0 0 50px rgba(139, 69, 19, 0.2);
+      filter: brightness(1.03) saturate(1.05);
+    }
+  }
+
+  @keyframes gentle-pulse {
+    0%, 100% { opacity: 0.8; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.02); }
+  }
+
+  @keyframes breathing {
+    0%, 100% {
+      opacity: 0.3;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.7;
+      transform: scale(1.05);
+    }
+  }
+
+  .mystical-glow {
+    animation: mystical-glow 10s ease-in-out infinite;
+  }
+
+  .slow-glow {
+    animation: mystical-glow 7s ease-in-out infinite;
+  }
+
+  .ethereal-glow {
+    animation: ethereal-glow 8s ease-in-out infinite;
+  }
+
+  .mystical-float {
+    animation: mystical-float 6s ease-in-out infinite;
+  }
+
+  .gentle-pulse {
+    animation: gentle-pulse 5s ease-in-out infinite;
+  }
+
+  .gentle-spin {
+    animation: spin 2s linear infinite;
+  }
+
+  .breathing-glow {
+    animation: breathing 6s ease-in-out infinite;
+  }
+
+  .float-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .shimmer {
+    background: linear-gradient(90deg, transparent, rgba(139, 69, 19, 0.4), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 4s infinite;
+  }
+
+  .pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  .slide-in-up {
+    animation: slide-in-up 0.6s ease-out;
+  }
+
+  .slide-in-left {
+    animation: slide-in-left 0.6s ease-out;
+  }
+
+  .fade-in-scale {
+    animation: fade-in-scale 0.5s ease-out;
+  }
+
+  .card-draw-animation {
+    animation: card-draw 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
   .gentle-fade-in {
     animation: gentle-fade-in 0.8s ease-out;
-  }
-
-  .soft-glow {
-    animation: soft-glow 4s ease-in-out infinite;
-  }
-
-  .card-reveal {
-    animation: card-reveal 0.6s ease-out;
   }
 
   .parchment-bg {
@@ -116,6 +226,13 @@
       repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139, 69, 19, 0.01) 2px, rgba(139, 69, 19, 0.01) 4px);
     pointer-events: none;
   }
+
+  .grain-texture {
+    background-image:
+      radial-gradient(circle at 25% 25%, rgba(139, 69, 19, 0.02) 2px, transparent 2px),
+      radial-gradient(circle at 75% 75%, rgba(160, 82, 45, 0.01) 1px, transparent 1px);
+    background-size: 20px 20px, 15px 15px;
+  }
   
   /* Card enhancements */
   .card-full {
@@ -124,7 +241,7 @@
     aspect-ratio: 2.5/3.5;
   }
   
-  /* Traditional card styling */
+  /* Enhanced card styling with mystical effects */
   .card-mystical img {
     object-fit: contain;
     object-position: center;
@@ -132,10 +249,11 @@
   
   .card-mystical {
     aspect-ratio: 2.5/3.5;
-    background: #faf8f3;
+    background: linear-gradient(135deg, rgba(245, 242, 232, 0.9), rgba(232, 220, 192, 0.9));
     border: 2px solid #8b4513;
-    box-shadow: 0 4px 6px rgba(139, 69, 19, 0.1);
+    box-shadow: 0 8px 16px rgba(139, 69, 19, 0.2);
     position: relative;
+    transition: all 0.3s ease;
   }
 
   .card-mystical::before {
@@ -147,6 +265,12 @@
     bottom: 0;
     background: linear-gradient(135deg, rgba(245, 242, 232, 0.1), rgba(232, 220, 192, 0.1));
     pointer-events: none;
+  }
+
+  .card-mystical:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 12px 24px rgba(139, 69, 19, 0.3);
+    border-color: #a0522d;
   }
   
   /* Scrollbar styling */
