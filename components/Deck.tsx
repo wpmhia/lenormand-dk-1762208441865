@@ -151,9 +151,11 @@ export function Deck({
                   card={deck[deck.length - 1]}
                   showBack={true}
                   size="md"
-                  className="cursor-default"
+                  className={`cursor-pointer hover:scale-105 transition-transform duration-200 ${isDrawing || deck.length < drawCount ? 'cursor-not-allowed opacity-75' : ''}`}
+                  onClick={drawCards}
+                  aria-label={`Draw ${drawCount} cards from deck (${deck.length} cards remaining)`}
                 />
-                <div className="absolute inset-0 flex items-center justify-center">
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <span className="bg-white/90 px-2 py-1 rounded text-sm font-bold">
                     {deck.length}
                   </span>
