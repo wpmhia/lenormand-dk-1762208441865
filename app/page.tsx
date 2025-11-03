@@ -81,7 +81,7 @@ export default function Home() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
               <Link href="/read/new">
-                <Card className="hover:shadow-2xl hover:shadow-rose-500/20 transition-all duration-500 cursor-pointer group border border-rose-400/20 hover:border-rose-400/60 bg-gradient-to-br from-slate-900/60 via-rose-950/20 to-slate-800/40 backdrop-blur-sm min-h-[160px] hover:scale-105 rounded-2xl overflow-hidden relative">
+                <Card className="hover:shadow-2xl hover:shadow-rose-500/20 transition-all duration-500 cursor-pointer group border border-rose-400/20 hover:border-rose-400/60 bg-gradient-to-br from-slate-950 via-rose-950/40 to-slate-900 backdrop-blur-sm min-h-[160px] hover:scale-105 rounded-2xl overflow-hidden relative">
                   <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <CardHeader className="pb-4 relative z-10">
                     <CardTitle className="flex items-center gap-3 group-hover:text-rose-200 text-lg text-white font-semibold">
@@ -101,7 +101,7 @@ export default function Home() {
               </Link>
 
               <Link href="/read/new">
-                <Card className="hover:shadow-2xl hover:shadow-amber-500/20 transition-all duration-500 cursor-pointer group border border-amber-400/20 hover:border-amber-400/60 bg-gradient-to-br from-slate-900/60 via-amber-950/20 to-slate-800/40 backdrop-blur-sm min-h-[160px] hover:scale-105 rounded-2xl overflow-hidden relative">
+                <Card className="hover:shadow-2xl hover:shadow-amber-500/20 transition-all duration-500 cursor-pointer group border border-amber-400/20 hover:border-amber-400/60 bg-gradient-to-br from-slate-950 via-amber-950/40 to-slate-900 backdrop-blur-sm min-h-[160px] hover:scale-105 rounded-2xl overflow-hidden relative">
                   <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <CardHeader className="pb-4 relative z-10">
                     <CardTitle className="flex items-center gap-3 group-hover:text-amber-200 text-lg text-white font-semibold">
@@ -121,7 +121,7 @@ export default function Home() {
               </Link>
 
               <Link href="/read/new">
-                <Card className="hover:shadow-2xl hover:shadow-emerald-500/20 transition-all duration-500 cursor-pointer group border border-emerald-400/20 hover:border-emerald-400/60 bg-gradient-to-br from-slate-900/60 via-emerald-950/20 to-slate-800/40 backdrop-blur-sm min-h-[160px] hover:scale-105 rounded-2xl overflow-hidden relative">
+                <Card className="hover:shadow-2xl hover:shadow-emerald-500/20 transition-all duration-500 cursor-pointer group border border-emerald-400/20 hover:border-emerald-400/60 bg-gradient-to-br from-slate-950 via-emerald-950/40 to-slate-900 backdrop-blur-sm min-h-[160px] hover:scale-105 rounded-2xl overflow-hidden relative">
                   <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <CardHeader className="pb-4 relative z-10">
                     <CardTitle className="flex items-center gap-3 group-hover:text-emerald-200 text-lg text-white font-semibold">
@@ -141,7 +141,7 @@ export default function Home() {
               </Link>
 
               <Link href="/read/new">
-                <Card className="hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 cursor-pointer group border border-purple-400/20 hover:border-purple-400/60 bg-gradient-to-br from-slate-900/60 via-purple-950/20 to-slate-800/40 backdrop-blur-sm min-h-[160px] hover:scale-105 rounded-2xl overflow-hidden relative">
+                <Card className="hover:shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 cursor-pointer group border border-purple-400/20 hover:border-purple-400/60 bg-gradient-to-br from-slate-950 via-purple-950/40 to-slate-900 backdrop-blur-sm min-h-[160px] hover:scale-105 rounded-2xl overflow-hidden relative">
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <CardHeader className="pb-4 relative z-10">
                     <CardTitle className="flex items-center gap-3 group-hover:text-purple-200 text-lg text-white font-semibold">
@@ -177,7 +177,7 @@ export default function Home() {
             <p className="text-center text-amber-800 text-lg max-w-2xl mx-auto leading-relaxed">Answers to illuminate your journey</p>
           </div>
           <div className="max-w-4xl mx-auto space-y-6 relative z-10">
-            <Card className="border-rose-400/20 bg-gradient-to-br from-slate-900/60 via-rose-950/20 to-slate-800/40 backdrop-blur-sm shadow-lg hover:shadow-2xl hover:shadow-rose-500/10 transition-all duration-500 rounded-2xl overflow-hidden relative group">
+            <Card className="border-rose-400/20 bg-gradient-to-br from-slate-950 via-rose-950/40 to-slate-900 backdrop-blur-sm shadow-lg hover:shadow-2xl hover:shadow-rose-500/10 transition-all duration-500 rounded-2xl overflow-hidden relative group">
                <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                <CardHeader className="pb-4 relative z-10">
                  <CardTitle className="text-lg text-rose-200 font-semibold">The Essence of Lenormand</CardTitle>
@@ -189,7 +189,7 @@ export default function Home() {
                </CardContent>
             </Card>
 
-            <Card className="border-amber-400/20 bg-gradient-to-br from-slate-900/60 via-amber-950/20 to-slate-800/40 backdrop-blur-sm shadow-lg hover:shadow-2xl hover:shadow-amber-500/10 transition-all duration-500 rounded-2xl overflow-hidden relative group">
+            <Card className="border-amber-400/20 bg-gradient-to-br from-slate-950 via-amber-950/40 to-slate-900 backdrop-blur-sm shadow-lg hover:shadow-2xl hover:shadow-amber-500/10 transition-all duration-500 rounded-2xl overflow-hidden relative group">
                <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                <CardHeader className="pb-4 relative z-10">
                  <CardTitle className="text-lg text-amber-200 font-semibold">The AI Advantage</CardTitle>
@@ -201,7 +201,7 @@ export default function Home() {
                </CardContent>
             </Card>
 
-            <Card className="border-emerald-400/20 bg-gradient-to-br from-slate-900/60 via-emerald-950/20 to-slate-800/40 backdrop-blur-sm shadow-lg hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-500 rounded-2xl overflow-hidden relative group">
+            <Card className="border-emerald-400/20 bg-gradient-to-br from-slate-950 via-emerald-950/40 to-slate-900 backdrop-blur-sm shadow-lg hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-500 rounded-2xl overflow-hidden relative group">
               <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <CardHeader className="pb-4 relative z-10">
                 <CardTitle className="text-lg text-emerald-200 font-semibold">How to get a free reading?</CardTitle>
@@ -213,7 +213,7 @@ export default function Home() {
               </CardContent>
             </Card>
 
-            <Card className="border-purple-400/20 bg-gradient-to-br from-slate-900/60 via-purple-950/20 to-slate-800/40 backdrop-blur-sm shadow-lg hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-500 rounded-2xl overflow-hidden relative group">
+            <Card className="border-purple-400/20 bg-gradient-to-br from-slate-950 via-purple-950/40 to-slate-900 backdrop-blur-sm shadow-lg hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-500 rounded-2xl overflow-hidden relative group">
               <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <CardHeader className="pb-4 relative z-10">
                 <CardTitle className="text-lg text-purple-200 font-semibold">Accuracy of AI readings?</CardTitle>
@@ -230,7 +230,7 @@ export default function Home() {
 
       {/* CTA Section */}
       <div className="container mx-auto px-6 py-20 max-w-4xl">
-        <div className="text-center bg-gradient-to-r from-slate-900/60 via-rose-950/20 to-slate-800/40 backdrop-blur-sm rounded-3xl p-12 border border-rose-400/20 fade-in-scale shadow-2xl relative overflow-hidden">
+        <div className="text-center bg-gradient-to-r from-slate-950 via-rose-950/40 to-slate-900 backdrop-blur-sm rounded-3xl p-12 border border-rose-400/20 fade-in-scale shadow-2xl relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-rose-500/10 via-amber-400/5 to-purple-500/10 rounded-3xl"></div>
           <div className="absolute top-4 left-4 w-16 h-16 bg-rose-500/20 rounded-full blur-xl animate-pulse"></div>
           <div className="absolute bottom-4 right-4 w-12 h-12 bg-purple-500/20 rounded-full blur-lg animate-pulse" style={{animationDelay: '1s'}}></div>
@@ -253,7 +253,7 @@ export default function Home() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-rose-400/20 bg-gradient-to-t from-slate-950 via-rose-950/10 to-slate-900 py-12 relative overflow-hidden">
+      <footer className="border-t border-rose-400/20 bg-gradient-to-t from-slate-950 via-rose-950/30 to-slate-900 py-12 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-rose-500/5 via-transparent to-purple-500/5"></div>
         <div className="container mx-auto px-4 text-center relative z-10">
           <div className="max-w-4xl mx-auto">
