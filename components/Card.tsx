@@ -26,9 +26,9 @@ export function Card({
 
   const getCardColor = (cardId: number): string => {
     const colors = [
-      'from-blue-400 to-blue-600', 'from-green-400 to-green-600', 'from-teal-400 to-teal-600',
-      'from-purple-400 to-purple-600', 'from-pink-400 to-pink-600', 'from-red-400 to-red-600',
-      'from-orange-400 to-orange-600', 'from-yellow-400 to-yellow-600', 'from-indigo-400 to-indigo-600'
+      'from-primary/60 to-primary/80', 'from-primary/50 to-primary/70', 'from-primary/40 to-primary/60',
+      'from-primary/70 to-primary/90', 'from-primary/55 to-primary/75', 'from-primary/45 to-primary/65',
+      'from-primary/65 to-primary/85', 'from-primary/35 to-primary/55', 'from-primary/75 to-primary/95'
     ]
     return colors[cardId % colors.length]
   }
@@ -51,10 +51,10 @@ export function Card({
     return (
       <div
         className={cn(
-           'relative card-mystical rounded-xl shadow-2xl cursor-pointer flex items-center justify-center border border-purple-500/40 group focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-slate-900',
-          sizeClasses[size],
-          className
-        )}
+            'relative card-mystical rounded-xl shadow-2xl cursor-pointer flex items-center justify-center border border-primary/40 group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background',
+           sizeClasses[size],
+           className
+         )}
         onClick={handleCardClick}
         onMouseEnter={() => {
           // Soft bell at 432 Hz, 80 ms, −18 dB - felt, not heard
@@ -70,14 +70,14 @@ export function Card({
         role="button"
         aria-label="Lenormand card back. Click to draw or select card"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/90 via-blue-900/90 to-slate-900/90 rounded-xl"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-transparent via-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-primary/80 to-muted/90 rounded-xl"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-transparent via-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
         <div className="relative text-white text-center z-10">
           <div className="text-4xl mb-2 opacity-90">✦</div>
           <div className="text-sm font-bold tracking-wider opacity-90 text-muted-foreground group-hover:text-foreground transition-colors duration-300">LENORMAND</div>
           <div className="text-xs text-muted-foreground mt-1 opacity-70 group-hover:opacity-90 transition-opacity duration-300">MYSTICAL DIVINATION</div>
         </div>
-        <div className="absolute inset-0 rounded-xl ring-2 ring-purple-500/20 group-hover:ring-purple-400/60 transition-all duration-300"></div>
+        <div className="absolute inset-0 rounded-xl ring-2 ring-primary/20 group-hover:ring-primary/60 transition-all duration-300"></div>
       </div>
     )
   }

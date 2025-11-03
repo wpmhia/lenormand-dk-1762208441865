@@ -28,15 +28,15 @@ export default function EnvCheckPage() {
 
   const getStatusIcon = (isSet: boolean) => {
     if (isSet) {
-      return <CheckCircle className="h-5 w-5 text-green-500" />;
+      return <CheckCircle className="h-5 w-5 text-primary" />;
     } else {
-      return <XCircle className="h-5 w-5 text-red-500" />;
+      return <XCircle className="h-5 w-5 text-destructive" />;
     }
   };
 
   const getStatusBadge = (isSet: boolean) => {
     if (isSet) {
-      return <Badge variant="default" className="bg-green-500">Set</Badge>;
+      return <Badge variant="default" className="bg-primary">Set</Badge>;
     } else {
       return <Badge variant="destructive">Missing</Badge>;
     }
@@ -85,7 +85,7 @@ export default function EnvCheckPage() {
       )}
 
       {missingCount === 0 && (
-        <Alert className="mb-6 border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950/50 dark:text-green-100 p-4">
+        <Alert className="mb-6 border-primary/20 bg-primary/10 dark:border-primary/30 dark:bg-primary/20 dark:text-primary p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <CheckCircle className="h-4 w-4" />

@@ -75,14 +75,14 @@ export default function CardMeaningsPage() {
                 Back to Course
               </Button>
             </Link>
-            <div className="flex items-center space-x-2">
-              <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300">
-                Module 4 of 6
-              </Badge>
-              <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300">
-                Intermediate
-              </Badge>
-            </div>
+             <div className="flex items-center space-x-2">
+               <Badge className="bg-muted text-muted-foreground border-border dark:bg-muted/50 dark:text-muted-foreground dark:border-border">
+                 Module 4 of 6
+               </Badge>
+               <Badge className="bg-muted text-muted-foreground border-border dark:bg-muted/50 dark:text-muted-foreground dark:border-border">
+                 Intermediate
+               </Badge>
+             </div>
             <Link href="/learn/spreads">
               <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
                 Next Module

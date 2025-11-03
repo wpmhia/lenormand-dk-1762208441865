@@ -81,7 +81,7 @@ export function FeedbackButtons({ readingId, onFeedback }: FeedbackButtonsProps)
           variant="outline"
           size="sm"
           onClick={() => handleFeedback('positive')}
-          className="border-green-600 text-green-400 hover:bg-green-600 hover:text-white"
+          className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
         >
           <ThumbsUp className="w-4 h-4 mr-1" />
           Accurate
@@ -91,7 +91,7 @@ export function FeedbackButtons({ readingId, onFeedback }: FeedbackButtonsProps)
           variant="outline"
           size="sm"
           onClick={() => handleFeedback('neutral')}
-          className="border-yellow-600 text-yellow-400 hover:bg-yellow-600 hover:text-white"
+          className="border-muted-foreground text-muted-foreground hover:bg-muted-foreground hover:text-background"
         >
           <Minus className="w-4 h-4 mr-1" />
           Partial
@@ -101,7 +101,7 @@ export function FeedbackButtons({ readingId, onFeedback }: FeedbackButtonsProps)
           variant="outline"
           size="sm"
           onClick={() => handleFeedback('negative')}
-          className="border-red-600 text-red-400 hover:bg-red-600 hover:text-white"
+          className="border-muted text-muted-foreground hover:bg-muted hover:text-foreground"
         >
           <ThumbsDown className="w-4 h-4 mr-1" />
           Off

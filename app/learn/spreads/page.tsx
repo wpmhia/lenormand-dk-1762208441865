@@ -132,14 +132,14 @@ export default function SpreadsPage() {
                 Back to Course
               </Button>
             </Link>
-            <div className="flex items-center space-x-2">
-              <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300">
-                Module 5 of 6
-              </Badge>
-              <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300">
-                Intermediate
-              </Badge>
-            </div>
+             <div className="flex items-center space-x-2">
+               <Badge className="bg-muted text-muted-foreground border-border dark:bg-muted/50 dark:text-muted-foreground dark:border-border">
+                 Module 5 of 6
+               </Badge>
+               <Badge className="bg-muted text-muted-foreground border-border dark:bg-muted/50 dark:text-muted-foreground dark:border-border">
+                 Intermediate
+               </Badge>
+             </div>
             <Link href="/learn/advanced">
               <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
                 Next Module
@@ -200,9 +200,9 @@ export default function SpreadsPage() {
                         <div className="flex items-center space-x-4 text-xs text-primary">
                           <span>Best for: {spread.useCase}</span>
                           <Badge className={
-                            spread.difficulty === 'Beginner' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' :
-                            spread.difficulty === 'Intermediate' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' :
-                            'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'
+                            spread.difficulty === 'Beginner' ? 'bg-primary/10 text-primary border-primary/30 dark:bg-primary/20 dark:text-primary dark:border-primary/40' :
+                            spread.difficulty === 'Intermediate' ? 'bg-muted text-muted-foreground border-border dark:bg-muted/50 dark:text-muted-foreground dark:border-border' :
+                            'bg-muted text-foreground border-border dark:bg-muted dark:text-foreground dark:border-border'
                           }>
                             {spread.difficulty}
                           </Badge>

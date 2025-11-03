@@ -165,7 +165,7 @@ export function CardRelationshipVisualizer({
       <UICard className="border-border bg-card">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
-            <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full" />
+            <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full" />
             Analyzing Relationships...
           </CardTitle>
         </CardHeader>
@@ -204,7 +204,7 @@ export function CardRelationshipVisualizer({
         )}
       </CardHeader>
       <CardContent>
-        <div className="h-96 w-full border border-slate-600 rounded-lg overflow-hidden">
+        <div className="h-96 w-full border border-border rounded-lg overflow-hidden">
           <TooltipProvider>
             <ReactFlow
             nodes={nodes}

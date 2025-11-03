@@ -75,10 +75,10 @@ export default function LearnPage() {
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'Beginner': return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
-      case 'Intermediate': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'
-      case 'Advanced': return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'
-      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-300'
+      case 'Beginner': return 'bg-primary/10 text-primary border-primary/30 dark:bg-primary/20 dark:text-primary dark:border-primary/40'
+      case 'Intermediate': return 'bg-muted text-muted-foreground border-border dark:bg-muted/50 dark:text-muted-foreground dark:border-border'
+      case 'Advanced': return 'bg-muted text-foreground border-border dark:bg-muted dark:text-foreground dark:border-border'
+      default: return 'bg-muted/50 text-muted-foreground border-border/50'
     }
   }
 
@@ -201,7 +201,7 @@ export default function LearnPage() {
             </div>
 
             <div className="text-center space-y-3">
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full flex items-center justify-center mx-auto">
+              <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto">
                 <Heart className="w-8 h-8 text-white" />
               </div>
                <h4 className="font-semibold text-foreground">Emotional Intelligence</h4>
@@ -211,7 +211,7 @@ export default function LearnPage() {
             </div>
 
             <div className="text-center space-y-3">
-              <div className="w-16 h-16 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full flex items-center justify-center mx-auto">
+              <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto">
                 <Users className="w-8 h-8 text-white" />
               </div>
                <h4 className="font-semibold text-foreground">Community Wisdom</h4>

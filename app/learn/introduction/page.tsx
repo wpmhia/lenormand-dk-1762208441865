@@ -27,14 +27,14 @@ export default function IntroductionPage() {
                 Back to Course
               </Button>
             </Link>
-            <div className="flex items-center space-x-2">
-              <Badge className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
-                Module 1 of 6
-              </Badge>
-              <Badge className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
-                Beginner
-              </Badge>
-            </div>
+             <div className="flex items-center space-x-2">
+               <Badge className="bg-primary/10 text-primary border-primary/30 dark:bg-primary/20 dark:text-primary dark:border-primary/40">
+                 Module 1 of 6
+               </Badge>
+               <Badge className="bg-primary/10 text-primary border-primary/30 dark:bg-primary/20 dark:text-primary dark:border-primary/40">
+                 Beginner
+               </Badge>
+             </div>
             <Link href="/learn/history">
               <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
                 Next Module

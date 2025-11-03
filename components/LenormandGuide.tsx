@@ -49,72 +49,68 @@ export function LenormandGuide({ className, darkTheme = false }: LenormandGuideP
 
   return (
     <div className={`space-y-4 ${className}`}>
-      <Card className={`${darkTheme 
-          ? "border-slate-700 bg-gradient-to-br from-slate-800/80 to-slate-900/60 backdrop-blur-sm" 
-          : "border-blue-200 bg-gradient-to-br from-blue-50/80 to-indigo-50/60 backdrop-blur-sm"}`}>
+      <Card className={`${darkTheme
+          ? "border-border bg-gradient-to-br from-card/80 to-muted/60 backdrop-blur-sm"
+          : "border-border bg-gradient-to-br from-background/80 to-muted/60 backdrop-blur-sm"}`}>
         <CardHeader>
           <CardTitle className={`flex items-center gap-2 ${darkTheme ? "text-white" : "text-foreground"}`}>
             <BookOpen className="w-5 h-5" />
             How to Read Lenormand Cards
           </CardTitle>
-          <p className={`text-sm ${darkTheme ? "text-slate-300" : "text-muted-foreground"}`}>
+          <p className="text-sm text-muted-foreground">
             Learn the basics of Lenormand reading to get more accurate insights
           </p>
         </CardHeader>
         <CardContent className="space-y-4">
           
           {/* What are Lenormand Cards */}
-          <Collapsible open={openSections.basics} onOpenChange={() => toggleSection('basics')}>
-            <CollapsibleTrigger asChild>
-              <Button variant="ghost" className={`w-full justify-between p-3 ${darkTheme ? "hover:bg-slate-700" : "hover:bg-muted"}`}>
-                <div className="flex items-center gap-2">
-                  <HelpCircle className="w-4 h-4" />
-                  <span className="font-medium">What are Lenormand Cards?</span>
-                </div>
-                {openSections.basics ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-              </Button>
-            </CollapsibleTrigger>
-            <CollapsibleContent className={`space-y-3 mt-3 p-4 rounded-lg border ${darkTheme 
-                ? "bg-slate-800 border-slate-700" 
-                : "bg-white border-blue-100"}`}>
-              <p className={`text-sm leading-relaxed ${darkTheme ? "text-slate-300" : "text-muted-foreground"}`}>
+           <Collapsible open={openSections.basics} onOpenChange={() => toggleSection('basics')}>
+             <CollapsibleTrigger asChild>
+               <Button variant="ghost" className="w-full justify-between p-3 hover:bg-muted">
+                 <div className="flex items-center gap-2">
+                   <HelpCircle className="w-4 h-4" />
+                   <span className="font-medium">What are Lenormand Cards?</span>
+                 </div>
+                 {openSections.basics ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+               </Button>
+             </CollapsibleTrigger>
+             <CollapsibleContent className="space-y-3 mt-3 p-4 rounded-lg border bg-card border-border">
+               <p className="text-sm leading-relaxed text-muted-foreground">
                 Lenormand cards are a 36-card oracle deck originating from 19th century Europe. Unlike Tarot, 
                 Lenormand cards are more direct and practical, focusing on everyday situations and concrete outcomes. 
                 Each card has specific meanings that combine to create detailed insights about your life.
               </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
-                <div className={`p-3 rounded-lg ${darkTheme ? "bg-slate-700" : "bg-muted"}`}>
-                  <h4 className={`font-medium mb-1 ${darkTheme ? "text-slate-200" : "text-foreground"}`}>Direct & Practical</h4>
-                  <p className={`text-xs ${darkTheme ? "text-slate-300" : "text-muted-foreground"}`}>Focuses on real-life situations and concrete answers</p>
-                </div>
-                <div className={`p-3 rounded-lg ${darkTheme ? "bg-slate-700" : "bg-muted"}`}>
-                  <h4 className={`font-medium mb-1 ${darkTheme ? "text-slate-200" : "text-foreground"}`}>Combination-Based</h4>
-                  <p className={`text-xs ${darkTheme ? "text-slate-300" : "text-muted-foreground"}`}>Cards modify each other to create nuanced meanings</p>
-                </div>
-              </div>
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
+                 <div className="p-3 rounded-lg bg-muted">
+                   <h4 className="font-medium mb-1 text-foreground">Direct & Practical</h4>
+                   <p className="text-xs text-muted-foreground">Focuses on real-life situations and concrete answers</p>
+                 </div>
+                 <div className="p-3 rounded-lg bg-muted">
+                   <h4 className="font-medium mb-1 text-foreground">Combination-Based</h4>
+                   <p className="text-xs text-muted-foreground">Cards modify each other to create nuanced meanings</p>
+                 </div>
+               </div>
             </CollapsibleContent>
           </Collapsible>
 
           <Separator className="bg-border" />
 
           {/* How to Formulate Questions */}
-          <Collapsible open={openSections.questions} onOpenChange={() => toggleSection('questions')}>
-            <CollapsibleTrigger asChild>
-              <Button variant="ghost" className={`w-full justify-between p-3 ${darkTheme ? "hover:bg-slate-700" : "hover:bg-muted"}`}>
-                <div className="flex items-center gap-2">
-                  <Target className="w-4 h-4" />
-                  <span className="font-medium">How to Formulate Questions</span>
-                </div>
-                {openSections.questions ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-              </Button>
-            </CollapsibleTrigger>
-            <CollapsibleContent className={`space-y-3 mt-3 p-4 rounded-lg border ${darkTheme 
-                ? "bg-slate-800 border-slate-700" 
-                : "bg-white border-blue-100"}`}>
-              <div className="space-y-3">
-                <div>
-                  <h4 className={`font-medium mb-2 ${darkTheme ? "text-slate-200" : "text-foreground"}`}>Do&apos;s ✅</h4>
-                  <ul className={`text-sm space-y-1 ${darkTheme ? "text-slate-300" : "text-muted-foreground"}`}>
+           <Collapsible open={openSections.questions} onOpenChange={() => toggleSection('questions')}>
+             <CollapsibleTrigger asChild>
+               <Button variant="ghost" className="w-full justify-between p-3 hover:bg-muted">
+                 <div className="flex items-center gap-2">
+                   <Target className="w-4 h-4" />
+                   <span className="font-medium">How to Formulate Questions</span>
+                 </div>
+                 {openSections.questions ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+               </Button>
+             </CollapsibleTrigger>
+             <CollapsibleContent className="space-y-3 mt-3 p-4 rounded-lg border bg-card border-border">
+               <div className="space-y-3">
+                 <div>
+                   <h4 className="font-medium mb-2 text-foreground">Do&apos;s ✅</h4>
+                   <ul className="text-sm space-y-1 text-muted-foreground">
                     <li>• Be specific and focused</li>
                     <li>• Ask about situations and actions</li>
                     <li>• Use &quot;what,&quot; &quot;how,&quot; or &quot;when&quot; questions</li>
@@ -122,9 +118,9 @@ export function LenormandGuide({ className, darkTheme = false }: LenormandGuideP
                     <li>• Keep questions open-ended</li>
                   </ul>
                 </div>
-                <div>
-                  <h4 className={`font-medium mb-2 ${darkTheme ? "text-slate-200" : "text-foreground"}`}>Don&apos;ts ❌</h4>
-                  <ul className={`text-sm space-y-1 ${darkTheme ? "text-slate-300" : "text-muted-foreground"}`}>
+                 <div>
+                   <h4 className="font-medium mb-2 text-foreground">Don&apos;ts ❌</h4>
+                   <ul className="text-sm space-y-1 text-muted-foreground">
                     <li>• Avoid yes/no questions</li>
                     <li>• Don&apos;t ask about others without their consent</li>
                     <li>• Avoid medical, legal, or financial advice</li>
@@ -134,13 +130,11 @@ export function LenormandGuide({ className, darkTheme = false }: LenormandGuideP
                 </div>
               </div>
 
-              <div className={`mt-4 p-3 rounded-lg border ${darkTheme 
-                ? "bg-slate-700 border-slate-600" 
-                : "bg-muted border-border"}`}>
-                <div className="flex items-center gap-2 mb-2">
-                  <Lightbulb className={`w-4 h-4 ${darkTheme ? "text-primary" : "text-primary"}`} />
-                  <h4 className={`font-medium ${darkTheme ? "text-muted-foreground" : "text-foreground"}`}>Example Questions</h4>
-                </div>
+               <div className="mt-4 p-3 rounded-lg border bg-muted border-border">
+                 <div className="flex items-center gap-2 mb-2">
+                   <Lightbulb className="w-4 h-4 text-primary" />
+                   <h4 className="font-medium text-foreground">Example Questions</h4>
+                 </div>
                 <div className="space-y-2">
                   {questionExamples.map((category, index) => (
                     <div key={index} className="space-y-1">
@@ -161,18 +155,18 @@ export function LenormandGuide({ className, darkTheme = false }: LenormandGuideP
 
           <Separator className="bg-border" />
 
-          {/* Understanding Card Positions */}
-          <Collapsible open={openSections.positions} onOpenChange={() => toggleSection('positions')}>
-            <CollapsibleTrigger asChild>
-              <Button variant="ghost" className="w-full justify-between p-3 hover:bg-muted">
-                <div className="flex items-center gap-2">
-                  <Target className="w-4 h-4" />
-                  <span className="font-medium">Understanding Card Positions</span>
-                </div>
-                {openSections.positions ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-              </Button>
-            </CollapsibleTrigger>
-            <CollapsibleContent className="space-y-3 mt-3 p-4 bg-white rounded-lg border border-blue-100">
+           {/* Understanding Card Positions */}
+           <Collapsible open={openSections.positions} onOpenChange={() => toggleSection('positions')}>
+             <CollapsibleTrigger asChild>
+               <Button variant="ghost" className="w-full justify-between p-3 hover:bg-muted">
+                 <div className="flex items-center gap-2">
+                   <Target className="w-4 h-4" />
+                   <span className="font-medium">Understanding Card Positions</span>
+                 </div>
+                 {openSections.positions ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+               </Button>
+             </CollapsibleTrigger>
+             <CollapsibleContent className="space-y-3 mt-3 p-4 bg-card rounded-lg border border-border">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <div className="p-3 bg-muted rounded-lg">
                   <h4 className="font-medium text-foreground mb-1">3-Card Spread</h4>
@@ -209,18 +203,18 @@ export function LenormandGuide({ className, darkTheme = false }: LenormandGuideP
 
           <Separator className="bg-border" />
 
-          {/* Reading Tips */}
-          <Collapsible open={openSections.tips} onOpenChange={() => toggleSection('tips')}>
-            <CollapsibleTrigger asChild>
-              <Button variant="ghost" className="w-full justify-between p-3 hover:bg-muted">
-                <div className="flex items-center gap-2">
-                  <Lightbulb className="w-4 h-4" />
-                  <span className="font-medium">Reading Tips & Best Practices</span>
-                </div>
-                {openSections.tips ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-              </Button>
-            </CollapsibleTrigger>
-            <CollapsibleContent className="space-y-3 mt-3 p-4 bg-white rounded-lg border border-blue-100">
+           {/* Reading Tips */}
+           <Collapsible open={openSections.tips} onOpenChange={() => toggleSection('tips')}>
+             <CollapsibleTrigger asChild>
+               <Button variant="ghost" className="w-full justify-between p-3 hover:bg-muted">
+                 <div className="flex items-center gap-2">
+                   <Lightbulb className="w-4 h-4" />
+                   <span className="font-medium">Reading Tips & Best Practices</span>
+                 </div>
+                 {openSections.tips ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+               </Button>
+             </CollapsibleTrigger>
+             <CollapsibleContent className="space-y-3 mt-3 p-4 bg-card rounded-lg border border-border">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div className="space-y-2">
                   <h4 className="font-medium text-foreground">Before Reading</h4>
