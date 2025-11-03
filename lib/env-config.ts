@@ -11,6 +11,24 @@ export const ENV_VARIABLES: EnvVariable[] = [
     description: "Base URL for DeepSeek API (optional, defaults to https://api.deepseek.com/v1)",
     required: false,
     instructions: "Only set if using a custom DeepSeek endpoint. Default is the official API endpoint with /v1 suffix."
+  },
+  {
+    name: "DATABASE_URL",
+    description: "Supabase database connection string",
+    required: false,
+    instructions: "Get the connection string from your Supabase project settings > Database > Connection string. Use the 'URI' format."
+  },
+  {
+    name: "NEXT_PUBLIC_SUPABASE_URL",
+    description: "Supabase project URL",
+    required: false,
+    instructions: "Get from your Supabase project settings > API > Project URL."
+  },
+  {
+    name: "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+    description: "Supabase anonymous key",
+    required: false,
+    instructions: "Get from your Supabase project settings > API > Project API keys > anon public."
   }
 ];
 
