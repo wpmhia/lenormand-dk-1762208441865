@@ -38,7 +38,7 @@ export default function Home() {
                 </Button>
               </Link>
               <Link href="/cards">
-                 <Button variant="outline" size="lg" className="px-12 py-5 border-2 border-amber-600/50 dark:border-amber-400/50 text-amber-800 dark:text-amber-200 hover:bg-amber-100 dark:hover:bg-amber-900/20 hover:border-amber-700/70 dark:hover:border-amber-400/70 font-semibold text-lg rounded-full backdrop-blur-sm shadow-lg shadow-amber-500/20 dark:shadow-amber-500/30">
+                 <Button variant="outline" size="lg" className="px-12 py-5 border-2 border-amber-600/50 dark:border-amber-400/50 text-amber-900 dark:text-amber-100 hover:bg-amber-100 dark:hover:bg-amber-900/20 hover:border-amber-700/70 dark:hover:border-amber-400/70 font-semibold text-lg rounded-full backdrop-blur-sm shadow-lg shadow-amber-500/20 dark:shadow-amber-500/30">
                   🔮 Explore the Cards
                 </Button>
               </Link>
