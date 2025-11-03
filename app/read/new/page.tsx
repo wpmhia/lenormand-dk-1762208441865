@@ -37,7 +37,7 @@ export default function NewReadingPage() {
   const [allowReversed, setAllowReversed] = useState(false)
 
   const [error, setError] = useState('')
-  const [step, setStep] = useState<'setup' | 'drawing' | 'review' | 'ai-analysis'>('setup')
+  const [step, setStep] = useState<'setup' | 'drawing' | 'ai-analysis'>('setup')
 
   // AI-related state
   const [aiReading, setAiReading] = useState<AIReadingResponse | null>(null)
@@ -197,14 +197,14 @@ export default function NewReadingPage() {
               </div>
               <span className="ml-3 text-sm font-medium">Setup</span>
             </div>
-            <div className={`w-12 h-0.5 rounded-full ${step === 'drawing' || step === 'ai-analysis' || step === 'review' ? 'bg-emerald-400' : 'bg-slate-600'}`}></div>
+            <div className={`w-12 h-0.5 rounded-full ${step === 'drawing' || step === 'ai-analysis' ? 'bg-emerald-400' : 'bg-slate-600'}`}></div>
             <div className={`flex items-center ${step === 'drawing' ? 'text-amber-400' : 'text-emerald-400'}`}>
               <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'drawing' ? 'bg-amber-600 border-amber-400 shadow-lg shadow-amber-500/30' : 'bg-emerald-600 border-emerald-400'}`}>
                 2
               </div>
               <span className="ml-3 text-sm font-medium">Draw</span>
             </div>
-            <div className={`w-12 h-0.5 rounded-full ${step === 'ai-analysis' || step === 'review' ? 'bg-emerald-400' : 'bg-slate-600'}`}></div>
+            <div className={`w-12 h-0.5 rounded-full ${step === 'ai-analysis' ? 'bg-emerald-400' : 'bg-slate-600'}`}></div>
             <div className={`flex items-center ${step === 'ai-analysis' ? 'text-purple-400' : 'text-emerald-400'}`}>
               <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'ai-analysis' ? 'bg-purple-600 border-purple-400 shadow-lg shadow-purple-500/30' : 'bg-emerald-600 border-purple-400'}`}>
                 3
@@ -396,61 +396,14 @@ export default function NewReadingPage() {
                    >
                      Draw Again
                    </Button>
-                   <Button
-                     onClick={() => setStep('review')}
-                     className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg shadow-purple-500/30 rounded-xl py-3 font-semibold transition-all duration-500 hover:scale-105"
-                   >
-                     Continue to Save
-                   </Button>
+
                  </div>
                )}
               </CardContent>
             </Card>
           )}
 
-           {step === 'review' && (
-            <Card className="border-blue-400/20 bg-gradient-to-br from-slate-900/60 via-blue-950/20 to-slate-800/40 backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent opacity-50"></div>
-              <CardContent className="space-y-6 p-8 relative z-10">
-                <div className="text-center">
-                  <h2 className="text-2xl font-semibold mb-2 text-white relative">
-                    Review Your Reading
-                    <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full"></div>
-                  </h2>
-                  <p className="text-slate-300 text-lg italic">
-                    Behold the wisdom your cards have revealed
-                  </p>
-                </div>
 
-                <ReadingViewer
-                  reading={{
-                    id: 'temp',
-                    title: question,
-                    question,
-                    layoutType,
-                    cards: drawnCards,
-                    slug: 'temp',
-                     isPublic: false,
-                    createdAt: new Date(),
-                    updatedAt: new Date(),
-                  }}
-                  allCards={allCards}
-                  showShareButton={false}
-                />
-
-                <div className="flex gap-4 justify-center">
-                  <Button
-                    onClick={() => setStep('drawing')}
-                    variant="outline"
-                    className="border-blue-400/30 text-blue-200 hover:bg-blue-950/50 rounded-xl py-3 font-semibold transition-all duration-300"
-                  >
-                    Draw Again
-                  </Button>
-
-                </div>
-              </CardContent>
-            </Card>
-          )}
 
 
 

@@ -13,45 +13,7 @@ export function getCardById(cards: Card[], id: number): Card | undefined {
   return cards.find(card => card.id === id)
 }
 
-// LocalStorage functions for readings
-const STORAGE_KEY = 'lenormand-readings'
 
-export function saveReading(reading: Reading): void {
-  if (typeof window === 'undefined') return
-
-  try {
-    const readings = getReadings()
-    readings.push(reading)
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(readings))
-    console.log('Reading saved successfully:', reading.id)
-  } catch (error) {
-    console.error('Failed to save reading to localStorage:', error)
-    throw error
-  }
-}
-
-export function getReadings(): Reading[] {
-  if (typeof window === 'undefined') return []
-  
-  const stored = localStorage.getItem(STORAGE_KEY)
-  if (!stored) return []
-  
-  try {
-    const readings = JSON.parse(stored)
-    return readings.map((r: any) => ({
-      ...r,
-      createdAt: new Date(r.createdAt),
-      updatedAt: new Date(r.updatedAt)
-    }))
-  } catch {
-    return []
-  }
-}
-
-export function getReadingBySlug(slug: string): Reading | undefined {
-  const readings = getReadings()
-  return readings.find(reading => reading.slug === slug)
-}
 
 export function deleteReading(slug: string): void {
   if (typeof window === 'undefined') return
