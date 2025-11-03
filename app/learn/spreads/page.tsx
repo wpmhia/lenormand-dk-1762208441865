@@ -121,13 +121,13 @@ const techniques = [
 
 export default function SpreadsPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-rose-50 to-purple-50 dark:from-slate-900 dark:via-purple-900 dark:to-slate-900">
+    <div className="min-h-screen bg-background">
       {/* Navigation */}
-      <div className="sticky top-14 z-40 border-b border-amber-200/50 dark:border-slate-700/50 bg-white/80 dark:bg-slate-900/80 backdrop-blur">
+      <div className="sticky top-14 z-40 border-b border-border bg-card/80 backdrop-blur">
         <div className="container mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             <Link href="/learn">
-              <Button variant="ghost" size="sm" className="text-amber-700 dark:text-amber-300 hover:text-amber-600 dark:hover:text-amber-400">
+              <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Course
               </Button>
@@ -141,7 +141,7 @@ export default function SpreadsPage() {
               </Badge>
             </div>
             <Link href="/learn/advanced">
-              <Button variant="ghost" size="sm" className="text-amber-700 dark:text-amber-300 hover:text-amber-600 dark:hover:text-amber-400">
+              <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
                 Next Module
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
@@ -158,13 +158,13 @@ export default function SpreadsPage() {
               <Compass className="w-8 h-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-amber-900 dark:text-amber-100 mb-4">
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
             Spreads & Techniques
           </h1>
-          <p className="text-lg text-amber-800 dark:text-amber-200 max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Discover powerful spreads and advanced reading techniques to enhance your Lenormand practice.
           </p>
-          <div className="flex items-center justify-center mt-4 space-x-4 text-sm text-amber-700 dark:text-amber-300">
+          <div className="flex items-center justify-center mt-4 space-x-4 text-sm text-primary">
             <div className="flex items-center">
               <Compass className="w-4 h-4 mr-1" />
               30 minutes
@@ -177,27 +177,27 @@ export default function SpreadsPage() {
         </div>
 
         {/* Popular Spreads */}
-        <Card className="mb-8 border-emerald-400/20 dark:border-emerald-400/30 bg-gradient-to-br from-white via-emerald-50/50 to-teal-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+        <Card className="mb-8 border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-2xl text-emerald-900 dark:text-emerald-100 flex items-center">
-              <Compass className="w-6 h-6 mr-3 text-emerald-600" />
+            <CardTitle className="text-2xl text-foreground flex items-center">
+              <Compass className="w-6 h-6 mr-3 text-primary" />
               Popular Spreads
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-6">
               {spreads.map((spread, index) => (
-                <Card key={index} className="border border-emerald-200 dark:border-emerald-700 bg-emerald-50/50 dark:bg-emerald-900/20">
+                <Card key={index} className="border border-border bg-muted">
                   <CardContent className="p-6">
                     <div className="flex items-start justify-between mb-4">
                       <div>
-                        <h3 className="text-lg font-semibold text-emerald-900 dark:text-emerald-100 mb-2">
+                        <h3 className="text-lg font-semibold text-foreground mb-2">
                           {spread.name}
                         </h3>
-                        <p className="text-emerald-800 dark:text-emerald-200 text-sm mb-2">
+                        <p className="text-muted-foreground text-sm mb-2">
                           {spread.description}
                         </p>
-                        <div className="flex items-center space-x-4 text-xs text-emerald-700 dark:text-emerald-300">
+                        <div className="flex items-center space-x-4 text-xs text-primary">
                           <span>Best for: {spread.useCase}</span>
                           <Badge className={
                             spread.difficulty === 'Beginner' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300' :
@@ -210,26 +210,26 @@ export default function SpreadsPage() {
                       </div>
                     </div>
 
-                    <div className="bg-emerald-100 dark:bg-emerald-900/30 p-4 rounded-lg mb-4">
-                      <h4 className="font-semibold text-emerald-900 dark:text-emerald-100 mb-2">Layout:</h4>
-                      <p className="text-emerald-800 dark:text-emerald-200 font-medium text-sm">
+                    <div className="bg-muted p-4 rounded-lg mb-4">
+                      <h4 className="font-semibold text-foreground mb-2">Layout:</h4>
+                      <p className="text-muted-foreground font-medium text-sm">
                         {spread.layout}
                       </p>
                     </div>
 
                     <div>
-                      <h4 className="font-semibold text-emerald-900 dark:text-emerald-100 mb-3">Positions:</h4>
+                      <h4 className="font-semibold text-foreground mb-3">Positions:</h4>
                       <div className="grid md:grid-cols-2 gap-3">
                         {spread.positions.map((position, posIndex) => (
                           <div key={posIndex} className="flex items-start space-x-3">
-                            <div className="w-6 h-6 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                            <div className="w-6 h-6 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                               <span className="text-white text-xs font-bold">{posIndex + 1}</span>
                             </div>
                             <div>
-                              <h5 className="font-medium text-emerald-900 dark:text-emerald-100 text-sm">
+                              <h5 className="font-medium text-foreground text-sm">
                                 {position.name}
                               </h5>
-                              <p className="text-emerald-700 dark:text-emerald-300 text-xs">
+                              <p className="text-primary text-xs">
                                 {position.description}
                               </p>
                             </div>
@@ -289,30 +289,30 @@ export default function SpreadsPage() {
         </Card>
 
         {/* Grand Tableau Introduction */}
-        <Card className="mb-8 border-purple-400/20 dark:border-purple-400/30 bg-gradient-to-br from-white via-purple-50/50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+        <Card className="mb-8 border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-2xl text-purple-900 dark:text-purple-100 flex items-center">
-              <MapPin className="w-6 h-6 mr-3 text-purple-600" />
+            <CardTitle className="text-2xl text-foreground flex items-center">
+              <MapPin className="w-6 h-6 mr-3 text-primary" />
               The Grand Tableau (36-Card Reading)
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            <p className="text-purple-800 dark:text-purple-200 leading-relaxed">
+            <p className="text-card-foreground leading-relaxed">
               The Grand Tableau is the most comprehensive Lenormand reading, using all 36 cards laid out in a specific pattern. This advanced technique provides deep insights into complex situations and long-term patterns.
             </p>
 
-            <div className="bg-purple-100 dark:bg-purple-900/20 p-6 rounded-lg">
-              <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-3">Traditional Layout:</h4>
+            <div className="bg-muted p-6 rounded-lg">
+              <h4 className="font-semibold text-foreground mb-3">Traditional Layout:</h4>
               <div className="text-center">
                 <div className="inline-block bg-white dark:bg-slate-800 p-4 rounded-lg shadow-sm">
                   <div className="grid grid-cols-8 gap-1 text-xs">
                     {Array.from({ length: 36 }, (_, i) => (
-                      <div key={i} className="w-6 h-6 bg-purple-200 dark:bg-purple-700 rounded flex items-center justify-center text-purple-800 dark:text-purple-200 font-bold">
+                      <div key={i} className="w-6 h-6 bg-muted rounded flex items-center justify-center text-card-foreground font-bold">
                         {i + 1}
                       </div>
                     ))}
                   </div>
-                  <p className="text-xs text-purple-600 dark:text-purple-400 mt-2">
+                  <p className="text-xs text-primary dark:text-primary/80 mt-2">
                     8x4 grid formation (3 rows of 8, 1 row of 4 in center)
                   </p>
                 </div>
@@ -321,8 +321,8 @@ export default function SpreadsPage() {
 
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-3">What it reveals:</h4>
-                <ul className="space-y-2 text-sm text-purple-800 dark:text-purple-200">
+                <h4 className="font-semibold text-foreground mb-3">What it reveals:</h4>
+                <ul className="space-y-2 text-sm text-card-foreground">
                   <li>• Complete life overview</li>
                   <li>• Long-term patterns and cycles</li>
                   <li>• Hidden influences and connections</li>
@@ -331,8 +331,8 @@ export default function SpreadsPage() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold text-purple-900 dark:text-purple-100 mb-3">When to use:</h4>
-                <ul className="space-y-2 text-sm text-purple-800 dark:text-purple-200">
+                <h4 className="font-semibold text-foreground mb-3">When to use:</h4>
+                <ul className="space-y-2 text-sm text-card-foreground">
                   <li>• Major life decisions</li>
                   <li>• Year-ahead readings</li>
                   <li>• Complex relationship issues</li>
@@ -342,8 +342,8 @@ export default function SpreadsPage() {
               </div>
             </div>
 
-            <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg border border-purple-200 dark:border-purple-800">
-              <p className="text-purple-900 dark:text-purple-100 text-sm">
+            <div className="bg-muted p-4 rounded-lg border border-border">
+              <p className="text-foreground text-sm">
                 <strong>Note:</strong> The Grand Tableau requires significant experience and can take 1-2 hours to read thoroughly. It&apos;s recommended for advanced practitioners.
               </p>
             </div>
@@ -351,41 +351,41 @@ export default function SpreadsPage() {
         </Card>
 
         {/* Practice Tips */}
-        <Card className="mb-8 border-rose-400/20 dark:border-rose-400/30 bg-gradient-to-br from-white via-rose-50/50 to-pink-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+        <Card className="mb-8 border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-2xl text-rose-900 dark:text-rose-100 flex items-center">
-              <Target className="w-6 h-6 mr-3 text-rose-600" />
+            <CardTitle className="text-2xl text-foreground flex items-center">
+              <Target className="w-6 h-6 mr-3 text-primary" />
               Practice Your Spreads
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-3 gap-6">
               <div className="text-center space-y-3">
-                <div className="w-12 h-12 bg-gradient-to-r from-rose-500 to-pink-500 rounded-full flex items-center justify-center mx-auto">
+                <div className="w-12 h-12 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto">
                   <span className="text-white font-bold">1</span>
                 </div>
-                <h4 className="font-semibold text-rose-800 dark:text-rose-200">Start Small</h4>
-                <p className="text-sm text-rose-700 dark:text-rose-300">
+                <h4 className="font-semibold text-card-foreground">Start Small</h4>
+                <p className="text-sm text-muted-foreground">
                   Begin with 3-card spreads to build confidence before moving to larger layouts.
                 </p>
               </div>
 
               <div className="text-center space-y-3">
-                <div className="w-12 h-12 bg-gradient-to-r from-rose-500 to-pink-500 rounded-full flex items-center justify-center mx-auto">
+                <div className="w-12 h-12 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto">
                   <span className="text-white font-bold">2</span>
                 </div>
-                <h4 className="font-semibold text-rose-800 dark:text-rose-200">Practice Daily</h4>
-                <p className="text-sm text-rose-700 dark:text-rose-300">
+                <h4 className="font-semibold text-card-foreground">Practice Daily</h4>
+                <p className="text-sm text-muted-foreground">
                   Regular practice with different spreads helps you understand card interactions.
                 </p>
               </div>
 
               <div className="text-center space-y-3">
-                <div className="w-12 h-12 bg-gradient-to-r from-rose-500 to-pink-500 rounded-full flex items-center justify-center mx-auto">
+                <div className="w-12 h-12 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto">
                   <span className="text-white font-bold">3</span>
                 </div>
-                <h4 className="font-semibold text-rose-800 dark:text-rose-200">Keep a Journal</h4>
-                <p className="text-sm text-rose-700 dark:text-rose-300">
+                <h4 className="font-semibold text-card-foreground">Keep a Journal</h4>
+                <p className="text-sm text-muted-foreground">
                   Record your readings and revisit them later to see how accurate your interpretations were.
                 </p>
               </div>
@@ -394,15 +394,15 @@ export default function SpreadsPage() {
         </Card>
 
         {/* Navigation */}
-        <div className="flex justify-between items-center pt-8 border-t border-amber-200/50 dark:border-slate-700/50">
+        <div className="flex justify-between items-center pt-8 border-t border-border">
           <Link href="/learn/card-meanings">
-            <Button variant="outline" className="border-amber-600/50 text-amber-800 dark:text-amber-200 hover:bg-amber-100 dark:hover:bg-amber-900/20">
+            <Button variant="outline" className="border-border text-card-foreground hover:bg-muted">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Card Meanings
             </Button>
           </Link>
           <Link href="/learn/advanced">
-            <Button className="bg-gradient-to-r from-blue-600 via-purple-500 to-indigo-600 hover:from-blue-700 hover:via-purple-600 hover:to-indigo-700 text-white">
+            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
               Continue to Advanced Concepts
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
