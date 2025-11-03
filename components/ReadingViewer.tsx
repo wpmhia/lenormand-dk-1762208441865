@@ -129,20 +129,12 @@ export function ReadingViewer({
 
             return (
               <div key={index} className="flex flex-col items-center space-y-2">
-                <div className="text-center">
-                  <Badge variant="outline" className="text-xs">
-                    {positionInfo.label}
-                  </Badge>
-                </div>
                 <Card
                   card={card}
                   reversed={readingCard.reversed}
                   size="md"
                   onClick={() => setSelectedCard({ card, reversed: readingCard.reversed })}
                 />
-                <div className="text-xs text-center text-gray-600 max-w-32">
-                  {positionInfo.meaning}
-                </div>
               </div>
             )
           })}
