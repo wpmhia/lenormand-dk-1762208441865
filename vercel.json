@@ -1,7 +1,6 @@
 {
   "functions": {
     "app/api/readings/interpret/route.ts": {
-      "runtime": "@vercel/node",
       "maxDuration": 30
     }
   },
