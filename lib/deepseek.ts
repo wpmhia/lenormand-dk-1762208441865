@@ -181,7 +181,7 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
 
   // Build the structured payload
     const payload = {
-      user_lang: request.userLocale || 'en',
+      user_lang: 'en',
       tone: 'feminine_sensual', // Feminine sensual tone with soft undertones
       question: request.question,
       spread: {
