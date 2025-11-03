@@ -10,12 +10,19 @@ import { CardRelationship, RelationshipAnalysisResponse } from '@/app/api/readin
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { AlertTriangle, Clock, Zap, Network } from 'lucide-react'
+import { AlertTriangle, Clock, Zap, Network, ExternalLink, Settings, Timer } from 'lucide-react'
 
 interface AIReadingDisplayProps {
   aiReading: AIReadingResponse | null
   isLoading?: boolean
   error?: string | null
+  errorDetails?: {
+    type?: string
+    helpUrl?: string
+    action?: string
+    waitTime?: number
+    fields?: string[]
+  }
   onRetry?: () => void
   retryCount?: number
   cards?: ReadingCard[]
@@ -28,6 +35,7 @@ export function AIReadingDisplay({
   aiReading,
   isLoading,
   error,
+  errorDetails,
   onRetry,
   retryCount = 0,
   cards = [],
@@ -79,21 +87,103 @@ export function AIReadingDisplay({
   }, [showRelationships])
 
   if (error) {
+    const getErrorIcon = () => {
+      switch (errorDetails?.type) {
+        case 'rate_limit': return <Timer className="w-8 h-8 mx-auto" />
+        case 'configuration_needed': return <Settings className="w-8 h-8 mx-auto" />
+        case 'service_unavailable': return <Clock className="w-8 h-8 mx-auto" />
+        case 'safety_violation': return <AlertTriangle className="w-8 h-8 mx-auto" />
+        default: return <AlertTriangle className="w-8 h-8 mx-auto" />
+      }
+    }
+
+    const getErrorTitle = () => {
+      switch (errorDetails?.type) {
+        case 'rate_limit': return 'Please Wait Before Next Reading'
+        case 'configuration_needed': return 'AI Configuration Required'
+        case 'service_unavailable': return 'AI Service Temporarily Unavailable'
+        case 'safety_violation': return 'Question Guidelines'
+        default: return 'AI Analysis Unavailable'
+      }
+    }
+
     return (
       <Card className="border-red-200 bg-red-50 slide-in-up">
         <CardContent className="pt-6">
           <div className="text-center text-red-600 space-y-4">
-            <AlertTriangle className="w-8 h-8 mx-auto" aria-hidden="true" />
+            {getErrorIcon()}
             <div>
-              <p className="font-medium">AI Analysis Unavailable</p>
-              <p className="text-sm">{error}</p>
+              <p className="font-medium">{getErrorTitle()}</p>
+              <p className="text-sm mt-2">{error}</p>
+              
+              {/* Specific error guidance */}
+              {errorDetails?.type === 'rate_limit' && (
+                <div className="mt-3 p-3 bg-red-100 rounded-lg border border-red-200">
+                  <p className="text-sm text-red-700">
+                    <strong>Why?</strong> To ensure quality readings for everyone, we limit requests to 1 every 2 seconds.
+                  </p>
+                  <p className="text-sm text-red-700 mt-1">
+                    <strong>What to do:</strong> Wait a moment, then try again.
+                  </p>
+                </div>
+              )}
+
+              {errorDetails?.type === 'configuration_needed' && (
+                <div className="mt-3 p-3 bg-red-100 rounded-lg border border-red-200">
+                  <p className="text-sm text-red-700">
+                    <strong>Why?</strong> AI readings require a DeepSeek API key.
+                  </p>
+                  <div className="mt-2 space-y-2">
+                    <p className="text-sm text-red-700">
+                      <strong>What to do:</strong> Add DEEPSEEK_API_KEY to your .env file
+                    </p>
+                    {errorDetails.helpUrl && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border-red-300 text-red-600 hover:bg-red-50"
+                        asChild
+                      >
+                        <a href={errorDetails.helpUrl} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="w-3 h-3 mr-2" />
+                          Get API Key
+                        </a>
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {errorDetails?.type === 'service_unavailable' && (
+                <div className="mt-3 p-3 bg-red-100 rounded-lg border border-red-200">
+                  <p className="text-sm text-red-700">
+                    <strong>Why?</strong> The AI service is temporarily experiencing issues.
+                  </p>
+                  <p className="text-sm text-red-700 mt-1">
+                    <strong>What to do:</strong> Try again in a few minutes.
+                  </p>
+                </div>
+              )}
+
+              {errorDetails?.type === 'safety_violation' && (
+                <div className="mt-3 p-3 bg-red-100 rounded-lg border border-red-200">
+                  <p className="text-sm text-red-700">
+                    <strong>Why?</strong> Your question touches on sensitive topics.
+                  </p>
+                  <p className="text-sm text-red-700 mt-1">
+                    <strong>What to do:</strong> {errorDetails.suggestion}
+                  </p>
+                </div>
+              )}
+
               {retryCount > 0 && (
-                <p className="text-xs text-red-500 mt-1">
+                <p className="text-xs text-red-500 mt-3">
                   Attempt {retryCount} of 3
                 </p>
               )}
             </div>
-            {onRetry && retryCount < 3 && (
+            
+            {onRetry && retryCount < 3 && errorDetails?.type !== 'configuration_needed' && (
               <Button
                 onClick={onRetry}
                 variant="outline"
@@ -105,6 +195,7 @@ export function AIReadingDisplay({
                 Retry Analysis
               </Button>
             )}
+            
             {retryCount >= 3 && (
               <p className="text-xs text-red-500">
                 The mystical connection needs a moment. Please try again later or continue with your intuition.

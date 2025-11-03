@@ -15,9 +15,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { Sparkles } from 'lucide-react'
+import { Sparkles, BookOpen } from 'lucide-react'
 import { getCards, drawCards, getCardById } from '@/lib/data'
 import { getAIReading, AIReadingRequest, AIReadingResponse, isDeepSeekAvailable } from '@/lib/deepseek'
+import { LenormandGuide } from '@/components/LenormandGuide'
 
 const LAYOUTS = [
   { value: 3, label: "3 Cards - Past, Present, Future" },
@@ -43,6 +44,13 @@ export default function NewReadingPage() {
   const [aiReading, setAiReading] = useState<AIReadingResponse | null>(null)
   const [aiLoading, setAiLoading] = useState(false)
   const [aiError, setAiError] = useState<string | null>(null)
+  const [aiErrorDetails, setAiErrorDetails] = useState<{
+    type?: string
+    helpUrl?: string
+    action?: string
+    waitTime?: number
+    fields?: string[]
+  } | null>(null)
   const [aiRetryCount, setAiRetryCount] = useState(0)
   const [showStartOverConfirm, setShowStartOverConfirm] = useState(false)
 
@@ -75,6 +83,7 @@ export default function NewReadingPage() {
   const performAIAnalysis = async (readingCards: ReadingCard[], isRetry = false) => {
     setAiLoading(true)
     setAiError(null)
+    setAiErrorDetails(null)
 
     if (!isRetry) {
       setAiRetryCount(0)
@@ -115,6 +124,14 @@ export default function NewReadingPage() {
 
       if (!response.ok) {
         const errorData = await response.json()
+        // Set detailed error information for better user guidance
+        setAiErrorDetails({
+          type: errorData.type,
+          helpUrl: errorData.helpUrl,
+          action: errorData.action,
+          waitTime: errorData.waitTime,
+          fields: errorData.fields
+        })
         throw new Error(errorData.error || 'AI analysis failed')
       }
 
@@ -165,6 +182,7 @@ export default function NewReadingPage() {
     setAiReading(null)
     setAiLoading(false)
     setAiError(null)
+    setAiErrorDetails(null)
     setShowStartOverConfirm(false)
   }
 
@@ -232,12 +250,22 @@ export default function NewReadingPage() {
         )}
 
         {step === 'setup' && (
-          <Card className="border-rose-400/20 bg-gradient-to-br from-slate-900/60 via-rose-950/20 to-slate-800/40 backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-transparent opacity-50"></div>
-            <CardHeader className="relative z-10">
-              <CardTitle className="text-rose-200 text-xl">Your Sacred Question:</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6 relative z-10">
+          <div className="space-y-6">
+            {/* Educational Guide */}
+            <LenormandGuide />
+            
+            <Card className="border-rose-400/20 bg-gradient-to-br from-slate-900/60 via-rose-950/20 to-slate-800/40 backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-transparent opacity-50"></div>
+              <CardHeader className="relative z-10">
+                <CardTitle className="text-rose-200 text-xl flex items-center gap-2">
+                  Your Sacred Question:
+                  <div className="flex items-center gap-1 text-xs bg-rose-500/20 px-2 py-1 rounded-full">
+                    <BookOpen className="w-3 h-3" />
+                    <span>See guide above</span>
+                  </div>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6 relative z-10">
               <div className="space-y-3">
                 <Textarea
                   id="question"
@@ -371,6 +399,7 @@ export default function NewReadingPage() {
                   aiReading={aiReading}
                   isLoading={aiLoading}
                   error={aiError}
+                  errorDetails={aiErrorDetails}
                   onRetry={retryAIAnalysis}
                   retryCount={aiRetryCount}
                   cards={drawnCards.map(card => ({

@@ -7,7 +7,8 @@ import { Card } from './Card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { CardModal } from './CardModal'
-import { Share2, Calendar } from 'lucide-react'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { Share2, Calendar, Info } from 'lucide-react'
 
 interface ReadingViewerProps {
   reading: Reading
@@ -25,28 +26,32 @@ interface PositionInfo {
 const getPositionInfo = (position: number, layoutType: number): PositionInfo => {
   const positions: Record<number, Record<number, PositionInfo>> = {
     3: {
-      0: { label: "Past", meaning: "Influences from the past" },
-      1: { label: "Present", meaning: "Current situation" },
-      2: { label: "Future", meaning: "Potential outcome" }
+      0: { label: "Past", meaning: "Influences from your past that shaped your current situation" },
+      1: { label: "Present", meaning: "Your current circumstances and immediate challenges" },
+      2: { label: "Future", meaning: "Potential outcome based on your current path" }
     },
     5: {
-      0: { label: "Past", meaning: "Past influences" },
-      1: { label: "Present", meaning: "Current situation" },
-      2: { label: "Future", meaning: "Future influences" },
-      3: { label: "Challenge", meaning: "Obstacles or challenges" },
-      4: { label: "Advice", meaning: "Guidance or advice" }
+      0: { label: "Past", meaning: "Past influences affecting your situation" },
+      1: { label: "Present", meaning: "Your current circumstances and challenges" },
+      2: { label: "Future", meaning: "Future influences and potential developments" },
+      3: { label: "Challenge", meaning: "Obstacles you may need to overcome" },
+      4: { label: "Advice", meaning: "Guidance for navigating your situation" }
     },
     9: {
-      0: { label: "Center", meaning: "The core situation" },
-      1: { label: "Top", meaning: "Goals and aspirations" },
-      2: { label: "Bottom", meaning: "Foundation and roots" },
-      3: { label: "Left", meaning: "Past influences" },
-      4: { label: "Right", meaning: "Future influences" },
-      5: { label: "Top-Left", meaning: "External influences" },
-      6: { label: "Top-Right", meaning: "Hopes and fears" },
-      7: { label: "Bottom-Left", meaning: "Internal state" },
-      8: { label: "Bottom-Right", meaning: "Final outcome" }
+      0: { label: "Center", meaning: "The core of your situation or question" },
+      1: { label: "Top", meaning: "Your goals, aspirations, and conscious desires" },
+      2: { label: "Bottom", meaning: "Foundation, subconscious influences, and roots" },
+      3: { label: "Left", meaning: "Past influences and what's receding" },
+      4: { label: "Right", meaning: "Future influences and what's approaching" },
+      5: { label: "Top-Left", meaning: "External influences and environment" },
+      6: { label: "Top-Right", meaning: "Your hopes, fears, and expectations" },
+      7: { label: "Bottom-Left", meaning: "Your internal state and emotions" },
+      8: { label: "Bottom-Right", meaning: "Final outcome and resolution" }
     }
+  }
+
+  return positions[layoutType]?.[position] || { label: `Position ${position + 1}`, meaning: "" }
+}
   }
 
   return positions[layoutType]?.[position] || { label: `Position ${position + 1}`, meaning: "" }
@@ -128,14 +133,36 @@ export function ReadingViewer({
             const positionInfo = getPositionInfo(index, reading.layoutType)
 
             return (
-              <div key={index} className="flex flex-col items-center space-y-2">
-                <Card
-                  card={card}
-                  reversed={readingCard.reversed}
-                  size="md"
-                  onClick={() => setSelectedCard({ card, reversed: readingCard.reversed })}
-                />
-              </div>
+              <TooltipProvider key={index}>
+                <div className="flex flex-col items-center space-y-3">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="flex flex-col items-center space-y-2">
+                        <div className="text-sm font-medium text-slate-600 bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
+                          {positionInfo.label}
+                        </div>
+                        <Card
+                          card={card}
+                          reversed={readingCard.reversed}
+                          size="md"
+                          onClick={() => setSelectedCard({ card, reversed: readingCard.reversed })}
+                          className="cursor-pointer transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                        />
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs bg-slate-800 border-slate-600 text-slate-100">
+                      <div className="space-y-2">
+                        <p className="font-semibold">{positionInfo.label}</p>
+                        <p className="text-sm">{positionInfo.meaning}</p>
+                        <div className="flex items-center gap-1 text-xs text-slate-400">
+                          <Info className="w-3 h-3" />
+                          <span>Click card for details</span>
+                        </div>
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+              </TooltipProvider>
             )
           })}
         </div>
@@ -190,14 +217,29 @@ export function ReadingViewer({
 
       {/* Combinations Panel */}
       {selectedCard && (
-        <div className="mt-6 p-4 bg-gray-50 rounded-lg slide-in-up">
-          <h3 className="font-semibold mb-3">Card Combinations</h3>
-          <div className="space-y-2">
+        <div className="mt-6 p-6 bg-slate-50 rounded-xl slide-in-up border border-slate-200">
+          <div className="flex items-center gap-2 mb-4">
+            <h3 className="font-semibold text-lg text-slate-800">Card Combinations</h3>
+            <div className="flex items-center gap-1 text-xs text-slate-500">
+              <Info className="w-3 h-3" />
+              <span>How this card interacts with nearby cards</span>
+            </div>
+          </div>
+          <div className="space-y-3">
             {(() => {
               const readingCard = reading.cards.find(c => c.id === selectedCard.card.id)
               if (!readingCard) return null
 
               const adjacentCards = getAdjacentCards(readingCard)
+              
+              if (adjacentCards.length === 0) {
+                return (
+                  <div className="text-center py-8 text-slate-500">
+                    <p className="mb-2">No adjacent cards in this layout</p>
+                    <p className="text-sm">In larger spreads, this card would interact with nearby cards</p>
+                  </div>
+                )
+              }
               
               return adjacentCards.map((adjCard, index) => {
                 const card = getCardById(allCards, adjCard.id)
@@ -206,14 +248,19 @@ export function ReadingViewer({
                 const combination = getCombinationMeaning(selectedCard.card, card)
 
                 return (
-                  <div key={index} className="flex items-center gap-3 p-2 bg-white rounded">
-                    <div className="flex items-center gap-2">
+                  <div key={index} className="flex items-center gap-4 p-4 bg-white rounded-lg border border-slate-200 hover:shadow-md transition-shadow">
+                    <div className="flex items-center gap-3">
                       <Card card={selectedCard.card} size="sm" />
-                      <span className="text-gray-500">+</span>
+                      <span className="text-slate-400 font-medium">+</span>
                       <Card card={card} size="sm" />
                     </div>
-                    <div className="flex-1 text-sm">
-                      {combination || 'Standard combination meaning'}
+                    <div className="flex-1">
+                      <div className="font-medium text-slate-700 mb-1">
+                        {selectedCard.card.name} + {card.name}
+                      </div>
+                      <div className="text-sm text-slate-600">
+                        {combination || 'These cards work together to create a unique meaning in your reading.'}
+                      </div>
                     </div>
                   </div>
                 )
