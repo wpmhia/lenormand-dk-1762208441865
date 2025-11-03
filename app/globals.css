@@ -206,6 +206,23 @@ undefined
   /* Global animations - disabled for professional appearance */
 }
 
+/* Respect user's reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    scroll-behavior: auto;
+  }
+  .motion-safe\:animate-fade-in { animation: none !important; }
+  .motion-safe\:transition-all { transition: none !important; }
+}
+
+/* Small utility: subtle card hover transform */
+.card-hover-subtle {
+  @apply transition-transform duration-200 ease-out will-change-transform;
+}
+.card-hover-subtle:hover {
+  transform: translateY(-4px) scale(1.01);
+}
+
 @layer components {
   /* Animation keyframes disabled for professional appearance */
 

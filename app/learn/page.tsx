@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { AnimatedCard } from '@/components/AnimatedCard'
 import {
   BookOpen,
   Clock,
@@ -142,7 +143,8 @@ export default function LearnPage() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {modules.map((module, index) => (
-            <Card key={module.id} className="hover:shadow-2xl hover:shadow-primary/20 cursor-pointer group border border-border hover:border-border/60 bg-card backdrop-blur-sm min-h-[200px] rounded-2xl overflow-hidden relative">
+            <AnimatedCard key={module.id} delay={index * 0.1} className="cursor-pointer">
+              <Card className="hover:shadow-2xl hover:shadow-primary/20 group border border-border hover:border-border/60 bg-card backdrop-blur-sm min-h-[200px] rounded-2xl overflow-hidden relative">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <CardHeader className="pb-4 relative z-10">
                 <div className="flex items-center justify-between mb-3">
@@ -174,7 +176,8 @@ export default function LearnPage() {
                   </Link>
                 </div>
               </CardContent>
-            </Card>
+              </Card>
+            </AnimatedCard>
           ))}
         </div>
 

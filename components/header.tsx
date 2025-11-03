@@ -51,7 +51,7 @@ export function Header() {
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-card-foreground hover:text-primary transition-colors"
+            className="md:hidden p-2 text-card-foreground hover:text-primary transition transform duration-150 ease-out hover:-translate-y-[1px] active:scale-95"
             aria-label="Toggle mobile menu"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
