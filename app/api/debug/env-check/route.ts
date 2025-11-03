@@ -12,7 +12,7 @@ export async function GET() {
     },
     runtime: {
       isNodeJS: typeof process !== 'undefined' && process.versions && process.versions.node,
-      isEdge: typeof EdgeRuntime !== 'undefined'
+      isEdge: false // We're using Node.js runtime
     }
   })
 }

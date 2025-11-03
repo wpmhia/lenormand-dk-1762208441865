@@ -1,36 +1,12 @@
 import { Card, Reading, ReadingCard } from './types'
+import cardsData from '../public/data/cards.json'
 
 // Load cards from JSON file
 export async function getCards(): Promise<Card[]> {
-  // For server-side rendering, we need to use a different approach
-  if (typeof window === 'undefined') {
-    // Server-side - use fs to read the file
-    try {
-      const fs = await import('fs')
-      const path = await import('path')
-      const cardsPath = path.join(process.cwd(), 'public', 'data', 'cards.json')
-      const data = JSON.parse(fs.readFileSync(cardsPath, 'utf8'))
-      console.log('✅ Cards loaded server-side:', data.length, 'cards')
-      return data
-    } catch (error) {
-      console.error('❌ Server-side error loading cards:', error)
-      return []
-    }
-  }
-  
-  // Client-side - use fetch
-  try {
-    const response = await fetch('/data/cards.json')
-    if (!response.ok) {
-      throw new Error(`Failed to load cards: ${response.status} ${response.statusText}`)
-    }
-    const data = await response.json()
-    console.log('✅ Cards loaded client-side:', data.length, 'cards')
-    return data
-  } catch (error) {
-    console.error('❌ Client-side error loading cards:', error)
-    return []
-  }
+  // Use imported JSON data for both server and client
+  const data = cardsData as Card[]
+  console.log('✅ Cards loaded:', data.length, 'cards')
+  return data
 }
 
 export function getCardById(cards: Card[], id: number): Card | undefined {
