@@ -12,13 +12,8 @@ import {
 
 export default function Home() {
   return (
-    <div className="min-h-screen aged-paper relative overflow-hidden">
-      {/* Subtle background texture */}
-      <div className="absolute inset-0 opacity-30">
-        <div className="absolute top-20 left-10 w-24 h-24 bg-amber-900/10 rounded-full blur-2xl"></div>
-        <div className="absolute top-40 right-20 w-16 h-16 bg-amber-800/08 rounded-full blur-xl"></div>
-        <div className="absolute bottom-32 left-1/4 w-32 h-32 bg-amber-900/06 rounded-full blur-2xl"></div>
-      </div>
+    <main className="min-h-screen aged-paper relative overflow-hidden" role="main">
+Subtle mystical background orbs for visual atmosphere
 
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-16 max-w-6xl">
