@@ -236,7 +236,6 @@ export default function NewReadingPage() {
   }
 
 
-
   const handleStartOver = () => {
     setShowStartOverConfirm(true)
   }
@@ -261,41 +260,35 @@ export default function NewReadingPage() {
 
   return (
     <TooltipProvider>
-      <div className="page-layout mystical-bg">
-        {/* Floating background orbs */}
-        <div className="floating-orbs">
-          <div className="orb orb-1"></div>
-          <div className="orb orb-2"></div>
-          <div className="orb orb-3"></div>
-        </div>
+      <div className="bg-background text-foreground min-h-screen">
       <div className="container mx-auto px-4 py-8 max-w-4xl relative z-10">
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold mb-4 text-amber-900 relative">
+          <h1 className="text-4xl font-bold mb-4 text-foreground relative">
             New Lenormand Reading
-            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-0.5 bg-gradient-to-r from-amber-400 to-rose-400 rounded-full"></div>
+            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-0.5 bg-gradient-to-r from-primary to-primary/60 rounded-full"></div>
           </h1>
-          <p className="text-amber-800 text-lg italic">
+          <p className="text-muted-foreground text-lg italic">
             Let the ancient cards reveal what your heart already knows
           </p>
 
           {/* Progress Indicator */}
           <div className="mt-8 flex items-center justify-center space-x-6">
-            <div className={`flex items-center ${step === 'setup' ? 'text-rose-400' : 'text-emerald-400'}`}>
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'setup' ? 'bg-rose-600 border-rose-400 shadow-lg shadow-rose-500/30' : 'bg-emerald-600 border-emerald-400'}`}>
+            <div className={`flex items-center ${step === 'setup' ? 'text-primary' : 'text-muted-foreground'}`}>
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'setup' ? 'bg-primary border-primary shadow-lg shadow-primary/30' : 'bg-muted border-muted-foreground'}`}>
                 1
               </div>
               <span className="ml-3 text-sm font-medium">Setup</span>
             </div>
-            <div className={`w-12 h-0.5 rounded-full ${step === 'drawing' || step === 'ai-analysis' ? 'bg-emerald-400' : 'bg-slate-600'}`}></div>
-            <div className={`flex items-center ${step === 'drawing' ? 'text-amber-400' : 'text-emerald-400'}`}>
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'drawing' ? 'bg-amber-600 border-amber-400 shadow-lg shadow-amber-500/30' : 'bg-emerald-600 border-emerald-400'}`}>
+            <div className={`w-12 h-0.5 rounded-full ${step === 'drawing' || step === 'ai-analysis' ? 'bg-primary' : 'bg-muted'}`}></div>
+            <div className={`flex items-center ${step === 'drawing' ? 'text-primary' : 'text-muted-foreground'}`}>
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'drawing' ? 'bg-primary border-primary shadow-lg shadow-primary/30' : 'bg-muted border-muted-foreground'}`}>
                 2
               </div>
               <span className="ml-3 text-sm font-medium">Draw</span>
             </div>
-            <div className={`w-12 h-0.5 rounded-full ${step === 'ai-analysis' ? 'bg-emerald-400' : 'bg-slate-600'}`}></div>
-            <div className={`flex items-center ${step === 'ai-analysis' ? 'text-purple-400' : 'text-emerald-400'}`}>
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'ai-analysis' ? 'bg-purple-600 border-purple-400 shadow-lg shadow-purple-500/30' : 'bg-emerald-600 border-purple-400'}`}>
+            <div className={`w-12 h-0.5 rounded-full ${step === 'ai-analysis' ? 'bg-primary' : 'bg-muted'}`}></div>
+            <div className={`flex items-center ${step === 'ai-analysis' ? 'text-primary' : 'text-muted-foreground'}`}>
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'ai-analysis' ? 'bg-primary border-primary shadow-lg shadow-primary/30' : 'bg-muted border-muted-foreground'}`}>
                 3
               </div>
               <span className="ml-3 text-sm font-medium">Analyze</span>
@@ -305,14 +298,14 @@ export default function NewReadingPage() {
         </div>
 
         {error && (
-          <Alert className="border-red-200 bg-red-50 mb-6">
-            <AlertDescription className="text-red-800">
+          <Alert className="border-destructive/20 bg-destructive/5 mb-6">
+            <AlertDescription className="text-destructive-foreground">
               {error}
               <Button
                 variant="link"
                 size="sm"
                 onClick={() => setError('')}
-                className="ml-2 text-red-600 hover:text-red-800 p-0 h-auto"
+                className="ml-2 text-destructive p-0 h-auto"
               >
                 Dismiss
               </Button>
@@ -322,10 +315,10 @@ export default function NewReadingPage() {
 
         {step === 'setup' && (
           <div className="space-y-6">
-            <Card className="border-rose-400/20 bg-gradient-to-br from-slate-900/60 via-rose-950/20 to-slate-800/40 backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-transparent opacity-50"></div>
+            <Card className="border-border bg-card backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50"></div>
               <CardHeader className="relative z-10">
-                <CardTitle className="text-rose-200 text-xl">
+                <CardTitle className="text-card-foreground text-xl">
                   Your Sacred Question:
                 </CardTitle>
               </CardHeader>
@@ -339,37 +332,36 @@ export default function NewReadingPage() {
                     setQuestionCharCount(e.target.value.length)
                   }}
                   placeholder="What guidance do the cards have for me today?"
-                  className="bg-slate-900/80 border-rose-400/30 text-white placeholder:text-rose-300/50 min-h-[120px] rounded-xl focus:border-rose-400/60 focus:ring-rose-400/20 resize-none backdrop-blur-sm"
+                  className="bg-background border-border text-foreground placeholder:text-muted-foreground min-h-[120px] rounded-xl focus:border-primary focus:ring-primary/20 resize-none"
                   maxLength={200}
                   aria-describedby="question-help question-count"
                   required
                 />
-                <div id="question-count" className="text-right text-xs text-rose-300/60" aria-live="polite">
+                <div id="question-count" className="text-right text-xs text-muted-foreground" aria-live="polite">
                   {questionCharCount}/200 characters
                 </div>
-                <div id="question-help" className="text-xs text-rose-200/70 italic">
+                <div id="question-help" className="text-xs text-muted-foreground italic">
                   Let your question breathe, and the cards will whisper their wisdom
                 </div>
                 </div>
-
 
 
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="layout">Reading Type:</Label>
                       <Select value={layoutType.toString()} onValueChange={(value) => setLayoutType(value === "physical" ? "physical" : parseInt(value) as 3 | 5 | 9 | 36)}>
-                       <SelectTrigger className="bg-slate-900/80 border-rose-400/30 text-white rounded-xl focus:border-rose-400/60 backdrop-blur-sm" aria-describedby="layout-help">
+                       <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary" aria-describedby="layout-help">
                          <SelectValue />
                        </SelectTrigger>
-                       <SelectContent className="bg-slate-900 border-rose-400/30">
+                       <SelectContent className="bg-card border-border">
                          {LAYOUTS.map((layout) => (
-                           <SelectItem key={layout.value} value={layout.value.toString()} className="text-white hover:bg-rose-950/50 focus:bg-rose-950/50">
+                           <SelectItem key={layout.value} value={layout.value.toString()} className="text-card-foreground hover:bg-accent focus:bg-accent">
                              {layout.label}
                            </SelectItem>
                          ))}
                        </SelectContent>
                      </Select>
-                      <div id="layout-help" className="text-xs text-rose-200/70 italic">
+                      <div id="layout-help" className="text-xs text-muted-foreground italic">
                         Choose the number of cards for your reading spread
                       </div>
                    </div>
@@ -378,18 +370,18 @@ export default function NewReadingPage() {
                      <div className="space-y-2">
                        <Label htmlFor="three-card-spread">3-Card Spread Type:</Label>
                        <Select value={threeCardSpreadType} onValueChange={setThreeCardSpreadType}>
-                         <SelectTrigger className="bg-slate-900/80 border-rose-400/30 text-white rounded-xl focus:border-rose-400/60 backdrop-blur-sm" aria-describedby="spread-help">
+                         <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary" aria-describedby="spread-help">
                            <SelectValue />
                          </SelectTrigger>
-                         <SelectContent className="bg-slate-900 border-rose-400/30">
+                         <SelectContent className="bg-card border-border">
                            {THREE_CARD_SPREADS.map((spread) => (
-                             <SelectItem key={spread.value} value={spread.value} className="text-white hover:bg-rose-950/50 focus:bg-rose-950/50">
+                             <SelectItem key={spread.value} value={spread.value} className="text-card-foreground hover:bg-accent focus:bg-accent">
                                {spread.label}
                              </SelectItem>
                            ))}
                          </SelectContent>
                        </Select>
-                       <div id="spread-help" className="text-xs text-rose-200/70 italic">
+                       <div id="spread-help" className="text-xs text-muted-foreground italic">
                          Choose how to interpret your 3-card spread
                        </div>
                      </div>
@@ -400,12 +392,12 @@ export default function NewReadingPage() {
                        <div className="space-y-2">
                          <Label htmlFor="card-count">Number of Cards:</Label>
                          <Select value={physicalCardCount.toString()} onValueChange={(value) => setPhysicalCardCount(parseInt(value))}>
-                           <SelectTrigger className="bg-slate-900/80 border-rose-400/30 text-white rounded-xl focus:border-rose-400/60 backdrop-blur-sm">
+                           <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary">
                              <SelectValue />
                            </SelectTrigger>
-                           <SelectContent className="bg-slate-900 border-rose-400/30">
+                           <SelectContent className="bg-card border-border">
                              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-                               <SelectItem key={num} value={num.toString()} className="text-white hover:bg-rose-950/50 focus:bg-rose-950/50">
+                               <SelectItem key={num} value={num.toString()} className="text-card-foreground hover:bg-accent focus:bg-accent">
                                  {num} Card{num !== 1 ? 's' : ''}
                                </SelectItem>
                              ))}
@@ -420,72 +412,71 @@ export default function NewReadingPage() {
                            value={physicalCards}
                            onChange={(e) => setPhysicalCards(e.target.value)}
                            placeholder={`Enter ${physicalCardCount} card numbers (1-36) separated by commas, spaces, or new lines.&#10;Example: 1, 15, 28&#10;Or: Rider, Sun, Key`}
-                           className="bg-slate-900/80 border-rose-400/30 text-white placeholder:text-rose-300/50 min-h-[120px] rounded-xl focus:border-rose-400/60 focus:ring-rose-400/20 resize-none backdrop-blur-sm"
+                           className="bg-background border-border text-foreground placeholder:text-muted-foreground min-h-[120px] rounded-xl focus:border-primary focus:ring-primary/20 resize-none"
                            rows={4}
                          />
-                         <div className="text-xs text-rose-200/70 italic">
+                         <div className="text-xs text-muted-foreground italic">
                            Enter card numbers (1-36) or names separated by commas, spaces, or new lines
                          </div>
                        </div>
                      </div>
                    )}
 
-                   <div className="flex items-center justify-between p-4 bg-slate-900/40 rounded-xl border border-rose-400/20">
-                    <Label htmlFor="allow-reversed" className="text-rose-200 font-medium">Allow reversed cards</Label>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Switch
-                          id="allow-reversed"
-                          checked={allowReversed}
-                          onCheckedChange={setAllowReversed}
-                          className="!bg-rose-200 !border-rose-400 !data-[state=checked]:bg-rose-500 !data-[state=checked]:border-rose-600 !thumb:bg-white transition-all duration-200"
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent className="bg-slate-900 border-rose-400/30 text-rose-200">
-                        <p>When enabled, cards can appear upside down for additional meaning</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </div>
+                   <div className="flex items-center justify-between p-4 bg-muted/50 rounded-xl border border-border">
+                     <Label htmlFor="allow-reversed" className="text-card-foreground font-medium">Allow reversed cards</Label>
+                     <Tooltip>
+                       <TooltipTrigger asChild>
+                         <Switch
+                           id="allow-reversed"
+                           checked={allowReversed}
+                           onCheckedChange={setAllowReversed}
+                         />
+                       </TooltipTrigger>
+                       <TooltipContent className="bg-card border-border text-card-foreground">
+                         <p>When enabled, cards can appear upside down for additional meaning</p>
+                       </TooltipContent>
+                     </Tooltip>
+                   </div>
 
 
                </div>
 
-                 <Button
-                  onClick={() => setStep('drawing')}
-                  className="w-full bg-gradient-to-r from-rose-600 to-purple-600 hover:from-rose-700 hover:to-purple-700 text-white shadow-lg shadow-rose-500/30 rounded-xl py-3 font-semibold transition-all duration-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                  disabled={!question.trim() || (layoutType === "physical" && !physicalCards.trim())}
-                >
-                  {layoutType === "physical" ? "Continue to Reading" : "Continue to Draw Cards"}
-                </Button>
+                  <Button
+                   onClick={() => setStep('drawing')}
+                   className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30 rounded-xl py-3 font-semibold transition-all duration-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                   disabled={!question.trim() || (layoutType === "physical" && !physicalCards.trim())}
+                 >
+                   {layoutType === "physical" ? "Continue to Reading" : "Continue to Draw Cards"}
+                 </Button>
             </CardContent>
           </Card>
           </div>
         )}
 
          {step === 'drawing' && (
-           <Card className="border-amber-400/20 bg-gradient-to-br from-slate-900/60 via-amber-950/20 to-slate-800/40 backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
-             <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-50"></div>
-             <CardContent className="space-y-8 p-8 relative z-10">
-               <div className="text-center">
-                 <h2 className="text-3xl font-semibold mb-4 text-white relative">
-                   Draw Your Cards
-                   <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-0.5 bg-gradient-to-r from-amber-400 to-purple-400 rounded-full"></div>
-                 </h2>
-                 <p className="text-slate-200 text-lg italic">
-                   Drawing {layoutType} cards from the sacred deck
-                 </p>
-               </div>
+           <Card className="border-border bg-card backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50"></div>
+              <CardContent className="space-y-8 p-8 relative z-10">
+                <div className="text-center">
+                  <h2 className="text-3xl font-semibold mb-4 text-card-foreground relative">
+                    Draw Your Cards
+                    <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-0.5 bg-gradient-to-r from-primary to-primary/60 rounded-full"></div>
+                  </h2>
+                  <p className="text-muted-foreground text-lg italic">
+                    Drawing {layoutType} cards from the sacred deck
+                  </p>
+                </div>
 
                 {layoutType === "physical" ? (
                   <div className="text-center space-y-4">
-                    <div className="p-6 bg-slate-900/40 rounded-xl border border-amber-400/20">
-                      <h3 className="text-lg font-semibold text-amber-200 mb-2">Your Physical Cards</h3>
-                      <div className="text-sm text-amber-300/80 mb-4">
+                    <div className="p-6 bg-muted/50 rounded-xl border border-border">
+                      <h3 className="text-lg font-semibold text-card-foreground mb-2">Your Physical Cards</h3>
+                      <div className="text-sm text-muted-foreground mb-4">
                         Ready to analyze your {physicalCardCount} manually drawn cards
                       </div>
                       <Button
                         onClick={() => handleDraw(allCards)}
-                        className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white shadow-lg shadow-amber-500/30"
+                        className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30"
                       >
                         Analyze My Cards
                       </Button>
@@ -503,16 +494,16 @@ export default function NewReadingPage() {
            </Card>
           )}
 
-          {step === 'ai-analysis' && (
-            <Card className="border-purple-400/20 bg-gradient-to-br from-slate-900/60 via-purple-950/20 to-slate-800/40 backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-50"></div>
-              <CardContent className="space-y-6 p-8 relative z-10">
-                <div className="text-center">
-                 <h2 className="text-2xl font-semibold mb-2 text-white flex items-center justify-center gap-2">
-                   <Sparkles className="w-6 h-6 text-purple-400" />
+        {step === 'ai-analysis' && (
+          <Card className="border-border bg-card backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50"></div>
+            <CardContent className="space-y-6 p-8 relative z-10">
+              <div className="text-center">
+                 <h2 className="text-2xl font-semibold mb-2 text-card-foreground flex items-center justify-center gap-2">
+                   <Sparkles className="w-6 h-6 text-primary" />
                    AI Analysis
                  </h2>
-                   <p className="text-slate-300">
+                   <p className="text-muted-foreground">
                      The sibyl weaves wisdom from your {layoutType === "physical" ? physicalCardCount : layoutType} sacred cards
                    </p>
                </div>
@@ -532,7 +523,7 @@ export default function NewReadingPage() {
                    allCards={allCards}
                    showShareButton={false}
                    threeCardSpreadType={layoutType === 3 ? threeCardSpreadType : undefined}
-                />
+                 />
 
                 {/* Show traditional meanings while AI loads or if AI fails */}
                 {(aiLoading || (!aiReading && !aiLoading)) && (
@@ -544,50 +535,49 @@ export default function NewReadingPage() {
                   />
                 )}
 
-                 <AIReadingDisplay
-                  aiReading={aiReading}
-                  isLoading={aiLoading}
-                  error={aiError}
-                  errorDetails={aiErrorDetails}
-                  onRetry={retryAIAnalysis}
-                  retryCount={aiRetryCount}
-                  cards={drawnCards.map(card => ({
-                    id: card.id,
-                    name: getCardById(allCards, card.id)?.name || 'Unknown',
-                    position: card.position,
-                    reversed: card.reversed
-                  }))}
-                  allCards={allCards}
-                   layoutType={layoutType === "physical" ? physicalCardCount : layoutType}
-                  question={question}
-                />
+               <AIReadingDisplay
+                aiReading={aiReading}
+                isLoading={aiLoading}
+                error={aiError}
+                errorDetails={aiErrorDetails}
+                onRetry={retryAIAnalysis}
+                retryCount={aiRetryCount}
+                cards={drawnCards.map(card => ({
+                  id: card.id,
+                  name: getCardById(allCards, card.id)?.name || 'Unknown',
+                  position: card.position,
+                  reversed: card.reversed
+                }))}
+                allCards={allCards}
+                 layoutType={layoutType === "physical" ? physicalCardCount : layoutType}
+                question={question}
+              />
 
                {!aiLoading && (
                  <div className="flex gap-4 justify-center">
                    <Button
                      onClick={() => setStep('drawing')}
                      variant="outline"
-                     className="border-purple-400/30 text-purple-200 hover:bg-purple-950/50 rounded-xl py-3 font-semibold transition-all duration-300"
+                     className="border-border text-card-foreground hover:bg-muted rounded-xl py-3 font-semibold transition-all duration-300"
                    >
                      Draw Again
                    </Button>
 
                  </div>
                )}
-              </CardContent>
-            </Card>
-          )}
-
+            </CardContent>
+          </Card>
+        )}
 
 
 
 
           {/* Start Over Confirmation Dialog */}
           <Dialog open={showStartOverConfirm} onOpenChange={setShowStartOverConfirm}>
-            <DialogContent className="bg-slate-900 border-slate-700">
+            <DialogContent className="bg-card border-border">
               <DialogHeader>
-                <DialogTitle className="text-white">Start Over?</DialogTitle>
-                <DialogDescription className="text-slate-300">
+                <DialogTitle className="text-card-foreground">Start Over?</DialogTitle>
+                <DialogDescription className="text-muted-foreground">
                   This will reset your current reading and all progress. This action cannot be undone.
                 </DialogDescription>
               </DialogHeader>
@@ -595,13 +585,13 @@ export default function NewReadingPage() {
                 <Button
                   variant="outline"
                   onClick={() => setShowStartOverConfirm(false)}
-                  className="border-slate-700 text-slate-300 hover:bg-slate-800"
+                  className="border-border text-card-foreground hover:bg-muted"
                 >
                   Cancel
                 </Button>
                 <Button
                   onClick={confirmStartOver}
-                  className="bg-red-600 hover:bg-red-700"
+                  className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
                 >
                   Start Over
                 </Button>
