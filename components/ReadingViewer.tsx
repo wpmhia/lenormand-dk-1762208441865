@@ -100,7 +100,7 @@ export function ReadingViewer({
 
             return (
               <div key={index} className="flex flex-col items-center space-y-1">
-                <div className="text-xs text-center text-gray-600 font-medium">
+                 <div className="text-xs text-center text-amber-200/80 font-medium">
                   {position.label}
                 </div>
                 <Card
@@ -134,9 +134,9 @@ export function ReadingViewer({
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <div className="flex flex-col items-center space-y-2">
-                        <div className="text-sm font-medium text-slate-600 bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
-                          {positionInfo.label}
-                        </div>
+                         <div className="text-sm font-medium text-amber-200/90 bg-slate-900/60 px-3 py-1 rounded-full border border-amber-400/30 backdrop-blur-sm">
+                           {positionInfo.label}
+                         </div>
                         <Card
                           card={card}
                           reversed={readingCard.reversed}
@@ -146,16 +146,16 @@ export function ReadingViewer({
                         />
                       </div>
                     </TooltipTrigger>
-                    <TooltipContent className="max-w-xs bg-slate-800 border-slate-600 text-slate-100">
-                      <div className="space-y-2">
-                        <p className="font-semibold">{positionInfo.label}</p>
-                        <p className="text-sm">{positionInfo.meaning}</p>
-                        <div className="flex items-center gap-1 text-xs text-slate-400">
-                          <Info className="w-3 h-3" />
-                          <span>Click card for details</span>
-                        </div>
-                      </div>
-                    </TooltipContent>
+                     <TooltipContent className="max-w-xs bg-slate-900/95 border-amber-400/30 text-amber-100 backdrop-blur-sm">
+                       <div className="space-y-2">
+                         <p className="font-semibold text-amber-200">{positionInfo.label}</p>
+                         <p className="text-sm text-amber-100/80">{positionInfo.meaning}</p>
+                         <div className="flex items-center gap-1 text-xs text-amber-200/60">
+                           <Info className="w-3 h-3" />
+                           <span>Click card for details</span>
+                         </div>
+                       </div>
+                     </TooltipContent>
                   </Tooltip>
                 </div>
               </TooltipProvider>
@@ -171,29 +171,32 @@ export function ReadingViewer({
       {/* Reading Header */}
       {showReadingHeader && (
         <div className="text-center space-y-2 slide-in-up">
-          <h2 className="text-2xl font-bold">{reading.title}</h2>
-          {reading.question && reading.question !== reading.title && (
-             <p className="text-gray-600 italic">&ldquo;{reading.question}&rdquo;</p>
-          )}
-          <div className="flex items-center justify-center gap-4 text-sm text-gray-500">
-            <div className="flex items-center gap-1">
-              <Calendar className="w-4 h-4" />
-              {new Date(reading.createdAt).toLocaleDateString()}
-            </div>
-            <Badge variant="secondary">
-              {reading.layoutType} Cards
-            </Badge>
-          </div>
+           <h2 className="text-3xl font-bold text-amber-100 relative">
+             {reading.title}
+             <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-0.5 bg-gradient-to-r from-amber-400 to-rose-400 rounded-full"></div>
+           </h2>
+           {reading.question && reading.question !== reading.title && (
+              <p className="text-amber-200/80 italic text-lg mt-4">&ldquo;{reading.question}&rdquo;</p>
+           )}
+           <div className="flex items-center justify-center gap-6 text-sm text-amber-300/70 mt-4">
+             <div className="flex items-center gap-2">
+               <Calendar className="w-4 h-4 text-amber-400" />
+               {new Date(reading.createdAt).toLocaleDateString()}
+             </div>
+             <Badge className="bg-gradient-to-r from-amber-600/20 to-rose-600/20 text-amber-200 border-amber-400/30 px-3 py-1">
+               {reading.layoutType} Cards
+             </Badge>
+           </div>
         </div>
       )}
 
       {/* Share Button */}
       {showShareButton && onShare && (
         <div className="flex justify-center slide-in-left">
-          <Button onClick={onShare} variant="outline" size="sm">
-            <Share2 className="w-4 h-4 mr-2" />
-            Share the Wisdom
-          </Button>
+           <Button onClick={onShare} variant="outline" size="sm" className="border-amber-400/30 text-amber-200 hover:bg-amber-950/50 hover:border-amber-400/60 backdrop-blur-sm">
+             <Share2 className="w-4 h-4 mr-2" />
+             Share Wisdom
+           </Button>
         </div>
       )}
 
@@ -213,14 +216,14 @@ export function ReadingViewer({
 
       {/* Combinations Panel */}
       {selectedCard && (
-        <div className="mt-6 p-6 bg-slate-50 rounded-xl slide-in-up border border-slate-200">
-          <div className="flex items-center gap-2 mb-4">
-            <h3 className="font-semibold text-lg text-slate-800">Card Combinations</h3>
-            <div className="flex items-center gap-1 text-xs text-slate-500">
-              <Info className="w-3 h-3" />
-              <span>How this card interacts with nearby cards</span>
-            </div>
-          </div>
+         <div className="mt-6 p-6 bg-gradient-to-br from-slate-900/60 via-amber-950/20 to-slate-800/40 rounded-xl slide-in-up border border-amber-400/20 backdrop-blur-sm">
+           <div className="flex items-center gap-2 mb-4">
+             <h3 className="font-semibold text-lg text-amber-200">Card Combinations</h3>
+             <div className="flex items-center gap-1 text-xs text-amber-300/60">
+               <Info className="w-3 h-3" />
+               <span>How this card interacts with nearby cards</span>
+             </div>
+           </div>
           <div className="space-y-3">
             {(() => {
               const readingCard = reading.cards.find(c => c.id === selectedCard.card.id)
@@ -230,10 +233,10 @@ export function ReadingViewer({
               
               if (adjacentCards.length === 0) {
                 return (
-                  <div className="text-center py-8 text-slate-500">
-                    <p className="mb-2">No adjacent cards in this layout</p>
-                    <p className="text-sm">In larger spreads, this card would interact with nearby cards</p>
-                  </div>
+                   <div className="text-center py-8 text-amber-300/60">
+                     <p className="mb-2 italic">No adjacent cards in this layout</p>
+                     <p className="text-sm">In larger spreads, this card would interact with nearby cards</p>
+                   </div>
                 )
               }
               
@@ -244,21 +247,21 @@ export function ReadingViewer({
                 const combination = getCombinationMeaning(selectedCard.card, card)
 
                 return (
-                  <div key={index} className="flex items-center gap-4 p-4 bg-white rounded-lg border border-slate-200 hover:shadow-md transition-shadow">
-                    <div className="flex items-center gap-3">
-                      <Card card={selectedCard.card} size="sm" />
-                      <span className="text-slate-400 font-medium">+</span>
-                      <Card card={card} size="sm" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="font-medium text-slate-700 mb-1">
-                        {selectedCard.card.name} + {card.name}
-                      </div>
-                      <div className="text-sm text-slate-600">
-                        {combination || 'These cards work together to create a unique meaning in your reading.'}
-                      </div>
-                    </div>
-                  </div>
+                   <div key={index} className="flex items-center gap-4 p-4 bg-slate-900/40 rounded-lg border border-amber-400/20 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 backdrop-blur-sm">
+                     <div className="flex items-center gap-3">
+                       <Card card={selectedCard.card} size="sm" />
+                       <span className="text-amber-400 font-medium text-lg">+</span>
+                       <Card card={card} size="sm" />
+                     </div>
+                     <div className="flex-1">
+                       <div className="font-medium text-amber-200 mb-1">
+                         {selectedCard.card.name} + {card.name}
+                       </div>
+                       <div className="text-sm text-amber-300/80">
+                         {combination || 'These cards work together to create a unique meaning in your reading.'}
+                       </div>
+                     </div>
+                   </div>
                 )
               })
             })()}

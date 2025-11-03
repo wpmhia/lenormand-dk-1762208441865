@@ -55,9 +55,9 @@ export default function CardDetailPage({ params }: PageProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950">
+      <div className="page-layout">
         <div className="container mx-auto px-4 py-8">
-          <div className="text-center text-slate-300">Loading card...</div>
+          <div className="text-center text-amber-900">Loading card...</div>
         </div>
       </div>
     )
@@ -65,9 +65,9 @@ export default function CardDetailPage({ params }: PageProps) {
 
   if (!card) {
     return (
-      <div className="min-h-screen bg-slate-950">
+      <div className="page-layout">
         <div className="container mx-auto px-4 py-8">
-          <div className="text-center text-slate-300">Card not found</div>
+          <div className="text-center text-amber-900">Card not found</div>
         </div>
       </div>
     )
@@ -80,20 +80,20 @@ export default function CardDetailPage({ params }: PageProps) {
   const getCardName = (id: number) => allCards.find(c => c.id === id)?.name || `Card ${id}`
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="page-layout">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-2 text-white">{card.name}</h1>
-          <p className="text-slate-400">Card #{card.id}</p>
+          <h1 className="text-4xl font-bold mb-2 text-amber-900">{card.name}</h1>
+          <p className="text-amber-700">Card #{card.id}</p>
         </div>
 
         <div className="max-w-2xl mx-auto">
-          <Card className="border-slate-700 bg-slate-900/50">
+          <Card className="border-amber-200 bg-amber-50/50">
             <CardHeader>
-              <CardTitle className="text-white">Upright Meaning</CardTitle>
+              <CardTitle className="text-amber-900">Upright Meaning</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-slate-300 leading-relaxed">
+              <p className="text-amber-900 leading-relaxed">
                 {card.uprightMeaning}
               </p>
             </CardContent>

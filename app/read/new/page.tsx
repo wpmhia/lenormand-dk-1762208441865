@@ -191,20 +191,20 @@ export default function NewReadingPage() {
 
   return (
     <TooltipProvider>
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 relative overflow-hidden">
-        {/* Sensual background elements */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-20 left-10 w-32 h-32 bg-rose-500/20 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute top-40 right-20 w-24 h-24 bg-amber-400/15 rounded-full blur-2xl animate-pulse" style={{animationDelay: '1s'}}></div>
-          <div className="absolute bottom-32 left-1/4 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '2s'}}></div>
+      <div className="page-layout mystical-bg">
+        {/* Floating background orbs */}
+        <div className="floating-orbs">
+          <div className="orb orb-1"></div>
+          <div className="orb orb-2"></div>
+          <div className="orb orb-3"></div>
         </div>
       <div className="container mx-auto px-4 py-8 max-w-4xl relative z-10">
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold mb-4 text-white relative">
+          <h1 className="text-4xl font-bold mb-4 text-amber-900 relative">
             New Lenormand Reading
-            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-0.5 bg-gradient-to-r from-rose-400 to-purple-400 rounded-full"></div>
+            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-0.5 bg-gradient-to-r from-amber-400 to-rose-400 rounded-full"></div>
           </h1>
-          <p className="text-slate-200 text-lg italic">
+          <p className="text-amber-800 text-lg italic">
             Let the ancient cards reveal what your heart already knows
           </p>
 

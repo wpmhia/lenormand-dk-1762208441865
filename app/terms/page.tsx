@@ -3,41 +3,41 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+    <div className="page-layout mystical-bg">
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-white flex items-center justify-center gap-3">
-            <Scale className="w-8 h-8 text-amber-400" />
+          <h1 className="text-4xl font-bold mb-4 text-amber-900 flex items-center justify-center gap-3">
+            <Scale className="w-8 h-8 text-amber-600" />
             Terms of Service
           </h1>
-          <p className="text-slate-300 text-lg">
+          <p className="text-amber-800 text-lg">
             Guidelines for using our mystical divination services responsibly and ethically.
           </p>
         </div>
 
         <div className="space-y-8">
-          <Card className="border-slate-700 bg-slate-900/50">
+          <Card className="border-amber-200 bg-amber-50/50">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
+              <CardTitle className="text-amber-900 flex items-center gap-2">
                 <Eye className="w-5 h-5 text-amber-400" />
                 Acceptance of Terms
               </CardTitle>
             </CardHeader>
-            <CardContent className="text-slate-300 space-y-4">
+            <CardContent className="text-amber-900 space-y-4">
               <p>
                 By using Lenormand Intelligence, you agree to these terms of service. These terms govern your use of our divination platform and the services we provide.
               </p>
             </CardContent>
           </Card>
 
-          <Card className="border-slate-700 bg-slate-900/50">
+          <Card className="border-amber-200 bg-amber-50/50">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
+              <CardTitle className="text-amber-900 flex items-center gap-2">
                 <Heart className="w-5 h-5 text-amber-400" />
                 Service Description
               </CardTitle>
             </CardHeader>
-            <CardContent className="text-slate-300 space-y-4">
+            <CardContent className="text-amber-900 space-y-4">
               <p>
                 Lenormand Intelligence provides:
               </p>
@@ -50,14 +50,14 @@ export default function TermsPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-slate-700 bg-slate-900/50">
+          <Card className="border-amber-200 bg-amber-50/50">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
+              <CardTitle className="text-amber-900 flex items-center gap-2">
                 <AlertTriangle className="w-5 h-5 text-amber-400" />
                 Important Disclaimers
               </CardTitle>
             </CardHeader>
-            <CardContent className="text-slate-300 space-y-4">
+            <CardContent className="text-amber-900 space-y-4">
               <div className="space-y-4">
                 <div>
                   <h4 className="font-semibold text-amber-200 mb-2">Entertainment Purpose</h4>
@@ -77,11 +77,11 @@ export default function TermsPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-slate-700 bg-slate-900/50">
+          <Card className="border-amber-200 bg-amber-50/50">
             <CardHeader>
               <CardTitle className="text-white">User Responsibilities</CardTitle>
             </CardHeader>
-            <CardContent className="text-slate-300 space-y-4">
+            <CardContent className="text-amber-900 space-y-4">
               <ul className="list-disc list-inside space-y-2 ml-4">
                 <li>Use services responsibly and ethically</li>
                 <li>Respect the spiritual nature of divination practices</li>
@@ -92,44 +92,44 @@ export default function TermsPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-slate-700 bg-slate-900/50">
+          <Card className="border-amber-200 bg-amber-50/50">
             <CardHeader>
               <CardTitle className="text-white">Intellectual Property</CardTitle>
             </CardHeader>
-            <CardContent className="text-slate-300 space-y-4">
+            <CardContent className="text-amber-900 space-y-4">
               <p>
                 All content on Lenormand Intelligence, including card designs, interpretations, and educational materials, is protected by intellectual property laws. You may not reproduce, distribute, or create derivative works without permission.
               </p>
             </CardContent>
           </Card>
 
-          <Card className="border-slate-700 bg-slate-900/50">
+          <Card className="border-amber-200 bg-amber-50/50">
             <CardHeader>
               <CardTitle className="text-white">Limitation of Liability</CardTitle>
             </CardHeader>
-            <CardContent className="text-slate-300 space-y-4">
+            <CardContent className="text-amber-900 space-y-4">
               <p>
                 Lenormand Intelligence is not liable for any decisions made based on readings, interpretations, or advice provided through our services. Users assume full responsibility for their choices and actions.
               </p>
             </CardContent>
           </Card>
 
-          <Card className="border-slate-700 bg-slate-900/50">
+          <Card className="border-amber-200 bg-amber-50/50">
             <CardHeader>
               <CardTitle className="text-white">Service Modifications</CardTitle>
             </CardHeader>
-            <CardContent className="text-slate-300 space-y-4">
+            <CardContent className="text-amber-900 space-y-4">
               <p>
                 We reserve the right to modify, suspend, or discontinue services at any time. We will provide notice of significant changes when possible.
               </p>
             </CardContent>
           </Card>
 
-          <Card className="border-slate-700 bg-slate-900/50">
+          <Card className="border-amber-200 bg-amber-50/50">
             <CardHeader>
               <CardTitle className="text-white">Contact Information</CardTitle>
             </CardHeader>
-            <CardContent className="text-slate-300 space-y-4">
+            <CardContent className="text-amber-900 space-y-4">
               <p>
                 For questions about these terms of service or to report violations, please contact us. We&apos;re committed to maintaining a safe and respectful environment for all users.
               </p>

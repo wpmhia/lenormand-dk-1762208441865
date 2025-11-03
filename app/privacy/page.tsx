@@ -3,27 +3,27 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+    <div className="page-layout mystical-bg">
       <div className="container mx-auto px-4 py-12 max-w-4xl">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4 text-white flex items-center justify-center gap-3">
-            <Shield className="w-8 h-8 text-amber-400" />
+          <h1 className="text-4xl font-bold mb-4 text-amber-900 flex items-center justify-center gap-3">
+            <Shield className="w-8 h-8 text-amber-600" />
             Privacy Policy
           </h1>
-          <p className="text-slate-300 text-lg">
+          <p className="text-amber-800 text-lg">
             Your privacy is sacred. We protect your data as carefully as we protect the cards.
           </p>
         </div>
 
         <div className="space-y-8">
-          <Card className="border-slate-700 bg-slate-900/50">
+          <Card className="border-amber-200 bg-amber-50/50">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
+              <CardTitle className="text-amber-900 flex items-center gap-2">
                 <Lock className="w-5 h-5 text-amber-400" />
                 Information We Collect
               </CardTitle>
             </CardHeader>
-            <CardContent className="text-slate-300 space-y-4">
+            <CardContent className="text-amber-900 space-y-4">
               <p>
                 We collect minimal information necessary to provide our divination services:
               </p>
@@ -32,20 +32,20 @@ export default function PrivacyPage() {
                 <li>Optional AI analysis requests (processed securely, not stored permanently)</li>
                 <li>Basic usage analytics to improve our service</li>
               </ul>
-              <p className="text-amber-200 text-sm">
+              <p className="text-amber-700 text-sm">
                 <strong>Important:</strong> Your readings are private and stored only on your device unless you choose to share them.
               </p>
             </CardContent>
           </Card>
 
-          <Card className="border-slate-700 bg-slate-900/50">
+          <Card className="border-amber-200 bg-amber-50/50">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
+              <CardTitle className="text-amber-900 flex items-center gap-2">
                 <Eye className="w-5 h-5 text-amber-400" />
                 How We Use Your Information
               </CardTitle>
             </CardHeader>
-            <CardContent className="text-slate-300 space-y-4">
+            <CardContent className="text-amber-900 space-y-4">
               <ul className="list-disc list-inside space-y-2 ml-4">
                 <li>To generate personalized Lenormand readings</li>
                 <li>To provide AI-powered interpretations when requested</li>
@@ -55,14 +55,14 @@ export default function PrivacyPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-slate-700 bg-slate-900/50">
+          <Card className="border-amber-200 bg-amber-50/50">
             <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
+              <CardTitle className="text-amber-900 flex items-center gap-2">
                 <Database className="w-5 h-5 text-amber-400" />
                 Data Storage & Security
               </CardTitle>
             </CardHeader>
-            <CardContent className="text-slate-300 space-y-4">
+            <CardContent className="text-amber-900 space-y-4">
               <p>
                 Your privacy is protected through multiple layers:
               </p>
@@ -75,11 +75,11 @@ export default function PrivacyPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-slate-700 bg-slate-900/50">
+          <Card className="border-amber-200 bg-amber-50/50">
             <CardHeader>
               <CardTitle className="text-white">Your Rights</CardTitle>
             </CardHeader>
-            <CardContent className="text-slate-300 space-y-4">
+            <CardContent className="text-amber-900 space-y-4">
               <ul className="list-disc list-inside space-y-2 ml-4">
                 <li>Access: View all data stored in your browser</li>
                 <li>Deletion: Clear your browser data to remove all readings</li>
@@ -89,15 +89,15 @@ export default function PrivacyPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-slate-700 bg-slate-900/50">
+          <Card className="border-amber-200 bg-amber-50/50">
             <CardHeader>
               <CardTitle className="text-white">Contact Us</CardTitle>
             </CardHeader>
-            <CardContent className="text-slate-300 space-y-4">
+            <CardContent className="text-amber-900 space-y-4">
               <p>
                 If you have questions about this privacy policy or how we handle your data, please reach out. We&apos;re committed to protecting your privacy and ensuring transparency in our practices.
               </p>
-              <p className="text-amber-200 text-sm">
+              <p className="text-amber-700 text-sm">
                 This policy is effective as of November 2024 and may be updated to reflect changes in our practices or legal requirements.
               </p>
             </CardContent>

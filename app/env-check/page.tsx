@@ -45,9 +45,10 @@ export default function EnvCheckPage() {
   const missingCount = ENV_VARIABLES.filter(env => !envStatus[env.name]).length;
 
   return (
-    <div className="container mx-auto p-6 max-w-4xl">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold mb-2">Environment Variables Status</h1>
+    <div className="page-layout">
+      <div className="container mx-auto p-6 max-w-4xl">
+        <div className="mb-6">
+          <h1 className="text-3xl font-bold mb-2 text-amber-900">Environment Variables Status</h1>
         <p className="text-base mt-2 text-muted-foreground flex items-center flex-wrap gap-1">
           <span className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-2 py-1 rounded-md font-semibold">Steps</span> Switch to{' '}
           <span className="text-purple-600 dark:text-purple-400 font-medium inline-flex items-center gap-1">
@@ -200,6 +201,7 @@ export default function EnvCheckPage() {
         </CardContent>
       </Card>
 
+    </div>
     </div>
   );
 }

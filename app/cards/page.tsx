@@ -74,20 +74,20 @@ export default function CardsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950">
+      <div className="page-layout">
         <div className="container mx-auto px-4 py-8">
-          <div className="text-center text-slate-300">Loading cards...</div>
+          <div className="text-center text-amber-900">Loading cards...</div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="page-layout">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2 text-white">The Sacred Deck</h1>
-            <p className="text-slate-300 ethereal-glow">
+          <h1 className="text-3xl font-bold mb-2 text-amber-900">The Sacred Deck</h1>
+            <p className="text-amber-800 ethereal-glow">
               Journey through the 36 archetypes that hold the keys to understanding
             </p>
         </div>
@@ -97,8 +97,8 @@ export default function CardsPage() {
             <div key={card.id} className="space-y-1 cursor-pointer group">
               <Card card={card} size="md" className="group-hover:scale-105 transition-all duration-600 mx-auto mystical-float" />
               <div className="text-center">
-                <div className="font-medium text-xs truncate text-white">{card.name}</div>
-                <div className="text-xs text-slate-400">#{card.id}</div>
+                <div className="font-medium text-xs truncate text-amber-900">{card.name}</div>
+                <div className="text-xs text-amber-700">#{card.id}</div>
               </div>
             </div>
           ))}
