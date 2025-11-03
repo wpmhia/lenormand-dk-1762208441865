@@ -161,7 +161,7 @@ export default function CardMeaningsPage() {
         {viewMode === 'grid' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
             {filteredCards.map((card) => (
-              <Card key={card.number} className="hover:shadow-lg hover:shadow-amber-500/20 dark:hover:shadow-amber-500/30 transition-all duration-300 cursor-pointer group border border-amber-400/20 dark:border-amber-400/30 bg-gradient-to-br from-white via-amber-50/50 to-rose-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+              <Card key={card.number} className="hover:shadow-lg hover:shadow-amber-500/20 dark:hover:shadow-amber-500/30 cursor-pointer group border border-amber-400/20 dark:border-amber-400/30 bg-gradient-to-br from-white via-amber-50/50 to-rose-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
                     <Badge className="bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 text-xs">

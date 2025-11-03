@@ -165,7 +165,7 @@ export function CardRelationshipVisualizer({
       <UICard className="border-slate-700 bg-slate-900/50">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
-            <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+            <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full" />
             Analyzing Relationships...
           </CardTitle>
         </CardHeader>

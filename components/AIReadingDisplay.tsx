@@ -213,7 +213,7 @@ export function AIReadingDisplay({
       <Card className="border-slate-700 bg-slate-900/50 fade-in-scale">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
-            <div className="w-5 h-5 border-2 border-amber-400/60 border-t-transparent rounded-full gentle-spin" aria-hidden="true" />
+            <div className="w-5 h-5 border-2 border-amber-400/60 border-t-transparent rounded-full" aria-hidden="true" />
             Your reading unfolds...
           </CardTitle>
         </CardHeader>
@@ -224,15 +224,15 @@ export function AIReadingDisplay({
             </div>
             <div className="space-y-3">
               <div className="space-y-2">
-                <div className="h-4 bg-slate-700 rounded animate-pulse w-full" />
-                <div className="h-4 bg-slate-700 rounded animate-pulse w-11/12" />
-                <div className="h-4 bg-slate-700 rounded animate-pulse w-10/12" />
-                <div className="h-4 bg-slate-700 rounded animate-pulse w-9/12" />
-                <div className="h-4 bg-slate-700 rounded animate-pulse w-8/12" />
-                <div className="h-4 bg-slate-700 rounded animate-pulse w-7/12" />
+                <div className="h-4 bg-slate-700 rounded w-full" />
+                <div className="h-4 bg-slate-700 rounded w-11/12" />
+                <div className="h-4 bg-slate-700 rounded w-10/12" />
+                <div className="h-4 bg-slate-700 rounded w-9/12" />
+                <div className="h-4 bg-slate-700 rounded w-8/12" />
+                <div className="h-4 bg-slate-700 rounded w-7/12" />
               </div>
               <div className="border-t border-amber-400/20 pt-3 mt-4">
-                <div className="h-4 bg-amber-400/20 rounded animate-pulse w-3/4 mx-auto" />
+                <div className="h-4 bg-amber-400/20 rounded w-3/4 mx-auto" />
               </div>
             </div>
             <div className="text-xs text-slate-500 mt-4 text-center">

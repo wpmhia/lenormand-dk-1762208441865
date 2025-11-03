@@ -98,7 +98,7 @@ export function Deck({
           size="sm"
           aria-label={isShuffling ? 'Shuffling deck...' : 'Shuffle the deck to randomize card order'}
         >
-          <Shuffle className={`w-4 h-4 mr-2 ${isShuffling ? 'animate-spin' : ''}`} aria-hidden="true" />
+          <Shuffle className="w-4 h-4 mr-2" aria-hidden="true" />
           Shuffle
         </Button>
         
@@ -108,7 +108,7 @@ export function Deck({
           size="sm"
           aria-label={isDrawing ? `Drawing ${drawCount} cards...` : `Draw ${drawCount} cards from the deck`}
         >
-          <Play className={`w-4 h-4 mr-2 ${isDrawing ? 'animate-pulse' : ''}`} aria-hidden="true" />
+          <Play className="w-4 h-4 mr-2" aria-hidden="true" />
           Draw {drawCount} Cards
         </Button>
         
@@ -175,9 +175,7 @@ export function Deck({
             {drawnCards.map((item, index) => (
               <div
                 key={`${item.card.id}-${index}`}
-                className={`transform transition-all duration-600 ${
-                  showAnimation ? 'animate-in slide-in-from-bottom' : ''
-                }`}
+                className=""
                 style={{
                   animationDelay: `${index * 100}ms`,
                 }}

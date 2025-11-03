@@ -54,14 +54,14 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
         <div className="grid md:grid-cols-2 gap-8">
           {/* Card Image */}
           <div className="flex justify-center md:justify-start">
-            <div className="relative w-56 h-72 card-mystical rounded-xl shadow-2xl overflow-hidden mystical-glow border border-purple-500/30">
+            <div className="relative w-56 h-72 card-mystical rounded-xl shadow-2xl overflow-hidden border border-purple-500/30">
               <img
                 src={card.imageUrl || ''}
                 alt={card.name}
                 className="w-full h-full object-contain bg-white"
               />
               {reversed && (
-                <div className="absolute top-3 right-3 bg-red-500 text-white text-sm font-bold rounded-full w-8 h-8 flex items-center justify-center border-2 border-white shadow-lg mystical-glow">
+                <div className="absolute top-3 right-3 bg-red-500 text-white text-sm font-bold rounded-full w-8 h-8 flex items-center justify-center border-2 border-white shadow-lg">
                   R
                 </div>
               )}

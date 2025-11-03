@@ -179,7 +179,7 @@ export function ReadingViewer({
                           reversed={readingCard.reversed}
                           size="md"
                           onClick={() => setSelectedCard({ card, reversed: readingCard.reversed })}
-                          className="cursor-pointer transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                          className="cursor-pointer hover:shadow-lg"
                         />
                       </div>
                     </TooltipTrigger>

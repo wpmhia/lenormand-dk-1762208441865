@@ -51,7 +51,7 @@ export function Card({
     return (
       <div
         className={cn(
-           'relative card-mystical rounded-xl shadow-2xl cursor-pointer transform transition-all duration-600 hover:scale-110 hover:shadow-3xl hover:rotate-1 flex items-center justify-center border border-purple-500/40 mystical-glow float-animation group focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-slate-900',
+           'relative card-mystical rounded-xl shadow-2xl cursor-pointer flex items-center justify-center border border-purple-500/40 group focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-slate-900',
           sizeClasses[size],
           className
         )}
@@ -70,10 +70,10 @@ export function Card({
         role="button"
         aria-label="Lenormand card back. Click to draw or select card"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/90 via-blue-900/90 to-slate-900/90 shimmer rounded-xl"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/90 via-blue-900/90 to-slate-900/90 rounded-xl"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-transparent via-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
-        <div className="relative text-white text-center z-10 transform group-hover:scale-105 transition-transform duration-300">
-          <div className="text-4xl mb-2 opacity-90 mystical-glow animate-pulse">✦</div>
+        <div className="relative text-white text-center z-10">
+          <div className="text-4xl mb-2 opacity-90">✦</div>
           <div className="text-sm font-bold tracking-wider opacity-90 text-purple-200 group-hover:text-purple-100 transition-colors duration-300">LENORMAND</div>
           <div className="text-xs text-purple-300 mt-1 opacity-70 group-hover:opacity-90 transition-opacity duration-300">MYSTICAL DIVINATION</div>
         </div>
@@ -86,7 +86,7 @@ export function Card({
     <>
       <div
         className={cn(
-          'relative card-mystical rounded-xl shadow-2xl cursor-pointer transform transition-all duration-400 hover:scale-105 hover:shadow-3xl overflow-hidden mystical-glow focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900',
+          'relative card-mystical rounded-xl shadow-2xl cursor-pointer overflow-hidden focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900',
           sizeClasses[size],
           reversed && 'rotate-180',
           className
@@ -113,7 +113,7 @@ export function Card({
         
         {/* Reversed Indicator */}
         {reversed && (
-          <div className="absolute top-2 right-2 bg-red-500 text-white text-sm font-bold rounded-full w-7 h-7 flex items-center justify-center border-2 border-white shadow-lg mystical-glow">
+          <div className="absolute top-2 right-2 bg-red-500 text-white text-sm font-bold rounded-full w-7 h-7 flex items-center justify-center border-2 border-white shadow-lg">
             R
           </div>
         )}

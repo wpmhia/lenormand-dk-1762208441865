@@ -15,7 +15,7 @@ export default function Home() {
     <main className="min-h-screen bg-gradient-to-br from-amber-50 via-rose-50 to-purple-50 dark:from-slate-900 dark:via-purple-900 dark:to-slate-900 relative overflow-hidden" role="main">
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-10 max-w-6xl">
-        <div className="grid lg:grid-cols-2 gap-12 items-center mb-12 slide-in-up relative">
+        <div className="grid lg:grid-cols-2 gap-12 items-center mb-12 relative">
           <div className="text-center lg:text-left space-y-8 relative z-10">
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-8 text-amber-900 dark:text-amber-100 leading-tight relative">
@@ -23,7 +23,7 @@ export default function Home() {
                 Lenormand
                 <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-amber-600 via-rose-600 to-purple-600 rounded-full opacity-80"></div>
               </span>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-amber-700 via-rose-700 to-purple-700 dark:from-amber-400 dark:via-rose-400 dark:to-purple-400 animate-pulse">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-amber-700 via-rose-700 to-purple-700 dark:from-amber-400 dark:via-rose-400 dark:to-purple-400">
                 Intelligence
               </span>
             </h1>
@@ -33,12 +33,12 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
               <Link href="/read/new">
-                <Button size="lg" className="px-12 py-5 bg-gradient-to-r from-amber-600 via-rose-500 to-purple-600 hover:from-amber-700 hover:via-rose-600 hover:to-purple-700 text-white shadow-2xl shadow-amber-500/30 font-semibold text-lg transition-all duration-700 hover:scale-105 rounded-full border border-amber-400/20 backdrop-blur-sm mystical-float">
+                <Button size="lg" className="px-12 py-5 bg-gradient-to-r from-amber-600 via-rose-500 to-purple-600 hover:from-amber-700 hover:via-rose-600 hover:to-purple-700 text-white shadow-2xl shadow-amber-500/30 font-semibold text-lg rounded-full border border-amber-400/20 backdrop-blur-sm">
                   ✨ Begin Your Journey
                 </Button>
               </Link>
               <Link href="/cards">
-                <Button variant="outline" size="lg" className="px-12 py-5 border-2 border-amber-600/50 dark:border-amber-400/50 text-amber-800 dark:text-amber-200 hover:bg-amber-100 dark:hover:bg-amber-900/20 hover:border-amber-700/70 dark:hover:border-amber-400/70 font-semibold text-lg transition-all duration-700 hover:scale-105 rounded-full backdrop-blur-sm gentle-pulse shadow-lg shadow-amber-500/20 dark:shadow-amber-500/30">
+                 <Button variant="outline" size="lg" className="px-12 py-5 border-2 border-amber-600/50 dark:border-amber-400/50 text-amber-800 dark:text-amber-200 hover:bg-amber-100 dark:hover:bg-amber-900/20 hover:border-amber-700/70 dark:hover:border-amber-400/70 font-semibold text-lg rounded-full backdrop-blur-sm shadow-lg shadow-amber-500/20 dark:shadow-amber-500/30">
                   🔮 Explore the Cards
                 </Button>
               </Link>
@@ -46,14 +46,14 @@ export default function Home() {
           </div>
           <div className="flex justify-center lg:justify-end relative z-10">
             <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-r from-amber-500/30 via-rose-400/20 to-purple-500/30 rounded-2xl blur-2xl breathing-glow opacity-60 group-hover:opacity-80 transition-opacity duration-1000"></div>
-              <div className="absolute inset-0 bg-gradient-to-br from-rose-400/10 to-purple-600/10 rounded-2xl blur-xl animate-pulse"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-500/30 via-rose-400/20 to-purple-500/30 rounded-2xl blur-2xl opacity-60 group-hover:opacity-80"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-rose-400/10 to-purple-600/10 rounded-2xl blur-xl"></div>
               <img
                 src="/images/hero-image.jpg"
                 alt="Hero Image"
-                className="relative w-full max-w-xs sm:max-w-sm h-auto object-cover rounded-2xl shadow-2xl border border-amber-400/20 backdrop-blur-sm transition-all duration-700 group-hover:scale-105 group-hover:rotate-1"
+                className="relative w-full max-w-xs sm:max-w-sm h-auto object-cover rounded-2xl shadow-2xl border border-amber-400/20 backdrop-blur-sm "
               />
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100"></div>
             </div>
           </div>
         </div>
@@ -61,7 +61,7 @@ export default function Home() {
 
       {/* Reading Types */}
       <div className="container mx-auto px-6 py-20 max-w-6xl">
-        <div className="mb-12 fade-in-scale relative">
+        <div className="mb-12 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-rose-500/5 via-transparent to-purple-500/5 rounded-3xl"></div>
           <div className="text-center mb-12 relative z-10">
             <h2 className="text-4xl font-bold text-center mb-4 text-amber-900 dark:text-amber-100 relative">
@@ -72,11 +72,11 @@ export default function Home() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
               <Link href="/read/new">
-                <Card className="hover:shadow-2xl hover:shadow-rose-500/20 dark:hover:shadow-rose-500/30 transition-all duration-500 cursor-pointer group border border-rose-400/20 dark:border-rose-400/30 hover:border-rose-400/60 dark:hover:border-rose-400/70 bg-gradient-to-br from-white via-rose-50/50 to-amber-50 dark:from-slate-950 dark:via-rose-950/40 dark:to-slate-900 backdrop-blur-sm min-h-[160px] hover:scale-105 rounded-2xl overflow-hidden relative">
+                <Card className="hover:shadow-2xl hover:shadow-rose-500/20 dark:hover:shadow-rose-500/30 cursor-pointer group border border-rose-400/20 dark:border-rose-400/30 hover:border-rose-400/60 dark:hover:border-rose-400/70 bg-gradient-to-br from-white via-rose-50/50 to-amber-50 dark:from-slate-950 dark:via-rose-950/40 dark:to-slate-900 backdrop-blur-sm min-h-[160px] rounded-2xl overflow-hidden relative">
                   <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <CardHeader className="pb-4 relative z-10">
-                    <CardTitle className="flex items-center gap-3 group-hover:text-rose-200 dark:group-hover:text-rose-200 text-lg text-slate-800 dark:text-white font-semibold">
-                      <Sparkles className="w-5 h-5 text-rose-300 group-hover:animate-pulse" />
+                    <CardTitle className="flex items-center gap-3 text-lg text-slate-800 dark:text-white font-semibold">
+                      <Sparkles className="w-5 h-5 text-rose-300" />
                       Quick Analysis
                     </CardTitle>
                   </CardHeader>
@@ -85,7 +85,7 @@ export default function Home() {
                          Journey through time&apos;s tapestry
                       </p>
                       <div className="flex items-center text-rose-700 dark:text-rose-200 text-sm font-medium">
-                        3 Cards <ArrowRight className="w-4 h-4 ml-2 text-rose-300 group-hover:translate-x-1 transition-transform duration-300" />
+                        3 Cards <ArrowRight className="w-4 h-4 ml-2 text-rose-300" />
                       </div>
                    </CardContent>
                 </Card>
@@ -96,7 +96,7 @@ export default function Home() {
                   <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <CardHeader className="pb-4 relative z-10">
                     <CardTitle className="flex items-center gap-3 group-hover:text-amber-200 dark:group-hover:text-amber-200 text-lg text-slate-800 dark:text-white font-semibold">
-                      <Heart className="w-5 h-5 text-amber-300 group-hover:animate-pulse" />
+                      <Heart className="w-5 h-5 text-amber-300" />
                       Deep Analysis
                     </CardTitle>
                   </CardHeader>
@@ -105,7 +105,7 @@ export default function Home() {
                         Deep exploration with hidden insights
                       </p>
                       <div className="flex items-center text-amber-700 dark:text-amber-200 text-sm font-medium">
-                        5 Cards <ArrowRight className="w-4 h-4 ml-2 text-amber-300 group-hover:translate-x-1 transition-transform duration-300" />
+                        5 Cards <ArrowRight className="w-4 h-4 ml-2 text-amber-300" />
                       </div>
                    </CardContent>
                 </Card>
@@ -116,7 +116,7 @@ export default function Home() {
                   <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <CardHeader className="pb-4 relative z-10">
                     <CardTitle className="flex items-center gap-3 group-hover:text-emerald-200 dark:group-hover:text-emerald-200 text-lg text-slate-800 dark:text-white font-semibold">
-                      <Shield className="w-5 h-5 text-emerald-300 group-hover:animate-pulse" />
+                      <Shield className="w-5 h-5 text-emerald-300" />
                       Comprehensive
                     </CardTitle>
                   </CardHeader>
@@ -125,7 +125,7 @@ export default function Home() {
                          Complete life&apos;s grand design
                       </p>
                       <div className="flex items-center text-emerald-700 dark:text-emerald-200 text-sm font-medium">
-                        9 Cards <ArrowRight className="w-4 h-4 ml-2 text-emerald-300 group-hover:translate-x-1 transition-transform duration-300" />
+                        9 Cards <ArrowRight className="w-4 h-4 ml-2 text-emerald-300" />
                       </div>
                    </CardContent>
                 </Card>
@@ -136,7 +136,7 @@ export default function Home() {
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <CardHeader className="pb-4 relative z-10">
                     <CardTitle className="flex items-center gap-3 group-hover:text-purple-200 dark:group-hover:text-purple-200 text-lg text-slate-800 dark:text-white font-semibold">
-                      <Sparkles className="w-5 h-5 text-purple-300 group-hover:animate-pulse" />
+                      <Sparkles className="w-5 h-5 text-purple-300" />
                       Grand Tableau
                     </CardTitle>
                   </CardHeader>
@@ -145,7 +145,7 @@ export default function Home() {
                         The complete mystical revelation
                       </p>
                       <div className="flex items-center text-purple-700 dark:text-purple-200 text-sm font-medium">
-                        36 Cards <ArrowRight className="w-4 h-4 ml-2 text-purple-300 group-hover:translate-x-1 transition-transform duration-300" />
+                        36 Cards <ArrowRight className="w-4 h-4 ml-2 text-purple-300" />
                       </div>
                    </CardContent>
                 </Card>
@@ -223,8 +223,8 @@ export default function Home() {
       <div className="container mx-auto px-6 py-12 max-w-4xl">
         <div className="text-center bg-gradient-to-r from-white via-rose-50/50 to-amber-50 dark:from-slate-950 dark:via-rose-950/40 dark:to-slate-900 backdrop-blur-sm rounded-3xl p-8 border border-rose-400/20 dark:border-rose-400/30 fade-in-scale shadow-2xl relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-rose-500/10 via-amber-400/5 to-purple-500/10 rounded-3xl"></div>
-          <div className="absolute top-4 left-4 w-16 h-16 bg-rose-500/20 rounded-full blur-xl animate-pulse"></div>
-          <div className="absolute bottom-4 right-4 w-12 h-12 bg-purple-500/20 rounded-full blur-lg animate-pulse" style={{animationDelay: '1s'}}></div>
+          <div className="absolute top-4 left-4 w-16 h-16 bg-rose-500/20 rounded-full blur-xl"></div>
+          <div className="absolute bottom-4 right-4 w-12 h-12 bg-purple-500/20 rounded-full blur-lg"></div>
           <div className="relative z-10">
             <h2 className="text-4xl font-bold mb-6 text-slate-800 dark:text-white relative">
               Begin Your Mystical Journey
@@ -234,9 +234,9 @@ export default function Home() {
               Let the cards reveal what your soul already knows
             </p>
             <Link href="/read/new">
-              <Button size="lg" className="px-12 py-5 bg-gradient-to-r from-rose-600 via-amber-500 to-purple-600 hover:from-rose-700 hover:via-amber-600 hover:to-purple-700 text-white shadow-2xl shadow-rose-500/30 font-semibold text-lg transition-all duration-700 hover:scale-105 rounded-full border border-rose-400/20 backdrop-blur-sm mystical-float">
+              <Button size="lg" className="px-12 py-5 bg-gradient-to-r from-rose-600 via-amber-500 to-purple-600 hover:from-rose-700 hover:via-amber-600 hover:to-purple-700 text-white shadow-2xl shadow-rose-500/30 font-semibold text-lg rounded-full border border-rose-400/20 backdrop-blur-sm">
                 Discover Your Path
-                <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform duration-300" />
+                <ArrowRight className="w-5 h-5 ml-3" />
               </Button>
             </Link>
           </div>
@@ -252,10 +252,10 @@ export default function Home() {
               © 2024 Lenormand Intelligence - Mystical Card Wisdom
             </p>
             <div className="flex gap-8 justify-center text-sm">
-              <Link href="/read/new" className="text-rose-300/60 hover:text-rose-200 transition-colors font-medium hover:scale-105 transition-transform duration-300">
+              <Link href="/read/new" className="text-rose-300/60 hover:text-rose-200 transition-colors font-medium">
                 New Analysis
               </Link>
-              <Link href="/cards" className="text-purple-300/60 hover:text-purple-200 transition-colors font-medium hover:scale-105 transition-transform duration-300">
+              <Link href="/cards" className="text-purple-300/60 hover:text-purple-200 transition-colors font-medium">
                 Explore Cards
               </Link>
             </div>

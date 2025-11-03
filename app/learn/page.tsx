@@ -112,14 +112,14 @@ export default function LearnPage() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link href="/learn/introduction">
-                <Button size="lg" className="px-8 py-4 bg-gradient-to-r from-amber-600 via-rose-500 to-purple-600 hover:from-amber-700 hover:via-rose-600 hover:to-purple-700 text-white shadow-2xl shadow-amber-500/30 font-semibold text-lg transition-all duration-700 hover:scale-105 rounded-full border border-amber-400/20">
+                <Button size="lg" className="px-8 py-4 bg-gradient-to-r from-amber-600 via-rose-500 to-purple-600 hover:from-amber-700 hover:via-rose-600 hover:to-purple-700 text-white shadow-2xl shadow-amber-500/30 font-semibold text-lg rounded-full border border-amber-400/20">
                   <Sparkles className="w-5 h-5 mr-2" />
                   Start Your Journey
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
               </Link>
               <Link href="/cards">
-                <Button variant="outline" size="lg" className="px-8 py-4 border-2 border-amber-600/50 text-amber-800 dark:text-amber-200 hover:bg-amber-100 dark:hover:bg-amber-900/20 hover:border-amber-700/70 font-semibold text-lg transition-all duration-700 hover:scale-105 rounded-full">
+                <Button variant="outline" size="lg" className="px-8 py-4 border-2 border-amber-600/50 text-amber-800 dark:text-amber-200 hover:bg-amber-100 dark:hover:bg-amber-900/20 hover:border-amber-700/70 font-semibold text-lg rounded-full">
                   <BookOpen className="w-5 h-5 mr-2" />
                   Explore Cards First
                 </Button>
@@ -142,7 +142,7 @@ export default function LearnPage() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {modules.map((module, index) => (
-            <Card key={module.id} className="hover:shadow-2xl hover:shadow-amber-500/20 dark:hover:shadow-amber-500/30 transition-all duration-500 cursor-pointer group border border-amber-400/20 dark:border-amber-400/30 hover:border-amber-400/60 dark:hover:border-amber-400/70 bg-gradient-to-br from-white via-amber-50/50 to-rose-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 backdrop-blur-sm min-h-[200px] hover:scale-105 rounded-2xl overflow-hidden relative">
+            <Card key={module.id} className="hover:shadow-2xl hover:shadow-amber-500/20 dark:hover:shadow-amber-500/30 cursor-pointer group border border-amber-400/20 dark:border-amber-400/30 hover:border-amber-400/60 dark:hover:border-amber-400/70 bg-gradient-to-br from-white via-amber-50/50 to-rose-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 backdrop-blur-sm min-h-[200px] rounded-2xl overflow-hidden relative">
               <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <CardHeader className="pb-4 relative z-10">
                 <div className="flex items-center justify-between mb-3">
