@@ -38,13 +38,13 @@ export function Header() {
             <Plus className="w-4 h-4" />
             <span>New Reading</span>
           </Link>
-          <button
-            onClick={() => (document.querySelector('[data-guide-trigger]') as HTMLElement)?.click()}
+          <Link
+            href="/learn"
             className="flex items-center space-x-1 text-sm font-medium text-amber-800 dark:text-amber-200 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
           >
             <Sparkles className="w-4 h-4" />
-            <span>Guide</span>
-          </button>
+            <span>Learn</span>
+          </Link>
         </nav>
 
         <div className="flex items-center space-x-2 ml-auto md:ml-0">
@@ -89,16 +89,14 @@ export function Header() {
               <Plus className="w-4 h-4" />
               <span>New Reading</span>
             </Link>
-            <button
-              onClick={() => {
-                (document.querySelector('[data-guide-trigger]') as HTMLElement)?.click();
-                setMobileMenuOpen(false);
-              }}
-              className="flex items-center space-x-2 text-sm font-medium text-amber-800 dark:text-amber-200 hover:text-amber-600 dark:hover:text-amber-400 transition-colors py-2 w-full text-left"
+            <Link
+              href="/learn"
+              onClick={() => setMobileMenuOpen(false)}
+              className="flex items-center space-x-2 text-sm font-medium text-amber-800 dark:text-amber-200 hover:text-amber-600 dark:hover:text-amber-400 transition-colors py-2"
             >
               <Sparkles className="w-4 h-4" />
-              <span>Guide</span>
-            </button>
+              <span>Learn</span>
+            </Link>
           </nav>
         </div>
       )}
