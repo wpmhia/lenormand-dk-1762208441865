@@ -6,7 +6,6 @@ import {
   Sparkles,
   Users,
   ArrowRight,
-  Star,
   Heart,
   Shield
 } from 'lucide-react'
@@ -164,68 +163,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Testimonials Section */}
-      <div className="container mx-auto px-6 py-20 max-w-6xl">
-        <div className="mb-20 slide-in-left relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-transparent to-rose-500/5 rounded-3xl"></div>
-          <div className="text-center mb-12 relative z-10">
-            <h2 className="text-4xl font-bold text-center mb-4 text-white relative">
-              Voices of Discovery
-              <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-32 h-0.5 bg-gradient-to-r from-purple-400 to-rose-400 rounded-full"></div>
-            </h2>
-            <p className="text-center text-slate-200 text-lg max-w-2xl mx-auto leading-relaxed italic">Join those who have found deeper understanding through mystical guidance</p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto relative z-10">
-            <Card className="border-rose-400/20 bg-gradient-to-br from-slate-900/60 via-rose-950/20 to-slate-800/40 backdrop-blur-sm shadow-lg hover:shadow-2xl hover:shadow-rose-500/10 transition-all duration-500 rounded-2xl overflow-hidden relative group">
-              <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <CardContent className="p-8 relative z-10">
-                <div className="flex mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-rose-400 text-rose-400 group-hover:animate-pulse" />
-                  ))}
-                </div>
-                <p className="text-slate-200 mb-6 text-base leading-relaxed italic">
-                   &ldquo;Each reading feels like a conversation with ancient wisdom. The insights resonate deeply, guiding me with clarity and understanding.&rdquo;
-                </p>
-                <div className="font-semibold text-rose-200 text-lg">Sarah L.</div>
-                <div className="text-sm text-rose-300/60">New York</div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-amber-400/20 bg-gradient-to-br from-slate-900/60 via-amber-950/20 to-slate-800/40 backdrop-blur-sm shadow-lg hover:shadow-2xl hover:shadow-amber-500/10 transition-all duration-500 rounded-2xl overflow-hidden relative group">
-              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <CardContent className="p-8 relative z-10">
-                <div className="flex mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400 group-hover:animate-pulse" />
-                  ))}
-                </div>
-                <p className="text-slate-200 mb-6 text-base leading-relaxed italic">
-                   &ldquo;The cards speak to me in ways I never imagined. Each reading unfolds like a personal revelation, offering wisdom that feels profoundly true.&rdquo;
-                </p>
-                <div className="font-semibold text-amber-200 text-lg">Emma W.</div>
-                <div className="text-sm text-amber-300/60">London</div>
-              </CardContent>
-            </Card>
-
-            <Card className="border-purple-400/20 bg-gradient-to-br from-slate-900/60 via-purple-950/20 to-slate-800/40 backdrop-blur-sm shadow-lg hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-500 rounded-2xl overflow-hidden relative group">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <CardContent className="p-8 relative z-10">
-                <div className="flex mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-purple-400 text-purple-400 group-hover:animate-pulse" />
-                  ))}
-                </div>
-                <p className="text-slate-200 mb-6 text-base leading-relaxed italic">
-                   &ldquo;There&apos;s a magic in these readings that transcends technology. The guidance feels intuitive, wise, and deeply connected to my journey.&rdquo;
-                </p>
-                <div className="font-semibold text-purple-200 text-lg">Michael R.</div>
-                <div className="text-sm text-purple-300/60">Toronto</div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </div>
+      
 
       {/* FAQ Section */}
       <div className="container mx-auto px-6 py-20 max-w-4xl">
