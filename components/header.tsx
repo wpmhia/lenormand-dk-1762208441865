@@ -10,13 +10,13 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-amber-200/50 dark:border-slate-700/50 bg-white/80 dark:bg-slate-900/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 supports-[backdrop-filter]:dark:bg-slate-900/60">
-      <div className="container flex h-14 items-center justify-between px-4">
+      <div className="container flex h-14 items-center px-4">
         <div className="flex items-center space-x-2">
           <Link href="/" className="text-lg font-semibold text-amber-900 dark:text-amber-100 hover:text-amber-700 dark:hover:text-amber-300 transition-colors">
             Lenormand Intelligence
           </Link>
         </div>
-        <nav className="hidden md:flex items-center space-x-6">
+        <nav className="hidden md:flex items-center space-x-6 ml-auto">
           <Link
             href="/"
             className="flex items-center space-x-1 text-sm font-medium text-amber-800 dark:text-amber-200 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
@@ -47,16 +47,18 @@ export function Header() {
           </button>
         </nav>
 
-        {/* Mobile menu button */}
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-2 text-amber-800 dark:text-amber-200 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
-          aria-label="Toggle mobile menu"
-        >
-          {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
+        <div className="flex items-center space-x-2 ml-auto md:ml-0">
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 text-amber-800 dark:text-amber-200 hover:text-amber-600 dark:hover:text-amber-400 transition-colors"
+            aria-label="Toggle mobile menu"
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
 
-        <ThemeToggle />
+          <ThemeToggle />
+        </div>
       </div>
 
       {/* Mobile Navigation Menu */}
