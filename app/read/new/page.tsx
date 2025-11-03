@@ -274,21 +274,21 @@ export default function NewReadingPage() {
           {/* Progress Indicator */}
           <div className="mt-8 flex items-center justify-center space-x-6">
             <div className={`flex items-center ${step === 'setup' ? 'text-primary' : 'text-muted-foreground'}`}>
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'setup' ? 'bg-primary border-primary shadow-lg shadow-primary/30' : 'bg-muted border-muted-foreground'}`}>
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'setup' ? 'bg-primary border-primary shadow-lg shadow-primary/30 text-primary-foreground' : 'bg-muted border-muted-foreground text-muted-foreground dark:bg-muted/50 dark:border-muted-foreground/50'}`}>
                 1
               </div>
               <span className="ml-3 text-sm font-medium">Setup</span>
             </div>
             <div className={`w-12 h-0.5 rounded-full ${step === 'drawing' || step === 'ai-analysis' ? 'bg-primary' : 'bg-muted'}`}></div>
             <div className={`flex items-center ${step === 'drawing' ? 'text-primary' : 'text-muted-foreground'}`}>
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'drawing' ? 'bg-primary border-primary shadow-lg shadow-primary/30' : 'bg-muted border-muted-foreground'}`}>
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'drawing' ? 'bg-primary border-primary shadow-lg shadow-primary/30 text-primary-foreground' : 'bg-muted border-muted-foreground text-muted-foreground dark:bg-muted/50 dark:border-muted-foreground/50'}`}>
                 2
               </div>
               <span className="ml-3 text-sm font-medium">Draw</span>
             </div>
             <div className={`w-12 h-0.5 rounded-full ${step === 'ai-analysis' ? 'bg-primary' : 'bg-muted'}`}></div>
             <div className={`flex items-center ${step === 'ai-analysis' ? 'text-primary' : 'text-muted-foreground'}`}>
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'ai-analysis' ? 'bg-primary border-primary shadow-lg shadow-primary/30' : 'bg-muted border-muted-foreground'}`}>
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'ai-analysis' ? 'bg-primary border-primary shadow-lg shadow-primary/30 text-primary-foreground' : 'bg-muted border-muted-foreground text-muted-foreground dark:bg-muted/50 dark:border-muted-foreground/50'}`}>
                 3
               </div>
               <span className="ml-3 text-sm font-medium">Analyze</span>
