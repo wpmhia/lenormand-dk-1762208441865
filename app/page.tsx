@@ -85,7 +85,7 @@ export default function Home() {
                   <div className="absolute inset-0 bg-gradient-to-br from-rose-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <CardHeader className="pb-4 relative z-10">
                     <CardTitle className="flex items-center gap-3 group-hover:text-rose-300 text-lg text-white font-semibold">
-                      <Star className="w-5 h-5 text-rose-400 group-hover:animate-pulse" />
+                      <Sparkles className="w-5 h-5 text-rose-400 group-hover:animate-pulse" />
                       Quick Analysis
                     </CardTitle>
                   </CardHeader>
