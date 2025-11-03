@@ -24,21 +24,21 @@ export default function Home() {
       <div className="container mx-auto px-4 py-16 max-w-6xl">
         <div className="grid lg:grid-cols-2 gap-16 items-center mb-20 slide-in-up relative">
           <div className="text-center lg:text-left space-y-8 relative z-10">
-            <Badge className="mb-8 bg-gradient-to-r from-amber-600/40 via-rose-500/40 to-purple-600/40 text-white border-amber-400/50 px-8 py-4 text-sm font-semibold tracking-wide uppercase rounded-full backdrop-blur-sm shadow-lg shadow-amber-500/20" variant="secondary">
+            <Badge className="mb-8 bg-gradient-to-r from-amber-600/40 via-rose-500/40 to-purple-600/40 text-amber-900 border-amber-600/50 px-8 py-4 text-sm font-semibold tracking-wide uppercase rounded-full backdrop-blur-sm shadow-lg shadow-amber-500/20" variant="secondary">
               ✨ Mystical Lenormand Wisdom
             </Badge>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-12 text-white leading-tight relative">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-12 text-amber-900 leading-tight relative">
               <span className="relative inline-block">
                 Lenormand
-                <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 via-rose-400 to-purple-400 rounded-full opacity-80"></div>
+                <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-amber-600 via-rose-600 to-purple-600 rounded-full opacity-80"></div>
               </span>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-rose-300 to-purple-300 animate-pulse">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-amber-700 via-rose-700 to-purple-700 animate-pulse">
                 Intelligence
               </span>
             </h1>
-            <p className="text-lg sm:text-xl lg:text-2xl text-amber-100 mb-12 max-w-3xl mx-auto lg:mx-0 leading-relaxed font-light">
+            <p className="text-lg sm:text-xl lg:text-2xl text-amber-800 mb-12 max-w-3xl mx-auto lg:mx-0 leading-relaxed font-light">
               Discover the ancient wisdom of Lenormand through AI-enhanced intuition.
-              <span className="text-amber-200/90 block mt-2">Experience personalized guidance where technology meets mystical insight.</span>
+              <span className="text-amber-700 block mt-2">Experience personalized guidance where technology meets mystical insight.</span>
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
               <Link href="/read/new">
@@ -47,7 +47,7 @@ export default function Home() {
                 </Button>
               </Link>
               <Link href="/cards">
-                <Button variant="outline" size="lg" className="px-12 py-5 border-2 border-amber-400/50 text-amber-100 hover:bg-amber-900/50 hover:border-amber-400/70 font-semibold text-lg transition-all duration-700 hover:scale-105 rounded-full backdrop-blur-sm gentle-pulse shadow-lg shadow-amber-500/20">
+                <Button variant="outline" size="lg" className="px-12 py-5 border-2 border-amber-600/50 text-amber-800 hover:bg-amber-100 hover:border-amber-700/70 font-semibold text-lg transition-all duration-700 hover:scale-105 rounded-full backdrop-blur-sm gentle-pulse shadow-lg shadow-amber-500/20">
                   🔮 Explore the Cards
                 </Button>
               </Link>
@@ -73,11 +73,11 @@ export default function Home() {
         <div className="mb-20 fade-in-scale relative">
           <div className="absolute inset-0 bg-gradient-to-r from-rose-500/5 via-transparent to-purple-500/5 rounded-3xl"></div>
           <div className="text-center mb-12 relative z-10">
-            <h2 className="text-4xl font-bold text-center mb-4 text-white relative">
+            <h2 className="text-4xl font-bold text-center mb-4 text-amber-900 relative">
               Choose Your Path
-              <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-24 h-0.5 bg-gradient-to-r from-rose-400 to-purple-400 rounded-full"></div>
+              <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-24 h-0.5 bg-gradient-to-r from-rose-600 to-purple-600 rounded-full"></div>
             </h2>
-            <p className="text-center text-amber-100 text-lg max-w-2xl mx-auto leading-relaxed">Select the depth of insight that calls to you</p>
+            <p className="text-center text-amber-800 text-lg max-w-2xl mx-auto leading-relaxed">Select the depth of insight that calls to you</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
               <Link href="/read/new">
@@ -170,11 +170,11 @@ export default function Home() {
         <div className="mb-20 slide-in-up relative">
           <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-transparent to-rose-500/5 rounded-3xl"></div>
           <div className="text-center mb-12 relative z-10">
-            <h2 className="text-4xl font-bold text-center mb-4 text-white relative">
+            <h2 className="text-4xl font-bold text-center mb-4 text-amber-900 relative">
               Wisdom & Guidance
-              <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-40 h-0.5 bg-gradient-to-r from-amber-400 to-rose-400 rounded-full"></div>
+              <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-40 h-0.5 bg-gradient-to-r from-amber-600 to-rose-600 rounded-full"></div>
             </h2>
-            <p className="text-center text-slate-200 text-lg max-w-2xl mx-auto leading-relaxed italic">Answers to illuminate your journey</p>
+            <p className="text-center text-amber-800 text-lg max-w-2xl mx-auto leading-relaxed">Answers to illuminate your journey</p>
           </div>
           <div className="max-w-4xl mx-auto space-y-6 relative z-10">
             <Card className="border-rose-400/20 bg-gradient-to-br from-slate-900/60 via-rose-950/20 to-slate-800/40 backdrop-blur-sm shadow-lg hover:shadow-2xl hover:shadow-rose-500/10 transition-all duration-500 rounded-2xl overflow-hidden relative group">
