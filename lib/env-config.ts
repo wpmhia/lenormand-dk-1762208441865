@@ -15,19 +15,19 @@ export const ENV_VARIABLES: EnvVariable[] = [
   {
     name: "DATABASE_URL",
     description: "Supabase database connection string",
-    required: false,
+    required: true,
     instructions: "Get the connection string from your Supabase project settings > Database > Connection string. Use the 'URI' format."
   },
   {
     name: "NEXT_PUBLIC_SUPABASE_URL",
     description: "Supabase project URL",
-    required: false,
+    required: true,
     instructions: "Get from your Supabase project settings > API > Project URL."
   },
   {
     name: "NEXT_PUBLIC_SUPABASE_ANON_KEY",
     description: "Supabase anonymous key",
-    required: false,
+    required: true,
     instructions: "Get from your Supabase project settings > API > Project API keys > anon public."
   }
 ];

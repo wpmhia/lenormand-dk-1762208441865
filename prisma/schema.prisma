@@ -5,14 +5,78 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// Placeholder model to prevent Prisma generation errors
-// This application doesn't use database features
-model Placeholder {
-  id    Int     @id @default(autoincrement())
-  name  String?
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+// User model for authentication and account management
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  image         String?
+  emailVerified DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  readings      Reading[]
+  drawStats     DrawStat[]
+
+  @@map("users")
+}
+
+// Reading model for saved Lenormand readings
+model Reading {
+  id          String   @id @default(cuid())
+  title       String
+  question    String
+  layoutType  Int
+  cards       Json     // Store card data as JSON
+  slug        String   @unique
+  isPublic    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("readings")
+}
+
+// Card model for the 36 Lenormand cards
+model Card {
+  id          Int      @id
+  name        String   @unique
+  keywords    String[]
+  upright     String
+  reversed    String
+  imagePath   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  drawStats   DrawStat[]
+
+  @@map("cards")
+}
+
+// DrawStat model for tracking card draw statistics
+model DrawStat {
+  id        String   @id @default(cuid())
+  cardId    Int
+  userId    String
+  drawnAt   DateTime @default(now())
+  reversed  Boolean  @default(false)
+
+  // Relations
+  card      Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([cardId])
+  @@index([userId])
+  @@index([drawnAt])
+  @@map("draw_stats")
 }
