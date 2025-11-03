@@ -6,31 +6,31 @@
 
 @layer base {
   :root {
-    /* Soft, Mystical Theme */
-    --background: 45 25% 95%;
-    --foreground: 25 35% 25%;
-    --card: 45 20% 98%;
-    --card-foreground: 25 35% 25%;
-    --popover: 45 20% 97%;
-    --popover-foreground: 25 35% 25%;
-    --primary: 35 40% 70%;
-    --primary-foreground: 45 25% 95%;
-    --secondary: 45 15% 92%;
-    --secondary-foreground: 25 35% 25%;
-    --muted: 45 10% 90%;
-    --muted-foreground: 25 25% 45%;
-    --accent: 30 35% 75%;
-    --accent-foreground: 45 25% 95%;
-    --destructive: 15 60% 65%;
-    --destructive-foreground: 45 25% 95%;
-    --border: 45 15% 85%;
-    --input: 45 15% 90%;
-    --ring: 35 40% 70%;
-    --chart-1: 35 40% 70%;
-    --chart-2: 25 35% 65%;
-    --chart-3: 45 30% 70%;
-    --chart-4: 30 35% 75%;
-    --chart-5: 40 25% 70%;
+    /* High Contrast Theme */
+    --background: 45 25% 98%;
+    --foreground: 25 35% 15%;
+    --card: 45 20% 99%;
+    --card-foreground: 25 35% 15%;
+    --popover: 45 20% 98%;
+    --popover-foreground: 25 35% 15%;
+    --primary: 35 40% 50%;
+    --primary-foreground: 45 25% 98%;
+    --secondary: 45 15% 95%;
+    --secondary-foreground: 25 35% 15%;
+    --muted: 45 10% 92%;
+    --muted-foreground: 25 25% 35%;
+    --accent: 30 35% 55%;
+    --accent-foreground: 45 25% 98%;
+    --destructive: 15 60% 45%;
+    --destructive-foreground: 45 25% 98%;
+    --border: 45 15% 80%;
+    --input: 45 15% 95%;
+    --ring: 35 40% 50%;
+    --chart-1: 35 40% 50%;
+    --chart-2: 25 35% 45%;
+    --chart-3: 45 30% 50%;
+    --chart-4: 30 35% 55%;
+    --chart-5: 40 25% 50%;
     --radius: 0.5rem;
   }
 }
@@ -56,7 +56,7 @@
   /* Global typography */
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Crimson Pro', 'Crimson Text', serif;
-    @apply text-amber-900;
+    @apply text-amber-950;
     font-weight: 600;
   }
 
@@ -76,7 +76,7 @@ undefined
 
   /* Global cards */
   .card {
-    @apply bg-gradient-to-br from-amber-50 to-amber-100 border-2 border-amber-200 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300;
+    @apply bg-gradient-to-br from-amber-50 to-amber-100 border-2 border-amber-300 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300;
   }
 
   /* Global buttons */
@@ -85,17 +85,17 @@ undefined
   }
 
   .btn-secondary {
-    @apply border-2 border-amber-300 text-amber-800 hover:bg-amber-50 hover:border-amber-400 transition-all duration-300 rounded-full px-6 py-3 font-semibold;
+    @apply border-2 border-amber-400 text-amber-900 hover:bg-amber-50 hover:border-amber-500 transition-all duration-300 rounded-full px-6 py-3 font-semibold;
   }
 
   /* Global form elements */
   input, textarea, select {
-    @apply bg-amber-50 border-2 border-amber-200 rounded-lg px-4 py-2 text-amber-900 placeholder-amber-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-200 transition-all duration-300;
+    @apply bg-amber-50 border-2 border-amber-300 rounded-lg px-4 py-2 text-amber-950 placeholder-amber-600 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-300 transition-all duration-300;
   }
 
   /* Global badges */
   .badge {
-    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-amber-100 to-rose-100 text-amber-800 border border-amber-200;
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gradient-to-r from-amber-100 to-rose-100 text-amber-900 border border-amber-300;
   }
 
   /* Global sections */
@@ -264,7 +264,7 @@ undefined
   }
 
   .nav-link {
-    @apply text-amber-700 hover:text-amber-900 font-medium transition-colors duration-300;
+    @apply text-amber-800 hover:text-amber-950 font-medium transition-colors duration-300;
   }
 
   /* Global loading states */
