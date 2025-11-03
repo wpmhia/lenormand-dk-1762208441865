@@ -6,60 +6,39 @@
 
 @layer base {
   :root {
-    /* Light Theme - High Contrast */
-    --background: 0 0% 100%;
-    --foreground: 25 35% 10%;
-    --card: 0 0% 100%;
-    --card-foreground: 25 35% 10%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 25 35% 10%;
-    --primary: 25 35% 25%;
+    /* LIGHT MODE */
+    --background: 0 0% 100%;          /* pure white */
+    --foreground: 25 35% 15%;         /* charcoal */
+    --card: 45 20% 98%;               /* warm off-white */
+    --card-foreground: 25 35% 15%;
+    --primary: 35 40% 45%;            /* deep amber */
     --primary-foreground: 0 0% 100%;
-    --secondary: 45 15% 96%;
-    --secondary-foreground: 25 35% 10%;
-    --muted: 45 10% 94%;
-    --muted-foreground: 25 25% 40%;
-    --accent: 25 35% 30%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 45 15% 75%;
-    --input: 45 15% 96%;
-    --ring: 25 35% 25%;
-    --chart-1: 25 35% 25%;
-    --chart-2: 30 25% 30%;
-    --chart-3: 35 20% 35%;
-    --chart-4: 25 30% 30%;
-    --chart-5: 30 25% 25%;
+    --muted: 45 20% 90%;
+    --muted-foreground: 25 15% 40%;
+    --border: 45 15% 85%;
     --radius: 0.5rem;
   }
 
   .dark {
-    /* Dark Theme */
-    --background: 25 35% 8%;
-    --foreground: 45 20% 90%;
-    --card: 25 35% 10%;
+    /* DARK MODE */
+    --background: 25 35% 8%;          /* near-black */
+    --foreground: 45 20% 90%;         /* cream */
+    --card: 25 30% 12%;               /* elevated slate */
     --card-foreground: 45 20% 90%;
-    --popover: 25 35% 10%;
-    --popover-foreground: 45 20% 90%;
-    --primary: 45 20% 70%;
-    --primary-foreground: 25 35% 8%;
-    --secondary: 25 35% 15%;
-    --secondary-foreground: 45 20% 90%;
-    --muted: 25 35% 15%;
-    --muted-foreground: 45 15% 60%;
-    --accent: 30 25% 60%;
-    --accent-foreground: 25 35% 8%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 25 35% 8%;
-    --border: 25 35% 20%;
-    --input: 25 35% 15%;
-    --ring: 45 20% 70%;
-    --chart-1: 45 20% 70%;
-    --chart-2: 30 25% 60%;
-    --chart-3: 35 20% 65%;
-    --chart-4: 25 30% 60%;
-    --chart-5: 30 25% 55%;
+    --primary: 35 40% 65%;            /* lighter amber */
+    --primary-foreground: 25 35% 15%;
+    --muted: 25 30% 18%;
+    --muted-foreground: 45 10% 65%;
+    --border: 25 30% 20%;
+  }
+
+  /* apply to <body> */
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
 
@@ -82,7 +61,7 @@
   /* Global typography */
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Crimson Pro', 'Crimson Text', serif;
-    @apply text-amber-950;
+    @apply text-foreground;
     font-weight: 600;
   }
 

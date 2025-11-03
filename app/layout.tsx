@@ -25,14 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} antialiased`} suppressHydrationWarning>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-          storageKey="theme"
-          themes={["light", "dark", "system"]}
-        >
+        <ThemeProvider>
           <div className="min-h-screen bg-background text-foreground flex flex-col">
             <Header />
             <main className="flex-grow">
