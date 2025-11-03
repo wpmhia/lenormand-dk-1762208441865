@@ -122,7 +122,7 @@ export function Footer() {
             </DialogTitle>
           </DialogHeader>
           <div className="mt-4" role="document">
-            <LenormandGuide />
+            <LenormandGuide darkTheme={true} />
           </div>
         </DialogContent>
       </Dialog>

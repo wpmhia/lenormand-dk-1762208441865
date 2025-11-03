@@ -10,9 +10,10 @@ import { ChevronDown, ChevronUp, BookOpen, HelpCircle, Lightbulb, Target } from 
 
 interface LenormandGuideProps {
   className?: string
+  darkTheme?: boolean
 }
 
-export function LenormandGuide({ className }: LenormandGuideProps) {
+export function LenormandGuide({ className, darkTheme = false }: LenormandGuideProps) {
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({})
 
   const toggleSection = (section: string) => {
@@ -48,13 +49,15 @@ export function LenormandGuide({ className }: LenormandGuideProps) {
 
   return (
     <div className={`space-y-4 ${className}`}>
-      <Card className="border-blue-200 bg-gradient-to-br from-blue-50/80 to-indigo-50/60 backdrop-blur-sm">
+      <Card className={`${darkTheme 
+          ? "border-slate-700 bg-gradient-to-br from-slate-800/80 to-slate-900/60 backdrop-blur-sm" 
+          : "border-blue-200 bg-gradient-to-br from-blue-50/80 to-indigo-50/60 backdrop-blur-sm"}`}>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-blue-800">
+          <CardTitle className={`flex items-center gap-2 ${darkTheme ? "text-white" : "text-blue-800"}`}>
             <BookOpen className="w-5 h-5" />
             How to Read Lenormand Cards
           </CardTitle>
-          <p className="text-sm text-blue-600">
+          <p className={`text-sm ${darkTheme ? "text-slate-300" : "text-blue-600"}`}>
             Learn the basics of Lenormand reading to get more accurate insights
           </p>
         </CardHeader>
@@ -63,7 +66,7 @@ export function LenormandGuide({ className }: LenormandGuideProps) {
           {/* What are Lenormand Cards */}
           <Collapsible open={openSections.basics} onOpenChange={() => toggleSection('basics')}>
             <CollapsibleTrigger asChild>
-              <Button variant="ghost" className="w-full justify-between p-3 hover:bg-blue-100">
+              <Button variant="ghost" className={`w-full justify-between p-3 ${darkTheme ? "hover:bg-slate-700" : "hover:bg-blue-100"}`}>
                 <div className="flex items-center gap-2">
                   <HelpCircle className="w-4 h-4" />
                   <span className="font-medium">What are Lenormand Cards?</span>
@@ -71,20 +74,22 @@ export function LenormandGuide({ className }: LenormandGuideProps) {
                 {openSections.basics ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
               </Button>
             </CollapsibleTrigger>
-            <CollapsibleContent className="space-y-3 mt-3 p-4 bg-white rounded-lg border border-blue-100">
-              <p className="text-sm text-slate-700 leading-relaxed">
+            <CollapsibleContent className={`space-y-3 mt-3 p-4 rounded-lg border ${darkTheme 
+                ? "bg-slate-800 border-slate-700" 
+                : "bg-white border-blue-100"}`}>
+              <p className={`text-sm leading-relaxed ${darkTheme ? "text-slate-300" : "text-slate-700"}`}>
                 Lenormand cards are a 36-card oracle deck originating from 19th century Europe. Unlike Tarot, 
                 Lenormand cards are more direct and practical, focusing on everyday situations and concrete outcomes. 
                 Each card has specific meanings that combine to create detailed insights about your life.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
-                <div className="p-3 bg-blue-50 rounded-lg">
-                  <h4 className="font-medium text-blue-800 mb-1">Direct & Practical</h4>
-                  <p className="text-xs text-blue-600">Focuses on real-life situations and concrete answers</p>
+                <div className={`p-3 rounded-lg ${darkTheme ? "bg-slate-700" : "bg-blue-50"}`}>
+                  <h4 className={`font-medium mb-1 ${darkTheme ? "text-slate-200" : "text-blue-800"}`}>Direct & Practical</h4>
+                  <p className={`text-xs ${darkTheme ? "text-slate-300" : "text-blue-600"}`}>Focuses on real-life situations and concrete answers</p>
                 </div>
-                <div className="p-3 bg-indigo-50 rounded-lg">
-                  <h4 className="font-medium text-indigo-800 mb-1">Combination-Based</h4>
-                  <p className="text-xs text-indigo-600">Cards modify each other to create nuanced meanings</p>
+                <div className={`p-3 rounded-lg ${darkTheme ? "bg-slate-700" : "bg-indigo-50"}`}>
+                  <h4 className={`font-medium mb-1 ${darkTheme ? "text-slate-200" : "text-indigo-800"}`}>Combination-Based</h4>
+                  <p className={`text-xs ${darkTheme ? "text-slate-300" : "text-indigo-600"}`}>Cards modify each other to create nuanced meanings</p>
                 </div>
               </div>
             </CollapsibleContent>
@@ -95,7 +100,7 @@ export function LenormandGuide({ className }: LenormandGuideProps) {
           {/* How to Formulate Questions */}
           <Collapsible open={openSections.questions} onOpenChange={() => toggleSection('questions')}>
             <CollapsibleTrigger asChild>
-              <Button variant="ghost" className="w-full justify-between p-3 hover:bg-blue-100">
+              <Button variant="ghost" className={`w-full justify-between p-3 ${darkTheme ? "hover:bg-slate-700" : "hover:bg-blue-100"}`}>
                 <div className="flex items-center gap-2">
                   <Target className="w-4 h-4" />
                   <span className="font-medium">How to Formulate Questions</span>
@@ -103,11 +108,13 @@ export function LenormandGuide({ className }: LenormandGuideProps) {
                 {openSections.questions ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
               </Button>
             </CollapsibleTrigger>
-            <CollapsibleContent className="space-y-3 mt-3 p-4 bg-white rounded-lg border border-blue-100">
+            <CollapsibleContent className={`space-y-3 mt-3 p-4 rounded-lg border ${darkTheme 
+                ? "bg-slate-800 border-slate-700" 
+                : "bg-white border-blue-100"}`}>
               <div className="space-y-3">
                 <div>
-                  <h4 className="font-medium text-slate-800 mb-2">Do's ✅</h4>
-                  <ul className="text-sm text-slate-600 space-y-1">
+                  <h4 className={`font-medium mb-2 ${darkTheme ? "text-slate-200" : "text-slate-800"}`}>Do's ✅</h4>
+                  <ul className={`text-sm space-y-1 ${darkTheme ? "text-slate-300" : "text-slate-600"}`}>
                     <li>• Be specific and focused</li>
                     <li>• Ask about situations and actions</li>
                     <li>• Use "what," "how," or "when" questions</li>
@@ -116,8 +123,8 @@ export function LenormandGuide({ className }: LenormandGuideProps) {
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-medium text-slate-800 mb-2">Don'ts ❌</h4>
-                  <ul className="text-sm text-slate-600 space-y-1">
+                  <h4 className={`font-medium mb-2 ${darkTheme ? "text-slate-200" : "text-slate-800"}`}>Don'ts ❌</h4>
+                  <ul className={`text-sm space-y-1 ${darkTheme ? "text-slate-300" : "text-slate-600"}`}>
                     <li>• Avoid yes/no questions</li>
                     <li>• Don't ask about others without their consent</li>
                     <li>• Avoid medical, legal, or financial advice</li>
@@ -127,10 +134,12 @@ export function LenormandGuide({ className }: LenormandGuideProps) {
                 </div>
               </div>
 
-              <div className="mt-4 p-3 bg-amber-50 rounded-lg border border-amber-200">
+              <div className={`mt-4 p-3 rounded-lg border ${darkTheme 
+                ? "bg-slate-700 border-slate-600" 
+                : "bg-amber-50 border-amber-200"}`}>
                 <div className="flex items-center gap-2 mb-2">
-                  <Lightbulb className="w-4 h-4 text-amber-600" />
-                  <h4 className="font-medium text-amber-800">Example Questions</h4>
+                  <Lightbulb className={`w-4 h-4 ${darkTheme ? "text-amber-400" : "text-amber-600"}`} />
+                  <h4 className={`font-medium ${darkTheme ? "text-amber-200" : "text-amber-800"}`}>Example Questions</h4>
                 </div>
                 <div className="space-y-2">
                   {questionExamples.map((category, index) => (
