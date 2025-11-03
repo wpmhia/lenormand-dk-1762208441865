@@ -27,9 +27,9 @@ export default function Home() {
                 Intelligence
               </span>
             </h1>
-            <p className="text-lg sm:text-xl lg:text-2xl text-amber-800 dark:text-amber-200 mb-8 max-w-3xl mx-auto lg:mx-0 leading-relaxed font-light">
+            <p className="text-lg sm:text-xl lg:text-2xl text-foreground mb-8 max-w-3xl mx-auto lg:mx-0 leading-relaxed font-light">
               Discover the ancient wisdom of Lenormand through AI-enhanced intuition.
-              <span className="text-amber-700 block mt-2">Experience personalized guidance where technology meets mystical insight.</span>
+              <span className="text-muted-foreground block mt-2">Experience personalized guidance where technology meets mystical insight.</span>
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
               <Link href="/read/new">
@@ -64,11 +64,11 @@ export default function Home() {
         <div className="mb-12 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-rose-500/5 via-transparent to-purple-500/5 rounded-3xl"></div>
           <div className="text-center mb-12 relative z-10">
-            <h2 className="text-4xl font-bold text-center mb-4 text-amber-900 dark:text-amber-100 relative">
+            <h2 className="text-4xl font-bold text-center mb-4 text-foreground relative">
               Choose Your Path
               <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-24 h-0.5 bg-gradient-to-r from-rose-600 to-purple-600 rounded-full"></div>
             </h2>
-            <p className="text-center text-amber-800 dark:text-amber-200 text-lg max-w-2xl mx-auto leading-relaxed">Select the depth of insight that calls to you</p>
+            <p className="text-center text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">Select the depth of insight that calls to you</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
               <Link href="/read/new">
@@ -161,11 +161,11 @@ export default function Home() {
         <div className="mb-12 slide-in-up relative">
           <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-transparent to-rose-500/5 rounded-3xl"></div>
           <div className="text-center mb-12 relative z-10">
-            <h2 className="text-4xl font-bold text-center mb-4 text-amber-900 dark:text-amber-100 relative">
+            <h2 className="text-4xl font-bold text-center mb-4 text-foreground relative">
               Wisdom & Guidance
               <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-40 h-0.5 bg-gradient-to-r from-amber-600 to-rose-600 rounded-full"></div>
             </h2>
-            <p className="text-center text-amber-800 dark:text-amber-200 text-lg max-w-2xl mx-auto leading-relaxed">Answers to illuminate your journey</p>
+            <p className="text-center text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">Answers to illuminate your journey</p>
           </div>
           <div className="max-w-4xl mx-auto space-y-6 relative z-10">
             <Card className="border-rose-400/20 dark:border-rose-400/30 bg-gradient-to-br from-white via-rose-50/50 to-amber-50 dark:from-slate-950 dark:via-rose-950/40 dark:to-slate-900 backdrop-blur-sm shadow-lg hover:shadow-2xl hover:shadow-rose-500/10 dark:hover:shadow-rose-500/20 transition-all duration-500 rounded-2xl overflow-hidden relative group">
@@ -226,11 +226,11 @@ export default function Home() {
           <div className="absolute top-4 left-4 w-16 h-16 bg-rose-500/20 rounded-full blur-xl"></div>
           <div className="absolute bottom-4 right-4 w-12 h-12 bg-purple-500/20 rounded-full blur-lg"></div>
           <div className="relative z-10">
-            <h2 className="text-4xl font-bold mb-6 text-slate-800 dark:text-white relative">
+            <h2 className="text-4xl font-bold mb-6 text-foreground relative">
               Begin Your Mystical Journey
               <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-48 h-0.5 bg-gradient-to-r from-rose-400 via-amber-300 to-purple-400 rounded-full"></div>
             </h2>
-            <p className="text-slate-600 dark:text-amber-100 mb-8 text-xl max-w-2xl mx-auto leading-relaxed">
+            <p className="text-muted-foreground mb-8 text-xl max-w-2xl mx-auto leading-relaxed">
               Let the cards reveal what your soul already knows
             </p>
             <Link href="/read/new">
