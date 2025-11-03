@@ -833,6 +833,110 @@
       {
         "withCardId": 10,
         "meaning": "Uncertain separation or change, confusing break or division"
+      },
+      {
+        "withCardId": 11,
+        "meaning": "Confusing conflict or argument, unclear dispute, foggy disagreement"
+      },
+      {
+        "withCardId": 12,
+        "meaning": "Uncertain communication or messages, confusing news or information"
+      },
+      {
+        "withCardId": 13,
+        "meaning": "Confusing childhood or innocence, unclear youth or new beginnings"
+      },
+      {
+        "withCardId": 14,
+        "meaning": "Deceptive cleverness or cunning, unclear wisdom or tricky intelligence"
+      },
+      {
+        "withCardId": 15,
+        "meaning": "Confusing power or authority, unclear strength or hidden control"
+      },
+      {
+        "withCardId": 16,
+        "meaning": "Uncertain hopes or wishes, confusing dreams or unclear aspirations"
+      },
+      {
+        "withCardId": 17,
+        "meaning": "Confusing change or movement, unclear transition or foggy transformation"
+      },
+      {
+        "withCardId": 18,
+        "meaning": "Uncertain friendship or loyalty, confusing companionship or unclear alliance"
+      },
+      {
+        "withCardId": 19,
+        "meaning": "Uncertain isolation or protection, confusing authority or hidden structure"
+      },
+      {
+        "withCardId": 20,
+        "meaning": "Confusing judgment or destiny, unclear fate or hidden cosmic order"
+      },
+      {
+        "withCardId": 21,
+        "meaning": "Confusing obstacles or challenges, unclear burdens or foggy path"
+      },
+      {
+        "withCardId": 22,
+        "meaning": "Uncertain choices or decisions, confusing paths or unclear options"
+      },
+      {
+        "withCardId": 23,
+        "meaning": "Confusing loss or problems, unclear troubles or hidden issues"
+      },
+      {
+        "withCardId": 24,
+        "meaning": "Uncertain emotions or love, confusing feelings or foggy romance"
+      },
+      {
+        "withCardId": 25,
+        "meaning": "Confusing commitment or union, unclear contract or foggy agreement"
+      },
+      {
+        "withCardId": 26,
+        "meaning": "Uncertain knowledge or secrets, confusing information or hidden wisdom"
+      },
+      {
+        "withCardId": 27,
+        "meaning": "Confusing messages or communication, unclear letters or foggy information"
+      },
+      {
+        "withCardId": 28,
+        "meaning": "Confusing masculinity or authority, unclear man or hidden leadership"
+      },
+      {
+        "withCardId": 29,
+        "meaning": "Uncertain femininity or intuition, confusing woman or hidden emotions"
+      },
+      {
+        "withCardId": 30,
+        "meaning": "Confusing peace or harmony, unclear tranquility or foggy balance"
+      },
+      {
+        "withCardId": 31,
+        "meaning": "Uncertain success or achievement, confusing victory or hidden recognition"
+      },
+      {
+        "withCardId": 32,
+        "meaning": "Confusing intuition or dreams, unclear subconscious or hidden visions"
+      },
+      {
+        "withCardId": 33,
+        "meaning": "Uncertain solutions or access, confusing answers or hidden opportunities"
+      },
+      {
+        "withCardId": 34,
+        "meaning": "Confusing prosperity or abundance, unclear wealth or hidden resources"
+      },
+      {
+        "withCardId": 35,
+        "meaning": "Confusing stability or security, unclear foundation or hidden support"
+      },
+      {
+        "withCardId": 36,
+        "meaning": "Confusing spirituality or destiny, unclear path or hidden cosmic meaning"
       }
     ],
     "imageUrl": "/images/cards/06-clouds.png"
