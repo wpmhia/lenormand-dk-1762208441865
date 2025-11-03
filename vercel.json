@@ -1,7 +1,7 @@
 {
   "functions": {
     "app/api/readings/interpret/route.ts": {
-      "runtime": "nodejs",
+      "runtime": "nodejs18.x",
       "maxDuration": 30
     }
   },
