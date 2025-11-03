@@ -5,7 +5,7 @@ import { Card as CardType, ReadingCard } from '@/lib/types'
 import { Deck } from '@/components/Deck'
 import { ReadingViewer } from '@/components/ReadingViewer'
 import { AIReadingDisplay } from '@/components/AIReadingDisplay'
-import { ContextInput } from '@/components/ContextInput'
+
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
@@ -33,7 +33,7 @@ export default function NewReadingPage() {
 
   const [question, setQuestion] = useState('')
   const [questionCharCount, setQuestionCharCount] = useState(0)
-  const [context, setContext] = useState('')
+
   const [allowReversed, setAllowReversed] = useState(false)
 
   const [error, setError] = useState('')
@@ -90,7 +90,7 @@ export default function NewReadingPage() {
     try {
       const aiRequest: AIReadingRequest = {
         question: question.trim(),
-        context: context.trim() || undefined,
+
         cards: readingCards.map(card => ({
           id: card.id,
           name: getCardById(allCards, card.id)?.name || 'Unknown',
@@ -158,7 +158,7 @@ export default function NewReadingPage() {
     setStep('setup')
     setQuestion('')
     setQuestionCharCount(0)
-    setContext('')
+
     setLayoutType(3)
     setAllowReversed(false)
     setError('')
@@ -260,10 +260,7 @@ export default function NewReadingPage() {
                 </div>
                 </div>
 
-                <ContextInput
-                  value={context}
-                  onChange={setContext}
-                />
+
 
                 <div className="space-y-4">
                   <div className="space-y-2">

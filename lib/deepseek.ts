@@ -12,7 +12,6 @@ export function isDeepSeekAvailable(): boolean {
 // AI Reading request interface
 export interface AIReadingRequest {
   question: string
-  context?: string
   cards: Array<{
     id: number
     name: string
@@ -157,14 +156,14 @@ function buildSystemPrompt(vars: {
 }
 
 // Safety check function
-function isSafePrompt(question: string, context?: string): boolean {
+function isSafePrompt(question: string): boolean {
   const blockedKeywords = [
     'medical', 'health', 'doctor', 'diagnosis', 'treatment', 'illness', 'disease',
     'legal', 'lawyer', 'court', 'lawsuit', 'contract', 'divorce',
     'suicide', 'death', 'kill', 'murder', 'violence', 'abuse'
   ]
 
-  const text = `${question} ${context || ''}`.toLowerCase()
+  const text = question.toLowerCase()
   return !blockedKeywords.some(keyword => text.includes(keyword))
 }
 
@@ -175,7 +174,7 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
     return null
   }
 
-  if (!isSafePrompt(request.question, request.context)) {
+  if (!isSafePrompt(request.question)) {
     throw new Error('Cannot provide readings for medical, legal, or sensitive topics. Please consult appropriate professionals.')
   }
 
@@ -270,7 +269,7 @@ function buildUserPrompt(request: AIReadingRequest): string {
   ).join(', ')
 
   return `Question: "${request.question}"
-${request.context ? `Context: ${request.context}` : ''}
+
 Spread: ${cardDescriptions}
 Layout: ${request.layoutType}-card ${request.layoutType === 36 ? 'Grand Tableau' : request.layoutType === 3 ? 'Past-Present-Future' : 'reading'}`
 }
