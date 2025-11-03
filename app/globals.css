@@ -34,6 +34,18 @@
     --mystical-start: hsl(35 77% 95%);
     --mystical-mid: hsl(330 79% 95%);
     --mystical-end: hsl(270 83% 95%);
+    --card-mystical-bg-start: rgba(245, 242, 232, 0.9);
+    --card-mystical-bg-end: rgba(232, 220, 192, 0.9);
+    --card-mystical-border: #8b4513;
+    --card-mystical-shadow: rgba(139, 69, 19, 0.2);
+    --card-mystical-hover-border: #a0522d;
+    --card-mystical-hover-shadow: rgba(139, 69, 19, 0.3);
+    --scrollbar-track: rgba(139, 69, 19, 0.05);
+    --scrollbar-thumb: rgba(139, 69, 19, 0.3);
+    --scrollbar-thumb-hover: rgba(139, 69, 19, 0.5);
+    --loading-skeleton-start: hsl(45 100% 80%);
+    --loading-skeleton-mid: hsl(45 100% 90%);
+    --loading-skeleton-end: hsl(45 100% 80%);
   }
 
   .dark {
@@ -61,9 +73,21 @@
     --section-gradient-end: hsl(270 40% 75%);
     --nav-start: hsl(35 40% 20% / 0.9);
     --nav-end: hsl(330 40% 20% / 0.9);
-    --mystical-start: hsl(35 40% 15%);
-    --mystical-mid: hsl(330 40% 15%);
-    --mystical-end: hsl(270 40% 15%);
+  --mystical-start: hsl(35 40% 15%);
+  --mystical-mid: hsl(330 40% 15%);
+  --mystical-end: hsl(270 40% 15%);
+  --card-mystical-bg-start: rgba(30, 30, 30, 0.9);
+  --card-mystical-bg-end: rgba(50, 50, 50, 0.9);
+  --card-mystical-border: #a0522d;
+  --card-mystical-shadow: rgba(160, 82, 45, 0.2);
+  --card-mystical-hover-border: #8b4513;
+  --card-mystical-hover-shadow: rgba(160, 82, 45, 0.3);
+  --scrollbar-track: rgba(160, 82, 45, 0.05);
+  --scrollbar-thumb: rgba(160, 82, 45, 0.3);
+  --scrollbar-thumb-hover: rgba(160, 82, 45, 0.5);
+  --loading-skeleton-start: hsl(45 40% 60%);
+  --loading-skeleton-mid: hsl(45 40% 70%);
+  --loading-skeleton-end: hsl(45 40% 60%);
   }
 
   /* apply to <body> */
@@ -257,9 +281,9 @@ undefined
   
   .card-mystical {
     aspect-ratio: 2.5/3.5;
-    background: linear-gradient(135deg, rgba(245, 242, 232, 0.9), rgba(232, 220, 192, 0.9));
-    border: 2px solid #8b4513;
-    box-shadow: 0 8px 16px rgba(139, 69, 19, 0.2);
+    background: linear-gradient(135deg, var(--card-mystical-bg-start), var(--card-mystical-bg-end));
+    border: 2px solid var(--card-mystical-border);
+    box-shadow: 0 8px 16px var(--card-mystical-shadow);
     position: relative;
     transition: all 0.3s ease;
   }
@@ -276,8 +300,8 @@ undefined
   }
 
   .card-mystical:hover {
-    box-shadow: 0 12px 24px rgba(139, 69, 19, 0.3);
-    border-color: #a0522d;
+    box-shadow: 0 12px 24px var(--card-mystical-hover-shadow);
+    border-color: var(--card-mystical-hover-border);
   }
 
   /* Global page layouts */
@@ -324,7 +348,8 @@ undefined
 
   /* Global loading states */
   .loading-skeleton {
-    @apply bg-gradient-to-r from-amber-200 via-amber-100 to-amber-200 bg-animate-pulse rounded;
+    background: linear-gradient(to right, var(--loading-skeleton-start), var(--loading-skeleton-mid), var(--loading-skeleton-end));
+    @apply animate-pulse rounded;
   }
 
   .loading-spinner {
@@ -375,16 +400,16 @@ undefined
   }
   
   ::-webkit-scrollbar-track {
-    background: rgba(139, 69, 19, 0.05);
+    background: var(--scrollbar-track);
   }
-  
+
   ::-webkit-scrollbar-thumb {
-    background: rgba(139, 69, 19, 0.3);
+    background: var(--scrollbar-thumb);
     border-radius: 3px;
   }
-  
+
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(139, 69, 19, 0.5);
+    background: var(--scrollbar-thumb-hover);
   }
 
   /* Global utility classes */
