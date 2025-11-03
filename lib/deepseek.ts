@@ -20,6 +20,7 @@ export interface AIReadingRequest {
     facing?: 'left' | 'right'
   }>
   layoutType: number
+  threeCardSpreadType?: string
   userLocale?: string
 }
 
@@ -119,10 +120,17 @@ Rider=news,speed; Clover=small luck; Ship=distance,trade; House=home,stability; 
 
 Combination rules:
 - Left card modifies right card
-- Above card influences below card  
+- Above card influences below card
 - Reversed cards mean delayed, weakened, or blocked energy
 - Cards facing each other show connection
 - Cards facing away show distance
+
+3-Card Spread Interpretations:
+- past-present-future: Position 0=Past, 1=Present, 2=Future. Read as timeline progression.
+- situation-challenge-advice: Position 0=Situation, 1=Challenge, 2=Advice. Focus on problem-solving.
+- mind-body-spirit: Position 0=Mind, 1=Body, 2=Spirit. Address holistic well-being.
+- yes-no-maybe: Position 0=Yes factors, 1=No factors, 2=Maybe factors. Weigh possibilities.
+- general-reading: Read cards 0, 1, 2 as a flowing sentence or story. Connect them narratively.
 
 Write 120-150 words in clear, everyday language.
 Focus on practical advice and real-life situations.
@@ -176,6 +184,7 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
       question: request.question,
       spread: {
         type: `${request.layoutType}card`,
+        spreadType: request.layoutType === 3 ? request.threeCardSpreadType : undefined,
         cards: request.cards.map(card => ({
           name: card.name,
           pos: card.position,
