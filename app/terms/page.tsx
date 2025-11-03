@@ -131,7 +131,7 @@ export default function TermsPage() {
             </CardHeader>
             <CardContent className="text-slate-300 space-y-4">
               <p>
-                For questions about these terms of service or to report violations, please contact us. We're committed to maintaining a safe and respectful environment for all users.
+                For questions about these terms of service or to report violations, please contact us. We&apos;re committed to maintaining a safe and respectful environment for all users.
               </p>
               <p className="text-amber-200 text-sm">
                 These terms are effective as of November 2024 and constitute the entire agreement between you and Lenormand Intelligence.

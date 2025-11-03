@@ -113,22 +113,22 @@ export function LenormandGuide({ className, darkTheme = false }: LenormandGuideP
                 : "bg-white border-blue-100"}`}>
               <div className="space-y-3">
                 <div>
-                  <h4 className={`font-medium mb-2 ${darkTheme ? "text-slate-200" : "text-slate-800"}`}>Do's ✅</h4>
+                  <h4 className={`font-medium mb-2 ${darkTheme ? "text-slate-200" : "text-slate-800"}`}>Do&apos;s ✅</h4>
                   <ul className={`text-sm space-y-1 ${darkTheme ? "text-slate-300" : "text-slate-600"}`}>
                     <li>• Be specific and focused</li>
                     <li>• Ask about situations and actions</li>
-                    <li>• Use "what," "how," or "when" questions</li>
+                    <li>• Use &quot;what,&quot; &quot;how,&quot; or &quot;when&quot; questions</li>
                     <li>• Focus on yourself and your choices</li>
                     <li>• Keep questions open-ended</li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className={`font-medium mb-2 ${darkTheme ? "text-slate-200" : "text-slate-800"}`}>Don'ts ❌</h4>
+                  <h4 className={`font-medium mb-2 ${darkTheme ? "text-slate-200" : "text-slate-800"}`}>Don&apos;ts ❌</h4>
                   <ul className={`text-sm space-y-1 ${darkTheme ? "text-slate-300" : "text-slate-600"}`}>
                     <li>• Avoid yes/no questions</li>
-                    <li>• Don't ask about others without their consent</li>
+                    <li>• Don&apos;t ask about others without their consent</li>
                     <li>• Avoid medical, legal, or financial advice</li>
-                    <li>• Don't ask the same question repeatedly</li>
+                    <li>• Don&apos;t ask the same question repeatedly</li>
                     <li>• Avoid questions about death or specific timing</li>
                   </ul>
                 </div>
@@ -149,7 +149,7 @@ export function LenormandGuide({ className, darkTheme = false }: LenormandGuideP
                       </Badge>
                       <div className="ml-2 space-y-1">
                         {category.examples.slice(0, 2).map((example, i) => (
-                          <p key={i} className="text-xs text-slate-600 italic">"{example}"</p>
+                          <p key={i} className="text-xs text-slate-600 italic">&quot;{example}&quot;</p>
                         ))}
                       </div>
                     </div>
@@ -179,7 +179,7 @@ export function LenormandGuide({ className, darkTheme = false }: LenormandGuideP
                   <ul className="text-xs text-slate-600 space-y-1">
                     <li><strong>Past:</strong> What led to this</li>
                     <li><strong>Present:</strong> Current situation</li>
-                    <li><strong>Future:</strong> Where it's heading</li>
+                    <li><strong>Future:</strong> Where it&apos;s heading</li>
                   </ul>
                 </div>
                 <div className="p-3 bg-slate-50 rounded-lg">
@@ -187,7 +187,7 @@ export function LenormandGuide({ className, darkTheme = false }: LenormandGuideP
                   <ul className="text-xs text-slate-600 space-y-1">
                     <li><strong>Past:</strong> Background</li>
                     <li><strong>Present:</strong> Current state</li>
-                    <li><strong>Future:</strong> What's coming</li>
+                    <li><strong>Future:</strong> What&apos;s coming</li>
                     <li><strong>Challenge:</strong> Obstacles</li>
                     <li><strong>Advice:</strong> Guidance</li>
                   </ul>

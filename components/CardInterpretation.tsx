@@ -59,7 +59,7 @@ export function CardInterpretation({ cards, allCards, layoutType, question }: Ca
     const fullCard = getCardById(allCards, card.id)
     if (!fullCard) return "Card meaning not found"
     
-    return card.reversed ? fullCard.reversedMeaning : fullCard.uprightMeaning
+    return card.reversed ? (fullCard.reversedMeaning || fullCard.uprightMeaning) : fullCard.uprightMeaning
   }
 
   const getCardKeywords = (card: ReadingCard): string[] => {

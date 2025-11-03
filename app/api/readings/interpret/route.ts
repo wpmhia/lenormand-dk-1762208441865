@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     // Validate required fields
     if (!body.question || !body.cards || !Array.isArray(body.cards)) {
       console.log('Validation failed: missing fields')
-      const missingFields = []
+      const missingFields: string[] = []
       if (!body.question) missingFields.push('question')
       if (!body.cards) missingFields.push('cards')
       if (!Array.isArray(body.cards)) missingFields.push('cards must be an array')

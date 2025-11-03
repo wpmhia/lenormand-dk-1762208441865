@@ -68,7 +68,7 @@ export default function PrivacyPage() {
               </p>
               <ul className="list-disc list-inside space-y-2 ml-4">
                 <li><strong>Local Storage:</strong> Readings are stored in your browser only</li>
-                <li><strong>No Accounts Required:</strong> We don't collect personal identifiers</li>
+                <li><strong>No Accounts Required:</strong> We don&apos;t collect personal identifiers</li>
                 <li><strong>Secure AI Processing:</strong> AI requests are encrypted and not logged</li>
                 <li><strong>No Data Selling:</strong> We never sell or share your data with third parties</li>
               </ul>
@@ -95,7 +95,7 @@ export default function PrivacyPage() {
             </CardHeader>
             <CardContent className="text-slate-300 space-y-4">
               <p>
-                If you have questions about this privacy policy or how we handle your data, please reach out. We're committed to protecting your privacy and ensuring transparency in our practices.
+                If you have questions about this privacy policy or how we handle your data, please reach out. We&apos;re committed to protecting your privacy and ensuring transparency in our practices.
               </p>
               <p className="text-amber-200 text-sm">
                 This policy is effective as of November 2024 and may be updated to reflect changes in our practices or legal requirements.

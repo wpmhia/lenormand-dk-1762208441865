@@ -22,7 +22,8 @@ interface AIReadingDisplayProps {
     action?: string
     waitTime?: number
     fields?: string[]
-  }
+    suggestion?: string
+  } | null
   onRetry?: () => void
   retryCount?: number
   cards?: ReadingCard[]

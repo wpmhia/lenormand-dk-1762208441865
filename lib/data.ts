@@ -18,8 +18,10 @@ export function getCardById(cards: Card[], id: number): Card | undefined {
 export function deleteReading(slug: string): void {
   if (typeof window === 'undefined') return
   
-  const readings = getReadings()
-  const filtered = readings.filter(reading => reading.slug !== slug)
+  const STORAGE_KEY = 'lenormand-readings'
+  const stored = localStorage.getItem(STORAGE_KEY)
+  const readings = stored ? JSON.parse(stored) : []
+  const filtered = readings.filter((reading: Reading) => reading.slug !== slug)
   localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered))
 }
 
