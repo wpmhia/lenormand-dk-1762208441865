@@ -271,7 +271,19 @@ function buildUserPrompt(request: AIReadingRequest): string {
   return `Question: "${request.question}"
 
 Spread: ${cardDescriptions}
-Layout: ${request.layoutType}-card ${request.layoutType === 36 ? 'Grand Tableau' : request.layoutType === 3 ? 'Past-Present-Future' : 'reading'}`
+Layout: ${request.layoutType}-card ${request.layoutType === 36 ? 'Grand Tableau' : request.layoutType === 3 ? getThreeCardSpreadLabel(request.threeCardSpreadType) : 'reading'}`
+}
+
+// Get display name for 3-card spread type
+function getThreeCardSpreadLabel(spreadType?: string): string {
+  const spreadLabels: Record<string, string> = {
+    "past-present-future": "Past-Present-Future",
+    "situation-challenge-advice": "Situation-Challenge-Advice",
+    "mind-body-spirit": "Mind-Body-Spirit",
+    "yes-no-maybe": "Yes-No-Maybe",
+    "general-reading": "General Reading"
+  }
+  return spreadLabels[spreadType || "past-present-future"] || "Past-Present-Future"
 }
 
 // Parse AI response into structured format (continuous prose)
