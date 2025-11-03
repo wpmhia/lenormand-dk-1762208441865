@@ -14,6 +14,10 @@ export default {
         "primary-foreground": "hsl(var(--primary-foreground))",
         muted: "hsl(var(--muted))",
         "muted-foreground": "hsl(var(--muted-foreground))",
+        popover: "hsl(var(--popover))",
+        "popover-foreground": "hsl(var(--popover-foreground))",
+        accent: "hsl(var(--accent))",
+        "accent-foreground": "hsl(var(--accent-foreground))",
         border: "hsl(var(--border))",
       },
       borderRadius: {
