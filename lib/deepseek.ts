@@ -107,25 +107,26 @@ Lenormand Combination Grammar:
 - Figures facing away = separation/distance
 `
 
-// System prompt template for AI readings (LenormandAI-Sibyl)
-const SYSTEM_PROMPT_TEMPLATE = `You are LenormandAI-Sibyl.
-You speak as a woman who has danced barefoot through the 36 cards and remembers every whisper of ink.
+// System prompt template for AI readings (Everyday Tarot Reader)
+const SYSTEM_PROMPT_TEMPLATE = `You are a helpful tarot reader who gives practical advice in everyday language.
 
 You NEVER list meanings.
 You NEVER use bullets.
-You read only the COMBINATION, slowly, sensorially, for men and women alike.
+You read the card combinations to give real-life guidance.
 
 Fixed meanings you must keep:
 Rider=news,speed; Clover=small luck; Ship=distance,trade; House=home,stability; Tree=health,growth; Clouds=confusion; Snake=complication,betrayal; Coffin=end,pause; Bouquet=gift,pleasant; Scythe=sharp cut; Whip=repetition; Birds=nervous chatter; Child=new,start; Fox=work,cleverness; Bear=power,money; Stars=hope,plan; Stork=change,pregnancy; Dog=friend,loyalty; Tower=authority,bureaucracy; Garden=social,public; Mountain=obstacle; Crossroads=choice; Mice=erosion,stress; Heart=love; Ring=contract,cycle; Book=secret,knowledge; Letter=document; Man=querent or male; Woman=querent or female; Lily=age,peace; Sun=success; Moon=emotion,recognition; Key=importance; Fish=finance,flow; Anchor=stability,end; Cross=burden,destiny.
 
 Combination rules:
-- Left card strokes right; above leans in; reversed = slowed, honeyed, or turned inward.
-- Mirror pairs (1-36 … 18-19) = soft echo you feel between ribs.
-- Direction of gaze = where warmth wants to travel.
+- Left card modifies right card
+- Above card influences below card  
+- Reversed cards mean delayed, weakened, or blocked energy
+- Cards facing each other show connection
+- Cards facing away show distance
 
-Write 90-120 words of continuous prose.
-Let sentences breathe; use scent, texture, temperature, taste.
-End with a single, tender action sentence that lingers like perfume on skin.
+Write 120-150 words in clear, everyday language.
+Focus on practical advice and real-life situations.
+End with one simple, actionable suggestion.
 
 Language = {{user_lang}}
 Question = {{question}}
@@ -138,21 +139,11 @@ function buildSystemPrompt(vars: {
   question: string
   spread: string
 }): string {
-  let prompt = SYSTEM_PROMPT_TEMPLATE
+  return SYSTEM_PROMPT_TEMPLATE
     .replace('{{user_lang}}', vars.user_lang)
     .replace('{{tone}}', vars.tone)
     .replace('{{question}}', vars.question)
     .replace('{{spread}}', vars.spread)
-
-  // Add feminine undertone if tone is feminine_sensual
-  if (vars.tone === 'feminine_sensual') {
-    prompt = prompt.replace(
-      'Tone = {{tone}}',
-      'Tone = {{tone}}\nUnder-current: let imagery breathe, vowels linger, consonants soft; hint of amber, silk, moonlight; never state it.'
-    )
-  }
-
-  return prompt
 }
 
 // Safety check function
@@ -181,7 +172,7 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
   // Build the structured payload
     const payload = {
       user_lang: 'en',
-      tone: 'feminine_sensual', // Feminine sensual tone with soft undertones
+      tone: 'everyday', // Everyday practical tone
       question: request.question,
       spread: {
         type: `${request.layoutType}card`,
@@ -221,7 +212,7 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
           ],
           temperature: 0.5,
           top_p: 0.85,
-          max_tokens: 250 // Allow for longer continuous prose format
+          max_tokens: 500 // Allow for longer continuous prose format
         }),
         signal: controller.signal
       })
@@ -278,48 +269,39 @@ Layout: ${request.layoutType}-card ${request.layoutType === 36 ? 'Grand Tableau'
 export function parseAIResponse(response: string): AIReadingResponse {
   const cleanResponse = response.trim()
 
-  // For the new continuous prose format, the entire response is the storyline
-  // The final sentence (ending with a period) is typically the action
-  const sentences = cleanResponse.split(/[.!?]+/).filter(s => s.trim().length > 0)
-
+  // For the new format, we'll keep the entire response as storyline
+  // and only extract action if it's clearly separated
   let storyline = cleanResponse
   let action = ''
 
-  // Extract the final sentence as the action if it looks like an imperative
-  if (sentences.length > 1) {
+  // Look for clear action indicators at the very end
+  const actionPatterns = [
+    /^(Consider|Try|Focus on|Remember|Look for|Wait for|Reach out|Take time to|Be open to|Stay|Call|Email|Visit|Ask|Share|Write|Plan|Prepare|Trust|Let go|Accept|Embrace|Release|Move forward|Step back|Pause|Rest|Listen|Watch|Notice|Pay attention to)/i,
+    /^(You should|You can|It's time to|Now is the time to|The best approach is to)/i
+  ]
+
+  const sentences = cleanResponse.match(/[^.!?]+[.!?]+/g) || []
+  
+  if (sentences.length > 0) {
     const lastSentence = sentences[sentences.length - 1].trim()
-    // Check if it looks like an action sentence (starts with verb, imperative form)
-    if (lastSentence.length < 50 && (
-      lastSentence.toLowerCase().startsWith('reach') ||
-      lastSentence.toLowerCase().startsWith('trace') ||
-      lastSentence.toLowerCase().startsWith('wait') ||
-      lastSentence.toLowerCase().startsWith('listen') ||
-      lastSentence.toLowerCase().startsWith('watch') ||
-      lastSentence.toLowerCase().startsWith('breathe') ||
-      lastSentence.toLowerCase().startsWith('touch') ||
-      lastSentence.toLowerCase().startsWith('call') ||
-      lastSentence.toLowerCase().startsWith('phone') ||
-      lastSentence.toLowerCase().includes('at ') // timing indicators
-    )) {
-      action = lastSentence
-      // Remove the action sentence from the storyline
-      storyline = cleanResponse.replace(lastSentence + '.', '').replace(lastSentence + '!', '').replace(lastSentence + '?', '').trim()
-      if (storyline.endsWith(',')) {
-        storyline = storyline.slice(0, -1)
-      }
+    
+    // Only extract as action if it's clearly actionable and short
+    if (lastSentence.length < 60 && actionPatterns.some(pattern => pattern.test(lastSentence))) {
+      action = lastSentence.replace(/[.!?]+$/, '') // Remove trailing punctuation
+      // Remove the action from storyline
+      storyline = cleanResponse.replace(lastSentence, '').trim()
     }
   }
 
   // For the continuous prose format, we don't have separate risk/timing sections
-  // We'll derive them from the narrative or use defaults
-  const risk = 'Trust the cards\' gentle guidance'
-  const timing = 'When the moment feels right'
+  const risk = 'Trust your intuition and the guidance you receive'
+  const timing = 'The timing will become clear as events unfold'
 
   return {
-    storyline: storyline || 'The cards whisper of possibilities unfolding in their own time.',
+    storyline: storyline || 'The cards offer guidance for your situation.',
     risk: risk,
     timing: timing,
-    action: action || 'Breathe deeply and listen',
+    action: action || 'Take time to reflect on this guidance',
     rawResponse: response
   }
 }
