@@ -1,7 +1,14 @@
 {
   "functions": {
     "app/api/readings/interpret/route.ts": {
+      "runtime": "nodejs",
       "maxDuration": 30
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/warmup",
+      "schedule": "*/10 * * * *"
+    }
+  ]
 }
