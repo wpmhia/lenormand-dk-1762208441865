@@ -82,9 +82,12 @@ export default function Home() {
                       <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                          Journey through time&apos;s tapestry
                       </p>
-                      <div className="flex items-center text-primary text-sm font-medium">
-                        3 Cards <ArrowRight className="w-4 h-4 ml-2 text-primary/60" />
-                      </div>
+                       <div className="flex items-center text-sm font-medium">
+                         <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold bg-primary/12 text-primary dark:bg-primary dark:text-primary-foreground ring-1 ring-primary/10 dark:ring-primary/30">
+                           3 Cards
+                         </span>
+                         <ArrowRight className="w-4 h-4 ml-2 text-primary/60 dark:text-primary/60" />
+                       </div>
                    </CardContent>
                 </Card>
               </Link>
@@ -102,9 +105,12 @@ export default function Home() {
                       <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                         Deep exploration with hidden insights
                       </p>
-                      <div className="flex items-center text-primary text-sm font-medium">
-                        5 Cards <ArrowRight className="w-4 h-4 ml-2 text-primary/60" />
-                      </div>
+                       <div className="flex items-center text-sm font-medium">
+                         <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold bg-primary/12 text-primary dark:bg-primary dark:text-primary-foreground ring-1 ring-primary/10 dark:ring-primary/30">
+                           5 Cards
+                         </span>
+                         <ArrowRight className="w-4 h-4 ml-2 text-primary/60 dark:text-primary/60" />
+                       </div>
                    </CardContent>
                 </Card>
               </Link>
@@ -122,9 +128,12 @@ export default function Home() {
                       <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                          Complete life&apos;s grand design
                       </p>
-                      <div className="flex items-center text-primary text-sm font-medium">
-                        9 Cards <ArrowRight className="w-4 h-4 ml-2 text-primary/60" />
-                      </div>
+                       <div className="flex items-center text-sm font-medium">
+                         <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold bg-primary/12 text-primary dark:bg-primary dark:text-primary-foreground ring-1 ring-primary/10 dark:ring-primary/30">
+                           9 Cards
+                         </span>
+                         <ArrowRight className="w-4 h-4 ml-2 text-primary/60 dark:text-primary/60" />
+                       </div>
                    </CardContent>
                 </Card>
               </Link>
@@ -142,9 +151,12 @@ export default function Home() {
                       <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                         The complete mystical revelation
                       </p>
-                      <div className="flex items-center text-primary text-sm font-medium">
-                        36 Cards <ArrowRight className="w-4 h-4 ml-2 text-primary/60" />
-                      </div>
+                       <div className="flex items-center text-sm font-medium">
+                         <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold bg-primary/12 text-primary dark:bg-primary dark:text-primary-foreground ring-1 ring-primary/10 dark:ring-primary/30">
+                           36 Cards
+                         </span>
+                         <ArrowRight className="w-4 h-4 ml-2 text-primary/60 dark:text-primary/60" />
+                       </div>
                    </CardContent>
                 </Card>
               </Link>

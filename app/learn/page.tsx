@@ -164,10 +164,12 @@ export default function LearnPage() {
                   {module.description}
                 </p>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center text-primary text-sm font-medium">
-                    <Clock className="w-4 h-4 mr-1" />
-                    {module.duration}
-                  </div>
+                   <div className="flex items-center text-sm font-medium">
+                     <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold bg-primary/12 text-primary dark:bg-primary dark:text-primary-foreground ring-1 ring-primary/10 dark:ring-primary/30">
+                       <Clock className="w-3 h-3 mr-1" />
+                       {module.duration}
+                     </span>
+                   </div>
                   <Link href={`/learn/${module.id}`}>
                     <Button size="sm" variant="ghost" className="text-primary hover:text-primary/80 hover:bg-muted p-0 h-auto">
                       Learn More
