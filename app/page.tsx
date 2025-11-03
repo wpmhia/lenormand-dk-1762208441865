@@ -17,9 +17,7 @@ export default function Home() {
       <div className="container mx-auto px-4 py-10 max-w-6xl">
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-12 slide-in-up relative">
           <div className="text-center lg:text-left space-y-8 relative z-10">
-            <Badge className="mb-6 bg-gradient-to-r from-amber-600/40 via-rose-500/40 to-purple-600/40 dark:from-amber-600/60 dark:via-rose-500/60 dark:to-purple-600/60 text-amber-900 dark:text-amber-100 border-amber-600/50 dark:border-amber-400/50 px-8 py-4 text-sm font-semibold tracking-wide uppercase rounded-full backdrop-blur-sm shadow-lg shadow-amber-500/20 dark:shadow-amber-500/30" variant="secondary">
-              ✨ Mystical Lenormand Wisdom
-            </Badge>
+
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-8 text-amber-900 dark:text-amber-100 leading-tight relative">
               <span className="relative inline-block">
                 Lenormand
