@@ -130,7 +130,9 @@ Combination rules:
 - situation-challenge-advice: Position 0=Situation, 1=Challenge, 2=Advice. Focus on problem-solving.
 - mind-body-spirit: Position 0=Mind, 1=Body, 2=Spirit. Address holistic well-being.
 - yes-no-maybe: Position 0=Yes factors, 1=No factors, 2=Maybe factors. Weigh possibilities.
-- general-reading: Read cards 0, 1, 2 as a flowing sentence or story. Connect them narratively.
+- general-reading: Read cards 0, 1, 2 as a flowing sentence or story. Connect them narratively into a cohesive paragraph that tells a complete story about the situation, like a human reader would. Focus on relationships, emotions, and practical implications rather than just listing card meanings.
+
+Example for general-reading: "The strong foundation you've built together creates a solid base for something more, but the choice ahead requires careful consideration. With such close friendship at stake, he faces a difficult decision that demands patience and thoughtfulness to avoid losing what you already share."
 
 Write 120-150 words in clear, everyday language.
 Focus on practical advice and real-life situations.
