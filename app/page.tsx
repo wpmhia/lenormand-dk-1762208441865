@@ -12,7 +12,7 @@ import {
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-amber-50 via-rose-50 to-purple-50 dark:from-slate-900 dark:via-purple-900 dark:to-slate-900 relative overflow-hidden" role="main">
+    <main className="page-layout" role="main">
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-10 max-w-6xl">
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-12 relative">
