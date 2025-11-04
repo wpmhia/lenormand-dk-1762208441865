@@ -52,7 +52,7 @@ export default function Home() {
              <div className="relative">
                <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-primary/10 to-primary/20 rounded-3xl blur-3xl opacity-30"></div>
                {/* Stable wrapper reserves layout space and prevents CLS/white-space */}
-               <div className="hero-image-wrap relative w-full max-w-md mx-auto lg:max-w-none rounded-3xl overflow-hidden">
+               <div className="hero-image-wrap relative w-full max-w-md mx-auto lg:max-w-none rounded-3xl overflow-visible">
                  {/*
                    Use an aspect-ratio so layout space is reserved while image loads.
                    Tailwind's arbitrary value aspect-[3/2] shown; adjust to the real image ratio if known.
@@ -67,11 +67,11 @@ export default function Home() {
                      alt="Mystical Lenormand cards arranged in a reading spread"
                      width={1200}
                      height={800}
-                     className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 block w-[75%] h-auto rounded-3xl shadow-2xl shadow-primary/20 border border-primary/20 backdrop-blur-sm"
+                     className="absolute inset-0 m-auto block w-[75%] h-auto max-h-full object-contain rounded-3xl shadow-2xl shadow-primary/20 border border-primary/20 backdrop-blur-sm"
                    />
                  </div>
                </div>
-               <div className="absolute inset-0 bg-gradient-to-t from-background/20 via-transparent to-transparent rounded-3xl"></div>
+               <div className="absolute inset-0 bg-gradient-to-t from-background/20 via-transparent to-transparent rounded-3xl pointer-events-none"></div>
              </div>
            </div>
          </div>
