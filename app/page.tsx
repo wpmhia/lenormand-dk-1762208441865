@@ -13,7 +13,6 @@ import {
 
 export default function Home() {
    const { ref: readingTypesRef, isVisible: readingTypesVisible } = useScrollAnimation(0.1);
-   const { ref: heroRef, isVisible: heroVisible } = useScrollAnimation(0.1);
 
   return (
     <main className="bg-background text-foreground" role="main">
@@ -48,33 +47,19 @@ export default function Home() {
               </div>
            </div>
 
-           {/* Hero Image */}
-           <div className="relative z-10">
-             <div className="relative">
-               <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-primary/10 to-primary/20 rounded-3xl blur-3xl opacity-30"></div>
-               {/* Stable wrapper reserves layout space and prevents CLS/white-space */}
-                <div ref={heroRef} className={`hero-image-wrap relative w-full max-w-md mx-auto lg:max-w-none rounded-3xl overflow-visible transition-all duration-700 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                 {/*
-                   Use an aspect-ratio so layout space is reserved while image loads.
-                   Tailwind's arbitrary value aspect-[3/2] shown; adjust to the real image ratio if known.
-                 */}
-                 <div className="w-full aspect-[3/2] relative">
-                   {/* Place the image absolutely inside the wrapper and size it to 75% (visually 25% smaller).
-                       Using w-[75%] keeps parent footprint stable while the image appears smaller.
-                       display:block to avoid inline baseline whitespace.
-                    */}
-                   <img
-                     src="/images/hero-image.jpg"
-                     alt="Mystical Lenormand cards arranged in a reading spread"
-                     width={1200}
-                     height={800}
-                     className="absolute inset-0 m-auto block w-[75%] h-auto max-h-full object-contain rounded-3xl shadow-2xl shadow-primary/20 border border-primary/20 backdrop-blur-sm"
-                   />
-                 </div>
-               </div>
-               <div className="absolute inset-0 bg-gradient-to-t from-background/20 via-transparent to-transparent rounded-3xl pointer-events-none"></div>
-             </div>
-           </div>
+          {/* Image column - appears before text on lg and after text on small screens */}
+          <div className="relative z-10 order-last lg:order-first flex justify-center lg:justify-start">
+            {/* Remove any visible background or border: transparent wrapper */}
+            <div className="hero-image-cell bg-transparent rounded-none p-0">
+              <img
+                src="/images/hero-image.jpg"
+                alt="Mystical Lenormand cards arranged in a reading spread"
+                width={1200}
+                height={800}
+                className="block w-full max-w-xs lg:max-w-none lg:w-[75%] h-auto object-contain rounded-md lg:rounded-md shadow-none border-0"
+              />
+            </div>
+          </div>
          </div>
        </div>
 
