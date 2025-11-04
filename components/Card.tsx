@@ -7,20 +7,18 @@ import { CardModal } from './CardModal'
 
 interface CardProps {
   card: CardType
-  reversed?: boolean
   onClick?: () => void
   showBack?: boolean
   size?: 'sm' | 'md' | 'lg'
   className?: string
 }
 
-export function Card({ 
-  card, 
-  reversed = false, 
-  onClick, 
-  showBack = false, 
+export function Card({
+  card,
+  onClick,
+  showBack = false,
   size = 'md',
-  className 
+  className
 }: CardProps) {
   const [showModal, setShowModal] = useState(false)
 
@@ -91,7 +89,6 @@ export function Card({
         className={cn(
           'relative card-mystical rounded-xl cursor-pointer overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background will-change-transform group',
           sizeClasses[size],
-          reversed && 'rotate-180',
           className
         )}
         onClick={handleCardClick}
@@ -103,7 +100,7 @@ export function Card({
         }}
         tabIndex={0}
         role="button"
-        aria-label={`${card.name} card${reversed ? ' (reversed)' : ''}. Click to ${onClick ? 'select' : 'view details'}`}
+        aria-label={`${card.name} card. Click to ${onClick ? 'select' : 'view details'}`}
       >
         {/* Card Image */}
         <div className="relative w-full h-full rounded-lg overflow-hidden bg-card">
@@ -113,13 +110,6 @@ export function Card({
             className="w-full h-full object-cover"
           />
         </div>
-        
-        {/* Reversed Indicator */}
-        {reversed && (
-          <div className="absolute top-2 right-2 bg-destructive text-destructive-foreground text-sm font-bold rounded-full w-7 h-7 flex items-center justify-center border-2 border-white shadow-lg">
-            R
-          </div>
-        )}
       </div>
       
       {/* Card Name and Number - Below Card */}
@@ -135,7 +125,6 @@ export function Card({
       {showModal && (
         <CardModal
           card={card}
-          reversed={reversed}
           onClose={() => setShowModal(false)}
         />
       )}
