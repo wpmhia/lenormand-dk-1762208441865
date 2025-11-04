@@ -26,8 +26,7 @@ const LAYOUTS = [
   { value: 3, label: "3 Cards", type: "past-present-future" },
   { value: 5, label: "5 Cards - Extended Reading", type: "extended" },
   { value: 9, label: "9 Cards - Comprehensive Reading", type: "comprehensive" },
-  { value: 36, label: "Grand Tableau - Full Deck", type: "grand-tableau" },
-  { value: "physical", label: "Physical Reading - Enter Cards Manually", type: "physical" }
+  { value: 36, label: "Grand Tableau - Full Deck", type: "grand-tableau" }
 ]
 
 const THREE_CARD_SPREADS = [
@@ -41,10 +40,10 @@ const THREE_CARD_SPREADS = [
 export default function NewReadingPage() {
   const [allCards, setAllCards] = useState<CardType[]>([])
   const [drawnCards, setDrawnCards] = useState<ReadingCard[]>([])
-  const [layoutType, setLayoutType] = useState<3 | 5 | 9 | 36 | "physical">(3)
+  const [layoutType, setLayoutType] = useState<3 | 5 | 9 | 36>(3)
+  const [isPhysical, setIsPhysical] = useState(false)
   const [threeCardSpreadType, setThreeCardSpreadType] = useState<string>("general-reading")
   const [physicalCards, setPhysicalCards] = useState<string>("")
-  const [physicalCardCount, setPhysicalCardCount] = useState<number>(3)
 
   const [question, setQuestion] = useState('')
   const [questionCharCount, setQuestionCharCount] = useState(0)
@@ -91,8 +90,8 @@ export default function NewReadingPage() {
     // Split by commas, spaces, or newlines
     const cardInputs = input.split(/[,;\s\n]+/).map(s => s.trim()).filter(s => s.length > 0)
 
-    if (cardInputs.length !== physicalCardCount) {
-      throw new Error(`Please enter exactly ${physicalCardCount} cards. You entered ${cardInputs.length}.`)
+    if (cardInputs.length !== layoutType) {
+      throw new Error(`Please enter exactly ${layoutType} cards. You entered ${cardInputs.length}.`)
     }
 
     const readingCards: ReadingCard[] = []
@@ -134,7 +133,7 @@ export default function NewReadingPage() {
   const handleDraw = async (cards: CardType[]) => {
     let readingCards: ReadingCard[]
 
-    if (layoutType === "physical") {
+    if (isPhysical) {
       // Parse physical card input
       readingCards = parsePhysicalCards(cards)
     } else {
@@ -358,28 +357,26 @@ export default function NewReadingPage() {
 
 
                  <div className="space-y-4">
-                   {layoutType !== "physical" && (
-                     <div className="space-y-2">
-                       <Label htmlFor="layout">Reading Type:</Label>
-                       <Select value={layoutType.toString()} onValueChange={(value) => setLayoutType(parseInt(value) as 3 | 5 | 9 | 36)}>
-                        <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary" aria-describedby="layout-help">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="bg-card border-border">
-                          {LAYOUTS.filter(layout => layout.value !== "physical").map((layout) => (
-                            <SelectItem key={layout.value} value={layout.value.toString()} className="text-card-foreground hover:bg-accent focus:bg-accent">
-                              {layout.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                       <div id="layout-help" className="text-xs text-muted-foreground italic">
-                         Choose the number of cards for your reading spread
-                       </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="layout">Reading Type:</Label>
+                      <Select value={layoutType.toString()} onValueChange={(value) => setLayoutType(parseInt(value) as 3 | 5 | 9 | 36)}>
+                       <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary" aria-describedby="layout-help">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-card border-border">
+                        {LAYOUTS.map((layout) => (
+                          <SelectItem key={layout.value} value={layout.value.toString()} className="text-card-foreground hover:bg-accent focus:bg-accent">
+                            {layout.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                     <div id="layout-help" className="text-xs text-muted-foreground italic">
+                       Choose the number of cards for your reading spread
                      </div>
-                   )}
+                   </div>
 
-                   {layoutType === 3 && (
+                    {layoutType === 3 && !isPhysical && (
                      <div className="space-y-2">
                        <Label htmlFor="three-card-spread">3-Card Spread Type:</Label>
                        <Select value={threeCardSpreadType} onValueChange={setThreeCardSpreadType}>
@@ -400,53 +397,29 @@ export default function NewReadingPage() {
                      </div>
                     )}
 
-                   {layoutType === "physical" && (
-                     <div className="space-y-4">
-                       <div className="space-y-2">
-                         <Label htmlFor="card-count">Number of Cards:</Label>
-                         <Select value={physicalCardCount.toString()} onValueChange={(value) => setPhysicalCardCount(parseInt(value))}>
-                           <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary">
-                             <SelectValue />
-                           </SelectTrigger>
-                           <SelectContent className="bg-card border-border">
-                             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-                               <SelectItem key={num} value={num.toString()} className="text-card-foreground hover:bg-accent focus:bg-accent">
-                                 {num} Card{num !== 1 ? 's' : ''}
-                               </SelectItem>
-                             ))}
-                           </SelectContent>
-                         </Select>
-                       </div>
-
-                       <div className="space-y-2">
-                         <Label htmlFor="physical-cards">Enter Your Cards:</Label>
-                         <Textarea
-                           id="physical-cards"
-                           value={physicalCards}
-                           onChange={(e) => setPhysicalCards(e.target.value)}
-                           placeholder={`Enter ${physicalCardCount} card numbers (1-36) separated by commas, spaces, or new lines.&#10;Example: 1, 15, 28&#10;Or: Rider, Sun, Key`}
-                           className="bg-background border-border text-foreground placeholder:text-muted-foreground min-h-[120px] rounded-xl focus:border-primary focus:ring-primary/20 resize-none"
-                           rows={4}
-                         />
-                         <div className="text-xs text-muted-foreground italic">
-                           Enter card numbers (1-36) or names separated by commas, spaces, or new lines
-                         </div>
-                       </div>
-                     </div>
+                    {isPhysical && (
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="physical-cards">Enter Your Cards:</Label>
+                          <Textarea
+                            id="physical-cards"
+                            value={physicalCards}
+                            onChange={(e) => setPhysicalCards(e.target.value)}
+                            placeholder={`Enter ${layoutType} card numbers (1-36) separated by commas, spaces, or new lines.&#10;Example: 1, 15, 28&#10;Or: Rider, Sun, Key`}
+                            className="bg-background border-border text-foreground placeholder:text-muted-foreground min-h-[120px] rounded-xl focus:border-primary focus:ring-primary/20 resize-none"
+                            rows={4}
+                          />
+                          <div className="text-xs text-muted-foreground italic">
+                            Enter card numbers (1-36) or names separated by commas, spaces, or new lines
+                          </div>
+                        </div>
+                      </div>
                     )}
 
                     {/* Physical Cards Toggle */}
                      <div
-                       className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-colors ${layoutType === "physical" ? 'bg-primary/10 border-primary/30' : 'bg-muted/80 border-border hover:bg-muted'}`}
-                       onClick={() => {
-                         const checked = layoutType !== "physical";
-                         if (checked) {
-                           setLayoutType("physical");
-                           setPhysicalCardCount(3);
-                         } else {
-                           setLayoutType(3);
-                         }
-                       }}
+                        className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-colors ${isPhysical ? 'bg-primary/10 border-primary/30' : 'bg-muted/80 border-border hover:bg-muted'}`}
+                        onClick={() => setIsPhysical(!isPhysical)}
                      >
                       <div className="space-y-1">
                         <Label htmlFor="physical-mode" className="text-foreground font-medium text-sm">
@@ -456,20 +429,13 @@ export default function NewReadingPage() {
                           Enter cards from your physical Lenormand deck
                         </p>
                       </div>
-                       <Switch
-                         id="physical-mode"
-                         checked={layoutType === "physical"}
-                         onCheckedChange={(checked) => {
-                           if (checked) {
-                             setLayoutType("physical")
-                             setPhysicalCardCount(3) // Default to 3 cards
-                           } else {
-                             setLayoutType(3)
-                           }
-                         }}
-                         onClick={(e) => e.stopPropagation()}
-                         aria-label="Toggle between virtual and physical card reading"
-                       />
+                      <Switch
+                        id="physical-mode"
+                        checked={isPhysical}
+                        onCheckedChange={setIsPhysical}
+                        onClick={(e) => e.stopPropagation()}
+                        aria-label="Toggle between virtual and physical card reading"
+                      />
                     </div>
 
                       <div
@@ -503,9 +469,9 @@ export default function NewReadingPage() {
                   <Button
                    onClick={() => setStep('drawing')}
                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30 rounded-xl py-3 font-semibold transition-all duration-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                   disabled={!question.trim() || (layoutType === "physical" && !physicalCards.trim())}
+                    disabled={!question.trim() || (isPhysical && !physicalCards.trim())}
                  >
-                   {layoutType === "physical" ? "Continue to Reading" : "Continue to Draw Cards"}
+                    {isPhysical ? "Continue to Reading" : "Continue to Draw Cards"}
                  </Button>
              </CardContent>
            </Card>
