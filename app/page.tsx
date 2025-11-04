@@ -48,7 +48,7 @@ export default function Home() {
            </div>
 
           {/* Image column - appears before text on lg and after text on small screens */}
-          <div className="relative z-10 order-last lg:order-first flex justify-center lg:justify-start">
+          <div className="relative z-10 order-last lg:order-last flex justify-center lg:justify-start">
             {/* Remove any visible background or border: transparent wrapper */}
             <div className="hero-image-cell bg-transparent rounded-none p-0">
               <img
