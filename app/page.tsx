@@ -51,13 +51,26 @@ export default function Home() {
            <div className="relative z-10">
              <div className="relative">
                <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-primary/10 to-primary/20 rounded-3xl blur-3xl opacity-30"></div>
-                <img
-                  src="/images/hero-image.jpg"
-                  alt="Mystical Lenormand cards arranged in a reading spread"
-                  width={1200}
-                  height={800}
-                  className="block w-full max-w-md mx-auto lg:max-w-none rounded-3xl shadow-2xl shadow-primary/20 border border-primary/20 backdrop-blur-sm lg:scale-100"
-                />
+               {/* Stable wrapper reserves layout space and prevents CLS/white-space */}
+               <div className="hero-image-wrap relative w-full max-w-md mx-auto lg:max-w-none rounded-3xl overflow-hidden">
+                 {/*
+                   Use an aspect-ratio so layout space is reserved while image loads.
+                   Tailwind's arbitrary value aspect-[3/2] shown; adjust to the real image ratio if known.
+                 */}
+                 <div className="w-full aspect-[3/2] relative">
+                   {/* Place the image absolutely inside the wrapper and size it to 75% (visually 25% smaller).
+                       Using w-[75%] keeps parent footprint stable while the image appears smaller.
+                       display:block to avoid inline baseline whitespace.
+                    */}
+                   <img
+                     src="/images/hero-image.jpg"
+                     alt="Mystical Lenormand cards arranged in a reading spread"
+                     width={1200}
+                     height={800}
+                     className="absolute inset-0 m-auto block w-[75%] h-auto rounded-3xl shadow-2xl shadow-primary/20 border border-primary/20 backdrop-blur-sm"
+                   />
+                 </div>
+               </div>
                <div className="absolute inset-0 bg-gradient-to-t from-background/20 via-transparent to-transparent rounded-3xl"></div>
              </div>
            </div>
