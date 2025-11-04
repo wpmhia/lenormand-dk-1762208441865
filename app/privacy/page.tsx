@@ -1,4 +1,4 @@
-import { Shield, Lock, Eye, Database } from 'lucide-react'
+import { Shield, Lock, Eye, Database, Cookie } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 export default function PrivacyPage() {
@@ -28,10 +28,11 @@ export default function PrivacyPage() {
                 We collect minimal information necessary to provide our divination services:
               </p>
               <ul className="list-disc list-inside space-y-2 ml-4">
-                <li>Reading questions and card selections (stored locally in your browser)</li>
-                <li>Optional AI analysis requests (processed securely, not stored permanently)</li>
-                <li>Basic usage analytics to improve our service</li>
-              </ul>
+                 <li>Reading questions and card selections (stored locally in your browser)</li>
+                 <li>Optional AI analysis requests (processed securely, not stored permanently)</li>
+                 <li>Basic usage analytics to improve our service (with your consent)</li>
+                 <li>Cookie preferences and consent choices</li>
+               </ul>
               <p className="text-muted-foreground text-sm">
                 <strong>Important:</strong> Your readings are private and stored only on your device unless you choose to share them.
               </p>
@@ -73,19 +74,59 @@ export default function PrivacyPage() {
                 <li><strong>No Data Selling:</strong> We never sell or share your data with third parties</li>
               </ul>
             </CardContent>
-          </Card>
+           </Card>
 
-          <Card className="border-border bg-muted">
-            <CardHeader>
-               <CardTitle className="text-foreground">Your Rights</CardTitle>
-            </CardHeader>
+           <Card className="border-border bg-muted">
+             <CardHeader>
+               <CardTitle className="text-foreground flex items-center gap-2">
+                 <Cookie className="w-5 h-5 text-primary/80" />
+                 Cookies & Analytics
+               </CardTitle>
+             </CardHeader>
+             <CardContent className="text-foreground space-y-4">
+               <p>
+                 We use cookies and Google Analytics to understand how visitors use our website and improve our services:
+               </p>
+               <div className="space-y-3">
+                 <div>
+                   <h4 className="font-semibold text-foreground">Essential Cookies</h4>
+                   <p className="text-sm text-muted-foreground">
+                     Required for basic website functionality. Always enabled and cannot be disabled.
+                   </p>
+                 </div>
+                 <div>
+                   <h4 className="font-semibold text-foreground">Analytics Cookies (Google Analytics)</h4>
+                   <p className="text-sm text-muted-foreground">
+                     Collect anonymous information about how you use our site, such as pages visited and time spent.
+                     Only enabled with your explicit consent.
+                   </p>
+                   <ul className="list-disc list-inside space-y-1 ml-4 mt-2 text-sm text-muted-foreground">
+                     <li>Pages visited and navigation patterns</li>
+                     <li>Time spent on different sections</li>
+                     <li>Device and browser information (anonymized)</li>
+                     <li>Geographic location (country/region level only)</li>
+                   </ul>
+                 </div>
+               </div>
+               <p className="text-muted-foreground text-sm">
+                 <strong>Cookie Consent:</strong> You can manage your cookie preferences at any time using the cookie settings banner or modal.
+                 Analytics cookies are completely optional and the site functions fully without them.
+               </p>
+             </CardContent>
+           </Card>
+
+           <Card className="border-border bg-muted">
+             <CardHeader>
+                <CardTitle className="text-foreground">Your Rights</CardTitle>
+             </CardHeader>
             <CardContent className="text-foreground space-y-4">
               <ul className="list-disc list-inside space-y-2 ml-4">
-                <li>Access: View all data stored in your browser</li>
-                <li>Deletion: Clear your browser data to remove all readings</li>
-                <li>Portability: Export your readings at any time</li>
-                <li>Opt-out: Disable AI features if preferred</li>
-              </ul>
+                 <li>Access: View all data stored in your browser</li>
+                 <li>Deletion: Clear your browser data to remove all readings</li>
+                 <li>Portability: Export your readings at any time</li>
+                 <li>Opt-out: Disable AI features or analytics tracking if preferred</li>
+                 <li>Cookie Control: Manage cookie preferences and withdraw consent anytime</li>
+               </ul>
             </CardContent>
           </Card>
 
