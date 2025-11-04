@@ -131,24 +131,29 @@ export default function NewReadingPage() {
   }
 
   const handleDraw = async (cards: CardType[]) => {
-    let readingCards: ReadingCard[]
+    try {
+      let readingCards: ReadingCard[]
 
-    if (isPhysical) {
-      // Parse physical card input
-      readingCards = parsePhysicalCards(cards)
-    } else {
-      // Draw random cards
-      readingCards = drawCards(cards, layoutType)
-      if (!allowReversed) {
-        readingCards.forEach(card => card.reversed = false)
+      if (isPhysical) {
+        // Parse physical card input
+        readingCards = parsePhysicalCards(cards)
+      } else {
+        // Draw random cards
+        readingCards = drawCards(cards, layoutType)
+        if (!allowReversed) {
+          readingCards.forEach(card => card.reversed = false)
+        }
       }
+
+      setDrawnCards(readingCards)
+
+      // Start AI analysis (API route handles availability)
+      setStep('ai-analysis')
+      await performAIAnalysis(readingCards)
+    } catch (error) {
+      console.error('Error in handleDraw:', error)
+      setError(error instanceof Error ? error.message : 'An error occurred while processing your cards')
     }
-
-    setDrawnCards(readingCards)
-
-    // Start AI analysis (API route handles availability)
-    setStep('ai-analysis')
-    await performAIAnalysis(readingCards)
   }
 
   const performAIAnalysis = async (readingCards: ReadingCard[], isRetry = false) => {
@@ -177,7 +182,7 @@ export default function NewReadingPage() {
           position: card.position,
           reversed: card.reversed
         })),
-        layoutType: layoutType === "physical" ? physicalCardCount : layoutType,
+                       layoutType: layoutType,
         threeCardSpreadType: layoutType === 3 ? threeCardSpreadType : undefined,
         userLocale: navigator.language
       }
@@ -500,19 +505,20 @@ export default function NewReadingPage() {
                   </p>
                 </div>
 
-                {layoutType === "physical" ? (
+                 {isPhysical ? (
                   <div className="text-center space-y-4">
                     <div className="p-6 bg-muted/50 rounded-xl border border-border">
                       <h3 className="text-lg font-semibold text-foreground mb-2">Your Physical Cards</h3>
                       <div className="text-sm text-muted-foreground mb-4">
-                        Ready to analyze your {physicalCardCount} manually drawn cards
+                        Ready to analyze your {layoutType} manually drawn cards
                       </div>
-                      <Button
-                        onClick={() => handleDraw(allCards)}
-                        className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30"
-                      >
-                        Analyze My Cards
-                      </Button>
+                       <Button
+                         onClick={() => handleDraw(allCards)}
+                         disabled={!physicalCards.trim()}
+                         className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30"
+                       >
+                         Analyze My Cards
+                       </Button>
                     </div>
                   </div>
                 ) : (
@@ -545,7 +551,7 @@ export default function NewReadingPage() {
                    AI Analysis
                  </h2>
                    <p className="text-muted-foreground">
-                     The sibyl weaves wisdom from your {layoutType === "physical" ? physicalCardCount : layoutType} sacred cards
+                      The sibyl weaves wisdom from your {layoutType} sacred cards
                    </p>
                </div>
 
@@ -554,7 +560,7 @@ export default function NewReadingPage() {
                      id: 'temp',
                      title: 'Your Reading',
                      question,
-                      layoutType: layoutType === "physical" ? physicalCardCount : layoutType,
+        layoutType: layoutType,
                      cards: drawnCards,
                      slug: 'temp',
                       isPublic: false,
@@ -571,7 +577,7 @@ export default function NewReadingPage() {
                   <CardInterpretation
                     cards={drawnCards}
                     allCards={allCards}
-                     layoutType={layoutType === "physical" ? physicalCardCount : layoutType}
+                      layoutType={layoutType}
                     question={question}
                   />
                 )}
@@ -590,7 +596,7 @@ export default function NewReadingPage() {
                   reversed: card.reversed
                 }))}
                 allCards={allCards}
-                 layoutType={layoutType === "physical" ? physicalCardCount : layoutType}
+                  layoutType={layoutType}
                 question={question}
               />
 
