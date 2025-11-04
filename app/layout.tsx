@@ -1,6 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import Script from 'next/script';
 import { Toaster } from '@/components/ui/toaster';
 import { Footer } from '@/components/Footer';
 import { ThemeProvider } from '@/components/providers';
@@ -25,7 +26,18 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-ESFQHZSKLQ"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-ESFQHZSKLQ');
+          `}
+        </Script>
       </head>
       <body className={`${inter.className} antialiased`} suppressHydrationWarning>
         <ThemeProvider>
