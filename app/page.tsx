@@ -39,15 +39,28 @@ export default function Home() {
                   ✨ Begin Your Journey
                 </Button>
               </Link>
-              <Link href="/cards">
-                <Button variant="outline" size="lg" className="px-12 py-5 border-2 border-border text-card-foreground hover:bg-muted hover:border-border font-semibold text-lg rounded-full backdrop-blur-sm shadow-lg shadow-border/20">
-                  🔮 Explore Cards
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
+               <Link href="/cards">
+                 <Button variant="outline" size="lg" className="px-12 py-5 border-2 border-border text-card-foreground hover:bg-muted hover:border-border font-semibold text-lg rounded-full backdrop-blur-sm shadow-lg shadow-border/20">
+                   🔮 Explore Cards
+                 </Button>
+               </Link>
+             </div>
+           </div>
+
+           {/* Hero Image */}
+           <div className="relative z-10">
+             <div className="relative">
+               <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-primary/10 to-primary/20 rounded-3xl blur-3xl opacity-30"></div>
+               <img
+                 src="/data/images/hero-image.jpg"
+                 alt="Mystical Lenormand cards arranged in a reading spread"
+                 className="relative w-full max-w-md mx-auto lg:max-w-none rounded-3xl shadow-2xl shadow-primary/20 border border-primary/20 backdrop-blur-sm"
+               />
+               <div className="absolute inset-0 bg-gradient-to-t from-background/20 via-transparent to-transparent rounded-3xl"></div>
+             </div>
+           </div>
+         </div>
+       </div>
 
       {/* Reading Types */}
       <div ref={readingTypesRef} className={`container mx-auto px-6 py-20 max-w-6xl transition-all duration-700 ${readingTypesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
