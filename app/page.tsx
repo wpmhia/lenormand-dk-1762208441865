@@ -25,7 +25,7 @@ export default function Home() {
                 Lenormand
                 <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-primary via-primary/80 to-primary/60 rounded-full opacity-80"></div>
               </span>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary/80 to-primary/60">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary/80 to-primary/60 overflow-visible">
                 Intelligence
               </span>
             </h1>
