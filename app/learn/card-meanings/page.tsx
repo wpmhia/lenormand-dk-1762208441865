@@ -176,11 +176,11 @@ export default function CardMeaningsPage() {
                    </CardTitle>
                  </CardHeader>
                  <CardContent className="pt-0">
-                   <img
-                     src={`/data/images/cards/${card.number.toString().padStart(2, '0')}-${card.number === 22 ? 'paths' : card.name.toLowerCase().replace('the ', '').replace(/ /g, '-')}.png`}
-                     alt={card.name}
-                     className="w-full h-32 object-cover rounded-lg mb-3"
-                   />
+                    <img
+                      src={`/images/cards/${card.number.toString().padStart(2, '0')}-${card.number === 22 ? 'paths' : card.name.toLowerCase().replace('the ', '').replace(/ /g, '-')}.png`}
+                      alt={card.name}
+                      className="w-full h-32 object-cover rounded-lg mb-3"
+                    />
                    <div className="space-y-3">
                     <div>
                       <h4 className="text-sm font-semibold text-foreground mb-1">Keywords:</h4>
@@ -210,11 +210,11 @@ export default function CardMeaningsPage() {
                  <CardContent className="p-4">
                    <div className="flex items-center justify-between">
                      <div className="flex items-center space-x-4">
-                       <img
-                         src={`/data/images/cards/${card.number.toString().padStart(2, '0')}-${card.number === 22 ? 'paths' : card.name.toLowerCase().replace('the ', '').replace(/ /g, '-')}.png`}
-                         alt={card.name}
-                         className="w-16 h-16 object-cover rounded-lg"
-                       />
+                        <img
+                          src={`/images/cards/${card.number.toString().padStart(2, '0')}-${card.number === 22 ? 'paths' : card.name.toLowerCase().replace('the ', '').replace(/ /g, '-')}.png`}
+                          alt={card.name}
+                          className="w-16 h-16 object-cover rounded-lg"
+                        />
                        <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0">
                          <span className="text-white text-sm font-bold">{card.number}</span>
                        </div>
