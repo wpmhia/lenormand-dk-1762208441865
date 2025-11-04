@@ -145,23 +145,23 @@ export default function ReadingBasicsPage() {
             <div className="bg-muted p-6 rounded-lg border border-border">
               <h4 className="font-semibold text-foreground mb-3">Example: Three-Card Spread</h4>
               <div className="space-y-3">
-                <div className="text-center">
+                     <div className="flex flex-col items-center">
                   <div className="inline-flex items-center space-x-4 bg-card p-4 rounded-lg shadow-sm">
-                    <div className="text-center">
+                         <div className="flex flex-col items-center">
                       <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary/80 rounded-lg flex items-center justify-center mb-2">
                         <span className="text-white font-bold">1</span>
                       </div>
                       <p className="text-sm font-medium text-foreground">The Rider</p>
                       <p className="text-xs text-muted-foreground">News, Messages</p>
                     </div>
-                    <div className="text-center">
+                         <div className="flex flex-col items-center">
                       <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary/80 rounded-lg flex items-center justify-center mb-2">
                         <span className="text-white font-bold">2</span>
                       </div>
                       <p className="text-sm font-medium text-foreground">The Snake</p>
                       <p className="text-xs text-muted-foreground">Deception, Wisdom</p>
                     </div>
-                    <div className="text-center">
+                         <div className="flex flex-col items-center">
                       <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary/80 rounded-lg flex items-center justify-center mb-2">
                         <span className="text-white font-bold">3</span>
                       </div>
