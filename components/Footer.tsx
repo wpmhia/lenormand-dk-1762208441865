@@ -58,7 +58,7 @@ export function Footer() {
                   variant="ghost"
                   size="sm"
                   onClick={() => setShowGuide(true)}
-                  className="text-muted-foreground hover:text-foreground hover:bg-muted p-0 h-auto justify-start"
+                  className="block text-muted-foreground hover:text-foreground text-sm transition-colors p-0 h-auto justify-start"
                   aria-label="Open guide on how to read Lenormand cards"
                   aria-expanded={showGuide}
                   aria-controls="lenormand-guide-dialog"
