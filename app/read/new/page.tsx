@@ -333,33 +333,8 @@ export default function NewReadingPage() {
                   Your Sacred Question:
                 </CardTitle>
               </CardHeader>
-               <CardContent className="space-y-6 relative z-10">
-               {/* Physical Cards Toggle */}
-                 <div className={`flex items-center justify-between p-4 rounded-xl border ${layoutType === "physical" ? 'bg-primary/10 border-primary/30' : 'bg-muted/80 border-border'}`}>
-                 <div className="space-y-1">
-                   <Label htmlFor="physical-mode" className="text-foreground font-medium text-sm">
-                     Use Physical Cards
-                   </Label>
-                   <p className="text-xs text-muted-foreground">
-                     Enter cards from your physical Lenormand deck
-                   </p>
-                 </div>
-                 <Switch
-                   id="physical-mode"
-                   checked={layoutType === "physical"}
-                   onCheckedChange={(checked) => {
-                     if (checked) {
-                       setLayoutType("physical")
-                       setPhysicalCardCount(3) // Default to 3 cards
-                     } else {
-                       setLayoutType(3)
-                     }
-                   }}
-                   aria-label="Toggle between virtual and physical card reading"
-                 />
-               </div>
-
-               <div className="space-y-3">
+                <CardContent className="space-y-6 relative z-10">
+                <div className="space-y-3">
                 <Textarea
                   id="question"
                   value={question}
@@ -458,9 +433,34 @@ export default function NewReadingPage() {
                          </div>
                        </div>
                      </div>
-                   )}
+                    )}
 
-                    <div className="flex items-center justify-between p-4 bg-muted/50 rounded-xl border border-border">
+                    {/* Physical Cards Toggle */}
+                    <div className={`flex items-center justify-between p-4 rounded-xl border ${layoutType === "physical" ? 'bg-primary/10 border-primary/30' : 'bg-muted/80 border-border'}`}>
+                      <div className="space-y-1">
+                        <Label htmlFor="physical-mode" className="text-foreground font-medium text-sm">
+                          Use Physical Cards
+                        </Label>
+                        <p className="text-xs text-muted-foreground">
+                          Enter cards from your physical Lenormand deck
+                        </p>
+                      </div>
+                      <Switch
+                        id="physical-mode"
+                        checked={layoutType === "physical"}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setLayoutType("physical")
+                            setPhysicalCardCount(3) // Default to 3 cards
+                          } else {
+                            setLayoutType(3)
+                          }
+                        }}
+                        aria-label="Toggle between virtual and physical card reading"
+                      />
+                    </div>
+
+                     <div className="flex items-center justify-between p-4 bg-muted/50 rounded-xl border border-border">
                       {/* stronger contrast label */}
                       <Label htmlFor="allow-reversed" className="text-foreground font-medium">
                         Allow reversed cards
