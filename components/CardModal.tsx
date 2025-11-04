@@ -28,7 +28,7 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
         onClose()
       }
     }}>
-      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-card border-border text-white">
+      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-card border-border text-card-foreground">
         <DialogHeader>
           <div className="flex items-center justify-between">
             <DialogTitle className="flex items-center gap-2">
@@ -72,7 +72,7 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
           <div className="space-y-6">
             {/* Keywords */}
             <div>
-              <h3 className="font-semibold mb-2 text-white">Keywords</h3>
+              <h3 className="font-semibold mb-2 text-foreground">Keywords</h3>
               <div className="flex flex-wrap gap-2">
                 {card.keywords.map((keyword, index) => (
                   <Badge key={index} variant="secondary" className="bg-muted text-muted-foreground">
@@ -86,7 +86,7 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
 
             {/* Meaning */}
             <div>
-              <h3 className="font-semibold mb-2 text-white">
+              <h3 className="font-semibold mb-2 text-foreground">
                 {reversed ? 'Reversed Meaning' : 'Upright Meaning'}
               </h3>
               <p className="text-muted-foreground">
@@ -102,7 +102,7 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
               <>
                 <Separator className="bg-muted" />
                 <div>
-                  <h3 className="font-semibold mb-3 text-white">Card Combinations</h3>
+                  <h3 className="font-semibold mb-3 text-foreground">Card Combinations</h3>
                   <div className="space-y-2">
                     {combos.map((combo: any, index: number) => {
                       const comboCard = allCards.find(c => c.id === combo.withCardId)
@@ -118,7 +118,7 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
                             )}
                           </div>
                           <div className="flex-1">
-                            <div className="font-medium text-sm text-white">
+                            <div className="font-medium text-sm text-foreground">
                               {comboCard ? comboCard.name : `Card ${combo.withCardId}`}
                             </div>
                             <div className="text-sm text-muted-foreground">

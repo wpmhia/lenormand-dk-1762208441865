@@ -553,10 +553,10 @@ Or: Rider, Sun, Key`;
                  <ReadingViewer
                    reading={{
                      id: 'temp',
-                     title: 'Your Reading',
-                     question,
-        layoutType: layoutType,
-                     cards: drawnCards,
+                      title: 'Your Reading',
+                      question,
+                      layoutType: layoutType,
+                      cards: drawnCards,
                      slug: 'temp',
                       isPublic: false,
                      createdAt: new Date(),

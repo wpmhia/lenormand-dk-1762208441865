@@ -76,7 +76,7 @@ export function Card({
         {/* Single opacity overlay for hover/focus - GPU accelerated */}
         <div className="absolute inset-0 bg-gradient-to-t from-transparent via-primary/10 to-transparent opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-300 rounded-xl pointer-events-none"></div>
 
-        <div className="relative text-white text-center z-10">
+        <div className="relative text-card-foreground text-center z-10">
           <div className="text-4xl mb-2 opacity-90">✦</div>
           <div className="text-sm font-bold tracking-wider opacity-90 text-muted-foreground group-hover:text-foreground transition-colors duration-300">LENORMAND</div>
           <div className="text-xs text-muted-foreground mt-1 opacity-70 group-hover:opacity-90 transition-opacity duration-300">MYSTICAL DIVINATION</div>
@@ -124,7 +124,7 @@ export function Card({
       
       {/* Card Name and Number - Below Card */}
       <div className="mt-2 text-center">
-        <div className="text-sm font-bold text-white">
+        <div className="text-sm font-bold text-foreground">
           {card.name}
         </div>
         <div className="text-xs text-muted-foreground">

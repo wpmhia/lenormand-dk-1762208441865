@@ -173,7 +173,7 @@ export function AIReadingDisplay({
     return (
       <Card className="border-border bg-card fade-in-scale">
         <CardHeader>
-          <CardTitle className="text-white flex items-center gap-2">
+          <CardTitle className="text-card-foreground flex items-center gap-2">
             <motion.div
               className="w-5 h-5 border-2 border-amber-400/60 border-t-transparent rounded-full"
               animate={{ rotate: 360 }}
@@ -231,7 +231,7 @@ export function AIReadingDisplay({
     >
       <Card className="border-border bg-card slide-in-up">
       <CardHeader>
-        <CardTitle className="text-white flex items-center gap-2">
+        <CardTitle className="text-card-foreground flex items-center gap-2">
           <Zap className="w-5 h-5 text-primary/80" />
           The Sibyl Speaks
         </CardTitle>

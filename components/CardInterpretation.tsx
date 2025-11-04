@@ -70,7 +70,7 @@ export function CardInterpretation({ cards, allCards, layoutType, question }: Ca
   return (
     <Card className="border-border bg-card slide-in-left">
       <CardHeader>
-        <CardTitle className="text-white flex items-center gap-2">
+        <CardTitle className="text-card-foreground flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-primary/80" />
           Traditional Card Meanings
         </CardTitle>
@@ -96,7 +96,7 @@ export function CardInterpretation({ cards, allCards, layoutType, question }: Ca
                     {fullCard?.emoji || '🃏'}
                   </div>
                   <div>
-                    <h3 className="text-white font-medium flex items-center gap-2">
+                    <h3 className="text-foreground font-medium flex items-center gap-2">
                       {fullCard?.name || 'Unknown Card'}
                       {card.reversed && (
                         <Badge variant="secondary" className="text-xs">

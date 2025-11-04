@@ -53,7 +53,7 @@ export function LenormandGuide({ className, darkTheme = false }: LenormandGuideP
           ? "border-border bg-gradient-to-br from-card/80 to-muted/60 backdrop-blur-sm"
           : "border-border bg-gradient-to-br from-background/80 to-muted/60 backdrop-blur-sm"}`}>
         <CardHeader>
-          <CardTitle className={`flex items-center gap-2 ${darkTheme ? "text-white" : "text-foreground"}`}>
+          <CardTitle className="flex items-center gap-2 text-card-foreground">
             <BookOpen className="w-5 h-5" />
             How to Read Lenormand Cards
           </CardTitle>
