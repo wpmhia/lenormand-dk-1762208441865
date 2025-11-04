@@ -156,6 +156,22 @@ h6 { @apply text-base md:text-lg; }
     @apply bg-card border-2 border-border rounded-xl shadow-lg hover:shadow-xl transition-all duration-300;
   }
 
+  .card-content {
+    @apply p-6;
+  }
+
+  .card-content-compact {
+    @apply p-4;
+  }
+
+  .card-content-spacious {
+    @apply p-8;
+  }
+
+  .card-content-no-padding {
+    @apply p-0;
+  }
+
   /* Global buttons */
   .btn-primary {
     @apply bg-gradient-to-r text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-6 py-3 font-semibold;
@@ -184,9 +200,15 @@ h6 { @apply text-base md:text-lg; }
 
   .btn-learn-outline {
     @apply px-8 py-4 border-2 border-border text-card-foreground hover:bg-muted hover:border-border font-semibold text-lg rounded-full;
-  }
+   }
 
-  /* Global form elements */
+   /* Standardized spacing utilities */
+   .space-section { @apply space-y-8; }
+   .space-content { @apply space-y-6; }
+   .space-component { @apply space-y-4; }
+   .space-element { @apply space-y-2; }
+
+   /* Global form elements */
   input, textarea, select {
     @apply bg-amber-50 border-2 border-amber-300 rounded-lg px-4 py-2 text-amber-950 placeholder-amber-600 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-300 transition-all duration-300;
   }

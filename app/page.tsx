@@ -19,7 +19,7 @@ export default function Home() {
       {/* Hero Section */}
       <div className="container-hero">
         <div className="grid lg:grid-cols-2 gap-8 items-center mb-8 relative">
-          <div className="text-center lg:text-left space-y-4 relative z-10">
+          <div className="text-center lg:text-left space-component relative z-10">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 text-foreground leading-tight relative">
               <span className="relative inline-block">
                 Lenormand
@@ -83,7 +83,7 @@ export default function Home() {
                     Quick Analysis
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="pt-0 relative z-10">
+                <CardContent className="card-content-no-padding relative z-10">
                   <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                     Journey through time&apos;s tapestry
                   </p>
@@ -106,7 +106,7 @@ export default function Home() {
                     Deep Analysis
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="pt-0 relative z-10">
+                <CardContent className="card-content-no-padding relative z-10">
                   <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                     Deep exploration with hidden insights
                   </p>
@@ -129,7 +129,7 @@ export default function Home() {
                     Comprehensive
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="pt-0 relative z-10">
+                <CardContent className="card-content-no-padding relative z-10">
                   <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                     Complete life&apos;s grand design
                   </p>
@@ -152,7 +152,7 @@ export default function Home() {
                     Grand Tableau
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="pt-0 relative z-10">
+                <CardContent className="card-content-no-padding relative z-10">
                   <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                     The complete mystical revelation
                   </p>

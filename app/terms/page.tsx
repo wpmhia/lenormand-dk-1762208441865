@@ -23,7 +23,7 @@ export default function TermsPage() {
                 Acceptance of Terms
               </CardTitle>
             </CardHeader>
-            <CardContent className="text-foreground space-y-4">
+            <CardContent className="card-content text-foreground space-component">
               <p>
                 By using Lenormand Intelligence, you agree to these terms of service. These terms govern your use of our divination platform and the services we provide.
               </p>

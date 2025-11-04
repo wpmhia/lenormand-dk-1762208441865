@@ -39,7 +39,7 @@ export function Footer() {
             {/* Navigation Section */}
             <div className="space-y-4">
               <h4 className="text-white font-medium">Navigation</h4>
-              <nav className="space-y-2" aria-label="Main navigation">
+              <nav className="space-element" aria-label="Main navigation">
                 <Link 
                   href="/read/new" 
                   className="block text-muted-foreground hover:text-foreground text-sm transition-colors"
@@ -73,7 +73,7 @@ export function Footer() {
             {/* Legal & Privacy Section */}
             <div className="space-y-4">
               <h4 className="text-white font-medium">Legal & Privacy</h4>
-              <nav className="space-y-2" aria-label="Legal and privacy links">
+              <nav className="space-element" aria-label="Legal and privacy links">
                 <Link 
                   href="/privacy" 
                   className="flex items-center gap-2 text-muted-foreground hover:text-foreground text-sm transition-colors"
