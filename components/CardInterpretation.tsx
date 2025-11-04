@@ -96,14 +96,8 @@ export function CardInterpretation({ cards, allCards, layoutType, question }: Ca
                     {fullCard?.emoji || '🃏'}
                   </div>
                   <div>
-                    <h3 className="text-foreground font-medium flex items-center gap-2">
+                    <h3 className="text-foreground font-medium">
                       {fullCard?.name || 'Unknown Card'}
-                      {card.reversed && (
-                        <Badge variant="secondary" className="text-xs">
-                          <RotateCcw className="w-3 h-3 mr-1" />
-                          Reversed
-                        </Badge>
-                      )}
                     </h3>
                     <p className="text-primary text-sm font-medium">
                       {positionInfo.title}
