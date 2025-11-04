@@ -565,18 +565,7 @@ export default function NewReadingPage() {
                 question={question}
               />
 
-               {!aiLoading && (
-                 <div className="flex gap-4 justify-center">
-                   <Button
-                     onClick={() => setStep('drawing')}
-                     variant="outline"
-                     className="border-border text-card-foreground hover:bg-muted rounded-xl py-3 font-semibold transition-all duration-300"
-                   >
-                     Draw Again
-                   </Button>
 
-                 </div>
-               )}
             </CardContent>
           </Card>
         )}

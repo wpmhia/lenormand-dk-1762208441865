@@ -31,13 +31,13 @@ export function Header() {
             <BookOpen className="w-4 h-4" />
             <span>Cards</span>
           </Link>
-          <Link
-            href="/read/new"
-            className="flex items-center space-x-1 text-sm font-medium text-card-foreground hover:text-primary transition-colors"
-          >
-            <Plus className="w-4 h-4" />
-            <span>New Reading</span>
-          </Link>
+           <Link
+             href="/read"
+             className="flex items-center space-x-1 text-sm font-medium text-card-foreground hover:text-primary transition-colors"
+           >
+             <Plus className="w-4 h-4" />
+             <span>New Reading</span>
+           </Link>
           <Link
             href="/learn"
             className="flex items-center space-x-1 text-sm font-medium text-card-foreground hover:text-primary transition-colors"
@@ -81,14 +81,14 @@ export function Header() {
               <BookOpen className="w-4 h-4" />
               <span>Cards</span>
             </Link>
-            <Link
-              href="/read/new"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center space-x-2 text-sm font-medium text-card-foreground hover:text-primary transition-colors py-2"
-            >
-              <Plus className="w-4 h-4" />
-              <span>New Reading</span>
-            </Link>
+             <Link
+               href="/read"
+               onClick={() => setMobileMenuOpen(false)}
+               className="flex items-center space-x-2 text-sm font-medium text-card-foreground hover:text-primary transition-colors py-2"
+             >
+               <Plus className="w-4 h-4" />
+               <span>New Reading</span>
+             </Link>
             <Link
               href="/learn"
               onClick={() => setMobileMenuOpen(false)}
