@@ -62,8 +62,13 @@ export default function Home() {
          </div>
        </div>
 
-      {/* Reading Types */}
-       <div ref={readingTypesRef} className={`container-section transition-all duration-700 ${readingTypesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+       {/* Reading Types */}
+        <div
+          ref={readingTypesRef}
+          /* Removed translate-y-* so the section doesn't shift the page flow on mount.
+             Keep opacity transition only to avoid a layout shift that makes the page start lower. */
+          className={`container-section transition-opacity duration-700 ${readingTypesVisible ? 'opacity-100' : 'opacity-0'}`}
+        >
          <div className="mb-8 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5 rounded-3xl"></div>
            <div className="text-center mb-6 relative z-10">
