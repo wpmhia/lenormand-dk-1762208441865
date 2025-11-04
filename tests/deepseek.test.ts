@@ -60,10 +60,10 @@ describe('DeepSeek Integration', () => {
 
       const result = parseAIResponse(response)
 
-      expect(result.storyline).toBe('The cards suggest a complex situation requiring careful consideration.')
-      expect(result.risk).toBe('Monitor developments carefully')
-      expect(result.timing).toBe('Timing unclear - observe signs')
-      expect(result.action).toBe('Observe')
+      expect(result.storyline).toBe('This is a general reading about your situation. The cards suggest positive changes ahead.')
+      expect(result.risk).toBe('Trust your intuition and the guidance you receive')
+      expect(result.timing).toBe('The timing will become clear as events unfold')
+      expect(result.action).toBe('Take time to reflect on this guidance')
     })
 
     it('falls back to numbered format', () => {

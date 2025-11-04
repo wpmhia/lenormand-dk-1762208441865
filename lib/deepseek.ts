@@ -288,12 +288,17 @@ function getThreeCardSpreadLabel(spreadType?: string): string {
   return spreadLabels[spreadType || "past-present-future"] || "Past-Present-Future"
 }
 
-// Parse AI response into structured format (continuous prose)
+// Parse AI response into structured format
 export function parseAIResponse(response: string): AIReadingResponse {
   const cleanResponse = response.trim()
 
-  // For the new format, we'll keep the entire response as storyline
-  // and only extract action if it's clearly separated
+  // Try to parse structured format first (numbered or bold markdown)
+  const structuredResult = parseStructuredResponse(cleanResponse)
+  if (structuredResult) {
+    return structuredResult
+  }
+
+  // Fall back to continuous prose format
   let storyline = cleanResponse
   let action = ''
 
@@ -304,10 +309,10 @@ export function parseAIResponse(response: string): AIReadingResponse {
   ]
 
   const sentences = cleanResponse.match(/[^.!?]+[.!?]+/g) || []
-  
+
   if (sentences.length > 0) {
     const lastSentence = sentences[sentences.length - 1].trim()
-    
+
     // Only extract as action if it's clearly actionable and short
     if (lastSentence.length < 60 && actionPatterns.some(pattern => pattern.test(lastSentence))) {
       action = lastSentence.replace(/[.!?]+$/, '') // Remove trailing punctuation
@@ -327,6 +332,106 @@ export function parseAIResponse(response: string): AIReadingResponse {
     action: action || 'Take time to reflect on this guidance',
     rawResponse: response
   }
+}
+
+// Helper function to parse structured responses
+function parseStructuredResponse(response: string): AIReadingResponse | null {
+  const lines = response.split('\n').map(line => line.trim()).filter(line => line.length > 0)
+
+  let storyline = ''
+  let risk = ''
+  let timing = ''
+  let action = ''
+
+  // Try numbered format: 1. **Story** ..., 2. **Risk** ..., etc.
+  const numberedBoldPattern = /^(\d+)\.\s*\*\*(\w+)\*\*\s*(.+)$/
+  const sections: Record<string, string> = {}
+
+  for (const line of lines) {
+    let match = line.match(numberedBoldPattern)
+    if (match) {
+      const [, , sectionName, content] = match
+      sections[sectionName.toLowerCase()] = content.trim()
+    }
+  }
+
+  // Try numbered format without bold: 1. Story: ..., 2. Risk: ..., etc.
+  if (Object.keys(sections).length === 0) {
+    const numberedColonPattern = /^(\d+)\.\s*(\w+):\s*(.+)$/
+    for (const line of lines) {
+      const match = line.match(numberedColonPattern)
+      if (match) {
+        const [, , sectionName, content] = match
+        sections[sectionName.toLowerCase()] = content.trim()
+      }
+    }
+  }
+
+  // Try bold markdown format: **Story** ..., **Risk** ..., etc.
+  if (Object.keys(sections).length === 0) {
+    const boldPattern = /^\*\*(\w+)\*\*\s*(.+)$/
+    for (const line of lines) {
+      const match = line.match(boldPattern)
+      if (match) {
+        const [, sectionName, content] = match
+        sections[sectionName.toLowerCase()] = content.trim()
+      }
+    }
+  }
+
+  // Try simple numbered format: 1. Content, 2. Risk: ..., etc.
+  if (Object.keys(sections).length === 0) {
+    const simpleNumberedPattern = /^(\d+)\.\s*(.+)$/
+    const numberedLines: string[] = []
+
+    for (const line of lines) {
+      const match = line.match(simpleNumberedPattern)
+      if (match) {
+        numberedLines.push(match[2].trim())
+      }
+    }
+
+    // If we have exactly 4 numbered lines, assume they're story, risk, timing, action
+    if (numberedLines.length === 4) {
+      storyline = numberedLines[0]
+      risk = numberedLines[1].replace(/^Risk:\s*/i, '')
+      timing = numberedLines[2].replace(/^Timing:\s*/i, '')
+      action = numberedLines[3].replace(/^Act:\s*/i, '')
+    }
+  }
+
+  // Extract sections if we found them via patterns
+  if (Object.keys(sections).length > 0) {
+    storyline = sections.story || sections.storyline || ''
+    risk = sections.risk || ''
+    timing = sections.timing || ''
+    action = sections.act || sections.action || ''
+
+    // If we have sections but no explicit story, check if the first numbered line is the story
+    if (!storyline) {
+      const firstNumberedLine = lines.find(line => /^\d+\./.test(line))
+      if (firstNumberedLine) {
+        const content = firstNumberedLine.replace(/^\d+\.\s*/, '').trim()
+        // If it doesn't start with a section label, treat it as story
+        if (!/^(story|risk|timing|act)[:\s]/i.test(content)) {
+          storyline = content
+        }
+      }
+    }
+  }
+
+  // If we found at least storyline, consider it structured
+  if (storyline) {
+    return {
+      storyline: storyline || 'The cards offer guidance for your situation.',
+      risk: risk || 'Trust your intuition and the guidance you receive',
+      timing: timing || 'The timing will become clear as events unfold',
+      action: action || 'Take time to reflect on this guidance',
+      rawResponse: response
+    }
+  }
+
+  return null
 }
 
 // Rate limiting (simple client-side)
