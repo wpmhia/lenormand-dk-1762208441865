@@ -193,7 +193,7 @@ export function Deck({
           <div className="flex flex-wrap justify-center gap-4">
             {drawnCards.map((item, index) => (
               <div
-                key={`${item.card.id}-${index}`}
+                key={`${item.id}-${index}`}
                 className=""
                 style={{
                   animationDelay: `${index * 100}ms`,
