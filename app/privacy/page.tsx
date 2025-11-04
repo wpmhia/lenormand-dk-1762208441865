@@ -77,7 +77,7 @@ export default function PrivacyPage() {
 
           <Card className="border-border bg-muted">
             <CardHeader>
-              <CardTitle className="text-white">Your Rights</CardTitle>
+               <CardTitle className="text-foreground">Your Rights</CardTitle>
             </CardHeader>
             <CardContent className="text-foreground space-y-4">
               <ul className="list-disc list-inside space-y-2 ml-4">
@@ -91,7 +91,7 @@ export default function PrivacyPage() {
 
           <Card className="border-border bg-muted">
             <CardHeader>
-              <CardTitle className="text-white">Contact Us</CardTitle>
+               <CardTitle className="text-foreground">Contact Us</CardTitle>
             </CardHeader>
             <CardContent className="text-foreground space-y-4">
               <p>
