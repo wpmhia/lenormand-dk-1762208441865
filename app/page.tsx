@@ -20,7 +20,7 @@ export default function Home() {
       <div className="container-hero">
         <div className="grid lg:grid-cols-2 gap-8 items-center mb-8 relative">
           <div className="text-center lg:text-left space-component relative z-10">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 text-foreground leading-tight relative">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 text-foreground leading-snug relative overflow-visible pb-1">
               <span className="relative inline-block">
                 Lenormand
                 <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-primary via-primary/80 to-primary/60 rounded-full opacity-80"></div>
