@@ -51,7 +51,7 @@ export function Card({
     return (
       <div
         className={cn(
-            'relative card-mystical rounded-xl shadow-2xl cursor-pointer flex items-center justify-center border border-primary/40 group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background',
+            'relative card-mystical rounded-xl cursor-pointer flex items-center justify-center group focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background will-change-transform',
            sizeClasses[size],
            className
          )}
@@ -70,14 +70,17 @@ export function Card({
         role="button"
         aria-label="Lenormand card back. Click to draw or select card"
       >
+        {/* Single background layer */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-primary/80 to-muted/90 rounded-xl"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-transparent via-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
+
+        {/* Single opacity overlay for hover/focus - GPU accelerated */}
+        <div className="absolute inset-0 bg-gradient-to-t from-transparent via-primary/10 to-transparent opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-300 rounded-xl pointer-events-none"></div>
+
         <div className="relative text-white text-center z-10">
           <div className="text-4xl mb-2 opacity-90">✦</div>
           <div className="text-sm font-bold tracking-wider opacity-90 text-muted-foreground group-hover:text-foreground transition-colors duration-300">LENORMAND</div>
           <div className="text-xs text-muted-foreground mt-1 opacity-70 group-hover:opacity-90 transition-opacity duration-300">MYSTICAL DIVINATION</div>
         </div>
-        <div className="absolute inset-0 rounded-xl ring-2 ring-primary/20 group-hover:ring-primary/60 transition-all duration-300"></div>
       </div>
     )
   }
@@ -86,7 +89,7 @@ export function Card({
     <>
       <div
         className={cn(
-          'relative card-mystical rounded-xl shadow-2xl cursor-pointer overflow-hidden focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900',
+          'relative card-mystical rounded-xl cursor-pointer overflow-hidden focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background will-change-transform group',
           sizeClasses[size],
           reversed && 'rotate-180',
           className
@@ -107,7 +110,7 @@ export function Card({
           <img
             src={card.imageUrl || ''}
             alt={card.name}
-            className="w-full h-full object-contain"
+            className="w-full h-full object-cover"
           />
         </div>
         

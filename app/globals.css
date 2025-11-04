@@ -341,21 +341,24 @@ h6 { @apply text-base md:text-lg; }
     aspect-ratio: 2.5/3.5;
   }
   
-  /* Enhanced card styling with mystical effects */
+  /* Enhanced card styling with smooth GPU-accelerated effects */
   .card-mystical img {
-    object-fit: contain;
+    object-fit: cover;
     object-position: center;
+    will-change: auto;
   }
-  
+
   .card-mystical {
     aspect-ratio: 2.5/3.5;
     background: linear-gradient(135deg, var(--card-mystical-bg-start), var(--card-mystical-bg-end));
     border: 2px solid var(--card-mystical-border);
     box-shadow: 0 8px 16px var(--card-mystical-shadow);
     position: relative;
-    transition: all 0.3s ease;
+    /* Remove complex transitions - use GPU-accelerated transform instead */
+    transition: none;
   }
 
+  /* Single gloss overlay - GPU accelerated opacity transition */
   .card-mystical::before {
     content: '';
     position: absolute;
@@ -364,12 +367,21 @@ h6 { @apply text-base md:text-lg; }
     right: 0;
     bottom: 0;
     background: linear-gradient(135deg, rgba(245, 242, 232, 0.1), rgba(232, 220, 192, 0.1));
+    opacity: 0;
     pointer-events: none;
+    transition: opacity 0.3s ease;
+    will-change: opacity;
   }
 
+  .card-mystical:hover::before,
+  .card-mystical:focus::before {
+    opacity: 1;
+  }
+
+  /* GPU-accelerated hover lift using transform instead of shadow animation */
   .card-mystical:hover {
-    box-shadow: 0 12px 24px var(--card-mystical-hover-shadow);
-    border-color: var(--card-mystical-hover-border);
+    transform: translateY(-4px);
+    transition: transform 0.3s ease;
   }
 
   /* Global page layouts */
