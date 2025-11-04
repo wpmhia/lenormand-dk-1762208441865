@@ -3,11 +3,5 @@
     "app/api/readings/interpret/route.ts": {
       "maxDuration": 30
     }
-  },
-  "crons": [
-    {
-      "path": "/api/warmup",
-      "schedule": "*/10 * * * *"
-    }
-  ]
+   }
 }
