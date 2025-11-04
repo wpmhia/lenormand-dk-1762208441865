@@ -54,7 +54,9 @@ export default function Home() {
                 <img
                   src="/images/hero-image.jpg"
                   alt="Mystical Lenormand cards arranged in a reading spread"
-                  className="relative w-full max-w-md mx-auto lg:max-w-none rounded-3xl shadow-2xl shadow-primary/20 border border-primary/20 backdrop-blur-sm scale-[0.67]"
+                  width={1200}
+                  height={800}
+                  className="block w-full max-w-md mx-auto lg:max-w-none rounded-3xl shadow-2xl shadow-primary/20 border border-primary/20 backdrop-blur-sm lg:scale-100"
                 />
                <div className="absolute inset-0 bg-gradient-to-t from-background/20 via-transparent to-transparent rounded-3xl"></div>
              </div>
