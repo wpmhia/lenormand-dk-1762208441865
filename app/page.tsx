@@ -67,7 +67,7 @@ export default function Home() {
                      alt="Mystical Lenormand cards arranged in a reading spread"
                      width={1200}
                      height={800}
-                     className="absolute inset-0 m-auto block w-[75%] h-auto rounded-3xl shadow-2xl shadow-primary/20 border border-primary/20 backdrop-blur-sm"
+                     className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 block w-[75%] h-auto rounded-3xl shadow-2xl shadow-primary/20 border border-primary/20 backdrop-blur-sm"
                    />
                  </div>
                </div>
