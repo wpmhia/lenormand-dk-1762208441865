@@ -19,25 +19,6 @@ export default function CardsPage() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    fetchCards()
-  }, [])
-
-  useEffect(() => {
-    filterAndSortCards()
-  }, [filterAndSortCards])
-
-  const fetchCards = async () => {
-    try {
-      const cardsData = await getCards()
-      setCards(cardsData)
-      setLoading(false)
-    } catch (error) {
-      console.error('Error fetching cards:', error)
-      setLoading(false)
-    }
-  }
-
   const filterAndSortCards = useCallback(() => {
     let filtered = cards
 
@@ -63,6 +44,25 @@ export default function CardsPage() {
 
     setFilteredCards(filtered)
   }, [cards, searchTerm, sortBy])
+
+  useEffect(() => {
+    fetchCards()
+  }, [])
+
+  useEffect(() => {
+    filterAndSortCards()
+  }, [filterAndSortCards])
+
+  const fetchCards = async () => {
+    try {
+      const cardsData = await getCards()
+      setCards(cardsData)
+      setLoading(false)
+    } catch (error) {
+      console.error('Error fetching cards:', error)
+      setLoading(false)
+    }
+  }
 
   const getAllKeywords = () => {
     const keywords = new Set<string>()
