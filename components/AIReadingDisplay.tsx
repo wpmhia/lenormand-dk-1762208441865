@@ -1,8 +1,7 @@
 "use client"
 
-"use client"
-
 import { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
 import { AIReadingResponse } from '@/lib/deepseek'
 import { ReadingCard, Card as CardType } from '@/lib/types'
 
@@ -175,7 +174,12 @@ export function AIReadingDisplay({
       <Card className="border-border bg-card fade-in-scale">
         <CardHeader>
           <CardTitle className="text-white flex items-center gap-2">
-            <div className="w-5 h-5 border-2 border-amber-400/60 border-t-transparent rounded-full" aria-hidden="true" />
+            <motion.div
+              className="w-5 h-5 border-2 border-amber-400/60 border-t-transparent rounded-full"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+              aria-hidden="true"
+            />
             Your reading unfolds...
           </CardTitle>
         </CardHeader>
@@ -220,7 +224,12 @@ export function AIReadingDisplay({
   }
 
   return (
-    <Card className="border-border bg-card slide-in-up">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
+      <Card className="border-border bg-card slide-in-up">
       <CardHeader>
         <CardTitle className="text-white flex items-center gap-2">
           <Zap className="w-5 h-5 text-primary/80" />
@@ -250,5 +259,6 @@ export function AIReadingDisplay({
 
       </CardContent>
     </Card>
+    </motion.div>
   )
 }

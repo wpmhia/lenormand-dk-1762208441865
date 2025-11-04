@@ -1,6 +1,9 @@
+"use client"
+
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useScrollAnimation } from '@/hooks/use-scroll-animation'
 import {
   Sparkles,
   ArrowRight,
@@ -9,13 +12,14 @@ import {
 } from 'lucide-react'
 
 export default function Home() {
+  const { ref: readingTypesRef, isVisible: readingTypesVisible } = useScrollAnimation(0.1);
+
   return (
     <main className="bg-background text-foreground min-h-screen" role="main">
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-10 max-w-6xl">
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-12 relative">
           <div className="text-center lg:text-left space-y-8 relative z-10">
-
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-8 text-foreground leading-tight relative">
               <span className="relative inline-block">
                 Lenormand
@@ -30,35 +34,23 @@ export default function Home() {
               <span className="text-muted-foreground block mt-2">Experience personalized guidance where technology meets mystical insight.</span>
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
-               <Link href="/read/new">
-                 <Button size="lg" className="px-12 py-5 bg-primary hover:bg-primary/90 text-primary-foreground shadow-2xl shadow-primary/30 font-semibold text-lg rounded-full border border-border/20 backdrop-blur-sm">
-                   ✨ Begin Your Journey
-                 </Button>
-               </Link>
-              <Link href="/cards">
-                 <Button variant="outline" size="lg" className="px-12 py-5 border-2 border-border text-card-foreground hover:bg-muted hover:border-border font-semibold text-lg rounded-full backdrop-blur-sm shadow-lg shadow-border/20">
-                   🔮 Explore Cards
-                 </Button>
+              <Link href="/read/new">
+                <Button size="lg" className="px-12 py-5 bg-primary hover:bg-primary/90 text-primary-foreground shadow-2xl shadow-primary/30 font-semibold text-lg rounded-full border border-border/20 backdrop-blur-sm">
+                  ✨ Begin Your Journey
+                </Button>
               </Link>
-            </div>
-          </div>
-          <div className="flex justify-center lg:justify-end relative z-10">
-            <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/30 via-primary/20 to-primary/30 rounded-2xl blur-2xl opacity-60 group-hover:opacity-80"></div>
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-primary/10 rounded-2xl blur-xl"></div>
-              <img
-                src="/images/hero-image.jpg"
-                alt="Hero Image"
-                className="relative w-full max-w-xs sm:max-w-sm h-auto object-cover rounded-2xl shadow-2xl border border-border/20 backdrop-blur-sm "
-              />
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100"></div>
+              <Link href="/cards">
+                <Button variant="outline" size="lg" className="px-12 py-5 border-2 border-border text-card-foreground hover:bg-muted hover:border-border font-semibold text-lg rounded-full backdrop-blur-sm shadow-lg shadow-border/20">
+                  🔮 Explore Cards
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
       </div>
 
       {/* Reading Types */}
-      <div className="container mx-auto px-6 py-20 max-w-6xl">
+      <div ref={readingTypesRef} className={`container mx-auto px-6 py-20 max-w-6xl transition-all duration-700 ${readingTypesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         <div className="mb-12 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5 rounded-3xl"></div>
           <div className="text-center mb-12 relative z-10">
@@ -69,102 +61,100 @@ export default function Home() {
             <p className="text-center text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">Select the depth of insight that calls to you</p>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
-               <Link href="/read/new">
-                 <Card className="hover:shadow-2xl hover:shadow-primary/20 cursor-pointer group border border-border hover:border-border/60 bg-card backdrop-blur-sm min-h-[160px] rounded-2xl overflow-hidden relative">
-                   <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                   <CardHeader className="pb-4 relative z-10">
-                     <CardTitle className="flex items-center gap-3 text-lg text-card-foreground font-semibold">
-                       <Sparkles className="w-5 h-5 text-primary" />
-                       Quick Analysis
-                     </CardTitle>
-                   </CardHeader>
-                    <CardContent className="pt-0 relative z-10">
-                       <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                          Journey through time&apos;s tapestry
-                       </p>
-                        <div className="flex items-center text-sm font-medium">
-                          <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold bg-primary/12 text-primary dark:bg-primary dark:text-primary-foreground ring-1 ring-primary/10 dark:ring-primary/30">
-                            3 Cards
-                          </span>
-                          <ArrowRight className="w-4 h-4 ml-2 text-primary/60 dark:text-primary/60" />
-                        </div>
-                    </CardContent>
-                 </Card>
-               </Link>
+            <Link href="/read/new">
+              <Card className="hover:shadow-2xl hover:shadow-primary/20 cursor-pointer group border border-border hover:border-border/60 bg-card backdrop-blur-sm min-h-[160px] rounded-2xl overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <CardHeader className="pb-4 relative z-10">
+                  <CardTitle className="flex items-center gap-3 text-lg text-card-foreground font-semibold">
+                    <Sparkles className="w-5 h-5 text-primary" />
+                    Quick Analysis
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0 relative z-10">
+                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                    Journey through time&apos;s tapestry
+                  </p>
+                  <div className="flex items-center text-sm font-medium">
+                    <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold bg-primary/12 text-primary dark:bg-primary dark:text-primary-foreground ring-1 ring-primary/10 dark:ring-primary/30">
+                      3 Cards
+                    </span>
+                    <ArrowRight className="w-4 h-4 ml-2 text-primary/60 dark:text-primary/60" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
 
-               <Link href="/read/new">
-                 <Card className="hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 cursor-pointer group border border-border hover:border-border/60 bg-card backdrop-blur-sm min-h-[160px] hover:scale-105 rounded-2xl overflow-hidden relative">
-                   <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                   <CardHeader className="pb-4 relative z-10">
-                     <CardTitle className="flex items-center gap-3 group-hover:text-primary text-lg text-card-foreground font-semibold">
-                       <Heart className="w-5 h-5 text-primary" />
-                       Deep Analysis
-                     </CardTitle>
-                   </CardHeader>
-                    <CardContent className="pt-0 relative z-10">
-                       <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                         Deep exploration with hidden insights
-                       </p>
-                        <div className="flex items-center text-sm font-medium">
-                          <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold bg-primary/12 text-primary dark:bg-primary dark:text-primary-foreground ring-1 ring-primary/10 dark:ring-primary/30">
-                            5 Cards
-                          </span>
-                          <ArrowRight className="w-4 h-4 ml-2 text-primary/60 dark:text-primary/60" />
-                        </div>
-                    </CardContent>
-                 </Card>
-               </Link>
+            <Link href="/read/new">
+              <Card className="hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 cursor-pointer group border border-border hover:border-border/60 bg-card backdrop-blur-sm min-h-[160px] hover:scale-105 rounded-2xl overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <CardHeader className="pb-4 relative z-10">
+                  <CardTitle className="flex items-center gap-3 group-hover:text-primary text-lg text-card-foreground font-semibold">
+                    <Heart className="w-5 h-5 text-primary" />
+                    Deep Analysis
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0 relative z-10">
+                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                    Deep exploration with hidden insights
+                  </p>
+                  <div className="flex items-center text-sm font-medium">
+                    <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold bg-primary/12 text-primary dark:bg-primary dark:text-primary-foreground ring-1 ring-primary/10 dark:ring-primary/30">
+                      5 Cards
+                    </span>
+                    <ArrowRight className="w-4 h-4 ml-2 text-primary/60 dark:text-primary/60" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
 
-               <Link href="/read/new">
-                 <Card className="hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 cursor-pointer group border border-border hover:border-border/60 bg-card backdrop-blur-sm min-h-[160px] hover:scale-105 rounded-2xl overflow-hidden relative">
-                   <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                   <CardHeader className="pb-4 relative z-10">
-                     <CardTitle className="flex items-center gap-3 group-hover:text-primary text-lg text-card-foreground font-semibold">
-                       <Shield className="w-5 h-5 text-primary" />
-                       Comprehensive
-                     </CardTitle>
-                   </CardHeader>
-                    <CardContent className="pt-0 relative z-10">
-                       <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                          Complete life&apos;s grand design
-                       </p>
-                        <div className="flex items-center text-sm font-medium">
-                          <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold bg-primary/12 text-primary dark:bg-primary dark:text-primary-foreground ring-1 ring-primary/10 dark:ring-primary/30">
-                            9 Cards
-                          </span>
-                          <ArrowRight className="w-4 h-4 ml-2 text-primary/60 dark:text-primary/60" />
-                        </div>
-                    </CardContent>
-                 </Card>
-               </Link>
+            <Link href="/read/new">
+              <Card className="hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 cursor-pointer group border border-border hover:border-border/60 bg-card backdrop-blur-sm min-h-[160px] hover:scale-105 rounded-2xl overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <CardHeader className="pb-4 relative z-10">
+                  <CardTitle className="flex items-center gap-3 group-hover:text-primary text-lg text-card-foreground font-semibold">
+                    <Shield className="w-5 h-5 text-primary" />
+                    Comprehensive
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0 relative z-10">
+                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                    Complete life&apos;s grand design
+                  </p>
+                  <div className="flex items-center text-sm font-medium">
+                    <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold bg-primary/12 text-primary dark:bg-primary dark:text-primary-foreground ring-1 ring-primary/10 dark:ring-primary/30">
+                      9 Cards
+                    </span>
+                    <ArrowRight className="w-4 h-4 ml-2 text-primary/60 dark:text-primary/60" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
 
-               <Link href="/read/new">
-                 <Card className="hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 cursor-pointer group border border-border hover:border-border/60 bg-card backdrop-blur-sm min-h-[160px] hover:scale-105 rounded-2xl overflow-hidden relative">
-                   <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                   <CardHeader className="pb-4 relative z-10">
-                     <CardTitle className="flex items-center gap-3 group-hover:text-primary text-lg text-card-foreground font-semibold">
-                       <Sparkles className="w-5 h-5 text-primary" />
-                       Grand Tableau
-                     </CardTitle>
-                   </CardHeader>
-                    <CardContent className="pt-0 relative z-10">
-                       <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                         The complete mystical revelation
-                       </p>
-                        <div className="flex items-center text-sm font-medium">
-                          <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold bg-primary/12 text-primary dark:bg-primary dark:text-primary-foreground ring-1 ring-primary/10 dark:ring-primary/30">
-                            36 Cards
-                          </span>
-                          <ArrowRight className="w-4 h-4 ml-2 text-primary/60 dark:text-primary/60" />
-                        </div>
-                    </CardContent>
-                 </Card>
-               </Link>
+            <Link href="/read/new">
+              <Card className="hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 cursor-pointer group border border-border hover:border-border/60 bg-card backdrop-blur-sm min-h-[160px] hover:scale-105 rounded-2xl overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <CardHeader className="pb-4 relative z-10">
+                  <CardTitle className="flex items-center gap-3 group-hover:text-primary text-lg text-card-foreground font-semibold">
+                    <Sparkles className="w-5 h-5 text-primary" />
+                    Grand Tableau
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0 relative z-10">
+                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                    The complete mystical revelation
+                  </p>
+                  <div className="flex items-center text-sm font-medium">
+                    <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold bg-primary/12 text-primary dark:bg-primary dark:text-primary-foreground ring-1 ring-primary/10 dark:ring-primary/30">
+                      36 Cards
+                    </span>
+                    <ArrowRight className="w-4 h-4 ml-2 text-primary/60 dark:text-primary/60" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
         </div>
       </div>
-
-
 
       {/* CTA Section */}
       <div className="container mx-auto px-6 py-12 max-w-4xl">
@@ -180,12 +170,12 @@ export default function Home() {
             <p className="text-muted-foreground mb-8 text-xl max-w-2xl mx-auto leading-relaxed">
               Let the cards reveal what your soul already knows
             </p>
-             <Link href="/read/new">
-               <Button size="lg" className="px-12 py-5 bg-primary hover:bg-primary/90 text-primary-foreground shadow-2xl shadow-primary/30 font-semibold text-lg rounded-full border border-border/20 backdrop-blur-sm">
-                 Discover Your Path
-                 <ArrowRight className="w-5 h-5 ml-3" />
-               </Button>
-             </Link>
+            <Link href="/read/new">
+              <Button size="lg" className="px-12 py-5 bg-primary hover:bg-primary/90 text-primary-foreground shadow-2xl shadow-primary/30 font-semibold text-lg rounded-full border border-border/20 backdrop-blur-sm">
+                Discover Your Path
+                <ArrowRight className="w-5 h-5 ml-3" />
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
@@ -199,9 +189,9 @@ export default function Home() {
               © 2024 Lenormand Intelligence - Mystical Card Wisdom
             </p>
             <div className="flex gap-8 justify-center text-sm">
-               <Link href="/read/new" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
-                 New Analysis
-               </Link>
+              <Link href="/read/new" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
+                New Analysis
+              </Link>
               <Link href="/cards" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
                 Explore Cards
               </Link>

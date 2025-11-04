@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Card as CardType, ReadingCard } from '@/lib/types'
 import { Deck } from '@/components/Deck'
 import { ReadingViewer } from '@/components/ReadingViewer'
@@ -315,8 +316,16 @@ export default function NewReadingPage() {
           </Alert>
         )}
 
-        {step === 'setup' && (
-          <div className="space-y-6">
+        <AnimatePresence mode="wait">
+          {step === 'setup' && (
+            <motion.div
+              key="setup"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="space-y-6"
+            >
             <Card className="border-border bg-card backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50"></div>
               <CardHeader className="relative z-10">
@@ -460,13 +469,21 @@ export default function NewReadingPage() {
                  >
                    {layoutType === "physical" ? "Continue to Reading" : "Continue to Draw Cards"}
                  </Button>
-            </CardContent>
-          </Card>
-          </div>
-        )}
+             </CardContent>
+           </Card>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-         {step === 'drawing' && (
-           <Card className="border-border bg-card backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
+        {step === 'drawing' && (
+          <motion.div
+            key="drawing"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+          >
+            <Card className="border-border bg-card backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50"></div>
               <CardContent className="space-y-8 p-8 relative z-10">
                 <div className="text-center">
@@ -502,12 +519,20 @@ export default function NewReadingPage() {
                     onDraw={handleDraw}
                   />
                 )}
-             </CardContent>
-           </Card>
-          )}
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
 
         {step === 'ai-analysis' && (
-          <Card className="border-border bg-card backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
+          <motion.div
+            key="ai-analysis"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+          >
+            <Card className="border-border bg-card backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50"></div>
             <CardContent className="space-y-6 p-8 relative z-10">
               <div className="text-center">
@@ -568,6 +593,7 @@ export default function NewReadingPage() {
 
             </CardContent>
           </Card>
+          </motion.div>
         )}
 
 

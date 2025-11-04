@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Reading, ReadingCard, Card as CardType } from '@/lib/types'
 import { getCardById, getCombinationMeaning, getLinearAdjacentCards, getGrandTableauAdjacentCards } from '@/lib/data'
 import { Card } from './Card'
+import { AnimatedCard } from './AnimatedCard'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { CardModal } from './CardModal'
@@ -136,18 +137,18 @@ export function ReadingViewer({
             const position = getGrandTableauPosition(index)
 
             return (
-              <div key={index} className="flex flex-col items-center space-y-1">
+              <AnimatedCard key={index} delay={index * 0.05} className="flex flex-col items-center space-y-1">
                  <div className="text-xs text-center text-muted-foreground/80 font-medium">
-                  {position.label}
-                </div>
-                <Card
-                  card={card}
-                  reversed={readingCard.reversed}
-                  size="sm"
-                  onClick={() => setSelectedCard({ card, reversed: readingCard.reversed })}
-                />
-              </div>
-            )
+                   {position.label}
+                 </div>
+                 <Card
+                   card={card}
+                   reversed={readingCard.reversed}
+                   size="sm"
+                   onClick={() => setSelectedCard({ card, reversed: readingCard.reversed })}
+                 />
+               </AnimatedCard>
+             )
           })}
         </div>
       )
@@ -166,9 +167,10 @@ export function ReadingViewer({
             const positionInfo = getPositionInfo(index, reading.layoutType, threeCardSpreadType)
 
             return (
-              <TooltipProvider key={index}>
-                <div className="flex flex-col items-center space-y-3">
-                  <Tooltip>
+              <AnimatedCard key={index} delay={index * 0.08} className="flex flex-col items-center space-y-3">
+                <TooltipProvider>
+                  <div className="flex flex-col items-center space-y-3">
+                    <Tooltip>
                     <TooltipTrigger asChild>
                       <div className="flex flex-col items-center space-y-2">
                          <div className="text-sm font-medium text-muted-foreground/90 bg-card/60 px-3 py-1 rounded-full border border-primary/30 backdrop-blur-sm">
@@ -193,9 +195,10 @@ export function ReadingViewer({
                          </div>
                        </div>
                      </TooltipContent>
-                  </Tooltip>
-                </div>
-              </TooltipProvider>
+                    </Tooltip>
+                  </div>
+                </TooltipProvider>
+              </AnimatedCard>
             )
           })}
         </div>
