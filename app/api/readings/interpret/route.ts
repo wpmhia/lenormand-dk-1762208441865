@@ -64,9 +64,7 @@ export async function POST(request: NextRequest) {
       return {
         id: card.id,
         name: fullCard.name,
-        position: card.position,
-        reversed: card.reversed,
-        facing: card.facing
+        position: card.position
       }
     })
     console.log('Cards enriched:', enrichedCards.length)

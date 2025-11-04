@@ -16,8 +16,6 @@ export interface AIReadingRequest {
     id: number
     name: string
     position: number
-    reversed: boolean
-    facing?: 'left' | 'right'
   }>
   layoutType: number
   threeCardSpreadType?: string
@@ -102,45 +100,28 @@ const COMBINATION_RULES = `
 Lenormand Combination Grammar:
 - Left card modifies right card
 - Above influences outcome below
-- Reversed cards = delayed, weakened, or blocked energy
 - Mirror pairs (1-36, 2-35, etc.) show hidden subplots
-- Figures facing each other = connection/energy flow
-- Figures facing away = separation/distance
 `
 
-// System prompt template for AI readings (Everyday Tarot Reader)
-const SYSTEM_PROMPT_TEMPLATE = `You are a helpful tarot reader who gives practical advice in everyday language.
+// System prompt template for AI readings (Condensed for efficiency)
+const SYSTEM_PROMPT_TEMPLATE = `Read Lenormand cards for practical guidance.
 
-You NEVER list meanings.
-You NEVER use bullets.
-You read the card combinations to give real-life guidance.
+NEVER list meanings. NEVER use bullets. Read combinations for real-life advice.
 
-Fixed meanings you must keep:
-Rider=news,speed; Clover=small luck; Ship=distance,trade; House=home,stability; Tree=health,growth; Clouds=confusion; Snake=complication,betrayal; Coffin=end,pause; Bouquet=gift,pleasant; Scythe=sharp cut; Whip=repetition; Birds=nervous chatter; Child=new,start; Fox=work,cleverness; Bear=power,money; Stars=hope,plan; Stork=change,pregnancy; Dog=friend,loyalty; Tower=authority,bureaucracy; Garden=social,public; Mountain=obstacle; Crossroads=choice; Mice=erosion,stress; Heart=love; Ring=contract,cycle; Book=secret,knowledge; Letter=document; Man=querent or male; Woman=querent or female; Lily=age,peace; Sun=success; Moon=emotion,recognition; Key=importance; Fish=finance,flow; Anchor=stability,end; Cross=burden,destiny.
+Card meanings: Rider=news,speed; Clover=small luck; Ship=distance,trade; House=home,stability; Tree=health,growth; Clouds=confusion; Snake=complication,betrayal; Coffin=end,pause; Bouquet=gift,pleasant; Scythe=sharp cut; Whip=repetition; Birds=nervous chatter; Child=new,start; Fox=work,cleverness; Bear=power,money; Stars=hope,plan; Stork=change,pregnancy; Dog=friend,loyalty; Tower=authority,bureaucracy; Garden=social,public; Mountain=obstacle; Crossroads=choice; Mice=erosion,stress; Heart=love; Ring=contract,cycle; Book=secret,knowledge; Letter=document; Man=querent or male; Woman=querent or female; Lily=age,peace; Sun=success; Moon=emotion,recognition; Key=importance; Fish=finance,flow; Anchor=stability,end; Cross=burden,destiny.
 
-Combination rules:
-- Left card modifies right card
-- Above card influences below card
-- Reversed cards mean delayed, weakened, or blocked energy
-- Cards facing each other show connection
-- Cards facing away show distance
+Rules: Left modifies right. Above influences below.
 
-3-Card Spread Interpretations:
-- past-present-future: Position 0=Past, 1=Present, 2=Future. Read as timeline progression.
-- situation-challenge-advice: Position 0=Situation, 1=Challenge, 2=Advice. Focus on problem-solving.
-- mind-body-spirit: Position 0=Mind, 1=Body, 2=Spirit. Address holistic well-being.
-- yes-no-maybe: Position 0=Yes factors, 1=No factors, 2=Maybe factors. Weigh possibilities.
-- general-reading: Read cards 0, 1, 2 as a flowing sentence or story. Connect them narratively into a cohesive paragraph that tells a complete story about the situation, like a human reader would. Focus on relationships, emotions, and practical implications rather than just listing card meanings.
+3-Card Spreads:
+- past-present-future: Past→Present→Future timeline
+- situation-challenge-advice: Situation→Challenge→Advice
+- mind-body-spirit: Mind→Body→Spirit
+- yes-no-maybe: Yes→No→Maybe factors
+- general-reading: Connect cards as flowing story about relationships/emotions/practical implications
 
-Example for general-reading: "The strong foundation you've built together creates a solid base for something more, but the choice ahead requires careful consideration. With such close friendship at stake, he faces a difficult decision that demands patience and thoughtfulness to avoid losing what you already share."
+Write 120-150 words everyday language. End with actionable suggestion.
 
-Write 120-150 words in clear, everyday language.
-Focus on practical advice and real-life situations.
-End with one simple, actionable suggestion.
-
-Language = {{user_lang}}
-Question = {{question}}
-Spread = {{spread}}`
+Language={{user_lang}} Question={{question}} Spread={{spread}}`
 
 // Function to build system prompt with variables
 function buildSystemPrompt(vars: {
@@ -189,8 +170,7 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
         spreadType: request.layoutType === 3 ? request.threeCardSpreadType : undefined,
         cards: request.cards.map(card => ({
           name: card.name,
-          pos: card.position,
-          rev: card.reversed
+          pos: card.position
         }))
       }
     }
@@ -223,7 +203,7 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
           ],
           temperature: 0.5,
           top_p: 0.85,
-          max_tokens: 500 // Allow for longer continuous prose format
+          max_tokens: 400 // Optimized for quality readings
         }),
         signal: controller.signal
       })
@@ -267,7 +247,7 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
 // Build user prompt from reading request
 function buildUserPrompt(request: AIReadingRequest): string {
   const cardDescriptions = request.cards.map(card =>
-    `${card.name}${card.reversed ? '(rev)' : ''} at position ${card.position}`
+    `${card.name} at position ${card.position}`
   ).join(', ')
 
   return `Question: "${request.question}"

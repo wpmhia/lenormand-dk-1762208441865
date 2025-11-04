@@ -176,8 +176,7 @@ export default function NewReadingPage() {
         cards: readingCards.map(card => ({
           id: card.id,
           name: getCardById(allCards, card.id)?.name || 'Unknown',
-          position: card.position,
-          reversed: card.reversed
+          position: card.position
         })),
                        layoutType: layoutType,
         threeCardSpreadType: layoutType === 3 ? threeCardSpreadType : undefined,
