@@ -473,7 +473,7 @@ export default function NewReadingPage() {
                     </div>
 
                       <div
-                        className="flex items-center justify-between p-4 bg-muted/50 rounded-xl border border-border cursor-pointer hover:bg-muted/70 transition-colors"
+                        className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-colors ${allowReversed ? 'bg-primary/10 border-primary/30' : 'bg-muted/80 border-border hover:bg-muted'}`}
                         onClick={() => setAllowReversed(!allowReversed)}
                       >
                       {/* stronger contrast label */}
