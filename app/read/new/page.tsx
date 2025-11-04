@@ -48,7 +48,7 @@ export default function NewReadingPage() {
   const [question, setQuestion] = useState('')
   const [questionCharCount, setQuestionCharCount] = useState(0)
 
-  const [allowReversed, setAllowReversed] = useState(false)
+
 
   const [error, setError] = useState('')
   const [step, setStep] = useState<'setup' | 'drawing' | 'ai-analysis'>('setup')
@@ -123,7 +123,7 @@ export default function NewReadingPage() {
       readingCards.push({
         id: card.id,
         position: i,
-        reversed: allowReversed ? Math.random() < 0.3 : false // Still allow some randomness for reversed cards
+        reversed: false
       })
     }
 
@@ -140,9 +140,6 @@ export default function NewReadingPage() {
       } else {
         // Draw random cards
         readingCards = drawCards(cards, layoutType)
-        if (!allowReversed) {
-          readingCards.forEach(card => card.reversed = false)
-        }
       }
 
       setDrawnCards(readingCards)
@@ -254,7 +251,6 @@ export default function NewReadingPage() {
 
     setLayoutType(3)
     setThreeCardSpreadType("general-reading")
-    setAllowReversed(false)
     setError('')
     setAiReading(null)
     setAiLoading(false)
@@ -445,30 +441,7 @@ Or: Rider, Sun, Key`}
                       />
                     </div>
 
-                      <div
-                        className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-colors ${allowReversed ? 'bg-primary/10 border-primary/30' : 'bg-muted/80 border-border hover:bg-muted'}`}
-                        onClick={() => setAllowReversed(!allowReversed)}
-                      >
-                      {/* stronger contrast label */}
-                      <Label htmlFor="allow-reversed" className="text-foreground font-medium">
-                        Allow reversed cards
-                      </Label>
 
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                           <Switch
-                             id="allow-reversed"
-                             checked={allowReversed}
-                             onCheckedChange={setAllowReversed}
-                             onClick={(e) => e.stopPropagation()}
-                             aria-label="Allow reversed cards"
-                           />
-                        </TooltipTrigger>
-                        <TooltipContent className="bg-card border-border text-card-foreground">
-                          <p>When enabled, cards can appear upside down for additional meaning</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </div>
 
 
                </div>
@@ -527,7 +500,6 @@ Or: Rider, Sun, Key`}
                   <Deck
                     cards={allCards}
                     drawCount={layoutType}
-                    allowReversed={allowReversed}
                     onDraw={handleDraw}
                   />
                 )}

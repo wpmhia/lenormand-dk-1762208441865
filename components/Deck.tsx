@@ -10,16 +10,14 @@ interface DeckProps {
   cards: CardType[]
   onDraw?: (cards: CardType[]) => void
   drawCount?: number
-  allowReversed?: boolean
   showAnimation?: boolean
 }
 
-export function Deck({ 
-  cards, 
-  onDraw, 
-  drawCount = 3, 
-  allowReversed = false,
-  showAnimation = true 
+export function Deck({
+  cards,
+  onDraw,
+  drawCount = 3,
+  showAnimation = true
 }: DeckProps) {
   const [deck, setDeck] = useState<CardType[]>(cards)
   const [isShuffling, setIsShuffling] = useState(false)
@@ -63,7 +61,7 @@ export function Deck({
     for (let i = 0; i < drawCount; i++) {
       const randomIndex = Math.floor(Math.random() * remainingDeck.length)
       const drawnCard = remainingDeck.splice(randomIndex, 1)[0]
-      const reversed = allowReversed && Math.random() < 0.5
+      const reversed = false
       
       newDrawnCards.push({
         card: drawnCard,

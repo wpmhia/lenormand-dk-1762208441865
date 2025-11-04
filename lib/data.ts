@@ -106,7 +106,7 @@ export function drawCards(cards: Card[], count: number): ReadingCard[] {
   return drawnCards.map((card, index) => ({
     id: card.id,
     position: index,
-    reversed: Math.random() < 0.3 // 30% chance of reversed
+    reversed: false
   }))
 }
 
