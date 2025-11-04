@@ -364,7 +364,7 @@ export default function SpreadsPage() {
                 <div className="w-12 h-12 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto">
                   <span className="text-white font-bold">1</span>
                 </div>
-                <h4 className="font-semibold text-card-foreground">Start Small</h4>
+                <h4 className="font-semibold text-foreground">Start Small</h4>
                 <p className="text-sm text-muted-foreground">
                   Begin with 3-card spreads to build confidence before moving to larger layouts.
                 </p>
@@ -374,7 +374,7 @@ export default function SpreadsPage() {
                 <div className="w-12 h-12 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto">
                   <span className="text-white font-bold">2</span>
                 </div>
-                <h4 className="font-semibold text-card-foreground">Practice Daily</h4>
+                <h4 className="font-semibold text-foreground">Practice Daily</h4>
                 <p className="text-sm text-muted-foreground">
                   Regular practice with different spreads helps you understand card interactions.
                 </p>
@@ -384,7 +384,7 @@ export default function SpreadsPage() {
                 <div className="w-12 h-12 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto">
                   <span className="text-white font-bold">3</span>
                 </div>
-                <h4 className="font-semibold text-card-foreground">Keep a Journal</h4>
+                <h4 className="font-semibold text-foreground">Keep a Journal</h4>
                 <p className="text-sm text-muted-foreground">
                   Record your readings and revisit them later to see how accurate your interpretations were.
                 </p>

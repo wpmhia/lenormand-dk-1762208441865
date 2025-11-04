@@ -470,7 +470,7 @@ export default function NewReadingPage() {
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50"></div>
               <CardContent className="space-y-8 p-8 relative z-10">
                 <div className="text-center">
-                  <h2 className="text-3xl font-semibold mb-4 text-card-foreground relative">
+                  <h2 className="text-3xl font-semibold mb-4 text-foreground relative">
                     Draw Your Cards
                     <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-0.5 bg-gradient-to-r from-primary to-primary/60 rounded-full"></div>
                   </h2>
@@ -482,7 +482,7 @@ export default function NewReadingPage() {
                 {layoutType === "physical" ? (
                   <div className="text-center space-y-4">
                     <div className="p-6 bg-muted/50 rounded-xl border border-border">
-                      <h3 className="text-lg font-semibold text-card-foreground mb-2">Your Physical Cards</h3>
+                      <h3 className="text-lg font-semibold text-foreground mb-2">Your Physical Cards</h3>
                       <div className="text-sm text-muted-foreground mb-4">
                         Ready to analyze your {physicalCardCount} manually drawn cards
                       </div>
@@ -511,7 +511,7 @@ export default function NewReadingPage() {
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50"></div>
             <CardContent className="space-y-6 p-8 relative z-10">
               <div className="text-center">
-                 <h2 className="text-2xl font-semibold mb-2 text-card-foreground flex items-center justify-center gap-2">
+                 <h2 className="text-2xl font-semibold mb-2 text-foreground flex items-center justify-center gap-2">
                    <Sparkles className="w-6 h-6 text-primary" />
                    AI Analysis
                  </h2>

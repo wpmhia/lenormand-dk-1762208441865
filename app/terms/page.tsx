@@ -60,17 +60,17 @@ export default function TermsPage() {
             <CardContent className="text-foreground space-y-4">
               <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold text-muted-foreground mb-2">Entertainment Purpose</h4>
+                  <h4 className="font-semibold text-foreground mb-2">Entertainment Purpose</h4>
                   <p>Our services are for entertainment, spiritual guidance, and personal reflection only. They should not be used as a substitute for professional advice.</p>
                 </div>
                 
                 <div>
-                  <h4 className="font-semibold text-muted-foreground mb-2">No Professional Advice</h4>
+                  <h4 className="font-semibold text-foreground mb-2">No Professional Advice</h4>
                   <p>Readings are not medical, legal, financial, or psychological advice. Always consult qualified professionals for important decisions.</p>
                 </div>
                 
                 <div>
-                  <h4 className="font-semibold text-muted-foreground mb-2">Age Requirement</h4>
+                  <h4 className="font-semibold text-foreground mb-2">Age Requirement</h4>
                   <p>You must be 18 years or older to use our services, or have parental/guardian permission.</p>
                 </div>
               </div>

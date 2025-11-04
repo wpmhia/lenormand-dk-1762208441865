@@ -208,7 +208,7 @@ export function ReadingViewer({
       {/* Reading Header */}
       {showReadingHeader && (
         <div className="text-center space-y-2 slide-in-up">
-           <h2 className="text-3xl font-bold text-muted-foreground relative">
+           <h2 className="text-3xl font-bold text-foreground relative">
              {reading.title}
               <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-0.5 bg-gradient-to-r from-primary to-primary/80 rounded-full"></div>
            </h2>
@@ -255,7 +255,7 @@ export function ReadingViewer({
       {selectedCard && (
           <div className="mt-6 p-6 bg-gradient-to-br from-card/60 via-muted/20 to-background/40 rounded-xl slide-in-up border border-primary/20 backdrop-blur-sm">
            <div className="flex items-center gap-2 mb-4">
-             <h3 className="font-semibold text-lg text-muted-foreground">Card Combinations</h3>
+             <h3 className="font-semibold text-lg text-foreground">Card Combinations</h3>
              <div className="flex items-center gap-1 text-xs text-muted-foreground/60">
                <Info className="w-3 h-3" />
                <span>How this card interacts with nearby cards</span>

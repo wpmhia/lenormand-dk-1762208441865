@@ -178,7 +178,7 @@ export default function CardMeaningsPage() {
                 <CardContent className="pt-0">
                   <div className="space-y-3">
                     <div>
-                      <h4 className="text-sm font-semibold text-muted-foreground mb-1">Keywords:</h4>
+                      <h4 className="text-sm font-semibold text-foreground mb-1">Keywords:</h4>
                       <div className="flex flex-wrap gap-1">
                         {card.keywords.map((keyword, index) => (
                           <Badge key={index} variant="secondary" className="text-xs bg-muted text-muted-foreground">
@@ -188,7 +188,7 @@ export default function CardMeaningsPage() {
                       </div>
                     </div>
                     <div>
-                      <h4 className="text-sm font-semibold text-muted-foreground mb-1">Associations:</h4>
+                      <h4 className="text-sm font-semibold text-foreground mb-1">Associations:</h4>
                       <p className="text-xs text-primary leading-relaxed">
                         {card.associations.join(', ')}
                       </p>
@@ -247,7 +247,7 @@ export default function CardMeaningsPage() {
                     <span className="text-white text-xs font-bold">1</span>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-card-foreground">Start with Keywords</h4>
+                    <h4 className="font-semibold text-foreground">Start with Keywords</h4>
                     <p className="text-sm text-muted-foreground">
                       Focus on the core keywords first. These represent the card&apos;s primary energy.
                     </p>
@@ -258,7 +258,7 @@ export default function CardMeaningsPage() {
                     <span className="text-white text-xs font-bold">2</span>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-card-foreground">Study Associations</h4>
+                    <h4 className="font-semibold text-foreground">Study Associations</h4>
                     <p className="text-sm text-muted-foreground">
                       Learn the symbolic associations. These help you understand how cards interact.
                     </p>
@@ -271,7 +271,7 @@ export default function CardMeaningsPage() {
                     <span className="text-white text-xs font-bold">3</span>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-card-foreground">Practice Daily</h4>
+                    <h4 className="font-semibold text-foreground">Practice Daily</h4>
                     <p className="text-sm text-muted-foreground">
                       Review 3-5 cards daily. Repetition builds familiarity and intuition.
                     </p>
@@ -282,7 +282,7 @@ export default function CardMeaningsPage() {
                     <span className="text-white text-xs font-bold">4</span>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-card-foreground">Trust Your Intuition</h4>
+                    <h4 className="font-semibold text-foreground">Trust Your Intuition</h4>
                     <p className="text-sm text-muted-foreground">
                       While meanings are concrete, your intuition helps find personal relevance.
                     </p>

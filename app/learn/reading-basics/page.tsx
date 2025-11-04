@@ -267,7 +267,7 @@ export default function ReadingBasicsPage() {
           <CardContent>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-3">
-                <h4 className="font-semibold text-card-foreground">3-Card Spread</h4>
+                <h4 className="font-semibold text-foreground">3-Card Spread</h4>
                 <p className="text-sm text-muted-foreground">
                   Past → Present → Future. Simple and effective for quick insights.
                 </p>
@@ -277,7 +277,7 @@ export default function ReadingBasicsPage() {
               </div>
 
               <div className="space-y-3">
-                <h4 className="font-semibold text-card-foreground">5-Card Spread</h4>
+                <h4 className="font-semibold text-foreground">5-Card Spread</h4>
                 <p className="text-sm text-muted-foreground">
                   Situation → Challenge → Advice → Outcome → Timing.
                 </p>
@@ -287,7 +287,7 @@ export default function ReadingBasicsPage() {
               </div>
 
               <div className="space-y-3">
-                <h4 className="font-semibold text-card-foreground">9-Card Spread</h4>
+                <h4 className="font-semibold text-foreground">9-Card Spread</h4>
                 <p className="text-sm text-muted-foreground">
                   Comprehensive life overview with detailed insights.
                 </p>
@@ -297,7 +297,7 @@ export default function ReadingBasicsPage() {
               </div>
 
               <div className="space-y-3">
-                <h4 className="font-semibold text-card-foreground">36-Card Grand Tableau</h4>
+                <h4 className="font-semibold text-foreground">36-Card Grand Tableau</h4>
                 <p className="text-sm text-muted-foreground">
                   Complete reading using all cards for maximum detail.
                 </p>

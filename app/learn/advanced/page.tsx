@@ -284,7 +284,7 @@ export default function AdvancedPage() {
                     <span className="text-white font-bold text-sm">1</span>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-card-foreground">Study Card Combinations</h4>
+                    <h4 className="font-semibold text-foreground">Study Card Combinations</h4>
                     <p className="text-muted-foreground text-sm mt-1">
                       Learn how cards modify each other when they appear together. Some combinations create entirely new meanings.
                     </p>
@@ -296,7 +296,7 @@ export default function AdvancedPage() {
                     <span className="text-white font-bold text-sm">2</span>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-card-foreground">Practice Grand Tableau</h4>
+                    <h4 className="font-semibold text-foreground">Practice Grand Tableau</h4>
                     <p className="text-muted-foreground text-sm mt-1">
                       Master the 36-card Grand Tableau for comprehensive readings. Start with simple questions and work up to complex ones.
                     </p>
@@ -310,7 +310,7 @@ export default function AdvancedPage() {
                     <span className="text-white font-bold text-sm">3</span>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-card-foreground">Explore Cultural Contexts</h4>
+                    <h4 className="font-semibold text-foreground">Explore Cultural Contexts</h4>
                     <p className="text-muted-foreground text-sm mt-1">
                       Study different cultural approaches to Lenormand. Incorporate elements that resonate with your background and practice.
                     </p>
@@ -322,7 +322,7 @@ export default function AdvancedPage() {
                     <span className="text-white font-bold text-sm">4</span>
                   </div>
                   <div>
-                    <h4 className="font-semibold text-card-foreground">Develop Your Style</h4>
+                    <h4 className="font-semibold text-foreground">Develop Your Style</h4>
                     <p className="text-muted-foreground text-sm mt-1">
                       As you gain experience, develop your own associations and techniques. Lenormand is a living tradition that evolves with its practitioners.
                     </p>
