@@ -15,7 +15,7 @@ export default function Home() {
   const { ref: readingTypesRef, isVisible: readingTypesVisible } = useScrollAnimation(0.1);
 
   return (
-    <main className="bg-background text-foreground min-h-screen" role="main">
+    <main className="bg-background text-foreground" role="main">
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-6 max-w-6xl">
         <div className="grid lg:grid-cols-2 gap-8 items-center mb-8 relative">
