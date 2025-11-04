@@ -120,11 +120,10 @@ export default function NewReadingPage() {
         throw new Error(`Duplicate card: ${card.name}. Each card can only be used once.`)
       }
 
-      readingCards.push({
-        id: card.id,
-        position: i,
-        reversed: false
-      })
+       readingCards.push({
+         id: card.id,
+         position: i
+       })
     }
 
     return readingCards
@@ -583,12 +582,11 @@ Or: Rider, Sun, Key`;
                 errorDetails={aiErrorDetails}
                 onRetry={retryAIAnalysis}
                 retryCount={aiRetryCount}
-                cards={drawnCards.map(card => ({
-                  id: card.id,
-                  name: getCardById(allCards, card.id)?.name || 'Unknown',
-                  position: card.position,
-                  reversed: card.reversed
-                }))}
+                 cards={drawnCards.map(card => ({
+                   id: card.id,
+                   name: getCardById(allCards, card.id)?.name || 'Unknown',
+                   position: card.position
+                 }))}
                 allCards={allCards}
                   layoutType={layoutType}
                 question={question}
