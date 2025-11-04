@@ -54,17 +54,16 @@ export function Footer() {
                 >
                   Explore Cards
                 </Link>
-                  <Button
-                    onClick={() => setShowGuide(true)}
-                    className="bg-transparent border-0 shadow-none text-muted-foreground hover:text-foreground text-sm transition-colors p-0 h-auto justify-start"
-                    aria-label="Open guide on how to read Lenormand cards"
-                    aria-expanded={showGuide}
-                    aria-controls="lenormand-guide-dialog"
-                    data-guide-trigger
-                  >
-                   <BookOpen className="w-4 h-4 mr-2" />
-                   How to Read
-                 </Button>
+                   <Button
+                     onClick={() => setShowGuide(true)}
+                     className="block text-muted-foreground hover:text-foreground text-sm transition-colors"
+                     aria-label="Open guide on how to read Lenormand cards"
+                     aria-expanded={showGuide}
+                     aria-controls="lenormand-guide-dialog"
+                     data-guide-trigger
+                   >
+                    How to Read
+                  </Button>
               </nav>
             </div>
 
