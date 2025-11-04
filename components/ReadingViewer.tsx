@@ -281,12 +281,12 @@ export function ReadingViewer({
                 const card = getCardById(allCards, adjCard.id)
                 if (!card) return null
 
-                 const combination = getCombinationMeaning(selectedCard.card, card, readingCard.position, adjCard.position)
+                 const combination = getCombinationMeaning(selectedCard, card, readingCard.position, adjCard.position)
 
                 return (
                    <div key={index} className="flex items-center gap-4 p-4 bg-card/40 rounded-lg border border-primary/20 hover:shadow-lg hover:shadow-amber-500/10 transition-all duration-300 backdrop-blur-sm">
                      <div className="flex items-center gap-3">
-                       <Card card={selectedCard.card} size="sm" />
+                        <Card card={selectedCard} size="sm" />
                        <span className="text-primary font-medium text-lg">+</span>
                        <Card card={card} size="sm" />
                      </div>
