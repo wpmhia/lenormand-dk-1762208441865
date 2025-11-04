@@ -292,7 +292,7 @@ export function ReadingViewer({
                      </div>
                      <div className="flex-1">
                        <div className="font-medium text-muted-foreground mb-1">
-                         {selectedCard.card.name} + {card.name}
+                          {selectedCard.name} + {card.name}
                        </div>
                        <div className="text-sm text-muted-foreground/80">
                          {combination || 'These cards work together to create a unique meaning in your reading.'}
