@@ -79,9 +79,9 @@ export default function Home() {
             </h2>
             <p className="text-center text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">Select the depth of insight that calls to you</p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10 items-stretch">
             <Link href="/read/new">
-              <Card className="hover:shadow-2xl hover:shadow-primary/20 cursor-pointer group border border-border hover:border-border/60 bg-card backdrop-blur-sm min-h-[160px] rounded-2xl overflow-hidden relative">
+               <Card className="hover:shadow-2xl hover:shadow-primary/20 cursor-pointer group border border-border hover:border-border/60 bg-card backdrop-blur-sm h-full rounded-2xl overflow-hidden relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <CardHeader className="pb-4 relative z-10">
                   <CardTitle className="flex items-center gap-3 text-lg text-card-foreground font-semibold">
@@ -89,10 +89,10 @@ export default function Home() {
                     Quick Analysis
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="card-content-no-padding relative z-10">
-                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                    Journey through time&apos;s tapestry
-                  </p>
+                 <CardContent className="card-content-no-padding relative z-10 flex flex-col flex-grow">
+                   <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                     Journey through time&apos;s tapestry with clarity
+                   </p>
                   <div className="flex items-center text-sm font-medium">
                     <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold bg-primary/12 text-primary dark:bg-primary dark:text-primary-foreground ring-1 ring-primary/10 dark:ring-primary/30">
                       3 Cards
@@ -104,7 +104,7 @@ export default function Home() {
             </Link>
 
             <Link href="/read/new">
-              <Card className="hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 cursor-pointer group border border-border hover:border-border/60 bg-card backdrop-blur-sm min-h-[160px] hover:scale-105 rounded-2xl overflow-hidden relative">
+               <Card className="hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 cursor-pointer group border border-border hover:border-border/60 bg-card backdrop-blur-sm h-full hover:scale-105 rounded-2xl overflow-hidden relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <CardHeader className="pb-4 relative z-10">
                   <CardTitle className="flex items-center gap-3 group-hover:text-primary text-lg text-card-foreground font-semibold">
@@ -112,10 +112,10 @@ export default function Home() {
                     Deep Analysis
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="card-content-no-padding relative z-10">
-                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                    Deep exploration with hidden insights
-                  </p>
+                 <CardContent className="card-content-no-padding relative z-10 flex flex-col flex-grow">
+                   <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                     Deep exploration revealing hidden insights
+                   </p>
                   <div className="flex items-center text-sm font-medium">
                     <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold bg-primary/12 text-primary dark:bg-primary dark:text-primary-foreground ring-1 ring-primary/10 dark:ring-primary/30">
                       5 Cards
@@ -127,7 +127,7 @@ export default function Home() {
             </Link>
 
             <Link href="/read/new">
-              <Card className="hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 cursor-pointer group border border-border hover:border-border/60 bg-card backdrop-blur-sm min-h-[160px] hover:scale-105 rounded-2xl overflow-hidden relative">
+               <Card className="hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 cursor-pointer group border border-border hover:border-border/60 bg-card backdrop-blur-sm h-full hover:scale-105 rounded-2xl overflow-hidden relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <CardHeader className="pb-4 relative z-10">
                   <CardTitle className="flex items-center gap-3 group-hover:text-primary text-lg text-card-foreground font-semibold">
@@ -135,10 +135,10 @@ export default function Home() {
                     Comprehensive
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="card-content-no-padding relative z-10">
-                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                    Complete life&apos;s grand design
-                  </p>
+                 <CardContent className="card-content-no-padding relative z-10 flex flex-col flex-grow">
+                   <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                     Complete life&apos;s grand design revealed
+                   </p>
                   <div className="flex items-center text-sm font-medium">
                     <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold bg-primary/12 text-primary dark:bg-primary dark:text-primary-foreground ring-1 ring-primary/10 dark:ring-primary/30">
                       9 Cards
@@ -150,7 +150,7 @@ export default function Home() {
             </Link>
 
             <Link href="/read/new">
-              <Card className="hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 cursor-pointer group border border-border hover:border-border/60 bg-card backdrop-blur-sm min-h-[160px] hover:scale-105 rounded-2xl overflow-hidden relative">
+               <Card className="hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 cursor-pointer group border border-border hover:border-border/60 bg-card backdrop-blur-sm h-full hover:scale-105 rounded-2xl overflow-hidden relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <CardHeader className="pb-4 relative z-10">
                   <CardTitle className="flex items-center gap-3 group-hover:text-primary text-lg text-card-foreground font-semibold">
@@ -158,10 +158,10 @@ export default function Home() {
                     Grand Tableau
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="card-content-no-padding relative z-10">
-                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                    The complete mystical revelation
-                  </p>
+                 <CardContent className="card-content-no-padding relative z-10 flex flex-col flex-grow">
+                   <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                     The complete mystical revelation unfolds
+                   </p>
                   <div className="flex items-center text-sm font-medium">
                     <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold bg-primary/12 text-primary dark:bg-primary dark:text-primary-foreground ring-1 ring-primary/10 dark:ring-primary/30">
                       36 Cards
