@@ -46,22 +46,22 @@ export default function EnvCheckPage() {
 
   return (
     <div className="page-layout">
-      <div className="container mx-auto max-w-4xl p-6">
+      <div className="container max-w-4xl mx-auto p-6">
         <div className="mb-6">
           <h1 className="mb-2 text-3xl font-bold text-foreground">Environment Variables Status</h1>
-        <p className="mt-2 text-base text-muted-foreground flex items-center flex-wrap gap-1">
-          <span className="bg-muted text-muted-foreground px-2 py-1 rounded-md font-semibold">Steps</span> Switch to{' '}
-          <span className="text-primary font-medium inline-flex items-center gap-1">
+        <p className="mt-2 flex items-center flex-wrap gap-1 text-base text-muted-foreground">
+          <span className="bg-muted px-2 py-1 rounded-md text-muted-foreground font-semibold">Steps</span> Switch to{' '}
+          <span className="inline-flex items-center gap-1 text-primary font-medium">
             <Code className="h-4 w-4" />
             Code
           </span>
           {' '}tab → Select{' '}
-          <span className="text-primary font-medium inline-flex items-center gap-1">
+          <span className="inline-flex items-center gap-1 text-primary font-medium">
             <Settings className="h-4 w-4" />
             .env
           </span>
           {' '}file → Add/Update the missing variables →{' '}
-          <span className="text-primary font-medium inline-flex items-center gap-1">
+          <span className="inline-flex items-center gap-1 text-primary font-medium">
             <Save className="h-4 w-4" />
             Save
           </span>
@@ -70,7 +70,7 @@ export default function EnvCheckPage() {
 
       {missingCount > 0 && (
         <>
-           <Alert className="mb-3 p-3 border-destructive bg-destructive/10 text-destructive">
+           <Alert className="mb-3 p-3 bg-destructive/10 border-destructive text-destructive">
             <div className="flex items-center gap-2">
               <XCircle className="h-4 w-4 flex-shrink-0" />
               <AlertDescription>
@@ -85,7 +85,7 @@ export default function EnvCheckPage() {
       )}
 
       {missingCount === 0 && (
-        <Alert className="mb-6 p-4 border-primary/20 bg-primary/10 dark:border-primary/30 dark:bg-primary/20 dark:text-primary">
+        <Alert className="mb-6 p-4 bg-primary/10 border-primary/20 dark:bg-primary/20 dark:border-primary/30 dark:text-primary">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <CheckCircle className="h-4 w-4" />
@@ -94,7 +94,7 @@ export default function EnvCheckPage() {
               </AlertDescription>
             </div>
             <Link href="/">
-              <Button className="text-white bg-primary hover:bg-primary/90">
+              <Button className="bg-primary hover:bg-primary/90 text-white">
                 Go to App
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>

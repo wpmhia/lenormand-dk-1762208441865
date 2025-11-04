@@ -32,7 +32,7 @@ export default function RootLayout({
         <ThemeProvider>
           <div className="flex flex-col min-h-screen bg-background text-foreground">
             <Header />
-            <main className="pt-14 flex-grow">
+            <main className="flex-grow pt-14">
               {children}
             </main>
             <Footer />

@@ -88,7 +88,7 @@ export default function LearnPage() {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10"></div>
-        <div className="relative container mx-auto px-4 py-16 max-w-6xl">
+        <div className="relative container max-w-6xl mx-auto px-4 py-16">
           <div className="text-center space-y-8">
             <Badge className="badge-hero">
               ✨ Master Lenormand Divination
