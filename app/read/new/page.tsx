@@ -406,9 +406,30 @@ export default function NewReadingPage() {
                             id="physical-cards"
                             value={physicalCards}
                             onChange={(e) => setPhysicalCards(e.target.value)}
-                             placeholder={`Enter ${layoutType} card numbers (1-36) separated by commas, spaces, or new lines.
+                             placeholder={(() => {
+                               switch (layoutType) {
+                                 case 3:
+                                   return `Enter 3 card numbers (1-36) separated by commas, spaces, or new lines.
 Example: 1, 15, 28
-Or: Rider, Sun, Key`}
+Or: Rider, Sun, Key`;
+                                 case 5:
+                                   return `Enter 5 card numbers (1-36) separated by commas, spaces, or new lines.
+Example: 1, 15, 28, 7, 22
+Or: Rider, Sun, Key, Snake, Paths`;
+                                 case 9:
+                                   return `Enter 9 card numbers (1-36) separated by commas, spaces, or new lines.
+Example: 1, 15, 28, 7, 22, 33, 12, 19, 31
+Or: Rider, Sun, Key, Snake, Paths, Moon, Birds, Tower, Lilies`;
+                                 case 36:
+                                   return `Enter all 36 card numbers (1-36) in the order they appeared in your Grand Tableau spread.
+Example: 1, 15, 28, 7, 22, 33, 12, 19, 31, 4, 8, 16, 25, 2, 35, 6, 9, 13, 20, 27...
+Or: Rider, Sun, Key, Snake, Paths, Moon, Birds, Tower, Lilies, House, Coffin, Stars...`;
+                                 default:
+                                   return `Enter ${layoutType} card numbers (1-36) separated by commas, spaces, or new lines.
+Example: 1, 15, 28
+Or: Rider, Sun, Key`;
+                               }
+                             })()}
                             className="bg-background border-border text-foreground placeholder:text-muted-foreground min-h-[120px] rounded-xl focus:border-primary focus:ring-primary/20 resize-none"
                             rows={4}
                           />
