@@ -5,6 +5,7 @@ import { Card as CardType } from '@/lib/types'
 import { Card } from './Card'
 import { Button } from '@/components/ui/button'
 import { Shuffle, Play } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 interface DeckProps {
   cards: CardType[]
@@ -124,44 +125,68 @@ export function Deck({
 
       {/* Deck Display */}
       <div className="flex justify-center fade-in-scale">
-        <div className="relative">
-          {/* Stack effect for remaining cards */}
-          {deck.length > 0 && (
-            <div className="relative">
-              {deck.slice(-3).map((card, index) => (
-                <div
-                  key={card.id}
-                  className="absolute"
-                  style={{
-                    top: `${index * 2}px`,
-                    left: `${index * 2}px`,
-                    zIndex: index,
-                  }}
-                >
+        {/* Make this container a clickable, keyboard-accessible control */}
+        <div
+          className={cn(
+            'relative',
+            // show disabled visual when drawing or insufficient cards
+            (isDrawing || deck.length < drawCount) ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'
+          )}
+          role="button"
+          tabIndex={isDrawing || deck.length < drawCount ? -1 : 0}
+          aria-label={isDrawing ? 'Drawing cards...' : `Deck: ${deck.length} cards. Click to draw ${drawCount} cards`}
+          aria-disabled={isDrawing || deck.length < drawCount}
+          onClick={() => {
+            if (!isDrawing && deck.length >= drawCount) drawCards()
+          }}
+          onKeyDown={(e) => {
+            if (isDrawing || deck.length < drawCount) return
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              drawCards()
+            }
+          }}
+        >
+          <div>
+            {/* Stack effect for remaining cards */}
+            {deck.length > 0 && (
+              <div className="relative">
+                {deck.slice(-3).map((card, index) => (
+                  <div
+                    key={card.id}
+                    className="absolute"
+                    style={{
+                      top: `${index * 6}px`,
+                      left: `${index * 6}px`,
+                      zIndex: index,
+                      transform: `rotate(${index === 0 ? -2 : index === 1 ? 1 : 3}deg)`
+                    }}
+                  >
+                    <Card
+                      card={card}
+                      showBack={true}
+                      size="md"
+                      className="cursor-default"
+                    />
+                  </div>
+                ))}
+                <div className="relative">
                   <Card
-                    card={card}
+                    card={deck[deck.length - 1]}
                     showBack={true}
                     size="md"
-                    className="cursor-default"
+                    className={isDrawing || deck.length < drawCount ? 'opacity-75' : ''}
                   />
-                </div>
-              ))}
-              <div className="relative">
-                <Card
-                  card={deck[deck.length - 1]}
-                  showBack={true}
-                  size="md"
-                  className={isDrawing || deck.length < drawCount ? 'opacity-75' : ''}
-                />
-                <div className="absolute inset-0 cursor-pointer" onClick={drawCards} />
-                <div className="absolute top-2 right-2 pointer-events-none">
-                  <span className="bg-card/90 px-2 py-1 rounded text-sm font-bold">
-                    {deck.length}
-                  </span>
+                  {/* removed the separate absolute inset overlay in favor of the container handler above */}
+                  <div className="absolute top-2 right-2 pointer-events-none">
+                    <span className="bg-card/90 px-2 py-1 rounded text-sm font-bold">
+                      {deck.length}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
 
