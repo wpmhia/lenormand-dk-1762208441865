@@ -2,6 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { isDeepSeekAvailable } from '@/lib/deepseek'
 
 export async function GET(request: NextRequest) {
+  // Only allow debug info in development
+  if (process.env.NODE_ENV !== 'development') {
+    return NextResponse.json(
+      { error: 'Debug endpoint only available in development' },
+      { status: 403 }
+    )
+  }
+
   const debug = {
     timestamp: new Date().toISOString(),
     deepseek: {

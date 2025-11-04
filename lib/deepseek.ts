@@ -31,77 +31,7 @@ export interface AIReadingResponse {
   rawResponse: string
 }
 
-// Ghost word-bank for feminine undertones
-const SOFT_SYNONYMS = {
-  'hit': 'brush',
-  'cut': 'bloom',
-  'snap': 'unfold',
-  'obstacle': 'resistance',
-  'deadline': 'ripening',
-  'execute': 'embrace',
-  'call': 'reach-out',
-  'sharp': 'gentle',
-  'hard': 'soft',
-  'quick': 'lingering',
-  'fast': 'gradual',
-  'sudden': 'emerging',
-  'force': 'flow',
-  'push': 'guide',
-  'block': 'pause',
-  'stop': 'rest',
-  'break': 'shift',
-  'change': 'transform',
-  'end': 'complete',
-  'begin': 'emerge'
-}
 
-// Lenormand card keywords (Frozen Classical Kernel)
-const LENORMAND_KEYWORDS = {
-  1: "Rider = news, messages, communication, arrival",
-  2: "Clover = luck, opportunity, small fortune, chance",
-  3: "Ship = travel, journey, change, distance",
-  4: "House = home, family, stability, property",
-  5: "Tree = health, growth, longevity, nature",
-  6: "Clouds = confusion, uncertainty, worry, secrets",
-  7: "Snake = betrayal, deception, wisdom, healing",
-  8: "Coffin = endings, transformation, release, sorrow",
-  9: "Bouquet = gifts, beauty, appreciation, celebration",
-  10: "Scythe = cutting, decisions, separation, harvest",
-  11: "Whip = conflict, arguments, passion, discipline",
-  12: "Birds = conversation, gossip, thoughts, siblings",
-  13: "Child = new beginnings, innocence, youth, potential",
-  14: "Fox = cunning, caution, intelligence, deceit",
-  15: "Bear = strength, authority, protection, mother",
-  16: "Stars = hopes, dreams, guidance, spirituality",
-  17: "Stork = change, movement, birth, improvement",
-  18: "Dog = loyalty, friendship, trust, help",
-  19: "Tower = isolation, authority, ambition, retreat",
-  20: "Garden = community, gatherings, public life, growth",
-  21: "Mountain = obstacles, challenges, delays, ambition",
-  22: "Paths = choices, crossroads, decisions, direction",
-  23: "Mice = loss, theft, worries, details",
-  24: "Heart = love, emotions, relationships, passion",
-  25: "Ring = commitment, contracts, marriage, cycles",
-  26: "Book = knowledge, secrets, education, mystery",
-  27: "Letter = documents, news, communication, clarity",
-  28: "Man = masculine energy, partner, father, authority",
-  29: "Woman = feminine energy, partner, mother, intuition",
-  30: "Lilies = peace, harmony, maturity, sexuality",
-  31: "Sun = success, vitality, happiness, clarity",
-  32: "Moon = emotions, intuition, cycles, dreams",
-  33: "Key = solutions, opportunities, answers, access",
-  34: "Fish = abundance, wealth, fertility, flow",
-  35: "Anchor = stability, security, patience, foundation",
-  36: "Cross = burden, sacrifice, faith, destiny"
-}
-
-// Combination grammar rules
-const COMBINATION_RULES = `
-Lenormand Combination Grammar:
-- Left card modifies right card
-- Above influences outcome below
-- Mirror pairs (1-36, 2-35, etc.) show hidden subplots
-`
 
 // System prompt template for AI readings (Condensed for efficiency)
 const SYSTEM_PROMPT_TEMPLATE = `Read Lenormand cards for practical guidance.
@@ -152,7 +82,7 @@ function isSafePrompt(question: string): boolean {
 // Main function to get AI reading
 export async function getAIReading(request: AIReadingRequest): Promise<AIReadingResponse | null> {
   if (!isDeepSeekAvailable()) {
-    console.warn('DeepSeek API not configured')
+    if (process.env.NODE_ENV === 'development') console.warn('DeepSeek API not configured')
     return null
   }
 
@@ -223,21 +153,23 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
 
     return parseAIResponse(rawResponse)
   } catch (error) {
-    console.error('AI Reading error:', error)
-    
-    // Enhanced error logging for Vercel debugging
-    if (error instanceof Error) {
-      console.error('Error details:', {
-        name: error.name,
-        message: error.message,
-        stack: error.stack,
-        isAbortError: error.name === 'AbortError',
-        envCheck: {
-          hasApiKey: !!process.env.DEEPSEEK_API_KEY,
-          baseUrl: process.env.DEEPSEEK_BASE_URL,
-          nodeEnv: process.env.NODE_ENV
-        }
-      })
+    if (process.env.NODE_ENV === 'development') {
+      console.error('AI Reading error:', error)
+
+      // Enhanced error logging for Vercel debugging
+      if (error instanceof Error) {
+        console.error('Error details:', {
+          name: error.name,
+          message: error.message,
+          stack: error.stack,
+          isAbortError: error.name === 'AbortError',
+          envCheck: {
+            hasApiKey: !!process.env.DEEPSEEK_API_KEY,
+            baseUrl: process.env.DEEPSEEK_BASE_URL,
+            nodeEnv: process.env.NODE_ENV
+          }
+        })
+      }
     }
     
     return null

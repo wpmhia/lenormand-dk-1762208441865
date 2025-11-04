@@ -1,6 +1,14 @@
 import { NextResponse } from 'next/server'
 
 export async function GET() {
+  // Only allow debug testing in development
+  if (process.env.NODE_ENV !== 'development') {
+    return NextResponse.json(
+      { error: 'Debug endpoint only available in development' },
+      { status: 403 }
+    )
+  }
+
   try {
     const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY
     const DEEPSEEK_BASE_URL = process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com/v1'

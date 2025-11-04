@@ -18,7 +18,6 @@ export interface CardCombo {
 export interface ReadingCard {
   id: number
   position: number
-  reversed: boolean
   x?: number
   y?: number
 }

@@ -10,16 +10,18 @@ export const maxDuration = 30
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('=== AI Interpretation Request Started ===')
-    console.log('Environment check:', {
-      hasApiKey: !!process.env.DEEPSEEK_API_KEY,
-      apiKeyLength: process.env.DEEPSEEK_API_KEY?.length || 0,
-      baseUrl: process.env.DEEPSEEK_BASE_URL || 'DEFAULT'
-    })
+    if (process.env.NODE_ENV === 'development') {
+      console.log('=== AI Interpretation Request Started ===')
+      console.log('Environment check:', {
+        hasApiKey: !!process.env.DEEPSEEK_API_KEY,
+        apiKeyLength: process.env.DEEPSEEK_API_KEY?.length || 0,
+        baseUrl: process.env.DEEPSEEK_BASE_URL || 'DEFAULT'
+      })
+    }
 
     // Rate limiting check
     if (!canMakeAIRequest()) {
-      console.log('Rate limited')
+      if (process.env.NODE_ENV === 'development') console.log('Rate limited')
       return NextResponse.json(
         { 
           error: 'Please wait 2 seconds between readings. This ensures quality interpretations for everyone.',
@@ -31,18 +33,20 @@ export async function POST(request: NextRequest) {
     }
 
     const body: AIReadingRequest = await request.json()
-    console.log('Request body:', { question: body.question, cardCount: body.cards?.length, layoutType: body.layoutType })
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Request body:', { question: body.question, cardCount: body.cards?.length, layoutType: body.layoutType })
+    }
 
     // Validate required fields
     if (!body.question || !body.cards || !Array.isArray(body.cards)) {
-      console.log('Validation failed: missing fields')
+      if (process.env.NODE_ENV === 'development') console.log('Validation failed: missing fields')
       const missingFields: string[] = []
       if (!body.question) missingFields.push('question')
       if (!body.cards) missingFields.push('cards')
       if (!Array.isArray(body.cards)) missingFields.push('cards must be an array')
-      
+
       return NextResponse.json(
-        { 
+        {
           error: `Missing required fields: ${missingFields.join(', ')}`,
           type: 'validation_error',
           fields: missingFields
@@ -53,7 +57,7 @@ export async function POST(request: NextRequest) {
 
     // Load all cards data
     const allCards = await getCards()
-    console.log('Cards loaded:', allCards.length)
+    if (process.env.NODE_ENV === 'development') console.log('Cards loaded:', allCards.length)
 
     // Validate cards exist and get full card data
     const enrichedCards = body.cards.map((card) => {
@@ -67,19 +71,19 @@ export async function POST(request: NextRequest) {
         position: card.position
       }
     })
-    console.log('Cards enriched:', enrichedCards.length)
+    if (process.env.NODE_ENV === 'development') console.log('Cards enriched:', enrichedCards.length)
 
     const aiRequest: AIReadingRequest = {
       ...body,
       cards: enrichedCards
     }
 
-    console.log('Calling getAIReading...')
+    if (process.env.NODE_ENV === 'development') console.log('Calling getAIReading...')
     const aiReading = await getAIReading(aiRequest)
-    console.log('AI reading result:', aiReading ? 'SUCCESS' : 'NULL')
+    if (process.env.NODE_ENV === 'development') console.log('AI reading result:', aiReading ? 'SUCCESS' : 'NULL')
 
     if (!aiReading) {
-      console.log('AI reading returned null')
+      if (process.env.NODE_ENV === 'development') console.log('AI reading returned null')
       const isConfigured = !!process.env.DEEPSEEK_API_KEY
       const errorMessage = isConfigured 
         ? 'AI service is temporarily unavailable. Please try again in a few minutes.'
@@ -96,21 +100,23 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    console.log('=== AI Interpretation Request Success ===')
+    if (process.env.NODE_ENV === 'development') console.log('=== AI Interpretation Request Success ===')
     return NextResponse.json(aiReading)
   } catch (error) {
-    console.error('=== AI Interpretation Error ===')
-    console.error('Error details:', error)
-    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack')
-    console.error('Environment at error:', {
-      hasApiKey: !!process.env.DEEPSEEK_API_KEY,
-      baseUrl: process.env.DEEPSEEK_BASE_URL
-    })
+    if (process.env.NODE_ENV === 'development') {
+      console.error('=== AI Interpretation Error ===')
+      console.error('Error details:', error)
+      console.error('Error stack:', error instanceof Error ? error.stack : 'No stack')
+      console.error('Environment at error:', {
+        hasApiKey: !!process.env.DEEPSEEK_API_KEY,
+        baseUrl: process.env.DEEPSEEK_BASE_URL
+      })
+    }
 
     // Handle safety violations
     if (error instanceof Error && error.message.includes('Cannot provide readings')) {
       return NextResponse.json(
-        { 
+        {
           error: error.message,
           type: 'safety_violation',
           suggestion: 'Please consult appropriate professionals for medical, legal, or financial advice.'
@@ -119,7 +125,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    console.error('=== Returning 500 error ===')
+    if (process.env.NODE_ENV === 'development') console.error('=== Returning 500 error ===')
     return NextResponse.json(
       { 
         error: 'AI interpretation service encountered an error. Please try again.',
