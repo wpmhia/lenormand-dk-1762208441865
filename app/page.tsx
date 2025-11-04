@@ -12,7 +12,8 @@ import {
 } from 'lucide-react'
 
 export default function Home() {
-  const { ref: readingTypesRef, isVisible: readingTypesVisible } = useScrollAnimation(0.1);
+   const { ref: readingTypesRef, isVisible: readingTypesVisible } = useScrollAnimation(0.1);
+   const { ref: heroRef, isVisible: heroVisible } = useScrollAnimation(0.1);
 
   return (
     <main className="bg-background text-foreground" role="main">
@@ -52,7 +53,7 @@ export default function Home() {
              <div className="relative">
                <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-primary/10 to-primary/20 rounded-3xl blur-3xl opacity-30"></div>
                {/* Stable wrapper reserves layout space and prevents CLS/white-space */}
-               <div className="hero-image-wrap relative w-full max-w-md mx-auto lg:max-w-none rounded-3xl overflow-visible">
+                <div ref={heroRef} className={`hero-image-wrap relative w-full max-w-md mx-auto lg:max-w-none rounded-3xl overflow-visible transition-all duration-700 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
                  {/*
                    Use an aspect-ratio so layout space is reserved while image loads.
                    Tailwind's arbitrary value aspect-[3/2] shown; adjust to the real image ratio if known.
