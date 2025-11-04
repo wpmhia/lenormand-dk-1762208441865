@@ -30,7 +30,7 @@ export default function EnvCheckPage() {
     if (isSet) {
       return <CheckCircle className="h-5 w-5 text-primary" />;
     } else {
-      return <XCircle className="h-5 w-5 text-destructive" />;
+      return <XCircle className="text-destructive h-5 w-5" />;
     }
   };
 
@@ -46,10 +46,10 @@ export default function EnvCheckPage() {
 
   return (
     <div className="page-layout">
-      <div className="container mx-auto p-6 max-w-4xl">
+      <div className="container mx-auto max-w-4xl p-6">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold mb-2 text-foreground">Environment Variables Status</h1>
-        <p className="text-base mt-2 text-muted-foreground flex items-center flex-wrap gap-1">
+          <h1 className="mb-2 text-3xl font-bold text-foreground">Environment Variables Status</h1>
+        <p className="mt-2 text-base text-muted-foreground flex items-center flex-wrap gap-1">
           <span className="bg-muted text-muted-foreground px-2 py-1 rounded-md font-semibold">Steps</span> Switch to{' '}
           <span className="text-primary font-medium inline-flex items-center gap-1">
             <Code className="h-4 w-4" />
@@ -70,7 +70,7 @@ export default function EnvCheckPage() {
 
       {missingCount > 0 && (
         <>
-          <Alert className="mb-3 border-destructive bg-destructive/10 text-destructive p-3">
+           <Alert className="mb-3 p-3 border-destructive bg-destructive/10 text-destructive">
             <div className="flex items-center gap-2">
               <XCircle className="h-4 w-4 flex-shrink-0" />
               <AlertDescription>
@@ -78,14 +78,14 @@ export default function EnvCheckPage() {
               </AlertDescription>
             </div>
           </Alert>
-          <p className="text-sm text-muted-foreground mb-6">
+           <p className="mb-6 text-sm text-muted-foreground">
             Please configure {missingCount > 1 ? 'these variables' : 'this variable'} to ensure proper application functionality.
           </p>
         </>
       )}
 
       {missingCount === 0 && (
-        <Alert className="mb-6 border-primary/20 bg-primary/10 dark:border-primary/30 dark:bg-primary/20 dark:text-primary p-4">
+        <Alert className="mb-6 p-4 border-primary/20 bg-primary/10 dark:border-primary/30 dark:bg-primary/20 dark:text-primary">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <CheckCircle className="h-4 w-4" />
@@ -94,7 +94,7 @@ export default function EnvCheckPage() {
               </AlertDescription>
             </div>
             <Link href="/">
-              <Button className="bg-primary hover:bg-primary/90 text-white">
+              <Button className="text-white bg-primary hover:bg-primary/90">
                 Go to App
                 <ArrowRight className="h-4 w-4 ml-2" />
               </Button>
@@ -110,7 +110,7 @@ export default function EnvCheckPage() {
             <Card key={envVar.name} className="relative">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-mono">{envVar.name}</CardTitle>
+                  <CardTitle className="font-mono text-lg">{envVar.name}</CardTitle>
                   <div className="flex items-center gap-2">
                     {getStatusIcon(isSet)}
                     {getStatusBadge(isSet)}
@@ -121,9 +121,9 @@ export default function EnvCheckPage() {
               <CardContent>
                 <div className="space-y-3">
                   <div>
-                    <h4 className="font-semibold text-sm mb-1">How to get this variable:</h4>
+                    <h4 className="mb-1 font-semibold text-sm">How to get this variable:</h4>
                     <div 
-                      className="text-sm text-muted-foreground prose prose-sm max-w-none"
+                      className="prose prose-sm max-w-none text-sm text-muted-foreground"
                       dangerouslySetInnerHTML={{
                         __html: envVar.instructions
                           .replace(/\n/g, '<br>')
@@ -136,8 +136,8 @@ export default function EnvCheckPage() {
                   </div>
                   {isSet && (
                     <div>
-                      <h4 className="font-semibold text-sm mb-1">Current value (debug):</h4>
-                      <div className="text-xs font-mono bg-muted p-2 rounded break-all">
+                      <h4 className="mb-1 font-semibold text-sm">Current value (debug):</h4>
+                      <div className="break-all rounded bg-muted p-2 text-xs font-mono">
                         {envVar.name.includes('KEY') 
                           ? `${envValues[envVar.name].substring(0, 8)}...${envValues[envVar.name].substring(envValues[envVar.name].length - 4)}`
                           : envValues[envVar.name]
@@ -146,7 +146,7 @@ export default function EnvCheckPage() {
                     </div>
                   )}
                   {!isSet && (
-                    <div className="text-xs text-destructive">
+                    <div className="text-destructive text-xs">
                       This variable is not set in the current environment
                     </div>
                   )}

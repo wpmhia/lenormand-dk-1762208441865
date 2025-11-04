@@ -86,16 +86,16 @@ export default function CardsPage() {
     <div className="page-layout">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2 text-foreground">The Sacred Deck</h1>
+          <h1 className="mb-2 text-3xl font-bold text-foreground">The Sacred Deck</h1>
             <p className="text-muted-foreground ethereal-glow">
               Journey through the 36 archetypes that hold the keys to understanding
             </p>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
+        <div className="gap-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
           {filteredCards.map((card) => (
-            <div key={card.id} className="space-y-1 cursor-pointer group">
-              <Card card={card} size="md" className="group-hover:scale-105 transition-all duration-600 mx-auto mystical-float" />
+             <div key={card.id} className="cursor-pointer group space-y-1">
+              <Card card={card} size="md" className="mx-auto mystical-float group-hover:scale-105 transition-all duration-600" />
               <div className="text-center">
                 <div className="font-medium text-xs truncate text-foreground">{card.name}</div>
                 <div className="text-xs text-muted-foreground">#{card.id}</div>
