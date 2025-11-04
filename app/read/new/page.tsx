@@ -489,12 +489,7 @@ export default function NewReadingPage() {
                              onCheckedChange={setAllowReversed}
                              onClick={(e) => e.stopPropagation()}
                              aria-label="Allow reversed cards"
-                            className="relative h-6 w-11 rounded-full transition-colors duration-150
-                                       bg-muted/30 dark:bg-muted/40
-                                       data-[state=checked]:bg-primary data-[state=checked]:dark:bg-primary
-                                       ring-1 ring-transparent dark:ring-transparent
-                                       focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
-                          />
+                           />
                         </TooltipTrigger>
                         <TooltipContent className="bg-card border-border text-card-foreground">
                           <p>When enabled, cards can appear upside down for additional meaning</p>
