@@ -17,10 +17,10 @@ export default function Home() {
   return (
     <main className="bg-background text-foreground min-h-screen" role="main">
       {/* Hero Section */}
-      <div className="container mx-auto px-4 py-10 max-w-6xl">
-        <div className="grid lg:grid-cols-2 gap-12 items-center mb-12 relative">
-          <div className="text-center lg:text-left space-y-8 relative z-10">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-8 text-foreground leading-tight relative">
+      <div className="container mx-auto px-4 py-6 max-w-6xl">
+        <div className="grid lg:grid-cols-2 gap-8 items-center mb-8 relative">
+          <div className="text-center lg:text-left space-y-4 relative z-10">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 text-foreground leading-tight relative">
               <span className="relative inline-block">
                 Lenormand
                 <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-primary via-primary/80 to-primary/60 rounded-full opacity-80"></div>
@@ -29,11 +29,11 @@ export default function Home() {
                 Intelligence
               </span>
             </h1>
-            <p className="text-lg sm:text-xl lg:text-2xl text-foreground mb-8 max-w-3xl mx-auto lg:mx-0 leading-relaxed font-light">
+            <p className="text-lg sm:text-xl lg:text-2xl text-foreground mb-4 max-w-3xl mx-auto lg:mx-0 leading-relaxed font-light">
               Discover the ancient wisdom of Lenormand through AI-enhanced intuition.
               <span className="text-muted-foreground block mt-2">Experience personalized guidance where technology meets mystical insight.</span>
             </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Link href="/read/new">
                 <Button size="lg" className="px-12 py-5 bg-primary hover:bg-primary/90 text-primary-foreground shadow-2xl shadow-primary/30 font-semibold text-lg rounded-full border border-border/20 backdrop-blur-sm">
                   ✨ Begin Your Journey
@@ -63,11 +63,11 @@ export default function Home() {
        </div>
 
       {/* Reading Types */}
-      <div ref={readingTypesRef} className={`container mx-auto px-6 py-20 max-w-6xl transition-all duration-700 ${readingTypesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-        <div className="mb-12 relative">
+       <div ref={readingTypesRef} className={`container mx-auto px-6 py-8 max-w-6xl transition-all duration-700 ${readingTypesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+         <div className="mb-8 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5 rounded-3xl"></div>
-          <div className="text-center mb-12 relative z-10">
-            <h2 className="text-4xl font-bold text-center mb-4 text-foreground relative">
+           <div className="text-center mb-6 relative z-10">
+             <h2 className="text-4xl font-bold text-center mb-2 text-foreground relative">
               Choose Your Path
               <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-24 h-0.5 bg-gradient-to-r from-primary to-primary/60 rounded-full"></div>
             </h2>
@@ -170,17 +170,17 @@ export default function Home() {
       </div>
 
       {/* CTA Section */}
-      <div className="container mx-auto px-6 py-12 max-w-4xl">
-        <div className="text-center bg-card backdrop-blur-sm rounded-3xl p-8 border border-border shadow-2xl relative overflow-hidden">
+       <div className="container mx-auto px-6 py-8 max-w-4xl">
+         <div className="text-center bg-card backdrop-blur-sm rounded-3xl p-6 border border-border shadow-2xl relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-3xl"></div>
           <div className="absolute top-4 left-4 w-16 h-16 bg-primary/20 rounded-full blur-xl"></div>
           <div className="absolute bottom-4 right-4 w-12 h-12 bg-primary/20 rounded-full blur-lg"></div>
           <div className="relative z-10">
-            <h2 className="text-4xl font-bold mb-6 text-foreground relative">
-              Begin Your Mystical Journey
-              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-48 h-0.5 bg-gradient-to-r from-primary via-primary/80 to-primary/60 rounded-full"></div>
-            </h2>
-            <p className="text-muted-foreground mb-8 text-xl max-w-2xl mx-auto leading-relaxed">
+             <h2 className="text-4xl font-bold mb-4 text-foreground relative">
+               Begin Your Mystical Journey
+               <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-48 h-0.5 bg-gradient-to-r from-primary via-primary/80 to-primary/60 rounded-full"></div>
+             </h2>
+             <p className="text-muted-foreground mb-6 text-xl max-w-2xl mx-auto leading-relaxed">
               Let the cards reveal what your soul already knows
             </p>
             <Link href="/read/new">
@@ -194,11 +194,11 @@ export default function Home() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-card py-12 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5"></div>
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <div className="max-w-4xl mx-auto">
-            <p className="text-muted-foreground mb-6 text-lg font-light italic">
+       <footer className="border-t border-border bg-card py-8 relative overflow-hidden">
+         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5"></div>
+         <div className="container mx-auto px-4 text-center relative z-10">
+           <div className="max-w-4xl mx-auto">
+             <p className="text-muted-foreground mb-4 text-lg font-light italic">
               © 2024 Lenormand Intelligence - Mystical Card Wisdom
             </p>
             <div className="flex gap-8 justify-center text-sm">
