@@ -118,21 +118,10 @@ lenormand-dk/
 │   └── ReadingViewer.tsx  # Reading display
 ├── lib/                   # Utility functions
 │   ├── auth.ts           # NextAuth configuration
-│   ├── db.ts             # Prisma client
 │   └── types.ts          # TypeScript types
-├── prisma/               # Database schema and migrations
 ├── tests/                # Test files
 └── public/               # Static assets
 ```
-
-## Database Schema
-
-The application uses the following main models:
-
-- **User** - User accounts and authentication
-- **Reading** - Saved Lenormand readings
-- **Card** - The 36 Lenormand cards with meanings
-- **DrawStat** - Statistics on card draws
 
 ## API Endpoints
 

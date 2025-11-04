@@ -61,10 +61,6 @@ lenormand-dk/
 │   ├── env-config.ts
 │   ├── types.ts
 │   └── utils.ts
-├── prisma/
-│   ├── migrations/
-│   ├── schema.prisma
-│   └── seed.ts
 ├── public/
 │   ├── cards/
 │   │   └── (card images)
