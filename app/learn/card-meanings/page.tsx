@@ -161,22 +161,27 @@ export default function CardMeaningsPage() {
         {viewMode === 'grid' ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
             {filteredCards.map((card) => (
-              <Card key={card.number} className="hover:shadow-lg hover:shadow-primary/20 cursor-pointer group border border-border bg-card">
-                <CardHeader className="pb-3">
-                  <div className="flex items-center justify-between">
-                    <Badge className="bg-muted text-muted-foreground text-xs">
-                      #{card.number}
-                    </Badge>
-                    <div className="w-8 h-8 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center">
-                      <span className="text-white text-xs font-bold">{card.number}</span>
-                    </div>
-                  </div>
-                  <CardTitle className="text-lg text-foreground group-hover:text-primary transition-colors">
-                    {card.name}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <div className="space-y-3">
+               <Card key={card.number} className="hover:shadow-lg hover:shadow-primary/20 cursor-pointer group border border-border bg-card">
+                 <CardHeader className="pb-3">
+                   <div className="flex items-center justify-between">
+                     <Badge className="bg-muted text-muted-foreground text-xs">
+                       #{card.number}
+                     </Badge>
+                     <div className="w-8 h-8 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center">
+                       <span className="text-white text-xs font-bold">{card.number}</span>
+                     </div>
+                   </div>
+                   <CardTitle className="text-lg text-foreground group-hover:text-primary transition-colors">
+                     {card.name}
+                   </CardTitle>
+                 </CardHeader>
+                 <CardContent className="pt-0">
+                   <img
+                     src={`/data/images/cards/${card.number.toString().padStart(2, '0')}-${card.name.toLowerCase().replace('the ', '').replace(/ /g, '-')}.png`}
+                     alt={card.name}
+                     className="w-full h-32 object-cover rounded-lg mb-3"
+                   />
+                   <div className="space-y-3">
                     <div>
                       <h4 className="text-sm font-semibold text-foreground mb-1">Keywords:</h4>
                       <div className="flex flex-wrap gap-1">
@@ -201,14 +206,19 @@ export default function CardMeaningsPage() {
         ) : (
           <div className="space-y-3 mb-8">
             {filteredCards.map((card) => (
-              <Card key={card.number} className="border border-border bg-card">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center">
-                        <span className="text-white text-sm font-bold">{card.number}</span>
-                      </div>
-                      <div>
+               <Card key={card.number} className="border border-border bg-card">
+                 <CardContent className="p-4">
+                   <div className="flex items-center justify-between">
+                     <div className="flex items-center space-x-4">
+                       <img
+                         src={`/data/images/cards/${card.number.toString().padStart(2, '0')}-${card.name.toLowerCase().replace('the ', '').replace(/ /g, '-')}.png`}
+                         alt={card.name}
+                         className="w-16 h-16 object-cover rounded-lg"
+                       />
+                       <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0">
+                         <span className="text-white text-sm font-bold">{card.number}</span>
+                       </div>
+                       <div>
                         <h3 className="font-semibold text-foreground">{card.name}</h3>
                         <div className="flex flex-wrap gap-1 mt-1">
                           {card.keywords.map((keyword, index) => (
