@@ -155,7 +155,7 @@ export default function ReadingBasicsPage() {
                       <p className="text-xs text-muted-foreground">News, Messages</p>
                     </div>
                     <div className="text-center">
-                      <div className="w-16 h-16 bg-gradient-to-r from-muted to-muted/80 rounded-lg flex items-center justify-center mb-2">
+                      <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary/80 rounded-lg flex items-center justify-center mb-2">
                         <span className="text-white font-bold">2</span>
                       </div>
                       <p className="text-sm font-medium text-foreground">The Snake</p>
