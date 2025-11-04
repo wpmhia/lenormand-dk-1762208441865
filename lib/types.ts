@@ -4,7 +4,6 @@ export interface Card {
   number: number
   keywords: string[]
   uprightMeaning: string
-  reversedMeaning: string | null
   combos: CardCombo[]
   imageUrl: string | null
   emoji?: string

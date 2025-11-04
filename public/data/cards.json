@@ -11,7 +11,6 @@
       "communication"
     ],
     "uprightMeaning": "News arriving soon, messages, movement, a young man",
-    "reversedMeaning": "Delayed news, no movement, messages not arriving",
     "combos": [
       {
         "withCardId": 2,
@@ -168,7 +167,6 @@
       "joy"
     ],
     "uprightMeaning": "Good luck, opportunity, small wins, positive chance",
-    "reversedMeaning": "Bad luck, missed opportunity, unfortunate timing",
     "combos": [
       {
         "withCardId": 1,
@@ -325,7 +323,6 @@
       "exploration"
     ],
     "uprightMeaning": "Travel, journey, movement, commerce, exploration",
-    "reversedMeaning": "No travel, stuck, journey cancelled, business failure",
     "combos": [
       {
         "withCardId": 1,
@@ -482,7 +479,6 @@
       "comfort"
     ],
     "uprightMeaning": "Home, family, security, stability, comfort",
-    "reversedMeaning": "Home problems, instability, family conflict",
     "combos": [
       {
         "withCardId": 1,
@@ -639,7 +635,6 @@
       "life"
     ],
     "uprightMeaning": "Health, growth, stability, long life, nature",
-    "reversedMeaning": "Health problems, stagnation, illness",
     "combos": [
       {
         "withCardId": 1,
@@ -796,7 +791,6 @@
       "problems"
     ],
     "uprightMeaning": "Confusion, uncertainty, doubt, lack of clarity",
-    "reversedMeaning": "Clarity emerging, confusion clearing, certainty",
     "combos": [
       {
         "withCardId": 1,
@@ -953,7 +947,6 @@
       "transformation"
     ],
     "uprightMeaning": "Betrayal, deception, temptation, hidden enemy",
-    "reversedMeaning": "Wisdom gained, transformation, deception revealed",
     "combos": [
       {
         "withCardId": 1,
@@ -1110,7 +1103,6 @@
       "change"
     ],
     "uprightMeaning": "Endings, transformation, closure, major change",
-    "reversedMeaning": "New beginnings, transformation complete, rebirth",
     "combos": [
       {
         "withCardId": 1,
@@ -1267,7 +1259,6 @@
       "social"
     ],
     "uprightMeaning": "Gift, appreciation, beauty, gratitude, social invitation",
-    "reversedMeaning": "No gift, lack of appreciation, social rejection",
     "combos": [
       {
         "withCardId": 1,
@@ -1424,7 +1415,6 @@
       "danger"
     ],
     "uprightMeaning": "Sudden change, cutting ties, decisions, harvest",
-    "reversedMeaning": "Avoiding decisions, delayed harvest, protection",
     "combos": [
       {
         "withCardId": 1,
@@ -1581,7 +1571,6 @@
       "passion"
     ],
     "uprightMeaning": "Conflict, argument, discipline, action, passion",
-    "reversedMeaning": "Resolution, peace, harmony, gentle approach",
     "combos": [
       {
         "withCardId": 1,
@@ -1738,7 +1727,6 @@
       "messages"
     ],
     "uprightMeaning": "Communication, gossip, anxiety, social activity",
-    "reversedMeaning": "Silence, peace, no communication, solitude",
     "combos": [
       {
         "withCardId": 1,
@@ -1895,7 +1883,6 @@
       "youth"
     ],
     "uprightMeaning": "New beginnings, innocence, creativity, youth, pregnancy",
-    "reversedMeaning": "Immaturity, dependence, childish behavior",
     "combos": [
       {
         "withCardId": 1,
@@ -2052,7 +2039,6 @@
       "caution"
     ],
     "uprightMeaning": "Cunning, intelligence, work, strategy, caution needed",
-    "reversedMeaning": "Naivety, honesty revealed, straightforward approach",
     "combos": [
       {
         "withCardId": 1,
@@ -2209,7 +2195,6 @@
       "mother"
     ],
     "uprightMeaning": "Power, strength, protection, authority, mother figure",
-    "reversedMeaning": "Weakness, vulnerability, lack of protection",
     "combos": [
       {
         "withCardId": 1,
@@ -2366,7 +2351,6 @@
       "inspiration"
     ],
     "uprightMeaning": "Hope, guidance, wishes coming true, destiny",
-    "reversedMeaning": "Hopelessness, lost direction, wishes not granted",
     "combos": [
       {
         "withCardId": 1,
@@ -2523,7 +2507,6 @@
       "transition"
     ],
     "uprightMeaning": "Change, movement, return, delivery, transition",
-    "reversedMeaning": "Stagnation, no change, stuck in place",
     "combos": [
       {
         "withCardId": 1,
@@ -2680,7 +2663,6 @@
       "trust"
     ],
     "uprightMeaning": "Loyalty, friendship, protection, companionship, trust",
-    "reversedMeaning": "Betrayal, disloyalty, false friends",
     "combos": [
       {
         "withCardId": 1,
@@ -2837,7 +2819,6 @@
       "structure"
     ],
     "uprightMeaning": "Authority, institution, isolation, protection, structure",
-    "reversedMeaning": "Freedom from authority, breaking structure, community",
     "combos": [
       {
         "withCardId": 1,
@@ -2994,7 +2975,6 @@
       "nature"
     ],
     "uprightMeaning": "Social gathering, community, public space, nature",
-    "reversedMeaning": "Isolation, privacy, antisocial behavior",
     "combos": [
       {
         "withCardId": 1,
@@ -3151,7 +3131,6 @@
       "delay"
     ],
     "uprightMeaning": "Obstacles, challenges, stability, endurance, delay",
-    "reversedMeaning": "Overcoming obstacles, challenges resolved, progress",
     "combos": [
       {
         "withCardId": 1,
@@ -3308,7 +3287,6 @@
       "direction"
     ],
     "uprightMeaning": "Choices, decisions, journey, options, direction",
-    "reversedMeaning": "No choice, stuck, indecision, wrong path",
     "combos": [
       {
         "withCardId": 1,
@@ -3461,7 +3439,6 @@
       "erosion"
     ],
     "uprightMeaning": "Loss, theft, stress, worry, gradual erosion",
-    "reversedMeaning": "Recovery, finding what was lost, stress relief",
     "combos": [
       {
         "withCardId": 1,
@@ -3614,7 +3591,6 @@
       "compassion"
     ],
     "uprightMeaning": "Love, emotions, relationships, joy, compassion",
-    "reversedMeaning": "Heartbreak, emotional pain, relationship problems",
     "combos": [
       {
         "withCardId": 1,
@@ -3771,7 +3747,6 @@
       "completion"
     ],
     "uprightMeaning": "Commitment, marriage, contracts, cycles, completion",
-    "reversedMeaning": "Broken commitment, divorce, contract broken",
     "combos": [
       {
         "withCardId": 1,
@@ -3928,7 +3903,6 @@
       "education"
     ],
     "uprightMeaning": "Knowledge, secrets, learning, mystery, education",
-    "reversedMeaning": "Secrets revealed, knowledge shared, transparency",
     "combos": [
       {
         "withCardId": 1,
@@ -4085,7 +4059,6 @@
       "information"
     ],
     "uprightMeaning": "Messages, communication, documents, news, information",
-    "reversedMeaning": "No message, communication blocked, lost documents",
     "combos": [
       {
         "withCardId": 1,
@@ -4242,7 +4215,6 @@
       "logic"
     ],
     "uprightMeaning": "Man, husband, father, masculine energy, authority",
-    "reversedMeaning": "Feminine man, lack of authority, emotional male",
     "combos": [
       {
         "withCardId": 1,
@@ -4399,7 +4371,6 @@
       "emotion"
     ],
     "uprightMeaning": "Woman, wife, mother, feminine energy, intuition",
-    "reversedMeaning": "Masculine woman, lack of intuition, logical female",
     "combos": [
       {
         "withCardId": 1,
@@ -4556,7 +4527,6 @@
       "ethics"
     ],
     "uprightMeaning": "Purity, peace, wisdom, maturity, ethics",
-    "reversedMeaning": "Impurity, conflict, immaturity, unethical behavior",
     "combos": [
       {
         "withCardId": 1,
@@ -4713,7 +4683,6 @@
       "energy"
     ],
     "uprightMeaning": "Success, happiness, joy, clarity, positive energy",
-    "reversedMeaning": "Failure, sadness, confusion, lack of energy",
     "combos": [
       {
         "withCardId": 1,
@@ -4738,7 +4707,6 @@
       "illusion"
     ],
     "uprightMeaning": "Intuition, emotions, dreams, creativity, illusion",
-    "reversedMeaning": "Logic over intuition, emotional block, creative block",
     "combos": [
       {
         "withCardId": 29,
@@ -4763,7 +4731,6 @@
       "discovery"
     ],
     "uprightMeaning": "Solution, access, opportunity, answers, discovery",
-    "reversedMeaning": "No solution, locked out, missed opportunity",
     "combos": [
       {
         "withCardId": 1,
@@ -4788,7 +4755,6 @@
       "flow"
     ],
     "uprightMeaning": "Abundance, wealth, business, prosperity, flow",
-    "reversedMeaning": "Lack, poverty, business failure, stagnation",
     "combos": [
       {
         "withCardId": 1,
@@ -4813,7 +4779,6 @@
       "patience"
     ],
     "uprightMeaning": "Stability, security, hope, grounding, patience",
-    "reversedMeaning": "Instability, insecurity, hopelessness, impatience",
     "combos": [
       {
         "withCardId": 4,
@@ -4838,7 +4803,6 @@
       "suffering"
     ],
     "uprightMeaning": "Burden, sacrifice, destiny, faith, suffering",
-    "reversedMeaning": "Relief from burden, reward for sacrifice, faith rewarded",
     "combos": [
       {
         "withCardId": 1,

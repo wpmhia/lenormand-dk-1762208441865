@@ -10,11 +10,10 @@ import { X } from 'lucide-react'
 
 interface CardModalProps {
   card: CardType
-  reversed?: boolean
   onClose: () => void
 }
 
-export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
+export function CardModal({ card, onClose }: CardModalProps) {
   const combos = Array.isArray(card.combos) ? card.combos : []
   const [allCards, setAllCards] = useState<any[]>([])
 
@@ -34,9 +33,6 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
             <DialogTitle className="flex items-center gap-2">
               <span className="text-2xl font-bold">{card.id}.</span>
               <span className="text-xl">{card.name}</span>
-              {reversed && (
-                <Badge variant="destructive">Reversed</Badge>
-              )}
             </DialogTitle>
             <button
               onClick={onClose}
@@ -87,13 +83,10 @@ export function CardModal({ card, reversed = false, onClose }: CardModalProps) {
             {/* Meaning */}
             <div>
               <h3 className="font-semibold mb-2 text-foreground">
-                {reversed ? 'Reversed Meaning' : 'Upright Meaning'}
+                Meaning
               </h3>
               <p className="text-muted-foreground">
-                {reversed && card.reversedMeaning
-                  ? card.reversedMeaning
-                  : card.uprightMeaning
-                }
+                {card.uprightMeaning}
               </p>
             </div>
 
