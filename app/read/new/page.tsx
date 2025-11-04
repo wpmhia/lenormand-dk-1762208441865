@@ -410,7 +410,9 @@ export default function NewReadingPage() {
                             id="physical-cards"
                             value={physicalCards}
                             onChange={(e) => setPhysicalCards(e.target.value)}
-                            placeholder={`Enter ${layoutType} card numbers (1-36) separated by commas, spaces, or new lines.&#10;Example: 1, 15, 28&#10;Or: Rider, Sun, Key`}
+                             placeholder={`Enter ${layoutType} card numbers (1-36) separated by commas, spaces, or new lines.
+Example: 1, 15, 28
+Or: Rider, Sun, Key`}
                             className="bg-background border-border text-foreground placeholder:text-muted-foreground min-h-[120px] rounded-xl focus:border-primary focus:ring-primary/20 resize-none"
                             rows={4}
                           />
