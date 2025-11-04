@@ -151,7 +151,7 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
       throw new Error('No response from DeepSeek API')
     }
 
-    return parseAIResponse(rawResponse)
+    return parseAIResponse(rawResponse, request.layoutType, request.threeCardSpreadType)
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
       console.error('AI Reading error:', error)
@@ -201,11 +201,39 @@ function getThreeCardSpreadLabel(spreadType?: string): string {
 }
 
 // Parse AI response into structured format
-export function parseAIResponse(response: string): AIReadingResponse {
+export function parseAIResponse(response: string, layoutType?: number, threeCardSpreadType?: string): AIReadingResponse {
   const cleanResponse = response.trim()
 
+  // Contextual fallback actions based on reading type
+  const getContextualAction = (layout: number, spread?: string): string => {
+    if (layout === 3) {
+      const actions: Record<string, string> = {
+        'past-present-future': 'Consider how your past experiences inform your current path forward',
+        'situation-challenge-advice': 'Address the challenge head-on with the clarity you now have',
+        'mind-body-spirit': 'Balance your mind, body, and spirit through mindful practices',
+        'yes-no-maybe': 'Trust your intuition as the situation continues to clarify',
+        'general-reading': 'Apply this wisdom to your relationships and practical decisions'
+      }
+      return actions[spread || 'general-reading'] || 'Reflect on how these insights apply to your current situation'
+    }
+
+    if (layout === 5) {
+      return 'Take the first step toward implementing these insights in your life'
+    }
+
+    if (layout === 9) {
+      return 'Use this comprehensive guidance to navigate your current challenges'
+    }
+
+    if (layout === 36) {
+      return 'Let this Grand Tableau reading illuminate your path forward'
+    }
+
+    return 'Take time to reflect on this guidance and how it applies to your situation'
+  }
+
   // Try to parse structured format first (numbered or bold markdown)
-  const structuredResult = parseStructuredResponse(cleanResponse)
+  const structuredResult = parseStructuredResponse(cleanResponse, layoutType, threeCardSpreadType)
   if (structuredResult) {
     return structuredResult
   }
@@ -214,22 +242,43 @@ export function parseAIResponse(response: string): AIReadingResponse {
   let storyline = cleanResponse
   let action = ''
 
-  // Look for clear action indicators at the very end
+  // Enhanced action pattern recognition
   const actionPatterns = [
-    /^(Consider|Try|Focus on|Remember|Look for|Wait for|Reach out|Take time to|Be open to|Stay|Call|Email|Visit|Ask|Share|Write|Plan|Prepare|Trust|Let go|Accept|Embrace|Release|Move forward|Step back|Pause|Rest|Listen|Watch|Notice|Pay attention to)/i,
-    /^(You should|You can|It's time to|Now is the time to|The best approach is to)/i
+    // Direct action verbs
+    /^(Consider|Try|Focus on|Remember|Look for|Wait for|Reach out|Take time to|Be open to|Stay|Call|Email|Visit|Ask|Share|Write|Plan|Prepare|Trust|Let go|Accept|Embrace|Release|Move forward|Step back|Pause|Rest|Listen|Watch|Notice|Pay attention to|Start|Begin|Continue|Stop|Change|Transform|Create|Build|Connect|Communicate|Express|Share|Give|Receive|Learn|Teach|Explore|Discover|Heal|Grow|Strengthen|Support|Help|Guide|Lead|Follow|Choose|Decide|Act|Do)/i,
+    // Suggestion phrases
+    /^(You should|You can|It's time to|Now is the time to|The best approach is to|I suggest you|My advice is to|Try this|Do this|Take this step|Make this choice|Follow this path)/i,
+    // Imperative forms
+    /^(Don't|Do not|Always|Never|Keep|Maintain|Develop|Cultivate|Nurture|Seek|Find|Pursue|Avoid|Prevent|Resolve|Address|Solutions|Opportunities)/i
   ]
 
   const sentences = cleanResponse.match(/[^.!?]+[.!?]+/g) || []
 
-  if (sentences.length > 0) {
-    const lastSentence = sentences[sentences.length - 1].trim()
+  // Try to extract action from the last few sentences
+  for (let i = sentences.length - 1; i >= Math.max(0, sentences.length - 3); i--) {
+    const sentence = sentences[i].trim()
 
-    // Only extract as action if it's clearly actionable and short
-    if (lastSentence.length < 60 && actionPatterns.some(pattern => pattern.test(lastSentence))) {
-      action = lastSentence.replace(/[.!?]+$/, '') // Remove trailing punctuation
-      // Remove the action from storyline
-      storyline = cleanResponse.replace(lastSentence, '').trim()
+    // Skip very short or very long sentences
+    if (sentence.length < 10 || sentence.length > 80) continue
+
+    // Check if sentence contains actionable language
+    if (actionPatterns.some(pattern => pattern.test(sentence))) {
+      // Additional quality checks
+      const isQualityAction = (
+        // Has a clear verb
+        /\b(consider|try|focus|remember|look|wait|reach|take|be|stay|call|email|visit|ask|share|write|plan|prepare|trust|let|accept|embrace|release|move|step|pause|rest|listen|watch|notice|pay|start|begin|continue|stop|change|transform|create|build|connect|communicate|express|give|receive|learn|teach|explore|discover|heal|grow|strengthen|support|help|guide|lead|follow|choose|decide|act|do)\b/i.test(sentence) &&
+        // Not just generic advice
+        !/\b(be positive|stay positive|think positive|have faith|trust the process|everything will work out|be patient|good things come|miracles happen)\b/i.test(sentence.toLowerCase()) &&
+        // Has some specificity
+        sentence.split(' ').length >= 3
+      )
+
+      if (isQualityAction) {
+        action = sentence.replace(/[.!?]+$/, '') // Remove trailing punctuation
+        // Remove the action from storyline
+        storyline = cleanResponse.replace(sentence, '').trim()
+        break
+      }
     }
   }
 
@@ -241,13 +290,13 @@ export function parseAIResponse(response: string): AIReadingResponse {
     storyline: storyline || 'The cards offer guidance for your situation.',
     risk: risk,
     timing: timing,
-    action: action || 'Take time to reflect on this guidance',
+    action: action || getContextualAction(layoutType || 3, threeCardSpreadType),
     rawResponse: response
   }
 }
 
 // Helper function to parse structured responses
-function parseStructuredResponse(response: string): AIReadingResponse | null {
+function parseStructuredResponse(response: string, layoutType?: number, threeCardSpreadType?: string): AIReadingResponse | null {
   const lines = response.split('\n').map(line => line.trim()).filter(line => line.length > 0)
 
   let storyline = ''
@@ -334,11 +383,14 @@ function parseStructuredResponse(response: string): AIReadingResponse | null {
 
   // If we found at least storyline, consider it structured
   if (storyline) {
+    // Use the same contextual action logic
+    const contextualAction = getContextualAction(layoutType || 3, threeCardSpreadType)
+
     return {
       storyline: storyline || 'The cards offer guidance for your situation.',
       risk: risk || 'Trust your intuition and the guidance you receive',
       timing: timing || 'The timing will become clear as events unfold',
-      action: action || 'Take time to reflect on this guidance',
+      action: action || contextualAction,
       rawResponse: response
     }
   }
