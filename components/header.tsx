@@ -32,7 +32,7 @@ export function Header() {
             <span>Cards</span>
           </Link>
            <Link
-             href="/read"
+             href="/read/new"
              className="flex items-center space-x-1 text-sm font-medium text-card-foreground hover:text-primary transition-colors"
            >
              <Plus className="w-4 h-4" />
@@ -82,7 +82,7 @@ export function Header() {
               <span>Cards</span>
             </Link>
              <Link
-               href="/read"
+               href="/read/new"
                onClick={() => setMobileMenuOpen(false)}
                className="flex items-center space-x-2 text-sm font-medium text-card-foreground hover:text-primary transition-colors py-2"
              >
