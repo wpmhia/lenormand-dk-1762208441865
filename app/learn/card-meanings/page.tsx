@@ -177,7 +177,7 @@ export default function CardMeaningsPage() {
                  </CardHeader>
                  <CardContent className="pt-0">
                    <img
-                     src={`/data/images/cards/${card.number.toString().padStart(2, '0')}-${card.name.toLowerCase().replace('the ', '').replace(/ /g, '-')}.png`}
+                     src={`/data/images/cards/${card.number.toString().padStart(2, '0')}-${card.number === 22 ? 'paths' : card.name.toLowerCase().replace('the ', '').replace(/ /g, '-')}.png`}
                      alt={card.name}
                      className="w-full h-32 object-cover rounded-lg mb-3"
                    />
@@ -211,7 +211,7 @@ export default function CardMeaningsPage() {
                    <div className="flex items-center justify-between">
                      <div className="flex items-center space-x-4">
                        <img
-                         src={`/data/images/cards/${card.number.toString().padStart(2, '0')}-${card.name.toLowerCase().replace('the ', '').replace(/ /g, '-')}.png`}
+                         src={`/data/images/cards/${card.number.toString().padStart(2, '0')}-${card.number === 22 ? 'paths' : card.name.toLowerCase().replace('the ', '').replace(/ /g, '-')}.png`}
                          alt={card.name}
                          className="w-16 h-16 object-cover rounded-lg"
                        />
