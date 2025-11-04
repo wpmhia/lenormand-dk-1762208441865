@@ -436,7 +436,18 @@ export default function NewReadingPage() {
                     )}
 
                     {/* Physical Cards Toggle */}
-                    <div className={`flex items-center justify-between p-4 rounded-xl border ${layoutType === "physical" ? 'bg-primary/10 border-primary/30' : 'bg-muted/80 border-border'}`}>
+                     <div
+                       className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-colors ${layoutType === "physical" ? 'bg-primary/10 border-primary/30' : 'bg-muted/80 border-border hover:bg-muted'}`}
+                       onClick={() => {
+                         const checked = layoutType !== "physical";
+                         if (checked) {
+                           setLayoutType("physical");
+                           setPhysicalCardCount(3);
+                         } else {
+                           setLayoutType(3);
+                         }
+                       }}
+                     >
                       <div className="space-y-1">
                         <Label htmlFor="physical-mode" className="text-foreground font-medium text-sm">
                           Use Physical Cards
@@ -445,22 +456,26 @@ export default function NewReadingPage() {
                           Enter cards from your physical Lenormand deck
                         </p>
                       </div>
-                      <Switch
-                        id="physical-mode"
-                        checked={layoutType === "physical"}
-                        onCheckedChange={(checked) => {
-                          if (checked) {
-                            setLayoutType("physical")
-                            setPhysicalCardCount(3) // Default to 3 cards
-                          } else {
-                            setLayoutType(3)
-                          }
-                        }}
-                        aria-label="Toggle between virtual and physical card reading"
-                      />
+                       <Switch
+                         id="physical-mode"
+                         checked={layoutType === "physical"}
+                         onCheckedChange={(checked) => {
+                           if (checked) {
+                             setLayoutType("physical")
+                             setPhysicalCardCount(3) // Default to 3 cards
+                           } else {
+                             setLayoutType(3)
+                           }
+                         }}
+                         onClick={(e) => e.stopPropagation()}
+                         aria-label="Toggle between virtual and physical card reading"
+                       />
                     </div>
 
-                     <div className="flex items-center justify-between p-4 bg-muted/50 rounded-xl border border-border">
+                      <div
+                        className="flex items-center justify-between p-4 bg-muted/50 rounded-xl border border-border cursor-pointer hover:bg-muted/70 transition-colors"
+                        onClick={() => setAllowReversed(!allowReversed)}
+                      >
                       {/* stronger contrast label */}
                       <Label htmlFor="allow-reversed" className="text-foreground font-medium">
                         Allow reversed cards
@@ -468,11 +483,12 @@ export default function NewReadingPage() {
 
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Switch
-                            id="allow-reversed"
-                            checked={allowReversed}
-                            onCheckedChange={setAllowReversed}
-                            aria-label="Allow reversed cards"
+                           <Switch
+                             id="allow-reversed"
+                             checked={allowReversed}
+                             onCheckedChange={setAllowReversed}
+                             onClick={(e) => e.stopPropagation()}
+                             aria-label="Allow reversed cards"
                             className="relative h-6 w-11 rounded-full transition-colors duration-150
                                        bg-muted/30 dark:bg-muted/40
                                        data-[state=checked]:bg-primary data-[state=checked]:dark:bg-primary
