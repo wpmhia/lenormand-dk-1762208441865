@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Card as CardType } from '@/lib/types'
 import { Card } from '@/components/Card'
 import { Input } from '@/components/ui/input'
@@ -25,7 +25,7 @@ export default function CardsPage() {
 
   useEffect(() => {
     filterAndSortCards()
-  }, [cards, searchTerm, sortBy])
+  }, [filterAndSortCards])
 
   const fetchCards = async () => {
     try {
@@ -38,7 +38,7 @@ export default function CardsPage() {
     }
   }
 
-  const filterAndSortCards = () => {
+  const filterAndSortCards = useCallback(() => {
     let filtered = cards
 
     // Filter by search term
@@ -62,7 +62,7 @@ export default function CardsPage() {
     })
 
     setFilteredCards(filtered)
-  }
+  }, [cards, searchTerm, sortBy])
 
   const getAllKeywords = () => {
     const keywords = new Set<string>()
