@@ -200,37 +200,37 @@ function getThreeCardSpreadLabel(spreadType?: string): string {
   return spreadLabels[spreadType || "past-present-future"] || "Past-Present-Future"
 }
 
+// Contextual fallback actions based on reading type
+const getContextualAction = (layout: number, spread?: string): string => {
+  if (layout === 3) {
+    const actions: Record<string, string> = {
+      'past-present-future': 'Consider how your past experiences inform your current path forward',
+      'situation-challenge-advice': 'Address the challenge head-on with the clarity you now have',
+      'mind-body-spirit': 'Balance your mind, body, and spirit through mindful practices',
+      'yes-no-maybe': 'Trust your intuition as the situation continues to clarify',
+      'general-reading': 'Apply this wisdom to your relationships and practical decisions'
+    }
+    return actions[spread || 'general-reading'] || 'Reflect on how these insights apply to your current situation'
+  }
+
+  if (layout === 5) {
+    return 'Take the first step toward implementing these insights in your life'
+  }
+
+  if (layout === 9) {
+    return 'Use this comprehensive guidance to navigate your current challenges'
+  }
+
+  if (layout === 36) {
+    return 'Let this Grand Tableau reading illuminate your path forward'
+  }
+
+  return 'Take time to reflect on this guidance and how it applies to your situation'
+}
+
 // Parse AI response into structured format
 export function parseAIResponse(response: string, layoutType?: number, threeCardSpreadType?: string): AIReadingResponse {
   const cleanResponse = response.trim()
-
-  // Contextual fallback actions based on reading type
-  const getContextualAction = (layout: number, spread?: string): string => {
-    if (layout === 3) {
-      const actions: Record<string, string> = {
-        'past-present-future': 'Consider how your past experiences inform your current path forward',
-        'situation-challenge-advice': 'Address the challenge head-on with the clarity you now have',
-        'mind-body-spirit': 'Balance your mind, body, and spirit through mindful practices',
-        'yes-no-maybe': 'Trust your intuition as the situation continues to clarify',
-        'general-reading': 'Apply this wisdom to your relationships and practical decisions'
-      }
-      return actions[spread || 'general-reading'] || 'Reflect on how these insights apply to your current situation'
-    }
-
-    if (layout === 5) {
-      return 'Take the first step toward implementing these insights in your life'
-    }
-
-    if (layout === 9) {
-      return 'Use this comprehensive guidance to navigate your current challenges'
-    }
-
-    if (layout === 36) {
-      return 'Let this Grand Tableau reading illuminate your path forward'
-    }
-
-    return 'Take time to reflect on this guidance and how it applies to your situation'
-  }
 
   // Try to parse structured format first (numbered or bold markdown)
   const structuredResult = parseStructuredResponse(cleanResponse, layoutType, threeCardSpreadType)
