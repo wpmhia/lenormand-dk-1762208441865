@@ -193,25 +193,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Footer */}
-       <footer className="border-t border-border bg-card py-8 relative overflow-hidden">
-         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5"></div>
-         <div className="container mx-auto px-4 text-center relative z-10">
-           <div className="max-w-4xl mx-auto">
-             <p className="text-muted-foreground mb-4 text-lg font-light italic">
-              © 2024 Lenormand Intelligence - Mystical Card Wisdom
-            </p>
-            <div className="flex gap-8 justify-center text-sm">
-              <Link href="/read/new" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
-                New Analysis
-              </Link>
-              <Link href="/cards" className="text-muted-foreground hover:text-foreground transition-colors font-medium">
-                Explore Cards
-              </Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+
     </main>
   )
 }
