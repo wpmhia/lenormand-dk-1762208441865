@@ -22,7 +22,7 @@ export function Footer() {
             
             {/* Brand Section */}
             <div className="space-y-4">
-              <h3 className="text-white font-semibold flex items-center gap-2">
+              <h3 className="text-foreground font-semibold flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-primary" aria-hidden="true" />
                 Lenormand Intelligence
               </h3>
@@ -38,7 +38,7 @@ export function Footer() {
 
             {/* Navigation Section */}
             <div className="space-y-4">
-              <h4 className="text-white font-medium">Navigation</h4>
+              <h4 className="text-foreground font-medium">Navigation</h4>
               <nav className="space-element" aria-label="Main navigation">
                 <Link 
                   href="/read/new" 
@@ -66,7 +66,7 @@ export function Footer() {
 
             {/* Legal & Privacy Section */}
             <div className="space-y-4">
-              <h4 className="text-white font-medium">Legal & Privacy</h4>
+              <h4 className="text-foreground font-medium">Legal & Privacy</h4>
               <nav className="space-element" aria-label="Legal and privacy links">
                 <Link 
                   href="/privacy" 
@@ -105,15 +105,15 @@ export function Footer() {
 
       {/* Guide Dialog */}
       <Dialog open={showGuide} onOpenChange={setShowGuide}>
-        <DialogContent 
-          className="bg-card border-border max-w-4xl max-h-[80vh] overflow-y-auto"
-          aria-labelledby="guide-dialog-title"
-          id="lenormand-guide-dialog"
-        >
+          <DialogContent 
+            className="bg-card border-border max-w-4xl max-h-[80vh] overflow-y-auto text-foreground"
+            aria-labelledby="guide-dialog-title"
+            id="lenormand-guide-dialog"
+          >
           <DialogHeader>
             <DialogTitle 
               id="guide-dialog-title"
-              className="text-white flex items-center gap-2"
+              className="text-foreground flex items-center gap-2"
             >
               <BookOpen className="w-5 h-5 text-primary" aria-hidden="true" />
               How to Read Lenormand Cards

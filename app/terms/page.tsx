@@ -79,7 +79,7 @@ export default function TermsPage() {
 
           <Card className="border-border bg-muted">
             <CardHeader>
-              <CardTitle className="text-white">User Responsibilities</CardTitle>
+              <CardTitle className="text-foreground">User Responsibilities</CardTitle>
             </CardHeader>
             <CardContent className="text-foreground space-y-4">
               <ul className="list-disc list-inside space-y-2 ml-4">
@@ -94,7 +94,7 @@ export default function TermsPage() {
 
           <Card className="border-border bg-muted">
             <CardHeader>
-              <CardTitle className="text-white">Intellectual Property</CardTitle>
+              <CardTitle className="text-foreground">Intellectual Property</CardTitle>
             </CardHeader>
             <CardContent className="text-foreground space-y-4">
               <p>
@@ -105,7 +105,7 @@ export default function TermsPage() {
 
           <Card className="border-border bg-muted">
             <CardHeader>
-              <CardTitle className="text-white">Limitation of Liability</CardTitle>
+              <CardTitle className="text-foreground">Limitation of Liability</CardTitle>
             </CardHeader>
             <CardContent className="text-foreground space-y-4">
               <p>
@@ -116,7 +116,7 @@ export default function TermsPage() {
 
           <Card className="border-border bg-muted">
             <CardHeader>
-              <CardTitle className="text-white">Service Modifications</CardTitle>
+              <CardTitle className="text-foreground">Service Modifications</CardTitle>
             </CardHeader>
             <CardContent className="text-foreground space-y-4">
               <p>
@@ -127,7 +127,7 @@ export default function TermsPage() {
 
           <Card className="border-border bg-muted">
             <CardHeader>
-              <CardTitle className="text-white">Contact Information</CardTitle>
+              <CardTitle className="text-foreground">Contact Information</CardTitle>
             </CardHeader>
             <CardContent className="text-foreground space-y-4">
               <p>
