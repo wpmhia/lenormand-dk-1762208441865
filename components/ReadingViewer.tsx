@@ -114,7 +114,7 @@ export function ReadingViewer({
   showReadingHeader = true,
   threeCardSpreadType
 }: ReadingViewerProps) {
-  const [selectedCard, setSelectedCard] = useState<{ card: CardType; reversed: boolean } | null>(null)
+  const [selectedCard, setSelectedCard] = useState<CardType | null>(null)
 
   const getAdjacentCards = (currentCard: ReadingCard): ReadingCard[] => {
     if (reading.layoutType === 36) {
@@ -141,12 +141,11 @@ export function ReadingViewer({
                  <div className="text-xs text-center text-muted-foreground/80 font-medium">
                    {position.label}
                  </div>
-                 <Card
-                   card={card}
-                   reversed={readingCard.reversed}
-                   size="sm"
-                   onClick={() => setSelectedCard({ card, reversed: readingCard.reversed })}
-                 />
+                  <Card
+                    card={card}
+                    size="sm"
+                    onClick={() => setSelectedCard(card)}
+                  />
                </AnimatedCard>
              )
           })}
@@ -176,13 +175,12 @@ export function ReadingViewer({
                          <div className="text-sm font-medium text-muted-foreground/90 bg-card/60 px-3 py-1 rounded-full border border-primary/30 backdrop-blur-sm">
                            {positionInfo.label}
                          </div>
-                        <Card
-                          card={card}
-                          reversed={readingCard.reversed}
-                          size="md"
-                          onClick={() => setSelectedCard({ card, reversed: readingCard.reversed })}
-                          className="cursor-pointer hover:shadow-lg"
-                        />
+                         <Card
+                           card={card}
+                           size="md"
+                           onClick={() => setSelectedCard(card)}
+                           className="cursor-pointer hover:shadow-lg"
+                         />
                       </div>
                     </TooltipTrigger>
                      <TooltipContent className="max-w-xs bg-card/95 border-primary/30 text-muted-foreground backdrop-blur-sm">
@@ -248,8 +246,7 @@ export function ReadingViewer({
       {/* Card Modal with Combinations */}
       {selectedCard && (
         <CardModal
-          card={selectedCard.card}
-          reversed={selectedCard.reversed}
+          card={selectedCard}
           onClose={() => setSelectedCard(null)}
         />
       )}
@@ -266,7 +263,7 @@ export function ReadingViewer({
            </div>
           <div className="space-y-3">
             {(() => {
-              const readingCard = reading.cards.find(c => c.id === selectedCard.card.id)
+              const readingCard = reading.cards.find(c => c.id === selectedCard.id)
               if (!readingCard) return null
 
               const adjacentCards = getAdjacentCards(readingCard)

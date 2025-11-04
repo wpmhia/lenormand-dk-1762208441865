@@ -9,7 +9,6 @@ interface Card {
 interface ReadingCard {
   id: number
   position: number
-  reversed?: boolean
   x?: number
   y?: number
 }

@@ -23,7 +23,7 @@ export function Deck({
   const [deck, setDeck] = useState<CardType[]>(cards)
   const [isShuffling, setIsShuffling] = useState(false)
   const [isDrawing, setIsDrawing] = useState(false)
-  const [drawnCards, setDrawnCards] = useState<Array<{card: CardType, reversed: boolean}>>([])
+  const [drawnCards, setDrawnCards] = useState<CardType[]>([])
 
   useEffect(() => {
     setDeck(cards)
@@ -56,27 +56,23 @@ export function Deck({
 
     setIsDrawing(true)
     
-    const newDrawnCards: Array<{card: CardType, reversed: boolean}> = []
+    const newDrawnCards: CardType[] = []
     const remainingDeck = [...deck]
-    
+
     for (let i = 0; i < drawCount; i++) {
       const randomIndex = Math.floor(Math.random() * remainingDeck.length)
       const drawnCard = remainingDeck.splice(randomIndex, 1)[0]
-      const reversed = false
-      
-      newDrawnCards.push({
-        card: drawnCard,
-        reversed
-      })
+
+      newDrawnCards.push(drawnCard)
     }
-    
+
     setDeck(remainingDeck)
     setDrawnCards(newDrawnCards)
-    
+
     setTimeout(() => {
       setIsDrawing(false)
       if (onDraw) {
-        onDraw(newDrawnCards.map(item => item.card))
+        onDraw(newDrawnCards)
       }
     }, 1000)
   }
@@ -204,8 +200,7 @@ export function Deck({
                 }}
               >
                 <Card
-                  card={item.card}
-                  reversed={item.reversed}
+                  card={item}
                   size="lg"
                 />
               </div>

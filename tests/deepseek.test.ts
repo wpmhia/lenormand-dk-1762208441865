@@ -25,7 +25,7 @@ describe('DeepSeek Integration', () => {
 
   describe('parseAIResponse', () => {
     it('parses markdown structured response correctly', () => {
-      const response = `1. **Story** Rider races to Clover but reversed Ship blocks overseas transfer; luck arrives after delay.
+      const response = `1. **Story** Rider races to Clover but Ship blocks overseas transfer; luck arrives after delay.
 2. **Risk** FX fees nibble 2-3 %.
 3. **Timing** Confirmation before 4 pm, cash tomorrow morning.
 4. **Act** Call your bank today.`
@@ -33,7 +33,7 @@ describe('DeepSeek Integration', () => {
       const result = parseAIResponse(response)
 
       expect(result).toEqual({
-        storyline: 'Rider races to Clover but reversed Ship blocks overseas transfer; luck arrives after delay.',
+        storyline: 'Rider races to Clover but Ship blocks overseas transfer; luck arrives after delay.',
         risk: 'FX fees nibble 2-3 %.',
         timing: 'Confirmation before 4 pm, cash tomorrow morning.',
         action: 'Call your bank today.',
@@ -42,14 +42,14 @@ describe('DeepSeek Integration', () => {
     })
 
     it('parses bold markdown format correctly', () => {
-      const response = `**Story** Rider races to Clover but reversed Ship blocks overseas transfer; luck arrives after delay.
+      const response = `**Story** Rider races to Clover but Ship blocks overseas transfer; luck arrives after delay.
 **Risk** FX fees nibble 2-3 %.
 **Timing** Confirmation before 4 pm, cash tomorrow morning.
 **Act** Call your bank today.`
 
       const result = parseAIResponse(response)
 
-      expect(result.storyline).toBe('Rider races to Clover but reversed Ship blocks overseas transfer; luck arrives after delay.')
+      expect(result.storyline).toBe('Rider races to Clover but Ship blocks overseas transfer; luck arrives after delay.')
       expect(result.risk).toBe('FX fees nibble 2-3 %.')
       expect(result.timing).toBe('Confirmation before 4 pm, cash tomorrow morning.')
       expect(result.action).toBe('Call your bank today.')

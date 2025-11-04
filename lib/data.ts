@@ -38,8 +38,7 @@ export function encodeReadingForUrl(reading: Reading): string {
     l: reading.layoutType,
     c: reading.cards.map(card => ({
       i: card.id,
-      p: card.position,
-      r: card.reversed ? 1 : 0
+      p: card.position
     }))
   }
   return btoa(JSON.stringify(data)).replace(/[+/=]/g, c => ({
@@ -61,8 +60,7 @@ export function decodeReadingFromUrl(encoded: string): Partial<Reading> | null {
       layoutType: data.l,
       cards: data.c.map((card: any) => ({
         id: card.i,
-        position: card.p,
-        reversed: card.r === 1
+        position: card.p
       }))
     }
   } catch {
@@ -105,8 +103,7 @@ export function drawCards(cards: Card[], count: number): ReadingCard[] {
 
   return drawnCards.map((card, index) => ({
     id: card.id,
-    position: index,
-    reversed: false
+    position: index
   }))
 }
 

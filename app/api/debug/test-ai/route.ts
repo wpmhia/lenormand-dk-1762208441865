@@ -6,9 +6,9 @@ export async function POST(request: NextRequest) {
     const testRequest = {
       question: "Test reading for debug",
       cards: [
-        { id: 1, name: "Rider", position: 1, reversed: false },
-        { id: 24, name: "Heart", position: 2, reversed: false },
-        { id: 31, name: "Sun", position: 3, reversed: false }
+        { id: 1, name: "Rider", position: 1 },
+        { id: 24, name: "Heart", position: 2 },
+        { id: 31, name: "Sun", position: 3 }
       ],
       layoutType: 3,
       userLocale: 'en'
