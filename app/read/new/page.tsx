@@ -69,6 +69,20 @@ export default function NewReadingPage() {
 
   useEffect(() => {
     fetchCards()
+    // Reset to setup step when component mounts
+    setStep('setup')
+    setDrawnCards([])
+    setQuestion('')
+    setQuestionCharCount(0)
+    setLayoutType(3)
+    setThreeCardSpreadType("general-reading")
+    setError('')
+    setAiReading(null)
+    setAiLoading(false)
+    setAiError(null)
+    setAiErrorDetails(null)
+    setIsPhysical(false)
+    setPhysicalCards('')
   }, [])
 
   const fetchCards = async () => {
