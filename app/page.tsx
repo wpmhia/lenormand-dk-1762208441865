@@ -164,68 +164,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* FAQ Section */}
-      <div className="container mx-auto px-6 py-12 max-w-4xl">
-        <div className="mb-12 slide-in-up relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5 rounded-3xl"></div>
-          <div className="text-center mb-12 relative z-10">
-            <h2 className="text-4xl font-bold text-center mb-4 text-foreground relative">
-              Wisdom & Guidance
-              <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-40 h-0.5 bg-gradient-to-r from-primary to-primary/60 rounded-full"></div>
-            </h2>
-            <p className="text-center text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">Answers to illuminate your journey</p>
-          </div>
-          <div className="max-w-4xl mx-auto space-y-6 relative z-10">
-            <Card className="border-border bg-card backdrop-blur-sm shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 rounded-2xl overflow-hidden relative group">
-               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <CardHeader className="pb-4 relative z-10">
-                  <CardTitle className="text-lg text-card-foreground font-semibold">The Essence of Lenormand</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0 relative z-10">
-                  <p className="text-card-foreground text-base leading-relaxed italic">
-                    Lenormand speaks in the language of everyday symbols &mdash; 36 cards that mirror life&apos;s practical wisdom. Where Tarot explores the soul&apos;s depths, Lenormand illuminates the path ahead with clarity and precision.
-                 </p>
-               </CardContent>
-            </Card>
 
-            <Card className="border-border bg-card backdrop-blur-sm shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 rounded-2xl overflow-hidden relative group">
-               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <CardHeader className="pb-4 relative z-10">
-                  <CardTitle className="text-lg text-card-foreground font-semibold">The AI Advantage</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0 relative z-10">
-                  <p className="text-card-foreground text-base leading-relaxed italic">
-                   Ancient wisdom meets modern insight. Our AI companions are available whenever intuition calls, blending traditional meanings with sophisticated pattern recognition for guidance that feels both timeless and profoundly personal.
-                 </p>
-               </CardContent>
-            </Card>
-
-            <Card className="border-border bg-card backdrop-blur-sm shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 rounded-2xl overflow-hidden relative group">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <CardHeader className="pb-4 relative z-10">
-                <CardTitle className="text-lg text-card-foreground font-semibold">How to get a free reading?</CardTitle>
-              </CardHeader>
-              <CardContent className="pt-0 relative z-10">
-                <p className="text-card-foreground text-base leading-relaxed italic">
-                   Click &ldquo;Begin Your Journey&rdquo; above. Focus on your question and let our algorithms select and analyze your cards. No signup or payment required.
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="border-border bg-card backdrop-blur-sm shadow-lg hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 rounded-2xl overflow-hidden relative group">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <CardHeader className="pb-4 relative z-10">
-                <CardTitle className="text-lg text-card-foreground font-semibold">Accuracy of AI readings?</CardTitle>
-              </CardHeader>
-              <CardContent className="pt-0 relative z-10">
-                <p className="text-card-foreground text-base leading-relaxed italic">
-                  AI readings are highly accurate, providing consistent analysis based on traditional meanings enhanced by machine learning pattern recognition.
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </div>
 
       {/* CTA Section */}
       <div className="container mx-auto px-6 py-12 max-w-4xl">
