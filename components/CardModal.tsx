@@ -56,11 +56,6 @@ export function CardModal({ card, onClose }: CardModalProps) {
                 alt={card.name}
                 className="w-full h-full object-contain bg-card"
               />
-              {reversed && (
-                <div className="absolute top-3 right-3 bg-destructive text-destructive-foreground text-sm font-bold rounded-full w-8 h-8 flex items-center justify-center border-2 border-white shadow-lg">
-                  R
-                </div>
-              )}
             </div>
           </div>
 
