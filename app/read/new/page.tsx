@@ -335,7 +335,7 @@ export default function NewReadingPage() {
               </CardHeader>
                <CardContent className="space-y-6 relative z-10">
                {/* Physical Cards Toggle */}
-                <div className="flex items-center justify-between p-4 bg-muted/60 rounded-xl border border-border">
+                 <div className={`flex items-center justify-between p-4 rounded-xl border ${layoutType === "physical" ? 'bg-primary/10 border-primary/30' : 'bg-muted/80 border-border'}`}>
                  <div className="space-y-1">
                    <Label htmlFor="physical-mode" className="text-foreground font-medium text-sm">
                      Use Physical Cards
