@@ -1,4 +1,4 @@
-# Lenormand.dk
+# Lenormand Intelligence
 
 A complete Lenormand tarot reading web application built with Next.js 14, TypeScript, and Prisma.
 
@@ -9,7 +9,7 @@ A complete Lenormand tarot reading web application built with Next.js 14, TypeSc
 - 👤 **User Accounts** with saved readings and statistics
 - 🔗 **Shareable Readings** with public links
 - 📊 **Analytics Dashboard** for users and admins
-- 🌐 **Bilingual Support**: Danish and English
+- 🌐 **International Support**: English
 - 📱 **Mobile-Friendly** responsive design
 - 🎨 **Beautiful UI** with Tailwind CSS and shadcn/ui
 - 🔒 **Authentication** with NextAuth.js

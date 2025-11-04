@@ -98,7 +98,7 @@ export function Footer() {
           <div className="border-t border-border pt-6">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="text-muted-foreground text-sm">
-                © 2024 Lenormand.dk - Danish & English Lenormand Readings
+                © 2024 Lenormand Intelligence
               </div>
               
               <div className="text-muted-foreground text-xs">
