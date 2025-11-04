@@ -51,11 +51,11 @@ export default function Home() {
            <div className="relative z-10">
              <div className="relative">
                <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-primary/10 to-primary/20 rounded-3xl blur-3xl opacity-30"></div>
-               <img
-                 src="/data/images/hero-image.jpg"
-                 alt="Mystical Lenormand cards arranged in a reading spread"
-                 className="relative w-full max-w-md mx-auto lg:max-w-none rounded-3xl shadow-2xl shadow-primary/20 border border-primary/20 backdrop-blur-sm"
-               />
+                <img
+                  src="/images/hero-image.jpg"
+                  alt="Mystical Lenormand cards arranged in a reading spread"
+                  className="relative w-full max-w-md mx-auto lg:max-w-none rounded-3xl shadow-2xl shadow-primary/20 border border-primary/20 backdrop-blur-sm"
+                />
                <div className="absolute inset-0 bg-gradient-to-t from-background/20 via-transparent to-transparent rounded-3xl"></div>
              </div>
            </div>
