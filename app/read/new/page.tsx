@@ -333,8 +333,33 @@ export default function NewReadingPage() {
                   Your Sacred Question:
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-6 relative z-10">
-              <div className="space-y-3">
+               <CardContent className="space-y-6 relative z-10">
+               {/* Physical Cards Toggle */}
+               <div className="flex items-center justify-between p-4 bg-muted/30 rounded-xl border border-border/50">
+                 <div className="space-y-1">
+                   <Label htmlFor="physical-mode" className="text-foreground font-medium text-sm">
+                     Use Physical Cards
+                   </Label>
+                   <p className="text-xs text-muted-foreground">
+                     Enter cards from your physical Lenormand deck
+                   </p>
+                 </div>
+                 <Switch
+                   id="physical-mode"
+                   checked={layoutType === "physical"}
+                   onCheckedChange={(checked) => {
+                     if (checked) {
+                       setLayoutType("physical")
+                       setPhysicalCardCount(3) // Default to 3 cards
+                     } else {
+                       setLayoutType(3)
+                     }
+                   }}
+                   aria-label="Toggle between virtual and physical card reading"
+                 />
+               </div>
+
+               <div className="space-y-3">
                 <Textarea
                   id="question"
                   value={question}
@@ -357,25 +382,27 @@ export default function NewReadingPage() {
                 </div>
 
 
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="layout">Reading Type:</Label>
-                      <Select value={layoutType.toString()} onValueChange={(value) => setLayoutType(value === "physical" ? "physical" : parseInt(value) as 3 | 5 | 9 | 36)}>
-                       <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary" aria-describedby="layout-help">
-                         <SelectValue />
-                       </SelectTrigger>
-                       <SelectContent className="bg-card border-border">
-                         {LAYOUTS.map((layout) => (
-                           <SelectItem key={layout.value} value={layout.value.toString()} className="text-card-foreground hover:bg-accent focus:bg-accent">
-                             {layout.label}
-                           </SelectItem>
-                         ))}
-                       </SelectContent>
-                     </Select>
-                      <div id="layout-help" className="text-xs text-muted-foreground italic">
-                        Choose the number of cards for your reading spread
-                      </div>
-                   </div>
+                 <div className="space-y-4">
+                   {layoutType !== "physical" && (
+                     <div className="space-y-2">
+                       <Label htmlFor="layout">Reading Type:</Label>
+                       <Select value={layoutType.toString()} onValueChange={(value) => setLayoutType(parseInt(value) as 3 | 5 | 9 | 36)}>
+                        <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary" aria-describedby="layout-help">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="bg-card border-border">
+                          {LAYOUTS.filter(layout => layout.value !== "physical").map((layout) => (
+                            <SelectItem key={layout.value} value={layout.value.toString()} className="text-card-foreground hover:bg-accent focus:bg-accent">
+                              {layout.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                       <div id="layout-help" className="text-xs text-muted-foreground italic">
+                         Choose the number of cards for your reading spread
+                       </div>
+                     </div>
+                   )}
 
                    {layoutType === 3 && (
                      <div className="space-y-2">
