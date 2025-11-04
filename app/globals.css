@@ -96,19 +96,10 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
     font-family: 'Crimson Text', serif;
     min-height: 100vh;
     position: relative;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
 
   /* Global page layout */
@@ -140,6 +131,26 @@ h6 { @apply text-base md:text-lg; }
     @apply mx-auto px-4 sm:px-6 lg:px-8;
   }
 
+  .container-narrow {
+    @apply container max-w-4xl;
+  }
+
+  .container-wide {
+    @apply container max-w-6xl;
+  }
+
+  .container-hero {
+    @apply container py-6 max-w-6xl;
+  }
+
+  .container-section {
+    @apply container py-8 max-w-6xl;
+  }
+
+  .container-cta {
+    @apply container py-8 max-w-4xl;
+  }
+
   /* Global cards */
   .card {
     @apply bg-card border-2 border-border rounded-xl shadow-lg hover:shadow-xl transition-all duration-300;
@@ -156,6 +167,23 @@ h6 { @apply text-base md:text-lg; }
 
   .btn-secondary {
     @apply border-2 border-amber-400 text-amber-900 hover:bg-amber-50 hover:border-amber-500 transition-all duration-300 rounded-full px-6 py-3 font-semibold;
+  }
+
+  /* Standardized button variants */
+  .btn-hero {
+    @apply px-12 py-5 bg-primary hover:bg-primary/90 text-primary-foreground shadow-2xl shadow-primary/30 font-semibold text-lg rounded-full border border-border/20 backdrop-blur-sm;
+  }
+
+  .btn-hero-outline {
+    @apply px-12 py-5 border-2 border-border text-card-foreground hover:bg-muted hover:border-border font-semibold text-lg rounded-full backdrop-blur-sm shadow-lg shadow-border/20;
+  }
+
+  .btn-learn {
+    @apply px-8 py-4 bg-primary hover:bg-primary/90 text-primary-foreground shadow-2xl shadow-primary/30 font-semibold text-lg rounded-full border border-border/20;
+  }
+
+  .btn-learn-outline {
+    @apply px-8 py-4 border-2 border-border text-card-foreground hover:bg-muted hover:border-border font-semibold text-lg rounded-full;
   }
 
   /* Global form elements */
@@ -323,10 +351,6 @@ h6 { @apply text-base md:text-lg; }
   }
 
   /* Global page layouts */
-  .page-layout {
-    @apply min-h-screen bg-background relative overflow-hidden;
-  }
-
   .page-header {
     @apply container mx-auto px-6 py-12 text-center;
   }

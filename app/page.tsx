@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <main className="bg-background text-foreground" role="main">
       {/* Hero Section */}
-      <div className="container mx-auto px-4 py-6 max-w-6xl">
+      <div className="container-hero">
         <div className="grid lg:grid-cols-2 gap-8 items-center mb-8 relative">
           <div className="text-center lg:text-left space-y-4 relative z-10">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 text-foreground leading-tight relative">
@@ -33,18 +33,18 @@ export default function Home() {
               Discover the ancient wisdom of Lenormand through AI-enhanced intuition.
               <span className="text-muted-foreground block mt-2">Experience personalized guidance where technology meets mystical insight.</span>
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <Link href="/read/new">
-                <Button size="lg" className="px-12 py-5 bg-primary hover:bg-primary/90 text-primary-foreground shadow-2xl shadow-primary/30 font-semibold text-lg rounded-full border border-border/20 backdrop-blur-sm">
-                  ✨ Begin Your Journey
-                </Button>
-              </Link>
-               <Link href="/cards">
-                 <Button variant="outline" size="lg" className="px-12 py-5 border-2 border-border text-card-foreground hover:bg-muted hover:border-border font-semibold text-lg rounded-full backdrop-blur-sm shadow-lg shadow-border/20">
-                   🔮 Explore Cards
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+               <Link href="/read/new">
+                 <Button className="btn-hero">
+                   ✨ Begin Your Journey
                  </Button>
                </Link>
-             </div>
+                <Link href="/cards">
+                  <Button className="btn-hero-outline">
+                    🔮 Explore Cards
+                  </Button>
+                </Link>
+              </div>
            </div>
 
            {/* Hero Image */}
@@ -63,7 +63,7 @@ export default function Home() {
        </div>
 
       {/* Reading Types */}
-       <div ref={readingTypesRef} className={`container mx-auto px-6 py-8 max-w-6xl transition-all duration-700 ${readingTypesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+       <div ref={readingTypesRef} className={`container-section transition-all duration-700 ${readingTypesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
          <div className="mb-8 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5 rounded-3xl"></div>
            <div className="text-center mb-6 relative z-10">
@@ -170,7 +170,7 @@ export default function Home() {
       </div>
 
       {/* CTA Section */}
-       <div className="container mx-auto px-6 py-8 max-w-4xl">
+       <div className="container-cta">
          <div className="text-center bg-card backdrop-blur-sm rounded-3xl p-6 border border-border shadow-2xl relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-3xl"></div>
           <div className="absolute top-4 left-4 w-16 h-16 bg-primary/20 rounded-full blur-xl"></div>
@@ -184,7 +184,7 @@ export default function Home() {
               Let the cards reveal what your soul already knows
             </p>
             <Link href="/read/new">
-              <Button size="lg" className="px-12 py-5 bg-primary hover:bg-primary/90 text-primary-foreground shadow-2xl shadow-primary/30 font-semibold text-lg rounded-full border border-border/20 backdrop-blur-sm">
+              <Button className="btn-hero">
                 Discover Your Path
                 <ArrowRight className="w-5 h-5 ml-3" />
               </Button>
