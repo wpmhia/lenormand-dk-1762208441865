@@ -246,10 +246,10 @@ export function ReadingViewer({
                     <div className="text-xs text-center text-muted-foreground/80 font-medium">
                       {position.label}
                     </div>
-                    <Card
-                      card={card}
-                      size="xs"
-                      onClick={() => setSelectedCard(card)}
+                     <Card
+                       card={card}
+                       size="sm"
+                       onClick={() => setSelectedCard(card)}
                       className={`${isSignificator ? 'ring-2 ring-primary' : ''} ${isCorner ? 'border-amber-400/50' : ''} ${isCenter ? 'border-blue-400/50' : ''} ${isCrossOfMoment && !isSignificator ? 'border-green-400/50' : ''}`}
                     />
                   </AnimatedCard>
