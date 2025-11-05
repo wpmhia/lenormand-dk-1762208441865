@@ -194,7 +194,7 @@ const getContextualAction = (layout: number, spread?: string): string => {
       'situation-challenge-advice': 'Take the recommended action from the advice card to overcome your current challenge',
       'mind-body-spirit': 'Choose one area (mind, body, or spirit) to focus on improving this week',
       'yes-no-maybe': 'Based on the reading, make your decision and take the first concrete step today',
-      'general-reading': 'Act on the central insight that emerged from the mirror relationship between your cards'
+      'general-reading': 'Trust your intuition and take the first step that feels right'
     }
     return actions[spread || 'general-reading'] || 'Choose one specific insight from this reading and take action on it today'
   }
