@@ -74,17 +74,17 @@ const getPositionInfo = (position: number, layoutType: number, threeCardSpreadTy
       3: { label: "Challenge", meaning: "Obstacles you may need to overcome" },
       4: { label: "Advice", meaning: "Guidance for navigating your situation" }
     },
-    9: {
-      0: { label: "Center", meaning: "The core of your situation or question" },
-      1: { label: "Top", meaning: "Your goals, aspirations, and conscious desires" },
-      2: { label: "Bottom", meaning: "Foundation, subconscious influences, and roots" },
-      3: { label: "Left", meaning: "Past influences and what's receding" },
-      4: { label: "Right", meaning: "Future influences and what's approaching" },
-      5: { label: "Top-Left", meaning: "External influences and environment" },
-      6: { label: "Top-Right", meaning: "Your hopes, fears, and expectations" },
-      7: { label: "Bottom-Left", meaning: "Your internal state and emotions" },
-      8: { label: "Bottom-Right", meaning: "Final outcome and resolution" }
-    }
+     9: {
+       0: { label: "Recent Past - Inner World", meaning: "Thoughts, feelings, and personal resources from your recent past that influence your current situation" },
+       1: { label: "Recent Past - Direct Actions", meaning: "Actions you took recently that shaped your current circumstances" },
+       2: { label: "Recent Past - Outside World", meaning: "External influences and events from your recent past" },
+       3: { label: "Present - Inner World", meaning: "Your current thoughts, feelings, and internal state" },
+       4: { label: "Present - Direct Actions", meaning: "Your current actions and the central issue you're facing" },
+       5: { label: "Present - Outside World", meaning: "Current external influences, other people, and environmental factors" },
+       6: { label: "Near Future - Inner World", meaning: "How your thoughts and feelings will evolve in the near future" },
+       7: { label: "Near Future - Direct Actions", meaning: "Actions you'll need to take in the near future" },
+       8: { label: "Near Future - Outside World", meaning: "External events and influences approaching in the near future" }
+     }
   }
 
   return positions[layoutType]?.[position] || { label: `Position ${position + 1}`, meaning: "" }
@@ -151,8 +151,54 @@ export function ReadingViewer({
           })}
         </div>
       )
+    } else if (reading.layoutType === 9) {
+      // 9-card spread: 3x3 grid layout
+      return (
+        <div className="grid grid-cols-3 gap-4 mx-auto max-w-4xl">
+          {reading.cards.map((readingCard, index) => {
+            const card = getCardById(allCards, readingCard.id)
+            if (!card) return null
+
+            const positionInfo = getPositionInfo(index, reading.layoutType, threeCardSpreadType)
+
+            return (
+              <AnimatedCard key={index} delay={index * 0.08} className="flex flex-col items-center space-y-3">
+                <TooltipProvider>
+                  <div className="flex flex-col items-center space-y-3">
+                    <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="flex flex-col items-center space-y-2">
+                         <div className="text-sm font-medium text-muted-foreground/90 bg-card/60 px-3 py-1 rounded-full border border-primary/30 backdrop-blur-sm">
+                           {positionInfo.label}
+                         </div>
+                         <Card
+                           card={card}
+                           size="md"
+                           onClick={() => setSelectedCard(card)}
+                           className="cursor-pointer hover:shadow-lg"
+                         />
+                      </div>
+                    </TooltipTrigger>
+                     <TooltipContent className="max-w-xs bg-card/95 border-primary/30 text-muted-foreground backdrop-blur-sm">
+                       <div className="space-y-2">
+                         <p className="font-semibold text-muted-foreground">{positionInfo.label}</p>
+                         <p className="text-sm text-muted-foreground/80">{positionInfo.meaning}</p>
+                         <div className="flex items-center gap-1 text-xs text-muted-foreground/60">
+                           <Info className="w-3 h-3" />
+                           <span>Click card for details</span>
+                         </div>
+                       </div>
+                     </TooltipContent>
+                    </Tooltip>
+                  </div>
+                </TooltipProvider>
+              </AnimatedCard>
+            )
+          })}
+        </div>
+      )
     } else {
-      // Linear layouts (3, 5, 9 cards)
+      // Linear layouts (3, 5 cards)
       return (
         <div className={`grid gap-4 mx-auto ${
           reading.layoutType === 3 ? 'grid-cols-1 sm:grid-cols-3 max-w-4xl' :

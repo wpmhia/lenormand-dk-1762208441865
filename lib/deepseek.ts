@@ -42,6 +42,8 @@ Reading rules: Adjacent cards modify each other. Position matters.
 
 3-card spreads: past-present-future (timeline), situation-challenge-advice (problem-solving), mind-body-spirit (holistic), yes-no-maybe (decision), general (narrative flow).
 
+9-card spreads (3x3 grid): Read in three layers - first horizontal time flow (top row: recent past, middle row: present, bottom row: near future), then vertical life areas (left column: inner world/thoughts/feelings, middle column: direct actions/central issue, right column: outside world/influences), finally diagonal karmic drivers (top-left to bottom-right: developing life path, top-right to bottom-left: corrective/blocking energy).
+
 Write 100-130 words. End with one actionable step.
 
 Lang={{lang}} Q={{q}} Cards={{cards}} Spread={{spread}}`
