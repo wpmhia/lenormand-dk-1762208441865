@@ -25,10 +25,16 @@ export function Header() {
       <header className="z-50 w-full border-b border-border bg-card/80 backdrop-blur supports-[backdrop-filter]:bg-card/60">
       <div className="container flex h-14 items-center px-4">
         <div className="flex items-center space-x-2">
-          <Link href="/" className="text-lg font-semibold text-card-foreground hover:text-primary transition-colors">
-            Lenormand Intelligence
-          </Link>
-        </div>
+           <Link href="/" className="text-base sm:text-lg font-bold leading-normal hover:opacity-80 transition-opacity">
+             <span className="relative inline-block">
+               Lenormand
+               <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-primary via-primary/80 to-primary/60 rounded-full opacity-80"></div>
+             </span>
+             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary/80 to-primary/60">
+               Intelligence
+             </span>
+           </Link>
+         </div>
         <nav className="hidden md:flex items-center space-x-6 ml-auto" role="navigation">
           <Link
             href="/"
