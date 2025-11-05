@@ -349,14 +349,13 @@ export default function NewReadingPage() {
               transition={{ duration: 0.3, ease: "easeOut" }}
               className="space-y-6"
             >
-            <Card className="border-border bg-card backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50"></div>
-              <CardHeader className="relative z-10">
+            <Card className="border-border bg-card backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden">
+              <CardHeader>
                 <CardTitle className="text-card-foreground text-xl">
                   Your Sacred Question:
                 </CardTitle>
               </CardHeader>
-                <CardContent className="space-y-6 relative z-10">
+                <CardContent className="space-y-6">
                 <div className="space-y-3">
                 <Textarea
                   id="question"
