@@ -35,6 +35,7 @@ const THREE_CARD_SPREADS = [
   { value: "situation-challenge-advice", label: "Situation, Challenge, Advice" },
   { value: "mind-body-spirit", label: "Mind, Body, Spirit" },
   { value: "yes-no-maybe", label: "Yes, No, Maybe" },
+  { value: "yes-no-counting", label: "Yes-No 3-Card (Counting)" },
   { value: "general-reading", label: "General Reading (Sentence)" }
 ]
 
