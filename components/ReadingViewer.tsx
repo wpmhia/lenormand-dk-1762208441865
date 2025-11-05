@@ -221,9 +221,9 @@ export function ReadingViewer({
                <Calendar className="w-4 h-4 text-primary" />
                {new Date(reading.createdAt).toLocaleDateString()}
              </div>
-             <Badge className="bg-gradient-to-r from-primary/20 to-primary/20 text-muted-foreground border-primary/30 px-3 py-1">
-               {reading.layoutType} Cards
-             </Badge>
+              <Badge variant="secondary">
+                {reading.layoutType} Cards
+              </Badge>
            </div>
         </div>
       )}
