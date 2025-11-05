@@ -24,15 +24,15 @@ export function Footer() {
              <div className="space-y-4">
                <div className="flex items-center gap-2">
                  <Sparkles className="w-5 h-5 text-primary" aria-hidden="true" />
-                 <div className="text-lg sm:text-xl lg:text-2xl font-bold leading-normal">
-                   <span className="relative inline-block">
-                     Lenormand
-                     <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-primary via-primary/80 to-primary/60 rounded-full opacity-80"></div>
-                   </span>
-                   <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary/80 to-primary/60">
-                     Intelligence
-                   </span>
-                 </div>
+                  <div className="text-lg sm:text-xl lg:text-2xl font-bold leading-normal" style={{ fontFamily: "'Crimson Pro', 'Crimson Text', serif" }}>
+                    <span className="relative inline-block">
+                      Lenormand
+                      <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-primary via-primary/80 to-primary/60 rounded-full opacity-80"></div>
+                    </span>
+                    <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary/80 to-primary/60">
+                      Intelligence
+                    </span>
+                  </div>
                </div>
               <p className="text-muted-foreground text-sm leading-relaxed">
                 Mystical Card Wisdom for modern seekers. Discover guidance through the ancient art of Lenormand divination.
