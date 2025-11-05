@@ -376,7 +376,7 @@ function NewReadingPageContent() {
                   }}
                   placeholder="What guidance do the cards have for me today?"
                   className="bg-background border-border text-foreground placeholder:text-muted-foreground min-h-[120px] rounded-xl focus:border-primary focus:ring-primary/20 resize-none"
-                  maxLength={200}
+                  maxLength={500}
                   aria-describedby="question-help question-count"
                   required
                 />
