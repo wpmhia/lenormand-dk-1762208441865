@@ -74,11 +74,11 @@ export default function Home() {
          <div className="mb-8 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5 rounded-3xl"></div>
            <div className="text-center mb-6 relative z-10">
-             <h2 className="text-4xl font-bold text-center mb-2 text-foreground relative">
-              Choose Your Path
-              <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-24 h-0.5 bg-gradient-to-r from-primary to-primary/60 rounded-full"></div>
-            </h2>
-            <p className="text-center text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">Select the depth of insight that calls to you</p>
+              <h2 className="text-4xl font-bold text-center mb-2 text-foreground relative">
+               Discover Your Reading
+               <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-24 h-0.5 bg-gradient-to-r from-primary to-primary/60 rounded-full"></div>
+             </h2>
+             <p className="text-center text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">Choose the wisdom that speaks to your soul</p>
           </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 relative z-10 items-stretch">
             <Link href="/read/new">
@@ -91,9 +91,9 @@ export default function Home() {
                   </CardTitle>
                 </CardHeader>
                  <CardContent className="card-content-no-padding relative z-10 flex flex-col flex-grow">
-                   <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                     Journey through time&apos;s tapestry with clarity
-                   </p>
+                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                      Past, present, and future revealed in focused guidance
+                    </p>
                   <div className="flex items-center text-sm font-medium">
                     <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold bg-primary/12 text-primary dark:bg-primary dark:text-primary-foreground ring-1 ring-primary/10 dark:ring-primary/30">
                       3 Cards
@@ -114,9 +114,9 @@ export default function Home() {
                   </CardTitle>
                 </CardHeader>
                  <CardContent className="card-content-no-padding relative z-10 flex flex-col flex-grow">
-                   <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                     Deep exploration revealing hidden insights
-                   </p>
+                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                      Uncover challenges, resources, and outcomes for your situation
+                    </p>
                   <div className="flex items-center text-sm font-medium">
                     <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold bg-primary/12 text-primary dark:bg-primary dark:text-primary-foreground ring-1 ring-primary/10 dark:ring-primary/30">
                       5 Cards
@@ -160,9 +160,9 @@ export default function Home() {
                    </CardTitle>
                  </CardHeader>
                  <CardContent className="card-content-no-padding relative z-10 flex flex-col flex-grow">
-                   <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                     Complete life&apos;s grand design revealed
-                   </p>
+                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                      Explore inner world, direct actions, and external influences
+                    </p>
                   <div className="flex items-center text-sm font-medium">
                     <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold bg-primary/12 text-primary dark:bg-primary dark:text-primary-foreground ring-1 ring-primary/10 dark:ring-primary/30">
                       9 Cards
@@ -183,9 +183,9 @@ export default function Home() {
                   </CardTitle>
                 </CardHeader>
                  <CardContent className="card-content-no-padding relative z-10 flex flex-col flex-grow">
-                   <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                     The complete mystical revelation unfolds
-                   </p>
+                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                      Full deck reading revealing life&apos;s complete mystical pattern
+                    </p>
                   <div className="flex items-center text-sm font-medium">
                     <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold bg-primary/12 text-primary dark:bg-primary dark:text-primary-foreground ring-1 ring-primary/10 dark:ring-primary/30">
                       36 Cards
