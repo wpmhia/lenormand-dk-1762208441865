@@ -25,7 +25,7 @@ import { getAIReading, AIReadingRequest, AIReadingResponse, isDeepSeekAvailable 
 
 const LAYOUTS = [
   { value: 3, label: "3 Cards", type: "past-present-future" },
-  { value: 5, label: "5 Cards - Extended Reading", type: "extended" },
+   { value: 5, label: "5 Cards - Premise to Resolution", type: "premise-resolution" },
   { value: 9, label: "9 Cards - Comprehensive Reading", type: "comprehensive" },
   { value: 36, label: "Grand Tableau - Full Deck", type: "grand-tableau" }
 ]

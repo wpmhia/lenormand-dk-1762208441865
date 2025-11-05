@@ -67,13 +67,13 @@ const getPositionInfo = (position: number, layoutType: number, threeCardSpreadTy
       1: { label: "Present", meaning: "Your current circumstances and immediate challenges" },
       2: { label: "Future", meaning: "Potential outcome based on your current path" }
     },
-    5: {
-      0: { label: "Past", meaning: "Past influences affecting your situation" },
-      1: { label: "Present", meaning: "Your current circumstances and challenges" },
-      2: { label: "Future", meaning: "Future influences and potential developments" },
-      3: { label: "Challenge", meaning: "Obstacles you may need to overcome" },
-      4: { label: "Advice", meaning: "Guidance for navigating your situation" }
-    },
+     5: {
+       0: { label: "Premise", meaning: "The foundational situation or starting point of your inquiry" },
+       1: { label: "Obstacle", meaning: "The challenge or difficulty that stands in your way" },
+       2: { label: "What Helps", meaning: "Resources, support, or helpful factors available to you" },
+       3: { label: "Outcome", meaning: "The likely result or development from your current path" },
+       4: { label: "Final Result", meaning: "The ultimate conclusion or resolution of your situation" }
+     },
      9: {
        0: { label: "Recent Past - Inner World", meaning: "Thoughts, feelings, and personal resources from your recent past that influence your current situation" },
        1: { label: "Recent Past - Direct Actions", meaning: "Actions you took recently that shaped your current circumstances" },
