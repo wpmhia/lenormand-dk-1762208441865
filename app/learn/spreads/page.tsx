@@ -73,6 +73,41 @@ const spreads = [
     ]
   },
   {
+    name: "9-Card Comprehensive Spread",
+    description: "Complete life reading using traditional 3x3 grid layout",
+    layout: "3x3 Grid: Recent Past → Present → Near Future (across rows) × Inner World → Direct Actions → External Influences (down columns)",
+    useCase: "Major life decisions, deep insight",
+    difficulty: "Advanced",
+    positions: [
+      { name: "Recent Past - Inner World", description: "Thoughts, feelings, and personal resources from your recent past that influence your current situation" },
+      { name: "Recent Past - Direct Actions", description: "Actions you took recently that shaped your current circumstances" },
+      { name: "Recent Past - Outside World", description: "External influences and events from your recent past" },
+      { name: "Present - Inner World", description: "Your current thoughts, feelings, and internal state" },
+      { name: "Present - Direct Actions", description: "Your current actions and the central issue you're facing" },
+      { name: "Present - Outside World", description: "Current external influences, other people, and environmental factors" },
+      { name: "Near Future - Inner World", description: "How your thoughts and feelings will evolve in the near future" },
+      { name: "Near Future - Direct Actions", description: "Actions you'll need to take in the near future" },
+      { name: "Near Future - Outside World", description: "External events and influences approaching in the near future" }
+    ]
+  },
+  {
+    name: "Grand Tableau (36-Card Reading)",
+    description: "The most comprehensive Lenormand reading using all 36 cards",
+    layout: "6x6 grid with traditional house positions and significator placement",
+    useCase: "Major life decisions, year-ahead readings, complex relationship issues",
+    difficulty: "Expert",
+    positions: [
+      { name: "Significator", description: "The card representing you (usually Woman #29 or Man #28) - the center of the reading" },
+      { name: "Cross of the Moment", description: "The 5-card cross formed by significator's row and column - reveals immediate situation" },
+      { name: "Four Corners", description: "Cards 1, 6, 31, 36 - represent the fixed frame and foundation of the situation" },
+      { name: "Four Center Cards", description: "Cards 13, 16, 12, 11 - reveal what's secretly driving the matter" },
+      { name: "Nine-Card Square", description: "3x3 area around significator - shows immediate influences and personal sphere" },
+      { name: "Knight Moves", description: "L-shaped patterns from significator - reveal underlying patterns and connections" },
+      { name: "Mirror Positions", description: "Cards directly opposite significator - show balancing energies and lessons" },
+      { name: "House Meanings", description: "Each position has traditional house associations that add symbolic meaning" }
+    ]
+  },
+  {
     name: "Relationship Spread",
     description: "Understanding romantic or interpersonal dynamics",
     layout: "You → Partner → Relationship → Challenge → Advice → Outcome",
