@@ -4,10 +4,12 @@ import Link from 'next/link';
 import { Sparkles, Home, BookOpen, Plus, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import { ThemeToggle } from '@/components/theme-toggle';
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const router = useRouter();
 
   return (
     <header className="z-50 w-full border-b border-border bg-card/80 backdrop-blur supports-[backdrop-filter]:bg-card/60">
@@ -25,20 +27,20 @@ export function Header() {
             <Home className="w-4 h-4" />
             <span>Home</span>
           </Link>
-          <Link
-            href="/cards"
-            className="flex items-center space-x-1 text-sm font-medium text-card-foreground hover:text-primary transition-colors"
-          >
-            <BookOpen className="w-4 h-4" />
-            <span>Cards</span>
-          </Link>
            <Link
-             href="/read/new"
+             href="/cards"
              className="flex items-center space-x-1 text-sm font-medium text-card-foreground hover:text-primary transition-colors"
            >
-             <Plus className="w-4 h-4" />
-             <span>New Reading</span>
+             <BookOpen className="w-4 h-4" />
+             <span>Cards</span>
            </Link>
+            <button
+              onClick={() => router.push('/read/new?reset=' + Date.now())}
+              className="flex items-center space-x-1 text-sm font-medium text-card-foreground hover:text-primary transition-colors"
+            >
+              <Plus className="w-4 h-4" />
+              <span>New Reading</span>
+            </button>
           <Link
             href="/learn"
             className="flex items-center space-x-1 text-sm font-medium text-card-foreground hover:text-primary transition-colors"
@@ -90,14 +92,16 @@ export function Header() {
               <BookOpen className="w-4 h-4" />
               <span>Cards</span>
             </Link>
-             <Link
-               href="/read/new"
-               onClick={() => setMobileMenuOpen(false)}
-               className="flex items-center space-x-2 text-sm font-medium text-card-foreground hover:text-primary transition-colors py-3"
-             >
-               <Plus className="w-4 h-4" />
-               <span>New Reading</span>
-             </Link>
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  router.push('/read/new?reset=' + Date.now());
+                }}
+                className="flex items-center space-x-2 text-sm font-medium text-card-foreground hover:text-primary transition-colors py-3"
+              >
+                <Plus className="w-4 h-4" />
+                <span>New Reading</span>
+              </button>
             <Link
               href="/learn"
               onClick={() => setMobileMenuOpen(false)}

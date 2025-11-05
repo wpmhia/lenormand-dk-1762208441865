@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Card as CardType, ReadingCard } from '@/lib/types'
 import { Deck } from '@/components/Deck'
@@ -38,6 +39,7 @@ const THREE_CARD_SPREADS = [
 ]
 
 export default function NewReadingPage() {
+  const searchParams = useSearchParams()
   const [allCards, setAllCards] = useState<CardType[]>([])
   const [drawnCards, setDrawnCards] = useState<ReadingCard[]>([])
   const [layoutType, setLayoutType] = useState<3 | 5 | 9 | 36>(3)
@@ -67,9 +69,7 @@ export default function NewReadingPage() {
   const [aiRetryCount, setAiRetryCount] = useState(0)
   const [showStartOverConfirm, setShowStartOverConfirm] = useState(false)
 
-  useEffect(() => {
-    fetchCards()
-    // Reset to setup step when component mounts
+  const resetReading = () => {
     setStep('setup')
     setDrawnCards([])
     setQuestion('')
@@ -83,7 +83,18 @@ export default function NewReadingPage() {
     setAiErrorDetails(null)
     setIsPhysical(false)
     setPhysicalCards('')
+  }
+
+  useEffect(() => {
+    fetchCards()
+    resetReading()
   }, [])
+
+  useEffect(() => {
+    if (searchParams.get('reset')) {
+      resetReading()
+    }
+  }, [searchParams])
 
   const fetchCards = async () => {
     try {
