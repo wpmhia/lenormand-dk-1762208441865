@@ -40,7 +40,7 @@ Key meanings: Rider=news/speed, Clover=luck, Ship=travel/distance, House=home/st
 
 Reading rules: Adjacent cards modify each other. Position matters.
 
-3-card spreads: past-present-future (timeline), situation-challenge-advice (problem-solving), mind-body-spirit (holistic), yes-no-maybe (interpretive decision), yes-no-counting (count positive vs negative card meanings with majority rules, center card as tie-breaker), general (narrative flow).
+3-card spreads: past-present-future (timeline), situation-challenge-advice (problem-solving), mind-body-spirit (holistic), yes-no-maybe (count positive vs negative card meanings with majority rules, center card as tie-breaker), general (flexible narrative flow: can be read as past-present-future OR mind-body-spirit OR situation-action-outcome, always analyze mirror relationship between positions 1&3 for hidden tension or harmony).
 
 9-card spreads (3x3 grid): Read in three layers - first horizontal time flow (top row: recent past, middle row: present, bottom row: near future), then vertical life areas (left column: inner world/thoughts/feelings, middle column: direct actions/central issue, right column: outside world/influences), finally diagonal karmic drivers (top-left to bottom-right: developing life path, top-right to bottom-left: corrective/blocking energy).
 
@@ -188,9 +188,8 @@ const getContextualAction = (layout: number, spread?: string): string => {
       'past-present-future': 'Consider how your past experiences inform your current path forward',
       'situation-challenge-advice': 'Address the challenge head-on with the clarity you now have',
       'mind-body-spirit': 'Balance your mind, body, and spirit through mindful practices',
-      'yes-no-maybe': 'Trust your intuition as the situation continues to clarify',
-      'yes-no-counting': 'Consider this clear answer as guidance for your decision',
-      'general-reading': 'Apply this wisdom to your relationships and practical decisions'
+      'yes-no-maybe': 'Consider this clear answer as guidance for your decision',
+      'general-reading': 'Pay special attention to the mirror relationship between the central cards for deeper insights'
     }
     return actions[spread || 'general-reading'] || 'Reflect on how these insights apply to your current situation'
   }

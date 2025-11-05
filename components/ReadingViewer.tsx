@@ -45,20 +45,15 @@ const getPositionInfo = (position: number, layoutType: number, threeCardSpreadTy
         2: { label: "Spirit", meaning: "Emotional well-being, spiritual growth, and inner wisdom" }
       },
        "yes-no-maybe": {
-         0: { label: "Yes", meaning: "Positive influences and supporting factors" },
-         1: { label: "No", meaning: "Negative influences and opposing factors" },
-         2: { label: "Maybe", meaning: "Neutral factors and possibilities to consider" }
-       },
-       "yes-no-counting": {
          0: { label: "First Card", meaning: "Contributes to the Yes/No count based on its positive or negative meaning" },
          1: { label: "Center Card", meaning: "Tie-breaker card if the count is equal between positive and negative cards" },
          2: { label: "Third Card", meaning: "Contributes to the Yes/No count based on its positive or negative meaning" }
        },
        "general-reading": {
-        0: { label: "Card 1", meaning: "First element of your reading" },
-        1: { label: "Card 2", meaning: "Second element of your reading" },
-        2: { label: "Card 3", meaning: "Third element of your reading" }
-      }
+         0: { label: "Opening Element", meaning: "Primary element - can represent past, mind, or situation depending on context" },
+         1: { label: "Central Element", meaning: "Core element - can represent present, body, or action depending on context" },
+         2: { label: "Closing Element", meaning: "Final element - can represent future, spirit, or outcome; check mirror relationship with central element" }
+       }
     }
 
     if (threeCardPositions[threeCardSpreadType]) {
