@@ -8,7 +8,8 @@ import {
   Sparkles,
   ArrowRight,
   Heart,
-  Shield
+  Shield,
+  Calendar
 } from 'lucide-react'
 
 export default function Home() {
@@ -79,7 +80,7 @@ export default function Home() {
             </h2>
             <p className="text-center text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">Select the depth of insight that calls to you</p>
           </div>
-           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10 items-stretch">
+            <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 relative z-10 items-stretch">
             <Link href="/read/new">
                <Card className="hover:shadow-2xl hover:shadow-primary/20 cursor-pointer group border border-border hover:border-border/60 bg-card backdrop-blur-sm h-full rounded-2xl overflow-hidden relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -124,17 +125,40 @@ export default function Home() {
                   </div>
                 </CardContent>
               </Card>
-            </Link>
+             </Link>
 
-            <Link href="/read/new">
-               <Card className="hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 cursor-pointer group border border-border hover:border-border/60 bg-card backdrop-blur-sm h-full hover:scale-105 rounded-2xl overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <CardHeader className="pb-4 relative z-10">
-                  <CardTitle className="flex items-center gap-3 group-hover:text-primary text-lg text-card-foreground font-semibold">
-                    <Shield className="w-5 h-5 text-primary" />
-                    Comprehensive
-                  </CardTitle>
-                </CardHeader>
+             <Link href="/read/new">
+                <Card className="hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 cursor-pointer group border border-border hover:border-border/60 bg-card backdrop-blur-sm h-full hover:scale-105 rounded-2xl overflow-hidden relative">
+                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                 <CardHeader className="pb-4 relative z-10">
+                   <CardTitle className="flex items-center gap-3 group-hover:text-primary text-lg text-card-foreground font-semibold">
+                     <Calendar className="w-5 h-5 text-primary" />
+                     Weekly Insights
+                   </CardTitle>
+                 </CardHeader>
+                  <CardContent className="card-content-no-padding relative z-10 flex flex-col flex-grow">
+                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                      Navigate your week ahead or explore relationship dynamics
+                    </p>
+                   <div className="flex items-center text-sm font-medium">
+                     <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold bg-primary/12 text-primary dark:bg-primary dark:text-primary-foreground ring-1 ring-primary/10 dark:ring-primary/30">
+                       7 Cards
+                     </span>
+                     <ArrowRight className="w-4 h-4 ml-2 text-primary/60 dark:text-primary/60" />
+                   </div>
+                 </CardContent>
+               </Card>
+             </Link>
+
+             <Link href="/read/new">
+                <Card className="hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 cursor-pointer group border border-border hover:border-border/60 bg-card backdrop-blur-sm h-full hover:scale-105 rounded-2xl overflow-hidden relative">
+                 <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                 <CardHeader className="pb-4 relative z-10">
+                   <CardTitle className="flex items-center gap-3 group-hover:text-primary text-lg text-card-foreground font-semibold">
+                     <Shield className="w-5 h-5 text-primary" />
+                     Comprehensive
+                   </CardTitle>
+                 </CardHeader>
                  <CardContent className="card-content-no-padding relative z-10 flex flex-col flex-grow">
                    <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                      Complete life&apos;s grand design revealed
