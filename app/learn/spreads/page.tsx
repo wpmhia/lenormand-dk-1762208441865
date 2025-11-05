@@ -41,6 +41,38 @@ const spreads = [
     ]
   },
   {
+    name: "7-Card Week Ahead",
+    description: "Navigate your week with daily guidance and insights",
+    layout: "Monday → Tuesday → Wednesday → Thursday → Friday → Saturday → Sunday",
+    useCase: "Weekly planning, timing insights",
+    difficulty: "Intermediate",
+    positions: [
+      { name: "Monday", description: "New beginnings and fresh energy" },
+      { name: "Tuesday", description: "Challenges and work matters" },
+      { name: "Wednesday", description: "Communication and connections" },
+      { name: "Thursday", description: "Progress and momentum building" },
+      { name: "Friday", description: "Social activities and completion" },
+      { name: "Saturday", description: "Rest and reflection" },
+      { name: "Sunday", description: "Closure and spiritual renewal" }
+    ]
+  },
+  {
+    name: "7-Card Relationship Spread",
+    description: "Deep insights into romantic or interpersonal dynamics",
+    layout: "Your Past → Your Present → Your Future → Connection → Their Past → Their Present → Their Future",
+    useCase: "Love, partnerships, relationships",
+    difficulty: "Intermediate",
+    positions: [
+      { name: "Your Past", description: "Your past experiences in relationships" },
+      { name: "Your Present", description: "Your current relationship energy" },
+      { name: "Your Future", description: "Your relationship outlook" },
+      { name: "Connection", description: "The bond between you both" },
+      { name: "Their Past", description: "Their past relationship experiences" },
+      { name: "Their Present", description: "Their current relationship energy" },
+      { name: "Their Future", description: "Their relationship outlook" }
+    ]
+  },
+  {
     name: "9-Card Celtic Cross Style",
     description: "Comprehensive life reading inspired by Tarot",
     layout: "Present → Challenge → Past → Future → Above → Below → Advice → External → Hopes/Fears",
