@@ -51,7 +51,7 @@ Reading rules: Adjacent cards modify each other. Position matters.
 
 Grand Tableau (36-card spread): Traditional Lenormand reading sequence - 1. Locate significator (Woman #29 or Man #28) representing the querent, 2. Read "cross of the moment" (5-card cross: significator's full row + full column) for core message, 3. Read four corners (1-36-6-31) for fixed frame of situation, 4. Read four center cards (13-16-12-11) for what's secretly driving the matter, 5. Read nine-card square around significator (±1 card in row/column) for immediate influences, 6. Count in patterns (7s or 5s from significator) to tell story through time, 7. Note knights (90° positions), mirrors (opposite), and house meanings where cards fall.
 
-Write 100-130 words. End with one clear, actionable conclusion that provides specific guidance for moving forward.
+Write 100-130 words. Weave actionable guidance naturally throughout the reading narrative for a cohesive, flowing interpretation.
 
 Lang={{lang}} Q={{q}} Cards={{cards}} Spread={{spread}}`
 
@@ -187,36 +187,6 @@ function getThreeCardSpreadLabel(spreadType?: string): string {
 }
 
 // Contextual fallback conclusions based on reading type
-const getContextualAction = (layout: number, spread?: string): string => {
-  if (layout === 3) {
-    const actions: Record<string, string> = {
-      'past-present-future': 'Focus on one specific action from your past learnings that will positively impact your future',
-      'situation-challenge-advice': 'Take the recommended action from the advice card to overcome your current challenge',
-      'mind-body-spirit': 'Choose one area (mind, body, or spirit) to focus on improving this week',
-      'yes-no-maybe': 'Based on the reading, make your decision and take the first concrete step today',
-      'general-reading': 'Trust your intuition and take the first step that feels right'
-    }
-    return actions[spread || 'general-reading'] || 'Choose one specific insight from this reading and take action on it today'
-  }
-
-  if (layout === 5) {
-    return 'Start with the "What Helps" card - take one concrete action from that guidance this week'
-  }
-
-  if (layout === 7) {
-    return 'Focus on Tuesday\'s challenge - prepare one specific action to address it before the week begins'
-  }
-
-  if (layout === 9) {
-    return 'Begin with the central card\'s guidance - take one step in that direction today'
-  }
-
-  if (layout === 36) {
-    return 'Start with your significator\'s position - take one action aligned with that card\'s energy'
-  }
-
-  return 'Choose one specific insight from this reading and take concrete action on it today'
-}
 
 // Parse AI response into structured format
 export function parseAIResponse(response: string, layoutType?: number, threeCardSpreadType?: string): AIReadingResponse {
@@ -280,7 +250,7 @@ export function parseAIResponse(response: string, layoutType?: number, threeCard
     storyline: storyline || 'The cards offer guidance for your situation.',
     risk: risk,
     timing: timing,
-    action: action || getContextualAction(layoutType || 3, threeCardSpreadType),
+    action: '',
     rawResponse: response
   }
 }
@@ -380,7 +350,7 @@ function parseStructuredResponse(response: string, layoutType?: number, threeCar
       storyline: storyline || 'The cards offer guidance for your situation.',
       risk: risk || 'Trust your intuition and the guidance you receive',
       timing: timing || 'The timing will become clear as events unfold',
-      action: action || contextualAction,
+      action: '',
       rawResponse: response
     }
   }

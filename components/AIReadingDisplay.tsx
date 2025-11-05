@@ -247,14 +247,7 @@ export function AIReadingDisplay({
           </div>
         </section>
 
-        {/* Tender Action */}
-        <section aria-labelledby="action-heading" className="border-t border-amber-400/20 pt-4">
-          <div className="text-center">
-            <div className="text-muted-foreground text-lg font-light italic">
-              {aiReading.action}
-            </div>
-          </div>
-        </section>
+
 
 
 
