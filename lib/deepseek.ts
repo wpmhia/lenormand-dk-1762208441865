@@ -50,7 +50,7 @@ Reading rules: Adjacent cards modify each other. Position matters.
 
 Grand Tableau (36-card spread): Traditional Lenormand reading sequence - 1. Locate significator (Woman #29 or Man #28) representing the querent, 2. Read "cross of the moment" (5-card cross: significator's full row + full column) for core message, 3. Read four corners (1-36-6-31) for fixed frame of situation, 4. Read four center cards (13-16-12-11) for what's secretly driving the matter, 5. Read nine-card square around significator (±1 card in row/column) for immediate influences, 6. Count in patterns (7s or 5s from significator) to tell story through time, 7. Note knights (90° positions), mirrors (opposite), and house meanings where cards fall.
 
-Write 100-130 words. End with one actionable step.
+Write 100-130 words. End with one clear, actionable conclusion that provides specific guidance for moving forward.
 
 Lang={{lang}} Q={{q}} Cards={{cards}} Spread={{spread}}`
 
@@ -185,32 +185,36 @@ function getThreeCardSpreadLabel(spreadType?: string): string {
   return spreadLabels[spreadType || "past-present-future"] || "Past-Present-Future"
 }
 
-// Contextual fallback actions based on reading type
+// Contextual fallback conclusions based on reading type
 const getContextualAction = (layout: number, spread?: string): string => {
   if (layout === 3) {
     const actions: Record<string, string> = {
-      'past-present-future': 'Consider how your past experiences inform your current path forward',
-      'situation-challenge-advice': 'Address the challenge head-on with the clarity you now have',
-      'mind-body-spirit': 'Balance your mind, body, and spirit through mindful practices',
-      'yes-no-maybe': 'Consider this clear answer as guidance for your decision',
-      'general-reading': 'Pay special attention to the mirror relationship between the central cards for deeper insights'
+      'past-present-future': 'Focus on one specific action from your past learnings that will positively impact your future',
+      'situation-challenge-advice': 'Take the recommended action from the advice card to overcome your current challenge',
+      'mind-body-spirit': 'Choose one area (mind, body, or spirit) to focus on improving this week',
+      'yes-no-maybe': 'Based on the reading, make your decision and take the first concrete step today',
+      'general-reading': 'Act on the central insight that emerged from the mirror relationship between your cards'
     }
-    return actions[spread || 'general-reading'] || 'Reflect on how these insights apply to your current situation'
+    return actions[spread || 'general-reading'] || 'Choose one specific insight from this reading and take action on it today'
   }
 
   if (layout === 5) {
-    return 'Take the first step toward implementing these insights in your life'
+    return 'Start with the "What Helps" card - take one concrete action from that guidance this week'
+  }
+
+  if (layout === 7) {
+    return 'Focus on Tuesday\'s challenge - prepare one specific action to address it before the week begins'
   }
 
   if (layout === 9) {
-    return 'Use this comprehensive guidance to navigate your current challenges'
+    return 'Begin with the central card\'s guidance - take one step in that direction today'
   }
 
   if (layout === 36) {
-    return 'Let this Grand Tableau reading illuminate your path forward'
+    return 'Start with your significator\'s position - take one action aligned with that card\'s energy'
   }
 
-  return 'Take time to reflect on this guidance and how it applies to your situation'
+  return 'Choose one specific insight from this reading and take concrete action on it today'
 }
 
 // Parse AI response into structured format
@@ -351,7 +355,7 @@ function parseStructuredResponse(response: string, layoutType?: number, threeCar
     storyline = sections.story || sections.storyline || ''
     risk = sections.risk || ''
     timing = sections.timing || ''
-    action = sections.act || sections.action || ''
+    action = sections.act || sections.action || sections.conclusion || sections.guidance || ''
 
     // If we have sections but no explicit story, check if the first numbered line is the story
     if (!storyline) {
