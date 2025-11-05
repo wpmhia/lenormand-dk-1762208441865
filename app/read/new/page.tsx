@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Card as CardType, ReadingCard } from '@/lib/types'
@@ -38,7 +38,7 @@ const THREE_CARD_SPREADS = [
   { value: "general-reading", label: "General Reading (Sentence)" }
 ]
 
-export default function NewReadingPage() {
+function NewReadingPageContent() {
   const searchParams = useSearchParams()
   const [allCards, setAllCards] = useState<CardType[]>([])
   const [drawnCards, setDrawnCards] = useState<ReadingCard[]>([])
@@ -655,4 +655,17 @@ Or: Rider, Sun, Key`;
       </div>
     </TooltipProvider>
    )
- }
+  }
+
+export default function NewReadingPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background text-foreground flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+        <p className="text-muted-foreground">Loading your reading...</p>
+      </div>
+    </div>}>
+      <NewReadingPageContent />
+    </Suspense>
+  )
+}
