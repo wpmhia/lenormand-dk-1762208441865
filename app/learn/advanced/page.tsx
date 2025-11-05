@@ -95,7 +95,7 @@ export default function AdvancedPage() {
           <div className="flex items-center justify-between">
             <Link href="/learn">
               <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
-                <ArrowLeft className="w-4 h-4 mr-2" />
+                <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Course
               </Button>
             </Link>
@@ -112,27 +112,27 @@ export default function AdvancedPage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <div className="container mx-auto max-w-6xl px-4 py-8">
         {/* Module Header */}
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center mb-4">
-            <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center">
-              <Lightbulb className="w-8 h-8 text-white" />
+        <div className="mb-12 text-center">
+          <div className="mb-4 flex items-center justify-center">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+              <Lightbulb className="h-8 w-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
+          <h1 className="mb-4 text-3xl font-bold text-foreground sm:text-4xl">
             Advanced Concepts
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
             Master the deeper layers of Lenormand: time associations, playing card connections, and cultural interpretations.
           </p>
-          <div className="flex items-center justify-center mt-4 space-x-4 text-sm text-primary">
+          <div className="mt-4 flex items-center justify-center space-x-4 text-sm text-primary">
             <div className="flex items-center">
-              <Lightbulb className="w-4 h-4 mr-1" />
+              <Lightbulb className="mr-1 h-4 w-4" />
               35 minutes
             </div>
             <div className="flex items-center">
-              <Globe className="w-4 h-4 mr-1" />
+              <Globe className="mr-1 h-4 w-4" />
               Advanced Level
             </div>
           </div>
@@ -141,35 +141,35 @@ export default function AdvancedPage() {
         {/* Time Associations */}
         <Card className="mb-8 border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-2xl text-foreground flex items-center">
-              <Clock className="w-6 h-6 mr-3 text-primary" />
+            <CardTitle className="flex items-center text-2xl text-foreground">
+              <Clock className="mr-3 h-6 w-6 text-primary" />
               Time Associations
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-muted-foreground leading-relaxed mb-6">
+            <p className="mb-6 leading-relaxed text-muted-foreground">
               Many Lenormand cards have traditional associations with timing. While not every reading requires precise time predictions, these associations can provide valuable context about when events may occur.
             </p>
 
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid gap-4 md:grid-cols-2">
               {timeAssociations.map((item, index) => (
-                <div key={index} className="bg-muted p-4 rounded-lg border border-border">
-                  <div className="flex items-center justify-between mb-2">
+                <div key={index} className="rounded-lg border border-border bg-muted p-4">
+                  <div className="mb-2 flex items-center justify-between">
                     <h4 className="font-semibold text-foreground">{item.card}</h4>
                     <Badge className="bg-muted text-muted-foreground">
                       {item.time}
                     </Badge>
                   </div>
-                  <p className="text-muted-foreground text-sm">
+                  <p className="text-sm text-muted-foreground">
                     {item.description}
                   </p>
                 </div>
               ))}
             </div>
 
-            <div className="bg-muted p-4 rounded-lg border border-border mt-6">
-              <h4 className="font-semibold text-foreground mb-2">Important Notes:</h4>
-              <ul className="text-muted-foreground text-sm space-y-1">
+            <div className="mt-6 rounded-lg border border-border bg-muted p-4">
+              <h4 className="mb-2 font-semibold text-foreground">Important Notes:</h4>
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li>• Time associations are traditional guidelines, not absolute predictions</li>
                 <li>• Context from surrounding cards can modify timing</li>
                 <li>• Some cards (like Clouds) indicate uncertain or delayed timing</li>
@@ -182,26 +182,26 @@ export default function AdvancedPage() {
         {/* Playing Card Associations */}
         <Card className="mb-8 border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-2xl text-foreground flex items-center">
-              <Spade className="w-6 h-6 mr-3 text-primary" />
+            <CardTitle className="flex items-center text-2xl text-foreground">
+              <Spade className="mr-3 h-6 w-6 text-primary" />
               Playing Card Associations
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-muted-foreground leading-relaxed mb-6">
+            <p className="mb-6 leading-relaxed text-muted-foreground">
               Lenormand cards have traditional associations with playing cards (suits and numbers). These connections can add deeper layers of meaning and are particularly important in Hoodoo and other African Traditional Religions.
             </p>
 
             <div className="grid gap-6">
               {playingCardAssociations.map((suit, index) => (
-                <div key={index} className={`p-6 rounded-lg border ${suit.bgColor}`}>
-                  <div className="flex items-center space-x-3 mb-4">
-                    <suit.icon className={`w-8 h-8 ${suit.color}`} />
+                <div key={index} className={`rounded-lg border p-6 ${suit.bgColor}`}>
+                  <div className="mb-4 flex items-center space-x-3">
+                    <suit.icon className={`h-8 w-8 ${suit.color}`} />
                     <div>
                       <h3 className={`text-xl font-semibold ${suit.color.replace('-600', '-900')} dark:text-foreground`}>
                         {suit.suit}
                       </h3>
-                      <p className="text-muted-foreground text-sm">
+                      <p className="text-sm text-muted-foreground">
                         {suit.meaning}
                       </p>
                     </div>
@@ -217,9 +217,9 @@ export default function AdvancedPage() {
               ))}
             </div>
 
-            <div className="bg-muted p-4 rounded-lg border border-border mt-6">
-              <h4 className="font-semibold text-foreground mb-2">How to Use Playing Cards:</h4>
-              <ul className="text-muted-foreground text-sm space-y-1">
+            <div className="mt-6 rounded-lg border border-border bg-muted p-4">
+              <h4 className="mb-2 font-semibold text-foreground">How to Use Playing Cards:</h4>
+              <ul className="space-y-1 text-sm text-muted-foreground">
                 <li>• Add playing card associations for additional context</li>
                 <li>• Particularly useful in Hoodoo and ATR practices</li>
                 <li>• Can provide numerological insights</li>
@@ -232,31 +232,31 @@ export default function AdvancedPage() {
         {/* Cultural Interpretations */}
         <Card className="mb-8 border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-2xl text-foreground flex items-center">
-              <Globe className="w-6 h-6 mr-3 text-primary" />
+            <CardTitle className="flex items-center text-2xl text-foreground">
+              <Globe className="mr-3 h-6 w-6 text-primary" />
               Cultural Interpretations
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-card-foreground leading-relaxed mb-6">
+            <p className="mb-6 leading-relaxed text-card-foreground">
               Lenormand has evolved differently across cultures. Understanding these various schools of thought can enrich your readings and help you choose the approach that resonates most with your practice.
             </p>
 
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid gap-6 md:grid-cols-2">
               {culturalInterpretations.map((culture, index) => (
-                <div key={index} className="bg-muted p-6 rounded-lg border border-border">
-                  <h3 className="text-lg font-semibold text-foreground mb-3">
+                <div key={index} className="rounded-lg border border-border bg-muted p-6">
+                  <h3 className="mb-3 text-lg font-semibold text-foreground">
                     {culture.culture}
                   </h3>
-                  <p className="text-card-foreground text-sm mb-4">
+                  <p className="mb-4 text-sm text-card-foreground">
                     {culture.description}
                   </p>
                   <div>
-                    <h4 className="font-semibold text-foreground mb-2 text-sm">Characteristics:</h4>
+                    <h4 className="mb-2 text-sm font-semibold text-foreground">Characteristics:</h4>
                     <ul className="space-y-1">
                       {culture.characteristics.map((char, charIndex) => (
-                        <li key={charIndex} className="text-muted-foreground text-sm flex items-center">
-                          <span className="text-primary mr-2">•</span>
+                        <li key={charIndex} className="flex items-center text-sm text-muted-foreground">
+                          <span className="mr-2 text-primary">•</span>
                           {char}
                         </li>
                       ))}
@@ -271,33 +271,33 @@ export default function AdvancedPage() {
         {/* Advanced Practice Tips */}
         <Card className="mb-8 border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-2xl text-foreground flex items-center">
-              <Lightbulb className="w-6 h-6 mr-3 text-primary" />
+            <CardTitle className="flex items-center text-2xl text-foreground">
+              <Lightbulb className="mr-3 h-6 w-6 text-primary" />
               Advanced Practice Techniques
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
-                  <div className="w-8 h-8 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-white font-bold text-sm">1</span>
+                  <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+                    <span className="text-sm font-bold text-white">1</span>
                   </div>
                   <div>
                     <h4 className="font-semibold text-foreground">Study Card Combinations</h4>
-                    <p className="text-muted-foreground text-sm mt-1">
+                    <p className="mt-1 text-sm text-muted-foreground">
                       Learn how cards modify each other when they appear together. Some combinations create entirely new meanings.
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start space-x-3">
-                  <div className="w-8 h-8 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-white font-bold text-sm">2</span>
+                  <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+                    <span className="text-sm font-bold text-white">2</span>
                   </div>
                   <div>
                     <h4 className="font-semibold text-foreground">Practice Grand Tableau</h4>
-                    <p className="text-muted-foreground text-sm mt-1">
+                    <p className="mt-1 text-sm text-muted-foreground">
                       Master the 36-card Grand Tableau for comprehensive readings. Start with simple questions and work up to complex ones.
                     </p>
                   </div>
@@ -306,24 +306,24 @@ export default function AdvancedPage() {
 
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
-                  <div className="w-8 h-8 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-white font-bold text-sm">3</span>
+                  <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+                    <span className="text-sm font-bold text-white">3</span>
                   </div>
                   <div>
                     <h4 className="font-semibold text-foreground">Explore Cultural Contexts</h4>
-                    <p className="text-muted-foreground text-sm mt-1">
+                    <p className="mt-1 text-sm text-muted-foreground">
                       Study different cultural approaches to Lenormand. Incorporate elements that resonate with your background and practice.
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start space-x-3">
-                  <div className="w-8 h-8 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-white font-bold text-sm">4</span>
+                  <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+                    <span className="text-sm font-bold text-white">4</span>
                   </div>
                   <div>
                     <h4 className="font-semibold text-foreground">Develop Your Style</h4>
-                    <p className="text-muted-foreground text-sm mt-1">
+                    <p className="mt-1 text-sm text-muted-foreground">
                       As you gain experience, develop your own associations and techniques. Lenormand is a living tradition that evolves with its practitioners.
                     </p>
                   </div>
@@ -336,18 +336,18 @@ export default function AdvancedPage() {
         {/* Course Completion */}
         <Card className="mb-8 border-border bg-card">
           <CardContent className="p-8 text-center">
-            <div className="w-20 h-20 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Calendar className="w-10 h-10 text-white" />
+            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+              <Calendar className="h-10 w-10 text-white" />
             </div>
-            <h3 className="text-2xl font-bold text-foreground mb-4">
+            <h3 className="mb-4 text-2xl font-bold text-foreground">
               🎉 Course Complete!
             </h3>
-            <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+            <p className="mx-auto mb-6 max-w-2xl text-muted-foreground">
               Congratulations! You&apos;ve completed the comprehensive Lenormand Wisdom Course. You now have the knowledge and tools to begin your journey as a Lenormand reader.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col justify-center gap-4 sm:flex-row">
               <Link href="/read/new">
-                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
                   Start Your First Reading
                 </Button>
               </Link>
@@ -361,17 +361,17 @@ export default function AdvancedPage() {
         </Card>
 
         {/* Navigation */}
-        <div className="flex justify-between items-center pt-8 border-t border-border">
+        <div className="flex items-center justify-between border-t border-border pt-8">
           <Link href="/learn/spreads">
             <Button variant="outline" className="border-border text-card-foreground hover:bg-muted">
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Spreads
             </Button>
           </Link>
           <Link href="/read/new">
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+            <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
               Start Reading Now
-              <ArrowRight className="w-4 h-4 ml-2" />
+              <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
         </div>

@@ -23,49 +23,49 @@ export default function IntroductionPage() {
           <div className="flex items-center justify-between">
             <Link href="/learn">
               <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
-                <ArrowLeft className="w-4 h-4 mr-2" />
+                <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Course
               </Button>
             </Link>
              <div className="flex items-center space-x-2">
-               <Badge className="bg-primary/10 text-primary border-primary/30 dark:bg-primary/20 dark:text-primary dark:border-primary/40">
+               <Badge className="border-primary/30 bg-primary/10 text-primary dark:border-primary/40 dark:bg-primary/20 dark:text-primary">
                  Module 1 of 6
                </Badge>
-               <Badge className="bg-primary/10 text-primary border-primary/30 dark:bg-primary/20 dark:text-primary dark:border-primary/40">
+               <Badge className="border-primary/30 bg-primary/10 text-primary dark:border-primary/40 dark:bg-primary/20 dark:text-primary">
                  Beginner
                </Badge>
              </div>
             <Link href="/learn/history">
               <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
                 Next Module
-                <ArrowRight className="w-4 h-4 ml-2" />
+                <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto max-w-4xl px-4 py-8">
         {/* Module Header */}
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center mb-4">
-            <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center">
-              <BookOpen className="w-8 h-8 text-white" />
+        <div className="mb-12 text-center">
+          <div className="mb-4 flex items-center justify-center">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+              <BookOpen className="h-8 w-8 text-white" />
             </div>
           </div>
-           <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
+           <h1 className="mb-4 text-3xl font-bold text-foreground sm:text-4xl">
             Introduction to Lenormand
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
             Welcome to the fascinating world of Lenormand divination. Let&apos;s explore what makes this 36-card oracle so special and powerful.
           </p>
-          <div className="flex items-center justify-center mt-4 space-x-4 text-sm text-primary">
+          <div className="mt-4 flex items-center justify-center space-x-4 text-sm text-primary">
             <div className="flex items-center">
-              <Clock className="w-4 h-4 mr-1" />
+              <Clock className="mr-1 h-4 w-4" />
               15 minutes
             </div>
             <div className="flex items-center">
-              <Target className="w-4 h-4 mr-1" />
+              <Target className="mr-1 h-4 w-4" />
               Beginner Level
             </div>
           </div>
@@ -74,16 +74,16 @@ export default function IntroductionPage() {
         {/* What is Lenormand */}
         <Card className="mb-8 border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-2xl text-foreground flex items-center">
-              <Sparkles className="w-6 h-6 mr-3 text-primary" />
+            <CardTitle className="flex items-center text-2xl text-foreground">
+              <Sparkles className="mr-3 h-6 w-6 text-primary" />
               What is Lenormand?
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="leading-relaxed text-muted-foreground">
               Lenormand is a form of cartomancy (divination using cards) that originated in 18th century France. Unlike Tarot&apos;s esoteric symbolism, Lenormand speaks in the language of everyday symbols and practical wisdom. Its 36 cards represent concrete concepts, people, and situations that mirror real life.
             </p>
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="leading-relaxed text-muted-foreground">
               Named after the famous French fortune teller Marie Anne Adelaide Lenormand, this system has been used for over two centuries to provide clear, direct guidance on relationships, career, health, and life&apos;s important decisions.
             </p>
           </CardContent>
@@ -92,13 +92,13 @@ export default function IntroductionPage() {
         {/* Lenormand vs Tarot */}
         <Card className="mb-8 border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-2xl text-foreground flex items-center">
-              <Star className="w-6 h-6 mr-3 text-primary" />
+            <CardTitle className="flex items-center text-2xl text-foreground">
+              <Star className="mr-3 h-6 w-6 text-primary" />
               Lenormand vs. Tarot
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-3">
                 <h4 className="font-semibold text-foreground">Lenormand</h4>
                 <ul className="space-y-2 text-sm text-muted-foreground">
@@ -126,16 +126,16 @@ export default function IntroductionPage() {
         {/* Why Learn Lenormand */}
         <Card className="mb-8 border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-2xl text-foreground flex items-center">
-              <Heart className="w-6 h-6 mr-3 text-primary" />
+            <CardTitle className="flex items-center text-2xl text-foreground">
+              <Heart className="mr-3 h-6 w-6 text-primary" />
               Why Learn Lenormand?
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
-                  <Target className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <Target className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary" />
                   <div>
                     <h4 className="font-semibold text-foreground">Direct Answers</h4>
                     <p className="text-sm text-muted-foreground">
@@ -144,7 +144,7 @@ export default function IntroductionPage() {
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <Users className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <Users className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary" />
                   <div>
                     <h4 className="font-semibold text-foreground">Relationship Focus</h4>
                     <p className="text-sm text-muted-foreground">
@@ -155,7 +155,7 @@ export default function IntroductionPage() {
               </div>
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
-                  <Clock className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <Clock className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary" />
                   <div>
                     <h4 className="font-semibold text-foreground">Timing Insights</h4>
                     <p className="text-sm text-muted-foreground">
@@ -164,7 +164,7 @@ export default function IntroductionPage() {
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <BookOpen className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <BookOpen className="mt-0.5 h-5 w-5 flex-shrink-0 text-primary" />
                   <div>
                     <h4 className="font-semibold text-foreground">Accessible Learning</h4>
                     <p className="text-sm text-muted-foreground">
@@ -180,16 +180,16 @@ export default function IntroductionPage() {
         {/* What You'll Learn */}
         <Card className="mb-8 border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-2xl text-foreground flex items-center">
-              <Star className="w-6 h-6 mr-3 text-primary" />
+            <CardTitle className="flex items-center text-2xl text-foreground">
+              <Star className="mr-3 h-6 w-6 text-primary" />
               What You&apos;ll Learn in This Course
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div className="flex items-start space-x-3">
-                <div className="w-6 h-6 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-white text-xs font-bold">1</span>
+                <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+                  <span className="text-xs font-bold text-white">1</span>
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground">History & Origins</h4>
@@ -199,8 +199,8 @@ export default function IntroductionPage() {
                 </div>
               </div>
               <div className="flex items-start space-x-3">
-                <div className="w-6 h-6 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-white text-xs font-bold">2</span>
+                <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+                  <span className="text-xs font-bold text-white">2</span>
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground">Reading Fundamentals</h4>
@@ -210,8 +210,8 @@ export default function IntroductionPage() {
                 </div>
               </div>
               <div className="flex items-start space-x-3">
-                <div className="w-6 h-6 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-white text-xs font-bold">3</span>
+                <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+                  <span className="text-xs font-bold text-white">3</span>
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground">Card Meanings</h4>
@@ -221,8 +221,8 @@ export default function IntroductionPage() {
                 </div>
               </div>
               <div className="flex items-start space-x-3">
-                <div className="w-6 h-6 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-white text-xs font-bold">4</span>
+                <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+                  <span className="text-xs font-bold text-white">4</span>
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground">Spreads & Techniques</h4>
@@ -232,8 +232,8 @@ export default function IntroductionPage() {
                 </div>
               </div>
               <div className="flex items-start space-x-3">
-                <div className="w-6 h-6 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <span className="text-white text-xs font-bold">5</span>
+                <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+                  <span className="text-xs font-bold text-white">5</span>
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground">Advanced Concepts</h4>
@@ -247,17 +247,17 @@ export default function IntroductionPage() {
         </Card>
 
         {/* Navigation */}
-        <div className="flex justify-between items-center pt-8 border-t border-border">
+        <div className="flex items-center justify-between border-t border-border pt-8">
           <Link href="/learn">
             <Button variant="outline" className="border-border text-card-foreground hover:bg-muted">
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Course Overview
             </Button>
           </Link>
           <Link href="/learn/history">
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+            <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
               Continue to History
-              <ArrowRight className="w-4 h-4 ml-2" />
+              <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
         </div>

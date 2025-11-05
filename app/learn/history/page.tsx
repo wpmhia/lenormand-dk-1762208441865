@@ -53,49 +53,49 @@ export default function HistoryPage() {
           <div className="flex items-center justify-between">
             <Link href="/learn">
               <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
-                <ArrowLeft className="w-4 h-4 mr-2" />
+                <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Course
               </Button>
             </Link>
              <div className="flex items-center space-x-2">
-               <Badge className="bg-primary/10 text-primary border-primary/30 dark:bg-primary/20 dark:text-primary dark:border-primary/40">
+               <Badge className="border-primary/30 bg-primary/10 text-primary dark:border-primary/40 dark:bg-primary/20 dark:text-primary">
                  Module 2 of 6
                </Badge>
-               <Badge className="bg-primary/10 text-primary border-primary/30 dark:bg-primary/20 dark:text-primary dark:border-primary/40">
+               <Badge className="border-primary/30 bg-primary/10 text-primary dark:border-primary/40 dark:bg-primary/20 dark:text-primary">
                  Beginner
                </Badge>
              </div>
             <Link href="/learn/reading-basics">
               <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
                 Next Module
-                <ArrowRight className="w-4 h-4 ml-2" />
+                <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto max-w-4xl px-4 py-8">
         {/* Module Header */}
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center mb-4">
-            <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center">
-              <Clock className="w-8 h-8 text-white" />
+        <div className="mb-12 text-center">
+          <div className="mb-4 flex items-center justify-center">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+              <Clock className="h-8 w-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
+          <h1 className="mb-4 text-3xl font-bold text-foreground sm:text-4xl">
             History & Origins
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
             Journey through time to discover how Lenormand divination evolved from 18th century France to become a global phenomenon.
           </p>
-          <div className="flex items-center justify-center mt-4 space-x-4 text-sm text-primary">
+          <div className="mt-4 flex items-center justify-center space-x-4 text-sm text-primary">
             <div className="flex items-center">
-              <Clock className="w-4 h-4 mr-1" />
+              <Clock className="mr-1 h-4 w-4" />
               20 minutes
             </div>
             <div className="flex items-center">
-              <MapPin className="w-4 h-4 mr-1" />
+              <MapPin className="mr-1 h-4 w-4" />
               Beginner Level
             </div>
           </div>
@@ -104,20 +104,20 @@ export default function HistoryPage() {
         {/* Marie Lenormand */}
         <Card className="mb-8 border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-2xl text-foreground flex items-center">
-              <User className="w-6 h-6 mr-3 text-primary" />
+            <CardTitle className="flex items-center text-2xl text-foreground">
+              <User className="mr-3 h-6 w-6 text-primary" />
               Marie Anne Adelaide Lenormand
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="leading-relaxed text-muted-foreground">
               Born in 1772 in Alençon, France, Marie Anne Adelaide Lenormand was one of the most famous fortune tellers of the 18th and 19th centuries. Her extraordinary accuracy and high-profile clientele made her a legend in her time.
             </p>
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="leading-relaxed text-muted-foreground">
               Among her famous clients were Napoleon Bonaparte, Empress Josephine, and many other figures of French aristocracy. Her predictions were said to be remarkably accurate, and               she became known as &ldquo;the Sibyl of the Faubourg Saint-Germain.&rdquo;
             </p>
-            <div className="bg-muted p-4 rounded-lg border border-border">
-              <p className="text-foreground text-sm italic">
+            <div className="rounded-lg border border-border bg-muted p-4">
+              <p className="text-sm italic text-foreground">
                 &ldquo;Lenormand predicted Napoleon&apos;s defeat at Waterloo and his exile to St. Helena. She also foresaw the restoration of the monarchy and the fall of Charles X.&rdquo;
               </p>
             </div>
@@ -127,8 +127,8 @@ export default function HistoryPage() {
         {/* Historical Timeline */}
         <Card className="mb-8 border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-2xl text-foreground flex items-center">
-              <Clock className="w-6 h-6 mr-3 text-primary" />
+            <CardTitle className="flex items-center text-2xl text-foreground">
+              <Clock className="mr-3 h-6 w-6 text-primary" />
               The Evolution of Lenormand
             </CardTitle>
           </CardHeader>
@@ -136,11 +136,11 @@ export default function HistoryPage() {
             <div className="space-y-6">
               {timeline.map((event, index) => (
                 <div key={index} className="flex items-start space-x-4">
-                  <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${event.color} flex items-center justify-center flex-shrink-0 mt-1`}>
-                    <event.icon className="w-6 h-6 text-white" />
+                  <div className={`h-12 w-12 rounded-full bg-gradient-to-r ${event.color} mt-1 flex flex-shrink-0 items-center justify-center`}>
+                    <event.icon className="h-6 w-6 text-white" />
                   </div>
                   <div className="flex-1">
-                    <div className="flex items-center space-x-3 mb-2">
+                    <div className="mb-2 flex items-center space-x-3">
                       <Badge className="bg-muted text-muted-foreground">
                         {event.year}
                       </Badge>
@@ -148,7 +148,7 @@ export default function HistoryPage() {
                         {event.title}
                       </h4>
                     </div>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
+                    <p className="text-sm leading-relaxed text-muted-foreground">
                       {event.description}
                     </p>
                   </div>
@@ -161,13 +161,13 @@ export default function HistoryPage() {
         {/* Cultural Evolution */}
         <Card className="mb-8 border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-2xl text-foreground flex items-center">
-              <MapPin className="w-6 h-6 mr-3 text-primary" />
+            <CardTitle className="flex items-center text-2xl text-foreground">
+              <MapPin className="mr-3 h-6 w-6 text-primary" />
               Cultural Schools of Thought
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-3">
                 <h4 className="font-semibold text-foreground">French School</h4>
                 <p className="text-sm text-muted-foreground">
@@ -199,20 +199,20 @@ export default function HistoryPage() {
         {/* Modern Revival */}
         <Card className="mb-8 border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-2xl text-foreground flex items-center">
-              <Sparkles className="w-6 h-6 mr-3 text-primary" />
+            <CardTitle className="flex items-center text-2xl text-foreground">
+              <Sparkles className="mr-3 h-6 w-6 text-primary" />
               The Modern Renaissance
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="leading-relaxed text-muted-foreground">
               In recent decades, Lenormand has experienced a remarkable revival. Contemporary artists and spiritual practitioners have created beautiful new decks that honor traditional meanings while incorporating diverse cultural perspectives.
             </p>
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="leading-relaxed text-muted-foreground">
               Today, Lenormand is practiced worldwide, with readers from every culture adding their unique interpretations and symbolism. This diversity has enriched the system, making it more inclusive and accessible to modern seekers.
             </p>
-            <div className="bg-muted p-4 rounded-lg border border-border">
-              <p className="text-foreground text-sm">
+            <div className="rounded-lg border border-border bg-muted p-4">
+              <p className="text-sm text-foreground">
                 <strong>Did you know?</strong> Lenormand cards are experiencing their greatest popularity since the 19th century, with new decks being created by artists from around the world.
               </p>
             </div>
@@ -220,17 +220,17 @@ export default function HistoryPage() {
         </Card>
 
         {/* Navigation */}
-        <div className="flex justify-between items-center pt-8 border-t border-border">
+        <div className="flex items-center justify-between border-t border-border pt-8">
           <Link href="/learn/introduction">
             <Button variant="outline" className="border-border text-card-foreground hover:bg-muted">
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Introduction
             </Button>
           </Link>
           <Link href="/learn/reading-basics">
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+            <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
               Continue to Reading Basics
-              <ArrowRight className="w-4 h-4 ml-2" />
+              <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
         </div>

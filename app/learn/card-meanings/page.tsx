@@ -71,49 +71,49 @@ export default function CardMeaningsPage() {
           <div className="flex items-center justify-between">
             <Link href="/learn">
               <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
-                <ArrowLeft className="w-4 h-4 mr-2" />
+                <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Course
               </Button>
             </Link>
              <div className="flex items-center space-x-2">
-               <Badge className="bg-muted text-muted-foreground border-border dark:bg-muted/50 dark:text-muted-foreground dark:border-border">
+               <Badge className="border-border bg-muted text-muted-foreground dark:border-border dark:bg-muted/50 dark:text-muted-foreground">
                  Module 4 of 6
                </Badge>
-               <Badge className="bg-muted text-muted-foreground border-border dark:bg-muted/50 dark:text-muted-foreground dark:border-border">
+               <Badge className="border-border bg-muted text-muted-foreground dark:border-border dark:bg-muted/50 dark:text-muted-foreground">
                  Intermediate
                </Badge>
              </div>
             <Link href="/learn/spreads">
               <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
                 Next Module
-                <ArrowRight className="w-4 h-4 ml-2" />
+                <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <div className="container mx-auto max-w-6xl px-4 py-8">
         {/* Module Header */}
-        <div className="text-center mb-8">
-          <div className="flex items-center justify-center mb-4">
-            <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center">
-              <BookOpen className="w-8 h-8 text-white" />
+        <div className="mb-8 text-center">
+          <div className="mb-4 flex items-center justify-center">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+              <BookOpen className="h-8 w-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
+          <h1 className="mb-4 text-3xl font-bold text-foreground sm:text-4xl">
             Card Meanings & Associations
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
             Master the traditional meanings and symbolic associations of all 36 Lenormand cards.
           </p>
-          <div className="flex items-center justify-center mt-4 space-x-4 text-sm text-primary">
+          <div className="mt-4 flex items-center justify-center space-x-4 text-sm text-primary">
             <div className="flex items-center">
-              <BookOpen className="w-4 h-4 mr-1" />
+              <BookOpen className="mr-1 h-4 w-4" />
               45 minutes
             </div>
             <div className="flex items-center">
-              <Filter className="w-4 h-4 mr-1" />
+              <Filter className="mr-1 h-4 w-4" />
               Intermediate Level
             </div>
           </div>
@@ -122,15 +122,15 @@ export default function CardMeaningsPage() {
         {/* Search and View Controls */}
         <Card className="mb-8 border-border bg-card">
           <CardContent className="p-6">
-            <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-              <div className="relative flex-1 max-w-md">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+            <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+              <div className="relative max-w-md flex-1">
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-muted-foreground" />
                 <input
                   type="text"
                   placeholder="Search cards by name or keyword..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-border rounded-lg bg-card text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full rounded-lg border border-border bg-card py-2 pl-10 pr-4 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                 />
               </div>
               <div className="flex items-center space-x-2">
@@ -140,7 +140,7 @@ export default function CardMeaningsPage() {
                   onClick={() => setViewMode('grid')}
                   className="flex items-center space-x-2"
                 >
-                  <Grid3X3 className="w-4 h-4" />
+                  <Grid3X3 className="h-4 w-4" />
                   <span>Grid</span>
                 </Button>
                 <Button
@@ -149,7 +149,7 @@ export default function CardMeaningsPage() {
                   onClick={() => setViewMode('list')}
                   className="flex items-center space-x-2"
                 >
-                  <List className="w-4 h-4" />
+                  <List className="h-4 w-4" />
                   <span>List</span>
                 </Button>
               </div>
@@ -159,19 +159,19 @@ export default function CardMeaningsPage() {
 
         {/* Cards Display */}
         {viewMode === 'grid' ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-8">
+          <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredCards.map((card) => (
-               <Card key={card.number} className="hover:shadow-lg hover:shadow-primary/20 cursor-pointer group border border-border bg-card">
+               <Card key={card.number} className="group cursor-pointer border border-border bg-card hover:shadow-lg hover:shadow-primary/20">
                  <CardHeader className="pb-3">
                    <div className="flex items-center justify-between">
-                     <Badge className="bg-muted text-muted-foreground text-xs">
+                     <Badge className="bg-muted text-xs text-muted-foreground">
                        #{card.number}
                      </Badge>
-                     <div className="w-8 h-8 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center">
-                       <span className="text-white text-xs font-bold">{card.number}</span>
+                     <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+                       <span className="text-xs font-bold text-white">{card.number}</span>
                      </div>
                    </div>
-                   <CardTitle className="text-lg text-foreground group-hover:text-primary transition-colors">
+                   <CardTitle className="text-lg text-foreground transition-colors group-hover:text-primary">
                      {card.name}
                    </CardTitle>
                  </CardHeader>
@@ -179,22 +179,22 @@ export default function CardMeaningsPage() {
                     <img
                       src={`/images/cards/${card.number.toString().padStart(2, '0')}-${card.number === 22 ? 'paths' : card.name.toLowerCase().replace('the ', '').replace(/ /g, '-')}.png`}
                       alt={card.name}
-                      className="w-full h-32 object-cover rounded-lg mb-3"
+                      className="mb-3 h-32 w-full rounded-lg object-cover"
                     />
                    <div className="space-y-3">
                     <div>
-                      <h4 className="text-sm font-semibold text-foreground mb-1">Keywords:</h4>
+                      <h4 className="mb-1 text-sm font-semibold text-foreground">Keywords:</h4>
                       <div className="flex flex-wrap gap-1">
                         {card.keywords.map((keyword, index) => (
-                          <Badge key={index} variant="secondary" className="text-xs bg-muted text-muted-foreground">
+                          <Badge key={index} variant="secondary" className="bg-muted text-xs text-muted-foreground">
                             {keyword}
                           </Badge>
                         ))}
                       </div>
                     </div>
                     <div>
-                      <h4 className="text-sm font-semibold text-foreground mb-1">Associations:</h4>
-                      <p className="text-xs text-primary leading-relaxed">
+                      <h4 className="mb-1 text-sm font-semibold text-foreground">Associations:</h4>
+                      <p className="text-xs leading-relaxed text-primary">
                         {card.associations.join(', ')}
                       </p>
                     </div>
@@ -204,7 +204,7 @@ export default function CardMeaningsPage() {
             ))}
           </div>
         ) : (
-          <div className="space-y-3 mb-8">
+          <div className="mb-8 space-y-3">
             {filteredCards.map((card) => (
                <Card key={card.number} className="border border-border bg-card">
                  <CardContent className="p-4">
@@ -213,16 +213,16 @@ export default function CardMeaningsPage() {
                         <img
                           src={`/images/cards/${card.number.toString().padStart(2, '0')}-${card.number === 22 ? 'paths' : card.name.toLowerCase().replace('the ', '').replace(/ /g, '-')}.png`}
                           alt={card.name}
-                          className="w-16 h-16 object-cover rounded-lg"
+                          className="h-16 w-16 rounded-lg object-cover"
                         />
-                       <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0">
-                         <span className="text-white text-sm font-bold">{card.number}</span>
+                       <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+                         <span className="text-sm font-bold text-white">{card.number}</span>
                        </div>
                        <div>
                         <h3 className="font-semibold text-foreground">{card.name}</h3>
-                        <div className="flex flex-wrap gap-1 mt-1">
+                        <div className="mt-1 flex flex-wrap gap-1">
                           {card.keywords.map((keyword, index) => (
-                            <Badge key={index} variant="secondary" className="text-xs bg-muted text-muted-foreground">
+                            <Badge key={index} variant="secondary" className="bg-muted text-xs text-muted-foreground">
                               {keyword}
                             </Badge>
                           ))}
@@ -244,17 +244,17 @@ export default function CardMeaningsPage() {
         {/* Learning Tips */}
         <Card className="mb-8 border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-2xl text-foreground flex items-center">
-              <BookOpen className="w-6 h-6 mr-3 text-primary" />
+            <CardTitle className="flex items-center text-2xl text-foreground">
+              <BookOpen className="mr-3 h-6 w-6 text-primary" />
               Learning the Cards
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid gap-6 md:grid-cols-2">
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-white text-xs font-bold">1</span>
+                  <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+                    <span className="text-xs font-bold text-white">1</span>
                   </div>
                   <div>
                     <h4 className="font-semibold text-foreground">Start with Keywords</h4>
@@ -264,8 +264,8 @@ export default function CardMeaningsPage() {
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-white text-xs font-bold">2</span>
+                  <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+                    <span className="text-xs font-bold text-white">2</span>
                   </div>
                   <div>
                     <h4 className="font-semibold text-foreground">Study Associations</h4>
@@ -277,8 +277,8 @@ export default function CardMeaningsPage() {
               </div>
               <div className="space-y-4">
                 <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-white text-xs font-bold">3</span>
+                  <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+                    <span className="text-xs font-bold text-white">3</span>
                   </div>
                   <div>
                     <h4 className="font-semibold text-foreground">Practice Daily</h4>
@@ -288,8 +288,8 @@ export default function CardMeaningsPage() {
                   </div>
                 </div>
                 <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-white text-xs font-bold">4</span>
+                  <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+                    <span className="text-xs font-bold text-white">4</span>
                   </div>
                   <div>
                     <h4 className="font-semibold text-foreground">Trust Your Intuition</h4>
@@ -304,17 +304,17 @@ export default function CardMeaningsPage() {
         </Card>
 
         {/* Navigation */}
-        <div className="flex justify-between items-center pt-8 border-t border-border">
+        <div className="flex items-center justify-between border-t border-border pt-8">
           <Link href="/learn/reading-basics">
             <Button variant="outline" className="border-border text-card-foreground hover:bg-muted">
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Reading Basics
             </Button>
           </Link>
           <Link href="/learn/spreads">
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+            <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
               Continue to Spreads
-              <ArrowRight className="w-4 h-4 ml-2" />
+              <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
         </div>

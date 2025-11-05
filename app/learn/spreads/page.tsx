@@ -128,49 +128,49 @@ export default function SpreadsPage() {
           <div className="flex items-center justify-between">
             <Link href="/learn">
               <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
-                <ArrowLeft className="w-4 h-4 mr-2" />
+                <ArrowLeft className="mr-2 h-4 w-4" />
                 Back to Course
               </Button>
             </Link>
              <div className="flex items-center space-x-2">
-               <Badge className="bg-muted text-muted-foreground border-border dark:bg-muted/50 dark:text-muted-foreground dark:border-border">
+               <Badge className="border-border bg-muted text-muted-foreground dark:border-border dark:bg-muted/50 dark:text-muted-foreground">
                  Module 5 of 6
                </Badge>
-               <Badge className="bg-muted text-muted-foreground border-border dark:bg-muted/50 dark:text-muted-foreground dark:border-border">
+               <Badge className="border-border bg-muted text-muted-foreground dark:border-border dark:bg-muted/50 dark:text-muted-foreground">
                  Intermediate
                </Badge>
              </div>
             <Link href="/learn/advanced">
               <Button variant="ghost" size="sm" className="text-primary hover:text-primary/80">
                 Next Module
-                <ArrowRight className="w-4 h-4 ml-2" />
+                <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <div className="container mx-auto max-w-6xl px-4 py-8">
         {/* Module Header */}
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center mb-4">
-            <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center">
-              <Compass className="w-8 h-8 text-white" />
+        <div className="mb-12 text-center">
+          <div className="mb-4 flex items-center justify-center">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+              <Compass className="h-8 w-8 text-white" />
             </div>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
+          <h1 className="mb-4 text-3xl font-bold text-foreground sm:text-4xl">
             Spreads & Techniques
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
             Discover powerful spreads and advanced reading techniques to enhance your Lenormand practice.
           </p>
-          <div className="flex items-center justify-center mt-4 space-x-4 text-sm text-primary">
+          <div className="mt-4 flex items-center justify-center space-x-4 text-sm text-primary">
             <div className="flex items-center">
-              <Compass className="w-4 h-4 mr-1" />
+              <Compass className="mr-1 h-4 w-4" />
               30 minutes
             </div>
             <div className="flex items-center">
-              <Target className="w-4 h-4 mr-1" />
+              <Target className="mr-1 h-4 w-4" />
               Intermediate Level
             </div>
           </div>
@@ -179,8 +179,8 @@ export default function SpreadsPage() {
         {/* Popular Spreads */}
         <Card className="mb-8 border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-2xl text-foreground flex items-center">
-              <Compass className="w-6 h-6 mr-3 text-primary" />
+            <CardTitle className="flex items-center text-2xl text-foreground">
+              <Compass className="mr-3 h-6 w-6 text-primary" />
               Popular Spreads
             </CardTitle>
           </CardHeader>
@@ -189,20 +189,20 @@ export default function SpreadsPage() {
               {spreads.map((spread, index) => (
                 <Card key={index} className="border border-border bg-muted">
                   <CardContent className="p-6">
-                    <div className="flex items-start justify-between mb-4">
+                    <div className="mb-4 flex items-start justify-between">
                       <div>
-                        <h3 className="text-lg font-semibold text-foreground mb-2">
+                        <h3 className="mb-2 text-lg font-semibold text-foreground">
                           {spread.name}
                         </h3>
-                        <p className="text-muted-foreground text-sm mb-2">
+                        <p className="mb-2 text-sm text-muted-foreground">
                           {spread.description}
                         </p>
                         <div className="flex items-center space-x-4 text-xs text-primary">
                           <span>Best for: {spread.useCase}</span>
                           <Badge className={
-                            spread.difficulty === 'Beginner' ? 'bg-primary/10 text-primary border-primary/30 dark:bg-primary/20 dark:text-primary dark:border-primary/40' :
-                            spread.difficulty === 'Intermediate' ? 'bg-muted text-muted-foreground border-border dark:bg-muted/50 dark:text-muted-foreground dark:border-border' :
-                            'bg-muted text-foreground border-border dark:bg-muted dark:text-foreground dark:border-border'
+                            spread.difficulty === 'Beginner' ? 'border-primary/30 bg-primary/10 text-primary dark:border-primary/40 dark:bg-primary/20 dark:text-primary' :
+                            spread.difficulty === 'Intermediate' ? 'border-border bg-muted text-muted-foreground dark:border-border dark:bg-muted/50 dark:text-muted-foreground' :
+                            'border-border bg-muted text-foreground dark:border-border dark:bg-muted dark:text-foreground'
                           }>
                             {spread.difficulty}
                           </Badge>
@@ -210,26 +210,26 @@ export default function SpreadsPage() {
                       </div>
                     </div>
 
-                    <div className="bg-muted p-4 rounded-lg mb-4">
-                      <h4 className="font-semibold text-foreground mb-2">Layout:</h4>
-                      <p className="text-muted-foreground font-medium text-sm">
+                    <div className="mb-4 rounded-lg bg-muted p-4">
+                      <h4 className="mb-2 font-semibold text-foreground">Layout:</h4>
+                      <p className="text-sm font-medium text-muted-foreground">
                         {spread.layout}
                       </p>
                     </div>
 
                     <div>
-                      <h4 className="font-semibold text-foreground mb-3">Positions:</h4>
-                      <div className="grid md:grid-cols-2 gap-3">
+                      <h4 className="mb-3 font-semibold text-foreground">Positions:</h4>
+                      <div className="grid gap-3 md:grid-cols-2">
                         {spread.positions.map((position, posIndex) => (
                           <div key={posIndex} className="flex items-start space-x-3">
-                            <div className="w-6 h-6 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                              <span className="text-white text-xs font-bold">{posIndex + 1}</span>
+                            <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+                              <span className="text-xs font-bold text-white">{posIndex + 1}</span>
                             </div>
                             <div>
-                              <h5 className="font-medium text-foreground text-sm">
+                              <h5 className="text-sm font-medium text-foreground">
                                 {position.name}
                               </h5>
-                              <p className="text-primary text-xs">
+                              <p className="text-xs text-primary">
                                 {position.description}
                               </p>
                             </div>
@@ -247,35 +247,35 @@ export default function SpreadsPage() {
         {/* Advanced Techniques */}
         <Card className="mb-8 border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-2xl text-foreground flex items-center">
-              <Target className="w-6 h-6 mr-3 text-primary" />
+            <CardTitle className="flex items-center text-2xl text-foreground">
+              <Target className="mr-3 h-6 w-6 text-primary" />
               Advanced Reading Techniques
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid gap-6 md:grid-cols-2">
               {techniques.map((technique, index) => (
                 <Card key={index} className="border border-border bg-muted">
                   <CardContent className="p-6">
-                    <div className="flex items-center space-x-3 mb-4">
-                      <div className="w-10 h-10 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center">
-                        <technique.icon className="w-5 h-5 text-white" />
+                    <div className="mb-4 flex items-center space-x-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+                        <technique.icon className="h-5 w-5 text-white" />
                       </div>
                       <h3 className="text-lg font-semibold text-foreground">
                         {technique.name}
                       </h3>
                     </div>
 
-                    <p className="text-muted-foreground text-sm mb-4">
+                    <p className="mb-4 text-sm text-muted-foreground">
                       {technique.description}
                     </p>
 
                     <div>
-                      <h4 className="font-semibold text-foreground mb-2 text-sm">Examples:</h4>
+                      <h4 className="mb-2 text-sm font-semibold text-foreground">Examples:</h4>
                       <ul className="space-y-1">
                         {technique.examples.map((example, exIndex) => (
-                          <li key={exIndex} className="text-muted-foreground text-sm flex items-start">
-                            <span className="text-primary mr-2">•</span>
+                          <li key={exIndex} className="flex items-start text-sm text-muted-foreground">
+                            <span className="mr-2 text-primary">•</span>
                             {example}
                           </li>
                         ))}
@@ -291,37 +291,37 @@ export default function SpreadsPage() {
         {/* Grand Tableau Introduction */}
         <Card className="mb-8 border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-2xl text-foreground flex items-center">
-              <MapPin className="w-6 h-6 mr-3 text-primary" />
+            <CardTitle className="flex items-center text-2xl text-foreground">
+              <MapPin className="mr-3 h-6 w-6 text-primary" />
               The Grand Tableau (36-Card Reading)
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            <p className="text-card-foreground leading-relaxed">
+            <p className="leading-relaxed text-card-foreground">
               The Grand Tableau is the most comprehensive Lenormand reading, using all 36 cards laid out in a specific pattern. This advanced technique provides deep insights into complex situations and long-term patterns.
             </p>
 
-            <div className="bg-muted p-6 rounded-lg">
-              <h4 className="font-semibold text-foreground mb-3">Traditional Layout:</h4>
+            <div className="rounded-lg bg-muted p-6">
+              <h4 className="mb-3 font-semibold text-foreground">Traditional Layout:</h4>
               <div className="text-center">
-                <div className="inline-block bg-card p-4 rounded-lg shadow-sm">
+                <div className="inline-block rounded-lg bg-card p-4 shadow-sm">
                   <div className="grid grid-cols-8 gap-1 text-xs">
                     {Array.from({ length: 36 }, (_, i) => (
-                      <div key={i} className="w-6 h-6 bg-muted rounded flex items-center justify-center text-card-foreground font-bold">
+                      <div key={i} className="flex h-6 w-6 items-center justify-center rounded bg-muted font-bold text-card-foreground">
                         {i + 1}
                       </div>
                     ))}
                   </div>
-                  <p className="text-xs text-primary dark:text-primary/80 mt-2">
+                  <p className="mt-2 text-xs text-primary dark:text-primary/80">
                     8x4 grid formation (3 rows of 8, 1 row of 4 in center)
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
+            <div className="grid gap-6 md:grid-cols-2">
               <div>
-                <h4 className="font-semibold text-foreground mb-3">What it reveals:</h4>
+                <h4 className="mb-3 font-semibold text-foreground">What it reveals:</h4>
                 <ul className="space-y-2 text-sm text-card-foreground">
                   <li>• Complete life overview</li>
                   <li>• Long-term patterns and cycles</li>
@@ -331,7 +331,7 @@ export default function SpreadsPage() {
                 </ul>
               </div>
               <div>
-                <h4 className="font-semibold text-foreground mb-3">When to use:</h4>
+                <h4 className="mb-3 font-semibold text-foreground">When to use:</h4>
                 <ul className="space-y-2 text-sm text-card-foreground">
                   <li>• Major life decisions</li>
                   <li>• Year-ahead readings</li>
@@ -342,8 +342,8 @@ export default function SpreadsPage() {
               </div>
             </div>
 
-            <div className="bg-muted p-4 rounded-lg border border-border">
-              <p className="text-foreground text-sm">
+            <div className="rounded-lg border border-border bg-muted p-4">
+              <p className="text-sm text-foreground">
                 <strong>Note:</strong> The Grand Tableau requires significant experience and can take 1-2 hours to read thoroughly. It&apos;s recommended for advanced practitioners.
               </p>
             </div>
@@ -353,16 +353,16 @@ export default function SpreadsPage() {
         {/* Practice Tips */}
         <Card className="mb-8 border-border bg-card">
           <CardHeader>
-            <CardTitle className="text-2xl text-foreground flex items-center">
-              <Target className="w-6 h-6 mr-3 text-primary" />
+            <CardTitle className="flex items-center text-2xl text-foreground">
+              <Target className="mr-3 h-6 w-6 text-primary" />
               Practice Your Spreads
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="text-center space-y-3">
-                <div className="w-12 h-12 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto">
-                  <span className="text-white font-bold">1</span>
+            <div className="grid gap-6 md:grid-cols-3">
+              <div className="space-y-3 text-center">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+                  <span className="font-bold text-white">1</span>
                 </div>
                 <h4 className="font-semibold text-foreground">Start Small</h4>
                 <p className="text-sm text-muted-foreground">
@@ -370,9 +370,9 @@ export default function SpreadsPage() {
                 </p>
               </div>
 
-              <div className="text-center space-y-3">
-                <div className="w-12 h-12 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto">
-                  <span className="text-white font-bold">2</span>
+              <div className="space-y-3 text-center">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+                  <span className="font-bold text-white">2</span>
                 </div>
                 <h4 className="font-semibold text-foreground">Practice Daily</h4>
                 <p className="text-sm text-muted-foreground">
@@ -380,9 +380,9 @@ export default function SpreadsPage() {
                 </p>
               </div>
 
-              <div className="text-center space-y-3">
-                <div className="w-12 h-12 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto">
-                  <span className="text-white font-bold">3</span>
+              <div className="space-y-3 text-center">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+                  <span className="font-bold text-white">3</span>
                 </div>
                 <h4 className="font-semibold text-foreground">Keep a Journal</h4>
                 <p className="text-sm text-muted-foreground">
@@ -394,17 +394,17 @@ export default function SpreadsPage() {
         </Card>
 
         {/* Navigation */}
-        <div className="flex justify-between items-center pt-8 border-t border-border">
+        <div className="flex items-center justify-between border-t border-border pt-8">
           <Link href="/learn/card-meanings">
             <Button variant="outline" className="border-border text-card-foreground hover:bg-muted">
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Card Meanings
             </Button>
           </Link>
           <Link href="/learn/advanced">
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground">
+            <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
               Continue to Advanced Concepts
-              <ArrowRight className="w-4 h-4 ml-2" />
+              <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
         </div>

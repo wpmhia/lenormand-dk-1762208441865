@@ -88,40 +88,40 @@ export default function LearnPage() {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10"></div>
-        <div className="relative container max-w-6xl mx-auto px-4 py-16">
-          <div className="text-center space-y-8">
+        <div className="container relative mx-auto max-w-6xl px-4 py-16">
+          <div className="space-y-8 text-center">
             <Badge className="badge-hero">
               ✨ Master Lenormand Divination
             </Badge>
 
             <div className="space-y-6">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+              <h1 className="text-4xl font-bold leading-tight text-foreground sm:text-5xl lg:text-6xl">
                 <span className="relative inline-block">
                   Lenormand
-                  <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-primary via-primary/80 to-primary/60 rounded-full opacity-80"></div>
+                  <div className="absolute -bottom-2 left-0 right-0 h-1 rounded-full bg-gradient-to-r from-primary via-primary/80 to-primary/60 opacity-80"></div>
                 </span>
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary/80 to-primary/60">
+                <span className="block bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
                   Wisdom Course
                 </span>
               </h1>
 
-              <p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              <p className="mx-auto max-w-3xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
                 Embark on a comprehensive journey through the ancient art of Lenormand divination.
                 From beginner fundamentals to advanced techniques, master the 36-card oracle that has guided seekers for centuries.
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link href="/learn/introduction">
                  <Button className="btn-learn">
-                  <Sparkles className="w-5 h-5 mr-2" />
+                  <Sparkles className="mr-2 h-5 w-5" />
                   Start Your Journey
-                  <ArrowRight className="w-5 h-5 ml-2" />
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               <Link href="/cards">
                 <Button className="btn-learn-outline">
-                  <BookOpen className="w-5 h-5 mr-2" />
+                  <BookOpen className="mr-2 h-5 w-5" />
                   Explore Cards First
                 </Button>
               </Link>
@@ -131,49 +131,49 @@ export default function LearnPage() {
       </div>
 
       {/* Course Overview */}
-      <div className="container mx-auto px-4 py-16 max-w-6xl">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-foreground mb-4">
+      <div className="container mx-auto max-w-6xl px-4 py-16">
+        <div className="mb-12 text-center">
+          <h2 className="mb-4 text-3xl font-bold text-foreground">
             Your Learning Path
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
             A structured journey from novice to master, designed to build your confidence and intuition step by step.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <div className="mb-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {modules.map((module, index) => (
             <AnimatedCard key={module.id} delay={index * 0.1} className="cursor-pointer">
-              <Card className="hover:shadow-2xl hover:shadow-primary/20 group border border-border hover:border-border/60 bg-card backdrop-blur-sm min-h-[200px] rounded-2xl overflow-hidden relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <CardHeader className="pb-4 relative z-10">
-                <div className="flex items-center justify-between mb-3">
-                  <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${module.color} flex items-center justify-center`}>
-                    <module.icon className="w-6 h-6 text-white" />
+              <Card className="group relative min-h-[200px] overflow-hidden rounded-2xl border border-border bg-card backdrop-blur-sm hover:border-border/60 hover:shadow-2xl hover:shadow-primary/20">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
+              <CardHeader className="relative z-10 pb-4">
+                <div className="mb-3 flex items-center justify-between">
+                  <div className={`h-12 w-12 rounded-full bg-gradient-to-r ${module.color} flex items-center justify-center`}>
+                    <module.icon className="h-6 w-6 text-white" />
                   </div>
                   <Badge className={getDifficultyColor(module.difficulty)}>
                     {module.difficulty}
                   </Badge>
                 </div>
-                <CardTitle className="text-lg text-card-foreground font-semibold group-hover:text-primary transition-colors">
+                <CardTitle className="text-lg font-semibold text-card-foreground transition-colors group-hover:text-primary">
                   {module.title}
                 </CardTitle>
               </CardHeader>
               <CardContent className="card-content-no-padding relative z-10">
-                <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
+                <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
                   {module.description}
                 </p>
                 <div className="flex items-center justify-between">
                    <div className="flex items-center text-sm font-medium">
-                     <span className="inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold bg-primary/12 text-primary dark:bg-primary dark:text-primary-foreground ring-1 ring-primary/10 dark:ring-primary/30">
-                       <Clock className="w-3 h-3 mr-1" />
+                     <span className="bg-primary/12 inline-flex items-center justify-center rounded-full px-2.5 py-1 text-xs font-semibold text-primary ring-1 ring-primary/10 dark:bg-primary dark:text-primary-foreground dark:ring-primary/30">
+                       <Clock className="mr-1 h-3 w-3" />
                        {module.duration}
                      </span>
                    </div>
                   <Link href={`/learn/${module.id}`}>
-                    <Button size="sm" variant="ghost" className="text-primary hover:text-primary/80 hover:bg-muted p-0 h-auto">
+                    <Button size="sm" variant="ghost" className="h-auto p-0 text-primary hover:bg-muted hover:text-primary/80">
                       Learn More
-                      <ArrowRight className="w-4 h-4 ml-1" />
+                      <ArrowRight className="ml-1 h-4 w-4" />
                     </Button>
                   </Link>
                 </div>
@@ -184,9 +184,9 @@ export default function LearnPage() {
         </div>
 
         {/* Why Learn Lenormand */}
-        <div className="bg-card backdrop-blur-sm rounded-3xl p-8 border border-border shadow-2xl">
-          <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-foreground mb-4">
+        <div className="rounded-3xl border border-border bg-card p-8 shadow-2xl backdrop-blur-sm">
+          <div className="mb-8 text-center">
+            <h3 className="mb-4 text-2xl font-bold text-foreground">
               Why Learn Lenormand?
             </h3>
              <p className="text-muted-foreground">
@@ -194,10 +194,10 @@ export default function LearnPage() {
              </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="text-center space-y-3">
-              <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto">
-                <Target className="w-8 h-8 text-white" />
+          <div className="grid gap-6 md:grid-cols-3">
+            <div className="space-y-3 text-center">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+                <Target className="h-8 w-8 text-white" />
               </div>
                <h4 className="font-semibold text-foreground">Direct & Practical</h4>
                <p className="text-sm text-muted-foreground">
@@ -205,9 +205,9 @@ export default function LearnPage() {
                </p>
             </div>
 
-            <div className="text-center space-y-3">
-              <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto">
-                <Heart className="w-8 h-8 text-white" />
+            <div className="space-y-3 text-center">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+                <Heart className="h-8 w-8 text-white" />
               </div>
                <h4 className="font-semibold text-foreground">Emotional Intelligence</h4>
                <p className="text-sm text-muted-foreground">
@@ -215,9 +215,9 @@ export default function LearnPage() {
                </p>
             </div>
 
-            <div className="text-center space-y-3">
-              <div className="w-16 h-16 bg-gradient-to-r from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto">
-                <Users className="w-8 h-8 text-white" />
+            <div className="space-y-3 text-center">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
+                <Users className="h-8 w-8 text-white" />
               </div>
                <h4 className="font-semibold text-foreground">Community Wisdom</h4>
                <p className="text-sm text-muted-foreground">
