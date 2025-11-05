@@ -18,6 +18,7 @@ interface ReadingViewerProps {
   onShare?: () => void
   showReadingHeader?: boolean
   threeCardSpreadType?: string
+  fiveCardSpreadType?: string
   sevenCardSpreadType?: string
 }
 
@@ -26,7 +27,7 @@ interface PositionInfo {
   meaning: string
 }
 
-const getPositionInfo = (position: number, layoutType: number, threeCardSpreadType?: string, sevenCardSpreadType?: string): PositionInfo => {
+const getPositionInfo = (position: number, layoutType: number, threeCardSpreadType?: string, fiveCardSpreadType?: string, sevenCardSpreadType?: string): PositionInfo => {
   // Handle different 7-card spread types
   if (layoutType === 7 && sevenCardSpreadType) {
     const sevenCardPositions: Record<string, Record<number, PositionInfo>> = {
@@ -87,6 +88,30 @@ const getPositionInfo = (position: number, layoutType: number, threeCardSpreadTy
 
     if (threeCardPositions[threeCardSpreadType]) {
       return threeCardPositions[threeCardSpreadType][position] || { label: `Position ${position + 1}`, meaning: "" }
+    }
+  }
+
+  // Handle different 5-card spread types
+  if (layoutType === 5 && fiveCardSpreadType) {
+    const fiveCardPositions: Record<string, Record<number, PositionInfo>> = {
+      "structured-reading": {
+        0: { label: "Premise", meaning: "The foundation or current situation you're building upon" },
+        1: { label: "Obstacle", meaning: "Challenges or difficulties you may face" },
+        2: { label: "What Helps", meaning: "Resources, support, or tools available to you" },
+        3: { label: "Outcome", meaning: "The likely result of your current path" },
+        4: { label: "Final Result", meaning: "The ultimate conclusion or long-term outcome" }
+      },
+      "general-reading": {
+        0: { label: "Position 1", meaning: "First card in the flowing narrative" },
+        1: { label: "Position 2", meaning: "Second card in the flowing narrative" },
+        2: { label: "Position 3", meaning: "Third card in the flowing narrative" },
+        3: { label: "Position 4", meaning: "Fourth card in the flowing narrative" },
+        4: { label: "Position 5", meaning: "Fifth card in the flowing narrative" }
+      }
+    }
+
+    if (fiveCardPositions[fiveCardSpreadType]) {
+      return fiveCardPositions[fiveCardSpreadType][position] || { label: `Position ${position + 1}`, meaning: "" }
     }
   }
 
@@ -188,8 +213,9 @@ export function ReadingViewer({
   showShareButton = true,
   onShare,
   showReadingHeader = true,
-  threeCardSpreadType,
-  sevenCardSpreadType
+   threeCardSpreadType,
+   fiveCardSpreadType,
+   sevenCardSpreadType
 }: ReadingViewerProps) {
   const [selectedCard, setSelectedCard] = useState<CardType | null>(null)
 
@@ -223,259 +249,13 @@ export function ReadingViewer({
             </div>
           </div>
 
-          {/* 6x6 Grid */}
-          <div className="grid grid-cols-6 gap-1 max-w-4xl mx-auto border-2 border-primary/20 rounded-lg p-2 bg-card/20">
-            {reading.cards.map((readingCard, index) => {
-              const card = getCardById(allCards, readingCard.id)
-              if (!card) return null
-
-              const position = getGrandTableauPosition(index)
-              const isSignificator = index === significatorIndex
-
-              // Determine if card is in special reading zones
-              const isCorner = [0, 5, 30, 35].includes(index) // Cards 1, 6, 31, 36
-              const isCenter = [12, 15, 11, 10].includes(index) // Cards 13, 16, 12, 11
-              const isCrossOfMoment = significatorIndex !== -1 && (
-                Math.floor(index / 6) === Math.floor(significatorIndex / 6) || // Same row
-                index % 6 === significatorIndex % 6 // Same column
-              )
-
-              return (
-                <div key={index} className={`relative ${isSignificator ? 'ring-2 ring-primary ring-offset-1 ring-offset-background' : ''}`}>
-                  <AnimatedCard delay={index * 0.02} className="flex flex-col items-center space-y-1">
-                    <div className="text-xs text-center text-muted-foreground/80 font-medium">
-                      {position.label}
-                    </div>
-                     <Card
-                       card={card}
-                       size="sm"
-                       onClick={() => setSelectedCard(card)}
-                      className={`${isSignificator ? 'ring-2 ring-primary' : ''} ${isCorner ? 'border-amber-400/50' : ''} ${isCenter ? 'border-blue-400/50' : ''} ${isCrossOfMoment && !isSignificator ? 'border-green-400/50' : ''}`}
-                    />
-                  </AnimatedCard>
-                </div>
-              )
-            })}
-          </div>
-
-          {/* Reading Zones Legend */}
-          <div className="flex flex-wrap justify-center gap-4 text-xs text-muted-foreground">
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 border-2 border-primary rounded"></div>
-              <span>Significator</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 border border-green-400/50 rounded"></div>
-              <span>Cross of the Moment</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 border border-amber-400/50 rounded"></div>
-              <span>Corners</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 border border-blue-400/50 rounded"></div>
-              <span>Center</span>
-            </div>
-          </div>
-        </div>
-      )
-    } else if (reading.layoutType === 7) {
-      // 7-card spreads: different layouts based on spread type
-      if (sevenCardSpreadType === "relationship-double-significator") {
-        // Triangular layout for relationship spread
-        return (
-          <div className="flex flex-col items-center space-y-6 mx-auto max-w-4xl">
-            {/* Top row - Partner 1 (positions 0, 1, 2) */}
-            <div className="flex gap-4">
-              {reading.cards.slice(0, 3).map((readingCard, index) => {
-                const card = getCardById(allCards, readingCard.id)
-                if (!card) return null
-
-                const positionInfo = getPositionInfo(index, reading.layoutType, threeCardSpreadType, sevenCardSpreadType)
-
-                return (
-                  <AnimatedCard key={index} delay={index * 0.08} className="flex flex-col items-center space-y-3">
-                    <TooltipProvider>
-                      <div className="flex flex-col items-center space-y-3">
-                        <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div className="flex flex-col items-center space-y-2">
-                             <div className="text-sm font-medium text-muted-foreground/90 bg-card/60 px-3 py-1 rounded-full border border-primary/30 backdrop-blur-sm">
-                               {positionInfo.label}
-                             </div>
-                             <Card
-                               card={card}
-                               size="md"
-                               onClick={() => setSelectedCard(card)}
-                               className="cursor-pointer hover:shadow-lg"
-                             />
-                          </div>
-                        </TooltipTrigger>
-                         <TooltipContent className="max-w-xs bg-card/95 border-primary/30 text-muted-foreground backdrop-blur-sm">
-                           <div className="space-y-2">
-                             <p className="font-semibold text-muted-foreground">{positionInfo.label}</p>
-                             <p className="text-sm text-muted-foreground/80">{positionInfo.meaning}</p>
-                             <div className="flex items-center gap-1 text-xs text-muted-foreground/60">
-                               <Info className="w-3 h-3" />
-                               <span>Click card for details</span>
-                             </div>
-                           </div>
-                         </TooltipContent>
-                        </Tooltip>
-                      </div>
-                    </TooltipProvider>
-                  </AnimatedCard>
-                )
-              })}
-            </div>
-
-            {/* Middle row - Relationship Core (position 3) */}
-            <div className="flex justify-center">
-              {reading.cards.slice(3, 4).map((readingCard, index) => {
-                const card = getCardById(allCards, readingCard.id)
-                if (!card) return null
-
-                const positionInfo = getPositionInfo(3, reading.layoutType, threeCardSpreadType, sevenCardSpreadType)
-
-                return (
-                  <AnimatedCard key={3} delay={0.24} className="flex flex-col items-center space-y-3">
-                    <TooltipProvider>
-                      <div className="flex flex-col items-center space-y-3">
-                        <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div className="flex flex-col items-center space-y-2">
-                             <div className="text-sm font-medium text-muted-foreground/90 bg-card/60 px-3 py-1 rounded-full border border-primary/30 backdrop-blur-sm">
-                               {positionInfo.label}
-                             </div>
-                             <Card
-                               card={card}
-                               size="md"
-                               onClick={() => setSelectedCard(card)}
-                               className="cursor-pointer hover:shadow-lg ring-2 ring-primary/50"
-                             />
-                          </div>
-                        </TooltipTrigger>
-                         <TooltipContent className="max-w-xs bg-card/95 border-primary/30 text-muted-foreground backdrop-blur-sm">
-                           <div className="space-y-2">
-                             <p className="font-semibold text-muted-foreground">{positionInfo.label}</p>
-                             <p className="text-sm text-muted-foreground/80">{positionInfo.meaning}</p>
-                             <div className="flex items-center gap-1 text-xs text-muted-foreground/60">
-                               <Info className="w-3 h-3" />
-                               <span>Click card for details</span>
-                             </div>
-                           </div>
-                         </TooltipContent>
-                        </Tooltip>
-                      </div>
-                    </TooltipProvider>
-                  </AnimatedCard>
-                )
-              })}
-            </div>
-
-            {/* Bottom row - Partner 2 (positions 4, 5, 6) */}
-            <div className="flex gap-4">
-              {reading.cards.slice(4, 7).map((readingCard, index) => {
-                const card = getCardById(allCards, readingCard.id)
-                if (!card) return null
-
-                const positionInfo = getPositionInfo(index + 4, reading.layoutType, threeCardSpreadType, sevenCardSpreadType)
-
-                return (
-                  <AnimatedCard key={index + 4} delay={(index + 4) * 0.08} className="flex flex-col items-center space-y-3">
-                    <TooltipProvider>
-                      <div className="flex flex-col items-center space-y-3">
-                        <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div className="flex flex-col items-center space-y-2">
-                             <div className="text-sm font-medium text-muted-foreground/90 bg-card/60 px-3 py-1 rounded-full border border-primary/30 backdrop-blur-sm">
-                               {positionInfo.label}
-                             </div>
-                             <Card
-                               card={card}
-                               size="md"
-                               onClick={() => setSelectedCard(card)}
-                               className="cursor-pointer hover:shadow-lg"
-                             />
-                          </div>
-                        </TooltipTrigger>
-                         <TooltipContent className="max-w-xs bg-card/95 border-primary/30 text-muted-foreground backdrop-blur-sm">
-                           <div className="space-y-2">
-                             <p className="font-semibold text-muted-foreground">{positionInfo.label}</p>
-                             <p className="text-sm text-muted-foreground/80">{positionInfo.meaning}</p>
-                             <div className="flex items-center gap-1 text-xs text-muted-foreground/60">
-                               <Info className="w-3 h-3" />
-                               <span>Click card for details</span>
-                             </div>
-                           </div>
-                         </TooltipContent>
-                        </Tooltip>
-                      </div>
-                    </TooltipProvider>
-                  </AnimatedCard>
-                )
-              })}
-            </div>
-          </div>
-        )
-      } else {
-        // Week-ahead: linear layout
-        return (
-          <div className={`grid gap-4 mx-auto ${
-            'grid-cols-1 sm:grid-cols-3 md:grid-cols-7 max-w-6xl'
-          }`}>
-            {reading.cards.map((readingCard, index) => {
-              const card = getCardById(allCards, readingCard.id)
-              if (!card) return null
-
-              const positionInfo = getPositionInfo(index, reading.layoutType, threeCardSpreadType, sevenCardSpreadType)
-
-              return (
-                <AnimatedCard key={index} delay={index * 0.08} className="flex flex-col items-center space-y-3">
-                  <TooltipProvider>
-                    <div className="flex flex-col items-center space-y-3">
-                      <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div className="flex flex-col items-center space-y-2">
-                           <div className="text-sm font-medium text-muted-foreground/90 bg-card/60 px-3 py-1 rounded-full border border-primary/30 backdrop-blur-sm">
-                             {positionInfo.label}
-                           </div>
-                           <Card
-                             card={card}
-                             size="md"
-                             onClick={() => setSelectedCard(card)}
-                             className="cursor-pointer hover:shadow-lg"
-                           />
-                        </div>
-                      </TooltipTrigger>
-                       <TooltipContent className="max-w-xs bg-card/95 border-primary/30 text-muted-foreground backdrop-blur-sm">
-                         <div className="space-y-2">
-                           <p className="font-semibold text-muted-foreground">{positionInfo.label}</p>
-                           <p className="text-sm text-muted-foreground/80">{positionInfo.meaning}</p>
-                           <div className="flex items-center gap-1 text-xs text-muted-foreground/60">
-                             <Info className="w-3 h-3" />
-                             <span>Click card for details</span>
-                           </div>
-                         </div>
-                       </TooltipContent>
-                      </Tooltip>
-                    </div>
-                  </TooltipProvider>
-                </AnimatedCard>
-              )
-            })}
-          </div>
-        )
-      }
-    } else if (reading.layoutType === 9) {
-      // 9-card spread: 3x3 grid layout
-      return (
-        <div className="grid grid-cols-3 gap-4 mx-auto max-w-4xl">
-          {reading.cards.map((readingCard, index) => {
-            const card = getCardById(allCards, readingCard.id)
+           {/* 6x6 Grid */}
+           <div className="grid grid-cols-6 gap-1 max-w-4xl mx-auto border-2 border-primary/20 rounded-lg p-2 bg-card/20">
+             {reading.cards.map((readingCard, index) => {
+               const card = getCardById(allCards, readingCard.id)
             if (!card) return null
 
-            const positionInfo = getPositionInfo(index, reading.layoutType, threeCardSpreadType, sevenCardSpreadType)
+            const positionInfo = getPositionInfo(index, reading.layoutType, threeCardSpreadType, fiveCardSpreadType, sevenCardSpreadType)
 
             return (
               <AnimatedCard key={index} delay={index * 0.08} className="flex flex-col items-center space-y-3">
@@ -509,11 +289,12 @@ export function ReadingViewer({
                   </div>
                 </TooltipProvider>
               </AnimatedCard>
-            )
-          })}
-        </div>
-      )
-    } else {
+             )
+           })}
+         </div>
+       </div>
+     )
+     } else {
       // Linear layouts (3, 5 cards)
       return (
         <div className={`grid gap-4 mx-auto ${
@@ -525,7 +306,7 @@ export function ReadingViewer({
             const card = getCardById(allCards, readingCard.id)
             if (!card) return null
 
-            const positionInfo = getPositionInfo(index, reading.layoutType, threeCardSpreadType, sevenCardSpreadType)
+            const positionInfo = getPositionInfo(index, reading.layoutType, threeCardSpreadType, fiveCardSpreadType, sevenCardSpreadType)
 
             return (
               <AnimatedCard key={index} delay={index * 0.08} className="flex flex-col items-center space-y-3">

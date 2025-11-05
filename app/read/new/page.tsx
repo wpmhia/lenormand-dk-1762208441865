@@ -39,6 +39,11 @@ const THREE_CARD_SPREADS = [
   { value: "general-reading", label: "General Reading (Sentence)" }
 ]
 
+const FIVE_CARD_SPREADS = [
+  { value: "structured-reading", label: "Structured (Premise-Obstacle-Help-Outcome-Final)" },
+  { value: "general-reading", label: "General Reading (Sentence)" }
+]
+
 const SEVEN_CARD_SPREADS = [
   { value: "week-ahead", label: "Week Ahead" },
   { value: "relationship-double-significator", label: "Relationships" }
@@ -50,8 +55,9 @@ function NewReadingPageContent() {
   const [drawnCards, setDrawnCards] = useState<ReadingCard[]>([])
   const [layoutType, setLayoutType] = useState<3 | 5 | 7 | 9 | 36>(3)
    const [isPhysical, setIsPhysical] = useState(false)
-   const [threeCardSpreadType, setThreeCardSpreadType] = useState<string>("general-reading")
-   const [sevenCardSpreadType, setSevenCardSpreadType] = useState<string>("week-ahead")
+    const [threeCardSpreadType, setThreeCardSpreadType] = useState<string>("general-reading")
+    const [fiveCardSpreadType, setFiveCardSpreadType] = useState<string>("structured-reading")
+    const [sevenCardSpreadType, setSevenCardSpreadType] = useState<string>("week-ahead")
    const [physicalCards, setPhysicalCards] = useState<string>("")
 
   const [question, setQuestion] = useState('')
@@ -210,8 +216,9 @@ function NewReadingPageContent() {
           name: getCardById(allCards, card.id)?.name || 'Unknown',
           position: card.position
         })),
-                       layoutType: layoutType,
+                        layoutType: layoutType,
         threeCardSpreadType: layoutType === 3 ? threeCardSpreadType : undefined,
+        fiveCardSpreadType: layoutType === 5 ? fiveCardSpreadType : undefined,
         sevenCardSpreadType: layoutType === 7 ? sevenCardSpreadType : undefined,
         userLocale: navigator.language
       }
@@ -428,9 +435,30 @@ function NewReadingPageContent() {
                            Choose how to interpret your 3-card spread
                          </div>
                        </div>
-                      )}
+                       )}
 
-                      {layoutType === 7 && !isPhysical && (
+                       {layoutType === 5 && !isPhysical && (
+                        <div className="space-y-2">
+                          <Label htmlFor="five-card-spread">5-Card Spread Type:</Label>
+                          <Select value={fiveCardSpreadType} onValueChange={setFiveCardSpreadType}>
+                            <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary" aria-describedby="five-spread-help">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent className="bg-card border-border">
+                              {FIVE_CARD_SPREADS.map((spread) => (
+                                <SelectItem key={spread.value} value={spread.value} className="text-card-foreground hover:bg-accent focus:bg-accent">
+                                  {spread.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <div id="five-spread-help" className="text-xs text-muted-foreground italic">
+                            Choose how to interpret your 5-card spread
+                          </div>
+                        </div>
+                       )}
+
+                       {layoutType === 7 && !isPhysical && (
                        <div className="space-y-2">
                          <Label htmlFor="seven-card-spread">7-Card Spread Type:</Label>
                          <Select value={sevenCardSpreadType} onValueChange={setSevenCardSpreadType}>
@@ -619,7 +647,8 @@ Or: Rider, Sun, Key`;
                     }}
                     allCards={allCards}
                      showShareButton={false}
-                     threeCardSpreadType={layoutType === 3 ? threeCardSpreadType : undefined}
+                      threeCardSpreadType={layoutType === 3 ? threeCardSpreadType : undefined}
+                      fiveCardSpreadType={layoutType === 5 ? fiveCardSpreadType : undefined}
                      sevenCardSpreadType={layoutType === 7 ? sevenCardSpreadType : undefined}
                   />
 

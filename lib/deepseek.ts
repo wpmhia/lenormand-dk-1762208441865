@@ -19,6 +19,7 @@ export interface AIReadingRequest {
   }>
   layoutType: number
   threeCardSpreadType?: string
+  fiveCardSpreadType?: string
   sevenCardSpreadType?: string
   userLocale?: string
 }
@@ -43,7 +44,7 @@ Reading rules: Adjacent cards modify each other. Position matters.
 
 3-card spreads: past-present-future (timeline), situation-challenge-advice (problem-solving), mind-body-spirit (holistic), yes-no-maybe (count positive vs negative card meanings with majority rules, center card as tie-breaker), general (flexible narrative flow: can be read as past-present-future OR mind-body-spirit OR situation-action-outcome, always analyze mirror relationship between positions 1&3 for hidden tension or harmony).
 
-5-card spreads: Read left→right as premise (foundation) – obstacle (challenge) – what helps (resources/support) – outcome (result) – final result (ultimate conclusion). Use flexible 5-stage scripts like situation-cause-solution-development-resolution or past-present-future-advice-outcome. Always analyze knighting (positions 1-3-5: the journey's progression) and mirroring (1-5: beginning vs end, 2-4: challenge vs development) for extra nuance and hidden connections.
+5-card spreads: For structured readings, read left→right as premise (foundation) – obstacle (challenge) – what helps (resources/support) – outcome (result) – final result (ultimate conclusion). Use flexible 5-stage scripts like situation-cause-solution-development-resolution or past-present-future-advice-outcome. Always analyze knighting (positions 1-3-5: the journey's progression) and mirroring (1-5: beginning vs end, 2-4: challenge vs development) for extra nuance and hidden connections. For general readings, read as a flowing sentence interpretation that weaves all 5 cards into a cohesive narrative.
 
 7-card spreads: For Week-Ahead spreads, read Monday→Sunday as weekly progression. Monday (new beginnings/fresh energy) → Tuesday (challenges/work) → Wednesday (communication/connections) → Thursday (progress/momentum) → Friday (social/completion) → Saturday (rest/reflection) → Sunday (closure/spirituality). Always analyze knighting (positions 1-3-5-7) to reveal the running theme or weekly energy pattern. For Relationship Double-Significator spreads, read in triangular layout: positions 1-2-3 (left partner's past-present-future view), position 4 (what sits between them), positions 5-6-7 (right partner's past-present-future view). The central card reveals relationship dynamics and challenges.
 
@@ -96,7 +97,7 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
       const payload = {
         lang: 'en',
         q: request.question,
-        spread: `${request.layoutType}card${request.layoutType === 3 ? `-${request.threeCardSpreadType}` : request.layoutType === 7 ? `-${request.sevenCardSpreadType}` : ''}`,
+        spread: `${request.layoutType}card${request.layoutType === 3 ? `-${request.threeCardSpreadType}` : request.layoutType === 5 ? `-${request.fiveCardSpreadType}` : request.layoutType === 7 ? `-${request.sevenCardSpreadType}` : ''}`,
         cards: request.cards.map(card => `${card.name}:${card.position}`).join(',')
       }
 
@@ -144,7 +145,7 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
       throw new Error('No response from DeepSeek API')
     }
 
-    return parseAIResponse(rawResponse, request.layoutType, request.threeCardSpreadType)
+    return parseAIResponse(rawResponse, request.layoutType, request.threeCardSpreadType, request.fiveCardSpreadType)
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
       console.error('AI Reading error:', error)
@@ -189,11 +190,11 @@ function getThreeCardSpreadLabel(spreadType?: string): string {
 // Contextual fallback conclusions based on reading type
 
 // Parse AI response into structured format
-export function parseAIResponse(response: string, layoutType?: number, threeCardSpreadType?: string): AIReadingResponse {
+export function parseAIResponse(response: string, layoutType?: number, threeCardSpreadType?: string, fiveCardSpreadType?: string): AIReadingResponse {
   const cleanResponse = response.trim()
 
   // Try to parse structured format first (numbered or bold markdown)
-  const structuredResult = parseStructuredResponse(cleanResponse, layoutType, threeCardSpreadType)
+  const structuredResult = parseStructuredResponse(cleanResponse, layoutType, threeCardSpreadType, fiveCardSpreadType)
   if (structuredResult) {
     return structuredResult
   }
@@ -256,7 +257,7 @@ export function parseAIResponse(response: string, layoutType?: number, threeCard
 }
 
 // Helper function to parse structured responses
-function parseStructuredResponse(response: string, layoutType?: number, threeCardSpreadType?: string): AIReadingResponse | null {
+function parseStructuredResponse(response: string, layoutType?: number, threeCardSpreadType?: string, fiveCardSpreadType?: string): AIReadingResponse | null {
   const lines = response.split('\n').map(line => line.trim()).filter(line => line.length > 0)
 
   let storyline = ''
