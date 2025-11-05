@@ -228,6 +228,8 @@ export function AIReadingDisplay({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
+      aria-live="polite"
+      aria-atomic="true"
     >
       <Card className="border-border bg-card slide-in-up">
       <CardHeader>

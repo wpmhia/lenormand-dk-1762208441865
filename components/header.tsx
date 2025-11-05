@@ -16,7 +16,7 @@ export function Header() {
             Lenormand Intelligence
           </Link>
         </div>
-        <nav className="hidden md:flex items-center space-x-6 ml-auto">
+        <nav className="hidden md:flex items-center space-x-6 ml-auto" role="navigation">
           <Link
             href="/"
             className="flex items-center space-x-1 text-sm font-medium text-card-foreground hover:text-primary transition-colors"
@@ -53,6 +53,7 @@ export function Header() {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="md:hidden p-2 text-card-foreground hover:text-primary transition transform duration-150 ease-out hover:-translate-y-[1px] active:scale-95"
             aria-label="Toggle mobile menu"
+            aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -64,7 +65,7 @@ export function Header() {
       {/* Mobile Navigation Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-border bg-card/95 backdrop-blur">
-          <nav className="container px-4 py-4 space-y-2">
+          <nav className="container px-4 py-4 space-y-2" role="navigation">
             <Link
               href="/"
               onClick={() => setMobileMenuOpen(false)}
