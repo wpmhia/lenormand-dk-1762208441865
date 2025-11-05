@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { AlertTriangle, Clock, Zap, ExternalLink, Settings, Timer } from 'lucide-react'
+import ReactMarkdown from 'react-markdown'
 
 interface AIReadingDisplayProps {
   aiReading: AIReadingResponse | null
@@ -242,7 +243,7 @@ export function AIReadingDisplay({
         {/* Continuous Prose Reading */}
         <section aria-labelledby="reading-heading">
           <div className="text-muted-foreground leading-relaxed text-base font-light italic">
-            {aiReading.storyline}
+            <ReactMarkdown>{aiReading.storyline}</ReactMarkdown>
           </div>
         </section>
 
