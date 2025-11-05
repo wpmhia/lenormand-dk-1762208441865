@@ -44,6 +44,8 @@ Reading rules: Adjacent cards modify each other. Position matters.
 
 9-card spreads (3x3 grid): Read in three layers - first horizontal time flow (top row: recent past, middle row: present, bottom row: near future), then vertical life areas (left column: inner world/thoughts/feelings, middle column: direct actions/central issue, right column: outside world/influences), finally diagonal karmic drivers (top-left to bottom-right: developing life path, top-right to bottom-left: corrective/blocking energy).
 
+Grand Tableau (36-card spread): Traditional Lenormand reading sequence - 1. Locate significator (Woman #29 or Man #28) representing the querent, 2. Read "cross of the moment" (5-card cross: significator's full row + full column) for core message, 3. Read four corners (1-36-6-31) for fixed frame of situation, 4. Read four center cards (13-16-12-11) for what's secretly driving the matter, 5. Read nine-card square around significator (±1 card in row/column) for immediate influences, 6. Count in patterns (7s or 5s from significator) to tell story through time, 7. Note knights (90° positions), mirrors (opposite), and house meanings where cards fall.
+
 Write 100-130 words. End with one actionable step.
 
 Lang={{lang}} Q={{q}} Cards={{cards}} Spread={{spread}}`

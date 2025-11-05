@@ -11,9 +11,11 @@ import { X } from 'lucide-react'
 interface CardModalProps {
   card: CardType
   onClose: () => void
+  layoutType?: number
+  position?: number
 }
 
-export function CardModal({ card, onClose }: CardModalProps) {
+export function CardModal({ card, onClose, layoutType, position }: CardModalProps) {
   const combos = Array.isArray(card.combos) ? card.combos : []
   const [allCards, setAllCards] = useState<any[]>([])
 
@@ -75,15 +77,73 @@ export function CardModal({ card, onClose }: CardModalProps) {
 
             <Separator className="bg-muted" />
 
-            {/* Meaning */}
-            <div>
-              <h3 className="font-semibold mb-2 text-foreground">
-                Meaning
-              </h3>
-              <p className="text-muted-foreground">
-                {card.uprightMeaning}
-              </p>
-            </div>
+             {/* Meaning */}
+             <div>
+               <h3 className="font-semibold mb-2 text-foreground">
+                 Meaning
+               </h3>
+               <p className="text-muted-foreground">
+                 {card.uprightMeaning}
+               </p>
+             </div>
+
+             {/* House Meaning (Grand Tableau) */}
+             {layoutType === 36 && position !== undefined && (
+               <>
+                 <Separator className="bg-muted" />
+                 <div>
+                   <h3 className="font-semibold mb-2 text-foreground">
+                     House Meaning
+                   </h3>
+                   <p className="text-muted-foreground text-sm">
+                     When this card appears in position {position + 1} of the Grand Tableau,
+                     it represents matters of: <strong>
+                     {(() => {
+                       const houseMeanings = [
+                         "Messages, news, communication, movement",
+                         "Luck, opportunities, small joys",
+                         "Travel, distance, foreign matters",
+                         "Home, family, stability, foundation",
+                         "Health, growth, longevity, nature",
+                         "Confusion, uncertainty, dreams, illusions",
+                         "Betrayal, deception, wisdom, healing",
+                         "Endings, transformation, closure, rebirth",
+                         "Gifts, celebrations, beauty, social success",
+                         "Cutting change, decisions, surgery, harvest",
+                         "Conflict, repetition, arguments, discipline",
+                         "Communication, anxiety, siblings, short trips",
+                         "New beginnings, innocence, children, playfulness",
+                         "Cunning, work, employment, intelligence",
+                         "Strength, money, protection, authority",
+                         "Hope, goals, wishes, spirituality, fame",
+                         "Change, movement, pregnancy, relocation",
+                         "Loyalty, friends, faithfulness, pets",
+                         "Authority, isolation, institutions, solitude",
+                         "Social life, public, gatherings, community",
+                         "Obstacles, delays, challenges, steadfastness",
+                         "Choices, decisions, crossroads, options",
+                         "Loss, worry, theft, details, stress",
+                         "Love, emotions, relationships, passion",
+                         "Commitment, cycles, marriage, contracts",
+                         "Secrets, learning, knowledge, education",
+                         "Written communication, documents, news",
+                         "Masculine energy, men, father, husband",
+                         "Feminine energy, women, mother, wife",
+                         "Peace, maturity, sexuality, harmony",
+                         "Success, vitality, happiness, clarity",
+                         "Intuition, emotions, cycles, psychic abilities",
+                         "Solutions, importance, answers, unlocking",
+                         "Finance, abundance, business, wealth",
+                         "Stability, security, patience, grounding",
+                         "Burden, fate, sacrifice, religion, suffering"
+                       ]
+                       return houseMeanings[position] || "Unknown house meaning"
+                     })()}
+                     </strong>
+                   </p>
+                 </div>
+               </>
+             )}
 
             {/* Combinations */}
             {combos.length > 0 && (

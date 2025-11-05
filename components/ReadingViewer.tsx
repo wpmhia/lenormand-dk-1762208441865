@@ -90,21 +90,59 @@ const getPositionInfo = (position: number, layoutType: number, threeCardSpreadTy
   return positions[layoutType]?.[position] || { label: `Position ${position + 1}`, meaning: "" }
 }
 
-const getGrandTableauPosition = (index: number): { x: number; y: number; label: string } => {
-  const row = Math.floor(index / 4)
-  const col = index % 4
-  
-  const houseCards = [
-    "House", "Mice", "Fox", "Bear", "Stars", "Stork", "Dog", "Tower",
-    "Garden", "Mountain", "Paths", "Mice", "Heart", "Ring", "Book", "Letter"
-  ]
-  
-  return {
-    x: col,
-    y: row,
-    label: houseCards[index] || `Position ${index + 1}`
-  }
-}
+  const getGrandTableauPosition = (index: number): { x: number; y: number; label: string; houseMeaning: string } => {
+   // Traditional 6x6 Lenormand Grand Tableau layout
+   const row = Math.floor(index / 6)
+   const col = index % 6
+
+   // Complete house system - each card represents a "house" with its own meaning
+   const houseData = [
+     { card: "Rider", meaning: "Messages, news, communication, movement" },
+     { card: "Clover", meaning: "Luck, opportunities, small joys" },
+     { card: "Ship", meaning: "Travel, distance, foreign matters" },
+     { card: "House", meaning: "Home, family, stability, foundation" },
+     { card: "Tree", meaning: "Health, growth, longevity, nature" },
+     { card: "Clouds", meaning: "Confusion, uncertainty, dreams, illusions" },
+     { card: "Snake", meaning: "Betrayal, deception, wisdom, healing" },
+     { card: "Coffin", meaning: "Endings, transformation, closure, rebirth" },
+     { card: "Bouquet", meaning: "Gifts, celebrations, beauty, social success" },
+     { card: "Scythe", meaning: "Cutting change, decisions, surgery, harvest" },
+     { card: "Whip", meaning: "Conflict, repetition, arguments, discipline" },
+     { card: "Birds", meaning: "Communication, anxiety, siblings, short trips" },
+     { card: "Child", meaning: "New beginnings, innocence, children, playfulness" },
+     { card: "Fox", meaning: "Cunning, work, employment, intelligence" },
+     { card: "Bear", meaning: "Strength, money, protection, authority" },
+     { card: "Stars", meaning: "Hope, goals, wishes, spirituality, fame" },
+     { card: "Stork", meaning: "Change, movement, pregnancy, relocation" },
+     { card: "Dog", meaning: "Loyalty, friends, faithfulness, pets" },
+     { card: "Tower", meaning: "Authority, isolation, institutions, solitude" },
+     { card: "Garden", meaning: "Social life, public, gatherings, community" },
+     { card: "Mountain", meaning: "Obstacles, delays, challenges, steadfastness" },
+     { card: "Crossroads", meaning: "Choices, decisions, crossroads, options" },
+     { card: "Mice", meaning: "Loss, worry, theft, details, stress" },
+     { card: "Heart", meaning: "Love, emotions, relationships, passion" },
+     { card: "Ring", meaning: "Commitment, cycles, marriage, contracts" },
+     { card: "Book", meaning: "Secrets, learning, knowledge, education" },
+     { card: "Letter", meaning: "Written communication, documents, news" },
+     { card: "Man", meaning: "Masculine energy, men, father, husband" },
+     { card: "Woman", meaning: "Feminine energy, women, mother, wife" },
+     { card: "Lilies", meaning: "Peace, maturity, sexuality, harmony" },
+     { card: "Sun", meaning: "Success, vitality, happiness, clarity" },
+     { card: "Moon", meaning: "Intuition, emotions, cycles, psychic abilities" },
+     { card: "Key", meaning: "Solutions, importance, answers, unlocking" },
+     { card: "Fish", meaning: "Finance, abundance, business, wealth" },
+     { card: "Anchor", meaning: "Stability, security, patience, grounding" },
+     { card: "Cross", meaning: "Burden, fate, sacrifice, religion, suffering" }
+   ]
+
+   const house = houseData[index]
+   return {
+     x: col,
+     y: row,
+     label: house?.card || `Position ${index + 1}`,
+     houseMeaning: house?.meaning || ""
+   }
+ }
 
 export function ReadingViewer({
   reading,
@@ -127,28 +165,79 @@ export function ReadingViewer({
 
   const renderLayout = () => {
     if (reading.layoutType === 36) {
-      // Grand Tableau - 9x4 grid
+      // Grand Tableau - 6x6 grid with house positions
+      // Find significator (Woman #29 or Man #28)
+      const significatorIndex = reading.cards.findIndex(rc => rc.id === 29 || rc.id === 28)
+      const significatorCard = significatorIndex !== -1 ? getCardById(allCards, reading.cards[significatorIndex].id) : null
+
       return (
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 max-w-4xl mx-auto">
-          {reading.cards.map((readingCard, index) => {
-            const card = getCardById(allCards, readingCard.id)
-            if (!card) return null
+        <div className="space-y-4">
+          {/* Reading Guide */}
+          <div className="text-center space-y-2">
+            <h3 className="text-lg font-semibold text-foreground">Grand Tableau Reading Guide</h3>
+            <div className="text-sm text-muted-foreground">
+              {significatorCard ? (
+                <span>Significator: <strong>{significatorCard.name}</strong> (Position {significatorIndex + 1})</span>
+              ) : (
+                <span>No significator (Woman/Man) found in spread</span>
+              )}
+            </div>
+          </div>
 
-            const position = getGrandTableauPosition(index)
+          {/* 6x6 Grid */}
+          <div className="grid grid-cols-6 gap-1 max-w-4xl mx-auto border-2 border-primary/20 rounded-lg p-2 bg-card/20">
+            {reading.cards.map((readingCard, index) => {
+              const card = getCardById(allCards, readingCard.id)
+              if (!card) return null
 
-            return (
-              <AnimatedCard key={index} delay={index * 0.05} className="flex flex-col items-center space-y-1">
-                 <div className="text-xs text-center text-muted-foreground/80 font-medium">
-                   {position.label}
-                 </div>
-                  <Card
-                    card={card}
-                    size="sm"
-                    onClick={() => setSelectedCard(card)}
-                  />
-               </AnimatedCard>
-             )
-          })}
+              const position = getGrandTableauPosition(index)
+              const isSignificator = index === significatorIndex
+
+              // Determine if card is in special reading zones
+              const isCorner = [0, 5, 30, 35].includes(index) // Cards 1, 6, 31, 36
+              const isCenter = [12, 15, 11, 10].includes(index) // Cards 13, 16, 12, 11
+              const isCrossOfMoment = significatorIndex !== -1 && (
+                Math.floor(index / 6) === Math.floor(significatorIndex / 6) || // Same row
+                index % 6 === significatorIndex % 6 // Same column
+              )
+
+              return (
+                <div key={index} className={`relative ${isSignificator ? 'ring-2 ring-primary ring-offset-1 ring-offset-background' : ''}`}>
+                  <AnimatedCard delay={index * 0.02} className="flex flex-col items-center space-y-1">
+                    <div className="text-xs text-center text-muted-foreground/80 font-medium">
+                      {position.label}
+                    </div>
+                    <Card
+                      card={card}
+                      size="xs"
+                      onClick={() => setSelectedCard(card)}
+                      className={`${isSignificator ? 'ring-2 ring-primary' : ''} ${isCorner ? 'border-amber-400/50' : ''} ${isCenter ? 'border-blue-400/50' : ''} ${isCrossOfMoment && !isSignificator ? 'border-green-400/50' : ''}`}
+                    />
+                  </AnimatedCard>
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Reading Zones Legend */}
+          <div className="flex flex-wrap justify-center gap-4 text-xs text-muted-foreground">
+            <div className="flex items-center gap-1">
+              <div className="w-3 h-3 border-2 border-primary rounded"></div>
+              <span>Significator</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="w-3 h-3 border border-green-400/50 rounded"></div>
+              <span>Cross of the Moment</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="w-3 h-3 border border-amber-400/50 rounded"></div>
+              <span>Corners</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="w-3 h-3 border border-blue-400/50 rounded"></div>
+              <span>Center</span>
+            </div>
+          </div>
         </div>
       )
     } else if (reading.layoutType === 9) {
@@ -294,6 +383,8 @@ export function ReadingViewer({
         <CardModal
           card={selectedCard}
           onClose={() => setSelectedCard(null)}
+          layoutType={reading.layoutType}
+          position={reading.cards.find(c => c.id === selectedCard.id)?.position}
         />
       )}
 
