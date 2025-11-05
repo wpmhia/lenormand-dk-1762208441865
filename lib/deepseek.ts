@@ -33,37 +33,30 @@ export interface AIReadingResponse {
 
 
 
-// System prompt template for AI readings (Condensed for efficiency)
-const SYSTEM_PROMPT_TEMPLATE = `Read Lenormand cards for practical guidance.
+// Optimized system prompt for faster AI responses
+const SYSTEM_PROMPT_TEMPLATE = `Lenormand card reader. Provide practical guidance in everyday language.
 
-NEVER list meanings. NEVER use bullets. Read combinations for real-life advice.
+Key meanings: Rider=news/speed, Clover=luck, Ship=travel/distance, House=home/stability, Tree=health/growth, Clouds=confusion, Snake=issues/betrayal, Coffin=end/closure, Bouquet=gifts/pleasure, Scythe=cutting change, Whip=repetition/conflict, Birds=communication/anxiety, Child=new beginnings, Fox=cunning/work, Bear=strength/money, Stars=hope/goals, Stork=change/movement, Dog=loyalty/friends, Tower=authority/structure, Garden=social/public, Mountain=obstacles, Crossroads=choices, Mice=loss/worry, Heart=love/emotions, Ring=commitment/cycles, Book=secrets/learning, Letter=communication, Man=masculine energy, Woman=feminine energy, Lily=peace/maturity, Sun=success/clarity, Moon=intuition/emotions, Key=importance/solutions, Fish=finance/abundance, Anchor=stability/security, Cross=burden/fate.
 
-Card meanings: Rider=news,speed; Clover=small luck; Ship=distance,trade; House=home,stability; Tree=health,growth; Clouds=confusion; Snake=complication,betrayal; Coffin=end,pause; Bouquet=gift,pleasant; Scythe=sharp cut; Whip=repetition; Birds=nervous chatter; Child=new,start; Fox=work,cleverness; Bear=power,money; Stars=hope,plan; Stork=change,pregnancy; Dog=friend,loyalty; Tower=authority,bureaucracy; Garden=social,public; Mountain=obstacle; Crossroads=choice; Mice=erosion,stress; Heart=love; Ring=contract,cycle; Book=secret,knowledge; Letter=document; Man=querent or male; Woman=querent or female; Lily=age,peace; Sun=success; Moon=emotion,recognition; Key=importance; Fish=finance,flow; Anchor=stability,end; Cross=burden,destiny.
+Reading rules: Adjacent cards modify each other. Position matters.
 
-Rules: Left modifies right. Above influences below.
+3-card spreads: past-present-future (timeline), situation-challenge-advice (problem-solving), mind-body-spirit (holistic), yes-no-maybe (decision), general (narrative flow).
 
-3-Card Spreads:
-- past-present-future: Past→Present→Future timeline
-- situation-challenge-advice: Situation→Challenge→Advice
-- mind-body-spirit: Mind→Body→Spirit
-- yes-no-maybe: Yes→No→Maybe factors
-- general-reading: Connect cards as flowing story about relationships/emotions/practical implications
+Write 100-130 words. End with one actionable step.
 
-Write 120-150 words everyday language. End with actionable suggestion.
-
-Language={{user_lang}} Question={{question}} Spread={{spread}}`
+Lang={{lang}} Q={{q}} Cards={{cards}} Spread={{spread}}`
 
 // Function to build system prompt with variables
 function buildSystemPrompt(vars: {
-  user_lang: string
-  tone: string
-  question: string
+  lang: string
+  q: string
+  cards: string
   spread: string
 }): string {
   return SYSTEM_PROMPT_TEMPLATE
-    .replace('{{user_lang}}', vars.user_lang)
-    .replace('{{tone}}', vars.tone)
-    .replace('{{question}}', vars.question)
+    .replace('{{lang}}', vars.lang)
+    .replace('{{q}}', vars.q)
+    .replace('{{cards}}', vars.cards)
     .replace('{{spread}}', vars.spread)
 }
 
@@ -90,28 +83,20 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
     throw new Error('Cannot provide readings for medical, legal, or sensitive topics. Please consult appropriate professionals.')
   }
 
-  // Build the structured payload
-    const payload = {
-      user_lang: 'en',
-      tone: 'everyday', // Everyday practical tone
-      question: request.question,
-      spread: {
-        type: `${request.layoutType}card`,
-        spreadType: request.layoutType === 3 ? request.threeCardSpreadType : undefined,
-        cards: request.cards.map(card => ({
-          name: card.name,
-          pos: card.position
-        }))
-      }
-    }
+    // Build optimized payload for faster processing
+     const payload = {
+       lang: 'en',
+       q: request.question,
+       spread: `${request.layoutType}card${request.layoutType === 3 ? `-${request.threeCardSpreadType}` : ''}`,
+       cards: request.cards.map(card => `${card.name}:${card.position}`).join(',')
+     }
 
     // Build system prompt with variables
-    const spreadJson = JSON.stringify(payload.spread)
     const systemPrompt = buildSystemPrompt({
-      user_lang: payload.user_lang,
-      tone: payload.tone,
-      question: payload.question,
-      spread: spreadJson
+      lang: payload.lang,
+      q: payload.q,
+      cards: payload.cards,
+      spread: payload.spread
     })
 
     const controller = new AbortController()
@@ -128,12 +113,11 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
         body: JSON.stringify({
           model: 'deepseek-chat',
           messages: [
-            { role: 'system', content: systemPrompt },
-            { role: 'user', content: JSON.stringify(payload) }
+            { role: 'system', content: systemPrompt }
           ],
           temperature: 0.5,
           top_p: 0.85,
-          max_tokens: 400 // Optimized for quality readings
+          max_tokens: 300 // Reduced for faster responses
         }),
         signal: controller.signal
       })
@@ -176,16 +160,9 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
   }
 }
 
-// Build user prompt from reading request
+// Simplified user prompt (now handled in system prompt)
 function buildUserPrompt(request: AIReadingRequest): string {
-  const cardDescriptions = request.cards.map(card =>
-    `${card.name} at position ${card.position}`
-  ).join(', ')
-
-  return `Question: "${request.question}"
-
-Spread: ${cardDescriptions}
-Layout: ${request.layoutType}-card ${request.layoutType === 36 ? 'Grand Tableau' : request.layoutType === 3 ? getThreeCardSpreadLabel(request.threeCardSpreadType) : 'reading'}`
+  return '' // Not used anymore
 }
 
 // Get display name for 3-card spread type
