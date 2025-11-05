@@ -12,7 +12,17 @@ export function Header() {
   const router = useRouter();
 
   return (
-    <header className="z-50 w-full border-b border-border bg-card/80 backdrop-blur supports-[backdrop-filter]:bg-card/60">
+    <>
+      {/* Beta Banner */}
+      <div className="w-full bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 border-b border-primary/20 py-1">
+        <div className="container flex justify-center items-center px-4">
+          <p className="text-xs text-primary font-medium text-center">
+            ✨ Free during Beta - Your feedback shapes the future
+          </p>
+        </div>
+      </div>
+
+      <header className="z-50 w-full border-b border-border bg-card/80 backdrop-blur supports-[backdrop-filter]:bg-card/60">
       <div className="container flex h-14 items-center px-4">
         <div className="flex items-center space-x-2">
           <Link href="/" className="text-lg font-semibold text-card-foreground hover:text-primary transition-colors">
@@ -115,5 +125,6 @@ export function Header() {
         )}
       </AnimatePresence>
     </header>
+    </>
   );
 }
