@@ -73,24 +73,6 @@ const spreads = [
     ]
   },
   {
-    name: "9-Card Celtic Cross Style",
-    description: "Comprehensive life reading inspired by Tarot",
-    layout: "Present → Challenge → Past → Future → Above → Below → Advice → External → Hopes/Fears",
-    useCase: "Major life decisions, deep insight",
-    difficulty: "Advanced",
-    positions: [
-      { name: "Present", description: "Current situation" },
-      { name: "Challenge", description: "What crosses you" },
-      { name: "Past", description: "Foundation of the situation" },
-      { name: "Future", description: "What is coming" },
-      { name: "Above", description: "Conscious influences" },
-      { name: "Below", description: "Unconscious influences" },
-      { name: "Advice", description: "Recommended action" },
-      { name: "External", description: "Outside influences" },
-      { name: "Hopes/Fears", description: "Inner motivations" }
-    ]
-  },
-  {
     name: "Relationship Spread",
     description: "Understanding romantic or interpersonal dynamics",
     layout: "You → Partner → Relationship → Challenge → Advice → Outcome",
