@@ -188,6 +188,38 @@ function getThreeCardSpreadLabel(spreadType?: string): string {
 }
 
 // Contextual fallback conclusions based on reading type
+function getContextualAction(layoutType: number, threeCardSpreadType?: string, fiveCardSpreadType?: string): string {
+  if (layoutType === 3) {
+    switch (threeCardSpreadType) {
+      case 'past-present-future':
+        return 'Learn from the past, act in the present, and prepare for the future'
+      case 'situation-challenge-advice':
+        return 'Address the challenge directly and follow the advice given'
+      case 'mind-body-spirit':
+        return 'Balance your mind, nurture your body, and honor your spirit'
+      case 'yes-no-maybe':
+        return 'Trust the majority of card meanings, with the center as tie-breaker'
+      case 'general-reading':
+      default:
+        return 'Act on the central insight that emerged from the mirror relationship between your cards'
+    }
+  } else if (layoutType === 5) {
+    switch (fiveCardSpreadType) {
+      case 'general-reading':
+        return 'Follow the flowing narrative of the five cards to guide your path'
+      default:
+        return 'Address the obstacle, utilize available resources, and embrace the outcome'
+    }
+  } else if (layoutType === 7) {
+    return 'Follow the weekly progression and relationship dynamics revealed'
+  } else if (layoutType === 9) {
+    return 'Balance the three layers of time, life areas, and karmic drivers'
+  } else if (layoutType === 36) {
+    return 'Focus on the cross of the moment and significator influences'
+  }
+
+  return 'Trust your intuition and follow the guidance revealed'
+}
 
 // Parse AI response into structured format
 export function parseAIResponse(response: string, layoutType?: number, threeCardSpreadType?: string, fiveCardSpreadType?: string): AIReadingResponse {
@@ -247,11 +279,14 @@ export function parseAIResponse(response: string, layoutType?: number, threeCard
   const risk = 'Trust your intuition and the guidance you receive'
   const timing = 'The timing will become clear as events unfold'
 
+  // Use contextual action for unstructured responses
+  const contextualAction = getContextualAction(layoutType || 3, threeCardSpreadType, fiveCardSpreadType)
+
   return {
     storyline: storyline || 'The cards offer guidance for your situation.',
     risk: risk,
     timing: timing,
-    action: '',
+    action: action || contextualAction,
     rawResponse: response
   }
 }
@@ -344,14 +379,14 @@ function parseStructuredResponse(response: string, layoutType?: number, threeCar
 
   // If we found at least storyline, consider it structured
   if (storyline) {
-    // Use the same contextual action logic
-    const contextualAction = getContextualAction(layoutType || 3, threeCardSpreadType)
+    // Use contextual action if no action was found in structured response
+    const contextualAction = getContextualAction(layoutType || 3, threeCardSpreadType, fiveCardSpreadType)
 
     return {
       storyline: storyline || 'The cards offer guidance for your situation.',
       risk: risk || 'Trust your intuition and the guidance you receive',
       timing: timing || 'The timing will become clear as events unfold',
-      action: '',
+      action: action || contextualAction,
       rawResponse: response
     }
   }
