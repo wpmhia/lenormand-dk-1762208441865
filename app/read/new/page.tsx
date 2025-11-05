@@ -39,11 +39,6 @@ const THREE_CARD_SPREADS = [
   { value: "general-reading", label: "General Reading (Sentence)" }
 ]
 
-const SEVEN_CARD_SPREADS = [
-  { value: "week-ahead", label: "Week Ahead" },
-  { value: "relationship-double-significator", label: "Relationship (Double-Significator)" }
-]
-
 function NewReadingPageContent() {
   const searchParams = useSearchParams()
   const [allCards, setAllCards] = useState<CardType[]>([])
@@ -51,7 +46,6 @@ function NewReadingPageContent() {
   const [layoutType, setLayoutType] = useState<3 | 5 | 9 | 36>(3)
   const [isPhysical, setIsPhysical] = useState(false)
   const [threeCardSpreadType, setThreeCardSpreadType] = useState<string>("general-reading")
-  const [sevenCardSpreadType, setSevenCardSpreadType] = useState<string>("week-ahead")
   const [physicalCards, setPhysicalCards] = useState<string>("")
 
   const [question, setQuestion] = useState('')
@@ -83,7 +77,6 @@ function NewReadingPageContent() {
     setQuestionCharCount(0)
     setLayoutType(3)
     setThreeCardSpreadType("general-reading")
-    setSevenCardSpreadType("week-ahead")
     setError('')
     setAiReading(null)
     setAiLoading(false)
@@ -283,7 +276,6 @@ function NewReadingPageContent() {
 
     setLayoutType(3)
     setThreeCardSpreadType("general-reading")
-    setSevenCardSpreadType("week-ahead")
     setError('')
     setAiReading(null)
     setAiLoading(false)
@@ -430,26 +422,7 @@ function NewReadingPageContent() {
                       </div>
                      )}
 
-                     {layoutType === 7 && !isPhysical && (
-                      <div className="space-y-2">
-                        <Label htmlFor="seven-card-spread">7-Card Spread Type:</Label>
-                        <Select value={sevenCardSpreadType} onValueChange={setSevenCardSpreadType}>
-                          <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary" aria-describedby="seven-spread-help">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent className="bg-card border-border">
-                            {SEVEN_CARD_SPREADS.map((spread) => (
-                              <SelectItem key={spread.value} value={spread.value} className="text-card-foreground hover:bg-accent focus:bg-accent">
-                                {spread.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <div id="seven-spread-help" className="text-xs text-muted-foreground italic">
-                          Choose how to interpret your 7-card spread
-                        </div>
-                      </div>
-                     )}
+
 
                     {isPhysical && (
                       <div className="space-y-4">
@@ -617,8 +590,8 @@ Or: Rider, Sun, Key`;
                    }}
                    allCards={allCards}
                     showShareButton={false}
-                    threeCardSpreadType={layoutType === 3 ? threeCardSpreadType : undefined}
-                    sevenCardSpreadType={layoutType === 7 ? sevenCardSpreadType : undefined}
+                    threeCardSpreadType={getCardCount(layoutType) === 3 ? threeCardSpreadType : undefined}
+                    sevenCardSpreadType={getCardCount(layoutType) === 7 ? getSpreadType(layoutType) : undefined}
                  />
 
                 {/* Show traditional meanings while AI loads or if AI fails */}
@@ -626,7 +599,7 @@ Or: Rider, Sun, Key`;
                   <CardInterpretation
                     cards={drawnCards}
                     allCards={allCards}
-                      layoutType={layoutType}
+                       layoutType={getCardCount(layoutType)}
                     question={question}
                   />
                 )}

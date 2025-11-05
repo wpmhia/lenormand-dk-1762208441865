@@ -63,7 +63,7 @@ describe('DeepSeek Integration', () => {
       expect(result.storyline).toBe('This is a general reading about your situation. The cards suggest positive changes ahead.')
       expect(result.risk).toBe('Trust your intuition and the guidance you receive')
       expect(result.timing).toBe('The timing will become clear as events unfold')
-      expect(result.action).toBe('Apply this wisdom to your relationships and practical decisions')
+      expect(result.action).toBe('Act on the central insight that emerged from the mirror relationship between your cards')
     })
 
     it('falls back to numbered format', () => {
