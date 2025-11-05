@@ -197,7 +197,7 @@ export default function NewReadingPage() {
       }
 
       const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), 30000) // 30 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 45000) // 45 second timeout
 
       const response = await fetch('/api/readings/interpret', {
         method: 'POST',
@@ -230,7 +230,7 @@ export default function NewReadingPage() {
 
       if (error instanceof Error) {
         if (error.name === 'AbortError') {
-          errorMessage = 'AI analysis timed out. Please try again.'
+          errorMessage = 'AI analysis is taking longer than expected. The service may be busy - please try again in a moment.'
         } else {
           errorMessage = error.message
         }

@@ -115,7 +115,7 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
     })
 
     const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 25000) // 25 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 40000) // 40 second timeout
 
     try {
       const response = await fetch(`${DEEPSEEK_BASE_URL}/chat/completions`, {

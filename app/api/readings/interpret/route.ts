@@ -5,8 +5,8 @@ import { getCardById, getCards } from '@/lib/data'
 // Force Node.js runtime for better AI API compatibility
 export const runtime = 'nodejs'
 
-// Configure function timeout for Vercel (30 seconds for DeepSeek API)
-export const maxDuration = 30
+// Configure function timeout for Vercel (45 seconds for DeepSeek API)
+export const maxDuration = 45
 
 export async function POST(request: NextRequest) {
   try {
