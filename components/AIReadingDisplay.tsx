@@ -250,7 +250,6 @@ export function AIReadingDisplay({
         {/* Tender Action */}
         <section aria-labelledby="action-heading" className="border-t border-amber-400/20 pt-4">
           <div className="text-center">
-            <div className="text-xs text-primary/60 uppercase tracking-wider font-medium mb-2">Your Path Forward</div>
             <div className="text-muted-foreground text-lg font-light italic">
               {aiReading.action}
             </div>
