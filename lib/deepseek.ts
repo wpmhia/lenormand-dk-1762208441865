@@ -19,6 +19,7 @@ export interface AIReadingRequest {
   }>
   layoutType: number
   threeCardSpreadType?: string
+  sevenCardSpreadType?: string
   userLocale?: string
 }
 
@@ -44,7 +45,7 @@ Reading rules: Adjacent cards modify each other. Position matters.
 
 5-card spreads: Read left→right as premise (foundation) – obstacle (challenge) – what helps (resources/support) – outcome (result) – final result (ultimate conclusion). Use flexible 5-stage scripts like situation-cause-solution-development-resolution or past-present-future-advice-outcome. Always analyze knighting (positions 1-3-5: the journey's progression) and mirroring (1-5: beginning vs end, 2-4: challenge vs development) for extra nuance and hidden connections.
 
-7-card spreads (Week-Ahead): Read Monday→Sunday as weekly progression. Monday (new beginnings/fresh energy) → Tuesday (challenges/work) → Wednesday (communication/connections) → Thursday (progress/momentum) → Friday (social/completion) → Saturday (rest/reflection) → Sunday (closure/spirituality). Always analyze knighting (positions 1-3-5-7) to reveal the running theme or weekly energy pattern that connects the key days.
+7-card spreads: For Week-Ahead spreads, read Monday→Sunday as weekly progression. Monday (new beginnings/fresh energy) → Tuesday (challenges/work) → Wednesday (communication/connections) → Thursday (progress/momentum) → Friday (social/completion) → Saturday (rest/reflection) → Sunday (closure/spirituality). Always analyze knighting (positions 1-3-5-7) to reveal the running theme or weekly energy pattern. For Relationship Double-Significator spreads, read in triangular layout: positions 1-2-3 (left partner's past-present-future view), position 4 (what sits between them), positions 5-6-7 (right partner's past-present-future view). The central card reveals relationship dynamics and challenges.
 
 9-card spreads (3x3 grid): Read in three layers - first horizontal time flow (top row: recent past, middle row: present, bottom row: near future), then vertical life areas (left column: inner world/thoughts/feelings, middle column: direct actions/central issue, right column: outside world/influences), finally diagonal karmic drivers (top-left to bottom-right: developing life path, top-right to bottom-left: corrective/blocking energy).
 
@@ -92,12 +93,12 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
   }
 
     // Build optimized payload for faster processing
-     const payload = {
-       lang: 'en',
-       q: request.question,
-       spread: `${request.layoutType}card${request.layoutType === 3 ? `-${request.threeCardSpreadType}` : ''}`,
-       cards: request.cards.map(card => `${card.name}:${card.position}`).join(',')
-     }
+      const payload = {
+        lang: 'en',
+        q: request.question,
+        spread: `${request.layoutType}card${request.layoutType === 3 ? `-${request.threeCardSpreadType}` : request.layoutType === 7 ? `-${request.sevenCardSpreadType}` : ''}`,
+        cards: request.cards.map(card => `${card.name}:${card.position}`).join(',')
+      }
 
     // Build system prompt with variables
     const systemPrompt = buildSystemPrompt({
