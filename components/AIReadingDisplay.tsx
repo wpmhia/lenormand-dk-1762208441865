@@ -242,7 +242,7 @@ export function AIReadingDisplay({
       <CardContent className="space-y-6">
         {/* Continuous Prose Reading */}
         <section aria-labelledby="reading-heading">
-          <div className="text-muted-foreground leading-relaxed text-base font-light italic">
+          <div className="text-muted-foreground leading-relaxed text-base font-light">
             <ReactMarkdown>{aiReading.storyline}</ReactMarkdown>
           </div>
         </section>
