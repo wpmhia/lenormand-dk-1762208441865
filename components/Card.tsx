@@ -41,7 +41,7 @@ export function Card({
 
   const sizeClasses = {
     sm: 'w-20 h-32 text-xs',
-    md: 'w-28 h-40 text-sm',
+    md: 'w-28 h-40 text-sm sm:text-base',
     lg: 'w-36 h-52 text-base'
   }
 

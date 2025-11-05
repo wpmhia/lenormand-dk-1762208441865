@@ -190,7 +190,7 @@ export function Deck({
       {drawnCards.length > 0 && (
         <div className="space-y-4 slide-in-up">
           <h3 className="text-lg font-semibold text-center">Drawn Cards</h3>
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-6 sm:gap-4">
             {drawnCards.map((item, index) => (
               <div
                 key={`${item.id}-${index}`}

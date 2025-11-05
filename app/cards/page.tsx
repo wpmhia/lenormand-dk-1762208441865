@@ -97,8 +97,8 @@ export default function CardsPage() {
              <div key={card.id} className="group cursor-pointer space-y-1">
               <Card card={card} size="md" className="group-hover:scale-105 transition-all duration-600 mx-auto mystical-float" />
               <div className="text-center">
-                <div className="font-medium text-xs text-foreground truncate">{card.name}</div>
-                <div className="text-xs text-muted-foreground">#{card.id}</div>
+                <div className="font-medium text-sm sm:text-xs text-foreground truncate">{card.name}</div>
+                <div className="text-sm sm:text-xs text-muted-foreground">#{card.id}</div>
               </div>
             </div>
           ))}

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Sparkles, Home, BookOpen, Plus, Menu, X } from 'lucide-react';
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ThemeToggle } from '@/components/theme-toggle';
 
 export function Header() {
@@ -51,7 +52,7 @@ export function Header() {
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-card-foreground hover:text-primary transition transform duration-150 ease-out hover:-translate-y-[1px] active:scale-95"
+            className="md:hidden p-3 text-card-foreground hover:text-primary transition transform duration-150 ease-out hover:-translate-y-[1px] active:scale-95"
             aria-label="Toggle mobile menu"
             aria-expanded={mobileMenuOpen}
           >
@@ -63,13 +64,20 @@ export function Header() {
       </div>
 
       {/* Mobile Navigation Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden border-t border-border bg-card/95 backdrop-blur">
-          <nav className="container px-4 py-4 space-y-2" role="navigation">
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            className="md:hidden border-t border-border bg-card/95 backdrop-blur overflow-hidden"
+          >
+            <nav className="container px-4 py-4 space-y-2" role="navigation">
             <Link
               href="/"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center space-x-2 text-sm font-medium text-card-foreground hover:text-primary transition-colors py-2"
+              className="flex items-center space-x-2 text-sm font-medium text-card-foreground hover:text-primary transition-colors py-3"
             >
               <Home className="w-4 h-4" />
               <span>Home</span>
@@ -77,7 +85,7 @@ export function Header() {
             <Link
               href="/cards"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center space-x-2 text-sm font-medium text-card-foreground hover:text-primary transition-colors py-2"
+              className="flex items-center space-x-2 text-sm font-medium text-card-foreground hover:text-primary transition-colors py-3"
             >
               <BookOpen className="w-4 h-4" />
               <span>Cards</span>
@@ -85,7 +93,7 @@ export function Header() {
              <Link
                href="/read/new"
                onClick={() => setMobileMenuOpen(false)}
-               className="flex items-center space-x-2 text-sm font-medium text-card-foreground hover:text-primary transition-colors py-2"
+               className="flex items-center space-x-2 text-sm font-medium text-card-foreground hover:text-primary transition-colors py-3"
              >
                <Plus className="w-4 h-4" />
                <span>New Reading</span>
@@ -93,14 +101,15 @@ export function Header() {
             <Link
               href="/learn"
               onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center space-x-2 text-sm font-medium text-card-foreground hover:text-primary transition-colors py-2"
+              className="flex items-center space-x-2 text-sm font-medium text-card-foreground hover:text-primary transition-colors py-3"
             >
               <Sparkles className="w-4 h-4" />
               <span>Learn</span>
             </Link>
-          </nav>
-        </div>
-      )}
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
