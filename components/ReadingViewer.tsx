@@ -74,6 +74,15 @@ const getPositionInfo = (position: number, layoutType: number, threeCardSpreadTy
        3: { label: "Outcome", meaning: "The likely result or development from your current path" },
        4: { label: "Final Result", meaning: "The ultimate conclusion or resolution of your situation" }
      },
+     7: {
+       0: { label: "Monday", meaning: "New beginnings, fresh starts, and initial energy for the week" },
+       1: { label: "Tuesday", meaning: "Challenges, obstacles, and work-related matters" },
+       2: { label: "Wednesday", meaning: "Communication, connections, and mid-week transitions" },
+       3: { label: "Thursday", meaning: "Progress, building momentum, and preparation" },
+       4: { label: "Friday", meaning: "Social aspects, completion, and winding down" },
+       5: { label: "Saturday", meaning: "Rest, reflection, and personal matters" },
+       6: { label: "Sunday", meaning: "Closure, spiritual matters, and weekly review" }
+     },
      9: {
        0: { label: "Recent Past - Inner World", meaning: "Thoughts, feelings, and personal resources from your recent past that influence your current situation" },
        1: { label: "Recent Past - Direct Actions", meaning: "Actions you took recently that shaped your current circumstances" },
