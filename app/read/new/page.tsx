@@ -324,7 +324,7 @@ function NewReadingPageContent() {
 
       // Apply the optimized settings
       setLayoutType(layoutType)
-      
+
       if (layoutType === 3 && spreadType) {
         setThreeCardSpreadType(spreadType)
       } else if (layoutType === 5 && spreadType) {
@@ -332,6 +332,9 @@ function NewReadingPageContent() {
       } else if (layoutType === 7 && spreadType) {
         setSevenCardSpreadType(spreadType)
       }
+
+      // Auto-proceed to drawing step for quick AI auto-select
+      setStep('drawing')
 
     } catch (error) {
       console.error('Error analyzing question:', error)
@@ -447,10 +450,10 @@ function NewReadingPageContent() {
                       className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/30 hover:border-primary/50 hover:bg-primary/20 text-primary font-medium px-6 py-2 rounded-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                     >
                       <Sparkles className={`w-4 h-4 mr-2 ${isAnalyzingQuestion ? 'animate-spin' : ''}`} />
-                      {isAnalyzingQuestion ? 'Analyzing...' : 'AI Auto-Select Spread for Me'}
+                      {isAnalyzingQuestion ? 'Analyzing & Proceeding...' : 'AI Auto-Select & Start Reading'}
                     </Button>
                     <p className="text-sm text-muted-foreground">
-                      Our AI will read your question and pick the perfect layout—skip this if you already know what you want.
+                      Our AI will analyze your question, select the perfect spread, and take you directly to the reading.
                     </p>
                   </div>
 
@@ -658,13 +661,23 @@ Or: Rider, Sun, Key`;
                        </Button>
                     </div>
                   </div>
-                ) : (
-                  <Deck
-                    cards={allCards}
-                    drawCount={layoutType}
-                    onDraw={handleDraw}
-                  />
-                )}
+                 ) : (
+                   <Deck
+                     cards={allCards}
+                     drawCount={layoutType}
+                     onDraw={handleDraw}
+                   />
+                 )}
+
+                 <div className="text-center">
+                   <Button
+                     onClick={() => setStep('setup')}
+                     variant="outline"
+                     className="mt-4"
+                   >
+                     ← Back to Manual Selection
+                   </Button>
+                 </div>
               </CardContent>
             </Card>
           </motion.div>
