@@ -56,13 +56,14 @@ function NewReadingPageContent() {
   const [allCards, setAllCards] = useState<CardType[]>([])
   const [drawnCards, setDrawnCards] = useState<ReadingCard[]>([])
   const [selectedSpread, setSelectedSpread] = useState(COMPREHENSIVE_SPREADS[0]) // Default to first spread
-  const [path, setPath] = useState<'virtual' | null>(null)
+  const [path, setPath] = useState<'virtual' | 'physical' | null>(null)
   const [showManualPicker, setShowManualPicker] = useState(false)
   const [aiResult, setAiResult] = useState<{
     spreadId: string;
     reason: string;
     confidence: number;
   } | null>(null)
+  const [physicalCards, setPhysicalCards] = useState('')
 
   const [question, setQuestion] = useState('')
   const [questionCharCount, setQuestionCharCount] = useState(0)
@@ -148,6 +149,7 @@ function NewReadingPageContent() {
         setPath(null)
         setShowManualPicker(false)
         setAiResult(null)
+        setPhysicalCards('')
     }
 
   useEffect(() => {
@@ -181,8 +183,15 @@ function NewReadingPageContent() {
 
    const handleDraw = async (cards: CardType[]) => {
      try {
-       // Draw random cards (virtual path only)
-       const readingCards = drawCards(cards, selectedSpread.cards)
+       let readingCards: ReadingCard[];
+       
+       if (path === 'physical') {
+         // Parse physical cards input
+         readingCards = parsePhysicalCards(cards);
+       } else {
+         // Draw random cards (virtual path)
+         readingCards = drawCards(cards, selectedSpread.cards);
+       }
 
        setDrawnCards(readingCards)
 
@@ -193,6 +202,53 @@ function NewReadingPageContent() {
        console.error('Error in handleDraw:', error)
        setError(error instanceof Error ? error.message : 'An error occurred while processing your cards')
      }
+   }
+
+   const parsePhysicalCards = (allCards: CardType[]): ReadingCard[] => {
+     const input = physicalCards.trim()
+     if (!input) {
+       throw new Error('Please enter card numbers or names')
+     }
+
+     // Split by commas, spaces, or newlines
+     const cardInputs = input.split(/[,;\s\n]+/).map(s => s.trim()).filter(s => s.length > 0)
+
+     if (cardInputs.length !== selectedSpread.cards) {
+       throw new Error(`Please enter exactly ${selectedSpread.cards} cards. You entered ${cardInputs.length}.`)
+     }
+
+     const readingCards: ReadingCard[] = []
+
+     for (let i = 0; i < cardInputs.length; i++) {
+       const cardInput = cardInputs[i]
+       let card: CardType | undefined
+
+       // Try to find by number first
+       const num = parseInt(cardInput)
+       if (!isNaN(num) && num >= 1 && num <= 36) {
+         card = allCards.find(c => c.id === num.toString())
+       }
+
+       // If not found by number, try by name
+       if (!card) {
+         card = allCards.find(c => 
+           c.name.toLowerCase() === cardInput.toLowerCase() ||
+           c.name.toLowerCase().includes(cardInput.toLowerCase()) ||
+           cardInput.toLowerCase().includes(c.name.toLowerCase())
+         )
+       }
+
+       if (!card) {
+         throw new Error(`Card "${cardInput}" not found. Please use card numbers (1-36) or exact names.`)
+       }
+
+       readingCards.push({
+         id: card.id,
+         position: i + 1
+       })
+     }
+
+     return readingCards
    }
 
   const performAIAnalysis = async (readingCards: ReadingCard[], isRetry = false) => {
@@ -283,20 +339,24 @@ function NewReadingPageContent() {
     setShowStartOverConfirm(true)
   }
 
-  const confirmStartOver = () => {
-     setDrawnCards([])
-     setStep('setup')
-     setQuestion('')
-     setQuestionCharCount(0)
+   const confirmStartOver = () => {
+      setDrawnCards([])
+      setStep('setup')
+      setQuestion('')
+      setQuestionCharCount(0)
 
-      setSelectedSpread(COMPREHENSIVE_SPREADS[0])
-     setError('')
-     setAiReading(null)
-     setAiLoading(false)
-     setAiError(null)
-     setAiErrorDetails(null)
-     setShowStartOverConfirm(false)
-    }
+       setSelectedSpread(COMPREHENSIVE_SPREADS[0])
+      setError('')
+      setAiReading(null)
+      setAiLoading(false)
+      setAiError(null)
+      setAiErrorDetails(null)
+      setShowStartOverConfirm(false)
+      setPath(null)
+      setPhysicalCards('')
+      setShowManualPicker(false)
+      setAiResult(null)
+     }
 
   const handleAnalyzeAndChoose = async () => {
     if (!question.trim()) {
@@ -351,12 +411,12 @@ function NewReadingPageContent() {
   }
 
   const getButtonLabel = () => {
-    if (!question.trim()) return "Draw & Interpret";
-    if (aiResult) return `Draw ${selectedSpread.cards}-Card Spread & Interpret`;
-    return "Draw & Interpret";
+    if (!question.trim()) return path === 'physical' ? "Interpret Cards" : "Draw & Interpret";
+    if (aiResult) return path === 'physical' ? `Interpret ${selectedSpread.cards} Cards` : `Draw ${selectedSpread.cards}-Card Spread & Interpret`;
+    return path === 'physical' ? "Interpret Cards" : "Draw & Interpret";
   }
 
-  const canProceed = question.trim() && path === 'virtual';
+  const canProceed = question.trim() && (path === 'virtual' || (path === 'physical' && physicalCards.trim()));
 
 
 
@@ -386,7 +446,7 @@ function NewReadingPageContent() {
               <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'drawing' ? 'bg-primary border-primary shadow-lg shadow-primary/30 text-primary-foreground' : 'bg-muted border-muted-foreground text-muted-foreground dark:bg-muted/50 dark:border-muted-foreground/50'}`}>
                 2
               </div>
-              <span className="ml-3 text-sm font-medium">Draw</span>
+              <span className="ml-3 text-sm font-medium">{path === 'physical' ? 'Enter' : 'Draw'}</span>
             </div>
             <div className={`w-12 h-0.5 rounded-full ${step === 'ai-analysis' ? 'bg-primary' : 'bg-muted'}`}></div>
             <div className={`flex items-center ${step === 'ai-analysis' ? 'text-primary' : 'text-muted-foreground'}`}>
@@ -468,13 +528,13 @@ function NewReadingPageContent() {
                            >
                              No, draw for me
                            </Button>
-                           <Button
-                             variant="outline"
-                             onClick={() => router.push('/read/physical')}
-                             className="flex-1 border-border text-foreground hover:bg-muted"
-                           >
-                             Yes, I have cards
-                           </Button>
+                            <Button
+                              variant="outline"
+                              onClick={() => setPath('physical')}
+                              className="flex-1 border-border text-foreground hover:bg-muted"
+                            >
+                              Yes, I have cards
+                            </Button>
                          </div>
                        </div>
                      </div>
@@ -545,10 +605,31 @@ function NewReadingPageContent() {
                          </div>
                        )}
                      </div>
-                   )}
+                    )}
 
+                    {/* Physical Cards Input */}
+                    {path === 'physical' && (
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="physical-cards" className="text-foreground font-medium">
+                            Enter Your Cards ({selectedSpread.cards} cards):
+                          </Label>
+                          <Textarea
+                            id="physical-cards"
+                            value={physicalCards}
+                            onChange={(e) => setPhysicalCards(e.target.value)}
+                            placeholder={`Enter ${selectedSpread.cards} card numbers (1-36) or names, separated by commas, spaces, or newlines\n\nExample: 1, 5, 12 or Rider, Clover, Birds`}
+                            className="bg-background border-border text-foreground placeholder:text-muted-foreground min-h-[120px] rounded-xl focus:border-primary focus:ring-primary/20 resize-none"
+                            rows={4}
+                          />
+                          <p className="text-xs text-muted-foreground">
+                            💡 You can use card numbers (1-36) or card names. Separate with commas, spaces, or newlines.
+                          </p>
+                        </div>
+                      </div>
+                    )}
 
-                </CardContent>
+                 </CardContent>
               </Card>
 
 
@@ -596,12 +677,12 @@ function NewReadingPageContent() {
               )}
 
                {/* Unified Primary Button */}
-               {path === 'virtual' && (
+               {path && (path === 'virtual' || path === 'physical') && (
                  <div className="sticky bottom-4 z-10 mt-6">
                    <Card className="border-border bg-card/95 backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden">
                      <CardContent className="p-4">
                        <Button
-                         onClick={() => setStep('drawing')}
+                         onClick={() => path === 'physical' ? handleDraw(allCards) : setStep('drawing')}
                          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30 rounded-xl py-3 font-semibold transition-all duration-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                          disabled={!canProceed}
                        >
