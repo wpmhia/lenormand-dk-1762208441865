@@ -27,7 +27,7 @@ interface AIReadingDisplayProps {
   retryCount?: number
   cards?: ReadingCard[]
   allCards?: CardType[]
-  layoutType?: number
+  spreadId?: string
   question?: string
 }
 
@@ -40,7 +40,7 @@ export function AIReadingDisplay({
   retryCount = 0,
   cards = [],
   allCards = [],
-  layoutType = 3,
+  spreadId,
   question = ''
 }: AIReadingDisplayProps) {
 

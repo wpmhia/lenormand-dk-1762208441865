@@ -17,9 +17,7 @@ interface ReadingViewerProps {
   showShareButton?: boolean
   onShare?: () => void
   showReadingHeader?: boolean
-  threeCardSpreadType?: string
-  fiveCardSpreadType?: string
-  sevenCardSpreadType?: string
+  spreadId?: string
 }
 
 interface PositionInfo {
@@ -27,10 +25,10 @@ interface PositionInfo {
   meaning: string
 }
 
-const getPositionInfo = (position: number, layoutType: number, threeCardSpreadType?: string, fiveCardSpreadType?: string, sevenCardSpreadType?: string): PositionInfo => {
-  // Handle different 7-card spread types
-  if (layoutType === 7 && sevenCardSpreadType) {
-    const sevenCardPositions: Record<string, Record<number, PositionInfo>> = {
+const getPositionInfo = (position: number, spreadId?: string): PositionInfo => {
+  // Handle different spread types based on spreadId
+  if (spreadId) {
+    const spreadPositions: Record<string, Record<number, PositionInfo>> = {
       "week-ahead": {
         0: { label: "Monday", meaning: "New beginnings, fresh starts, and initial energy for the week" },
         1: { label: "Tuesday", meaning: "Challenges, obstacles, and work-related matters" },
@@ -51,14 +49,14 @@ const getPositionInfo = (position: number, layoutType: number, threeCardSpreadTy
       }
     }
 
-    if (sevenCardPositions[sevenCardSpreadType]) {
-      return sevenCardPositions[sevenCardSpreadType][position] || { label: `Position ${position + 1}`, meaning: "" }
+    if (spreadPositions[spreadId]) {
+      return spreadPositions[spreadId][position] || { label: `Position ${position + 1}`, meaning: "" }
     }
   }
 
-  // Handle different 3-card spread types
-  if (layoutType === 3 && threeCardSpreadType) {
-    const threeCardPositions: Record<string, Record<number, PositionInfo>> = {
+  // Handle different spread types based on spreadId
+  if (spreadId) {
+    const spreadPositions: Record<string, Record<number, PositionInfo>> = {
       "past-present-future": {
         0: { label: "Past", meaning: "Influences from your past that shaped your current situation" },
         1: { label: "Present", meaning: "Your current circumstances and immediate challenges" },
@@ -74,26 +72,16 @@ const getPositionInfo = (position: number, layoutType: number, threeCardSpreadTy
         1: { label: "Body", meaning: "Physical health, actions, and material concerns" },
         2: { label: "Spirit", meaning: "Emotional well-being, spiritual growth, and inner wisdom" }
       },
-       "yes-no-maybe": {
-         0: { label: "First Card", meaning: "Contributes to the Yes/No count based on its positive or negative meaning" },
-         1: { label: "Center Card", meaning: "Tie-breaker card if the count is equal between positive and negative cards" },
-         2: { label: "Third Card", meaning: "Contributes to the Yes/No count based on its positive or negative meaning" }
-       },
-       "general-reading": {
-         0: { label: "Opening Element", meaning: "Primary element - can represent past, mind, or situation depending on context" },
-         1: { label: "Central Element", meaning: "Core element - can represent present, body, or action depending on context" },
-         2: { label: "Closing Element", meaning: "Final element - can represent future, spirit, or outcome; check mirror relationship with central element" }
-       }
-    }
-
-    if (threeCardPositions[threeCardSpreadType]) {
-      return threeCardPositions[threeCardSpreadType][position] || { label: `Position ${position + 1}`, meaning: "" }
-    }
-  }
-
-  // Handle different 5-card spread types
-  if (layoutType === 5 && fiveCardSpreadType) {
-    const fiveCardPositions: Record<string, Record<number, PositionInfo>> = {
+      "yes-no-maybe": {
+        0: { label: "First Card", meaning: "Contributes to the Yes/No count based on its positive or negative meaning" },
+        1: { label: "Center Card", meaning: "Tie-breaker card if the count is equal between positive and negative cards" },
+        2: { label: "Third Card", meaning: "Contributes to the Yes/No count based on its positive or negative meaning" }
+      },
+      "general-reading-3": {
+        0: { label: "Opening Element", meaning: "Primary element - can represent past, mind, or situation depending on context" },
+        1: { label: "Central Element", meaning: "Core element - can represent present, body, or action depending on context" },
+        2: { label: "Closing Element", meaning: "Final element - can represent future, spirit, or outcome; check mirror relationship with central element" }
+      },
       "structured-reading": {
         0: { label: "Premise", meaning: "The foundation or current situation you're building upon" },
         1: { label: "Obstacle", meaning: "Challenges or difficulties you may face" },
@@ -101,7 +89,7 @@ const getPositionInfo = (position: number, layoutType: number, threeCardSpreadTy
         3: { label: "Outcome", meaning: "The likely result of your current path" },
         4: { label: "Final Result", meaning: "The ultimate conclusion or long-term outcome" }
       },
-      "general-reading": {
+      "general-reading-5": {
         0: { label: "Position 1", meaning: "First card in the flowing narrative" },
         1: { label: "Position 2", meaning: "Second card in the flowing narrative" },
         2: { label: "Position 3", meaning: "Third card in the flowing narrative" },
@@ -110,47 +98,53 @@ const getPositionInfo = (position: number, layoutType: number, threeCardSpreadTy
       }
     }
 
-    if (fiveCardPositions[fiveCardSpreadType]) {
-      return fiveCardPositions[fiveCardSpreadType][position] || { label: `Position ${position + 1}`, meaning: "" }
+    if (spreadPositions[spreadId]) {
+      return spreadPositions[spreadId][position] || { label: `Position ${position + 1}`, meaning: "" }
     }
   }
 
-  const positions: Record<number, Record<number, PositionInfo>> = {
-    3: {
+  // Default positions based on spread type
+  const defaultPositions: Record<string, Record<number, PositionInfo>> = {
+    "past-present-future": {
       0: { label: "Past", meaning: "Influences from your past that shaped your current situation" },
       1: { label: "Present", meaning: "Your current circumstances and immediate challenges" },
       2: { label: "Future", meaning: "Potential outcome based on your current path" }
     },
-     5: {
-       0: { label: "Premise", meaning: "The foundational situation or starting point of your inquiry" },
-       1: { label: "Obstacle", meaning: "The challenge or difficulty that stands in your way" },
-       2: { label: "What Helps", meaning: "Resources, support, or helpful factors available to you" },
-       3: { label: "Outcome", meaning: "The likely result or development from your current path" },
-       4: { label: "Final Result", meaning: "The ultimate conclusion or resolution of your situation" }
-     },
-     7: {
-       0: { label: "Monday", meaning: "New beginnings, fresh starts, and initial energy for the week" },
-       1: { label: "Tuesday", meaning: "Challenges, obstacles, and work-related matters" },
-       2: { label: "Wednesday", meaning: "Communication, connections, and mid-week transitions" },
-       3: { label: "Thursday", meaning: "Progress, building momentum, and preparation" },
-       4: { label: "Friday", meaning: "Social aspects, completion, and winding down" },
-       5: { label: "Saturday", meaning: "Rest, reflection, and personal matters" },
-       6: { label: "Sunday", meaning: "Closure, spiritual matters, and weekly review" }
-     },
-     9: {
-       0: { label: "Recent Past - Inner World", meaning: "Thoughts, feelings, and personal resources from your recent past that influence your current situation" },
-       1: { label: "Recent Past - Direct Actions", meaning: "Actions you took recently that shaped your current circumstances" },
-       2: { label: "Recent Past - Outside World", meaning: "External influences and events from your recent past" },
-       3: { label: "Present - Inner World", meaning: "Your current thoughts, feelings, and internal state" },
-       4: { label: "Present - Direct Actions", meaning: "Your current actions and the central issue you're facing" },
-       5: { label: "Present - Outside World", meaning: "Current external influences, other people, and environmental factors" },
-       6: { label: "Near Future - Inner World", meaning: "How your thoughts and feelings will evolve in the near future" },
-       7: { label: "Near Future - Direct Actions", meaning: "Actions you'll need to take in the near future" },
-       8: { label: "Near Future - Outside World", meaning: "External events and influences approaching in the near future" }
-     }
+    "structured-reading": {
+      0: { label: "Premise", meaning: "The foundational situation or starting point of your inquiry" },
+      1: { label: "Obstacle", meaning: "The challenge or difficulty that stands in your way" },
+      2: { label: "What Helps", meaning: "Resources, support, or helpful factors available to you" },
+      3: { label: "Outcome", meaning: "The likely result or development from your current path" },
+      4: { label: "Final Result", meaning: "The ultimate conclusion or resolution of your situation" }
+    },
+    "week-ahead": {
+      0: { label: "Monday", meaning: "New beginnings, fresh starts, and initial energy for the week" },
+      1: { label: "Tuesday", meaning: "Challenges, obstacles, and work-related matters" },
+      2: { label: "Wednesday", meaning: "Communication, connections, and mid-week transitions" },
+      3: { label: "Thursday", meaning: "Progress, building momentum, and preparation" },
+      4: { label: "Friday", meaning: "Social aspects, completion, and winding down" },
+      5: { label: "Saturday", meaning: "Rest, reflection, and personal matters" },
+      6: { label: "Sunday", meaning: "Closure, spiritual matters, and weekly review" }
+    },
+    "comprehensive": {
+      0: { label: "Recent Past - Inner World", meaning: "Thoughts, feelings, and personal resources from your recent past that influence your current situation" },
+      1: { label: "Recent Past - Direct Actions", meaning: "Actions you took recently that shaped your current circumstances" },
+      2: { label: "Recent Past - Outside World", meaning: "External influences and events from your recent past" },
+      3: { label: "Present - Inner World", meaning: "Your current thoughts, feelings, and internal state" },
+      4: { label: "Present - Direct Actions", meaning: "Your current actions and the central issue you're facing" },
+      5: { label: "Present - Outside World", meaning: "Current external influences, other people, and environmental factors" },
+      6: { label: "Near Future - Inner World", meaning: "How your thoughts and feelings will evolve in the near future" },
+      7: { label: "Near Future - Direct Actions", meaning: "Actions you'll need to take in the near future" },
+      8: { label: "Near Future - Outside World", meaning: "External events and influences approaching in the near future" }
+    }
   }
 
-  return positions[layoutType]?.[position] || { label: `Position ${position + 1}`, meaning: "" }
+  // Return default positions based on spreadId if available
+  if (spreadId && defaultPositions[spreadId]) {
+    return defaultPositions[spreadId][position] || { label: `Position ${position + 1}`, meaning: "" }
+  }
+
+  return { label: `Position ${position + 1}`, meaning: "" }
 }
 
   const getGrandTableauPosition = (index: number): { x: number; y: number; label: string; houseMeaning: string } => {
@@ -213,9 +207,7 @@ export function ReadingViewer({
   showShareButton = true,
   onShare,
   showReadingHeader = true,
-   threeCardSpreadType,
-   fiveCardSpreadType,
-   sevenCardSpreadType
+  spreadId
 }: ReadingViewerProps) {
   const [selectedCard, setSelectedCard] = useState<CardType | null>(null)
 
@@ -255,7 +247,7 @@ export function ReadingViewer({
                const card = getCardById(allCards, readingCard.id)
             if (!card) return null
 
-            const positionInfo = getPositionInfo(index, reading.layoutType, threeCardSpreadType, fiveCardSpreadType, sevenCardSpreadType)
+            const positionInfo = getPositionInfo(index, spreadId)
 
             return (
               <AnimatedCard key={index} delay={index * 0.08} className="flex flex-col items-center space-y-3">
@@ -306,7 +298,7 @@ export function ReadingViewer({
             const card = getCardById(allCards, readingCard.id)
             if (!card) return null
 
-            const positionInfo = getPositionInfo(index, reading.layoutType, threeCardSpreadType, fiveCardSpreadType, sevenCardSpreadType)
+            const positionInfo = getPositionInfo(index, spreadId)
 
             return (
               <AnimatedCard key={index} delay={index * 0.08} className="flex flex-col items-center space-y-3">

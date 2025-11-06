@@ -24,42 +24,39 @@ import { getCards, drawCards, getCardById } from '@/lib/data'
 import { getAIReading, AIReadingRequest, AIReadingResponse, isDeepSeekAvailable } from '@/lib/deepseek'
 
 
-const LAYOUTS = [
-  { value: 3, label: "3 Cards", type: "past-present-future" },
-    { value: 5, label: "5 Cards", type: "premise-resolution" },
-    { value: 7, label: "7 Cards", type: "week-ahead" },
-   { value: 9, label: "9 Cards - Comprehensive Reading", type: "comprehensive" },
-   { value: 36, label: "Grand Tableau - Full Deck", type: "grand-tableau" }
+// Comprehensive spread selection - direct manual control
+const COMPREHENSIVE_SPREADS = [
+  // 3-Card Spreads
+  { id: "past-present-future", cards: 3, label: "Past, Present, Future", description: "Classic timeline reading" },
+  { id: "yes-no-maybe", cards: 3, label: "Yes or No", description: "Binary decision guidance" },
+  { id: "situation-challenge-advice", cards: 3, label: "Situation, Challenge, Advice", description: "Problem-solving spread" },
+  { id: "mind-body-spirit", cards: 3, label: "Mind, Body, Spirit", description: "Holistic balance reading" },
+  { id: "general-reading-3", cards: 3, label: "General Reading", description: "Simple 3-card insight" },
+
+  // 5-Card Spreads
+  { id: "structured-reading", cards: 5, label: "Structured Reading", description: "Detailed situation analysis" },
+  { id: "general-reading-5", cards: 5, label: "General Reading", description: "Comprehensive 5-card insight" },
+
+  // 7-Card Spreads
+  { id: "week-ahead", cards: 7, label: "Week Ahead", description: "7-day forecast" },
+  { id: "relationship-double-significator", cards: 7, label: "Relationship Reading", description: "Love and partnership guidance" },
+
+  // 9-Card Spreads
+  { id: "comprehensive", cards: 9, label: "Annual Forecast", description: "Year-ahead comprehensive reading" },
+
+  // 36-Card Spreads
+  { id: "grand-tableau", cards: 36, label: "Grand Tableau", description: "Full deck comprehensive reading" }
 ]
 
-const THREE_CARD_SPREADS = [
-  { value: "past-present-future", label: "Past, Present, Future" },
-  { value: "situation-challenge-advice", label: "Situation, Challenge, Advice" },
-  { value: "mind-body-spirit", label: "Mind, Body, Spirit" },
-  { value: "yes-no-maybe", label: "Yes, No, Maybe" },
-  { value: "general-reading", label: "General Reading (Sentence)" }
-]
 
-const FIVE_CARD_SPREADS = [
-  { value: "structured-reading", label: "Structured (Premise-Obstacle-Help-Outcome-Final)" },
-  { value: "general-reading", label: "General Reading (Sentence)" }
-]
-
-const SEVEN_CARD_SPREADS = [
-  { value: "week-ahead", label: "Week Ahead" },
-  { value: "relationship-double-significator", label: "Relationships" }
-]
 
 function NewReadingPageContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const [allCards, setAllCards] = useState<CardType[]>([])
   const [drawnCards, setDrawnCards] = useState<ReadingCard[]>([])
-  const [layoutType, setLayoutType] = useState<3 | 5 | 7 | 9 | 36>(3)
-   const [isPhysical, setIsPhysical] = useState(false)
-    const [threeCardSpreadType, setThreeCardSpreadType] = useState<string>("general-reading")
-    const [fiveCardSpreadType, setFiveCardSpreadType] = useState<string>("structured-reading")
-    const [sevenCardSpreadType, setSevenCardSpreadType] = useState<string>("week-ahead")
+  const [selectedSpread, setSelectedSpread] = useState(COMPREHENSIVE_SPREADS[0]) // Default to first spread
+    const [isPhysical, setIsPhysical] = useState(false)
    const [physicalCards, setPhysicalCards] = useState<string>("")
 
   const [question, setQuestion] = useState('')
@@ -81,18 +78,14 @@ function NewReadingPageContent() {
   // Load from URL params or localStorage on mount
   useEffect(() => {
     const urlQuestion = searchParams.get('q')
-    const urlLayout = searchParams.get('r')
-    const urlSpread = searchParams.get('s')
+    const urlSpreadId = searchParams.get('s')
 
-    if (urlQuestion || urlLayout) {
+    if (urlQuestion || urlSpreadId) {
       // Load from URL params
       if (urlQuestion) setQuestion(urlQuestion)
-      if (urlLayout) setLayoutType(parseInt(urlLayout) || 3)
-      if (urlSpread) {
-        const layout = parseInt(urlLayout || '3')
-        if (layout === 3) setThreeCardSpreadType(urlSpread)
-        else if (layout === 5) setFiveCardSpreadType(urlSpread)
-        else if (layout === 7) setSevenCardSpreadType(urlSpread)
+      if (urlSpreadId) {
+        const spread = COMPREHENSIVE_SPREADS.find(s => s.id === urlSpreadId)
+        if (spread) setSelectedSpread(spread)
       }
     } else {
       // Fallback to localStorage
@@ -101,11 +94,16 @@ function NewReadingPageContent() {
         try {
           const data = JSON.parse(lastOptimised)
           setQuestion(data.question || '')
-          setLayoutType(data.layoutType || 3)
-          if (data.spreadType) {
-            if (data.layoutType === 3) setThreeCardSpreadType(data.spreadType)
-            else if (data.layoutType === 5) setFiveCardSpreadType(data.spreadType)
-            else if (data.layoutType === 7) setSevenCardSpreadType(data.spreadType)
+          if (data.spreadId) {
+            const spread = COMPREHENSIVE_SPREADS.find(s => s.id === data.spreadId)
+            if (spread) setSelectedSpread(spread)
+          } else if (data.layoutType && data.spreadType) {
+            // Legacy format - convert to new format
+            const spread = COMPREHENSIVE_SPREADS.find(s =>
+              s.cards === data.layoutType &&
+              (s.id === data.spreadType || s.id.includes(data.spreadType))
+            )
+            if (spread) setSelectedSpread(spread)
           }
           setOptimizationResult(data.optimizationResult || null)
         } catch (e) {
@@ -135,23 +133,21 @@ function NewReadingPageContent() {
     confidence: number;
   } | null>(null)
 
-  const resetReading = () => {
-     setStep('setup')
-     setDrawnCards([])
-     setQuestion('')
-     setQuestionCharCount(0)
-     setLayoutType(3)
-      setThreeCardSpreadType("general-reading")
-      setSevenCardSpreadType("week-ahead")
-      setError('')
-      setAiReading(null)
-      setAiLoading(false)
-      setAiError(null)
-      setAiErrorDetails(null)
-      setIsPhysical(false)
-      setPhysicalCards('')
-      setAiFeedback(null)
-   }
+   const resetReading = () => {
+      setStep('setup')
+      setDrawnCards([])
+      setQuestion('')
+      setQuestionCharCount(0)
+      setSelectedSpread(COMPREHENSIVE_SPREADS[0])
+       setError('')
+       setAiReading(null)
+       setAiLoading(false)
+       setAiError(null)
+       setAiErrorDetails(null)
+       setIsPhysical(false)
+       setPhysicalCards('')
+       setAiFeedback(null)
+    }
 
   useEffect(() => {
     fetchCards()
@@ -188,8 +184,8 @@ function NewReadingPageContent() {
     // Split by commas, spaces, or newlines
     const cardInputs = input.split(/[,;\s\n]+/).map(s => s.trim()).filter(s => s.length > 0)
 
-    if (cardInputs.length !== layoutType) {
-      throw new Error(`Please enter exactly ${layoutType} cards. You entered ${cardInputs.length}.`)
+    if (cardInputs.length !== selectedSpread.cards) {
+      throw new Error(`Please enter exactly ${selectedSpread.cards} cards. You entered ${cardInputs.length}.`)
     }
 
     const readingCards: ReadingCard[] = []
@@ -236,7 +232,7 @@ function NewReadingPageContent() {
         readingCards = parsePhysicalCards(cards)
       } else {
         // Draw random cards
-        readingCards = drawCards(cards, layoutType)
+        readingCards = drawCards(cards, selectedSpread.cards)
       }
 
       setDrawnCards(readingCards)
@@ -275,10 +271,7 @@ function NewReadingPageContent() {
           name: getCardById(allCards, card.id)?.name || 'Unknown',
           position: card.position
         })),
-                        layoutType: layoutType,
-        threeCardSpreadType: layoutType === 3 ? threeCardSpreadType : undefined,
-        fiveCardSpreadType: layoutType === 5 ? fiveCardSpreadType : undefined,
-        sevenCardSpreadType: layoutType === 7 ? sevenCardSpreadType : undefined,
+        spreadId: selectedSpread.id,
         userLocale: navigator.language
       }
 
@@ -347,9 +340,7 @@ function NewReadingPageContent() {
      setQuestion('')
      setQuestionCharCount(0)
 
-     setLayoutType(3)
-     setThreeCardSpreadType("general-reading")
-     setSevenCardSpreadType("week-ahead")
+      setSelectedSpread(COMPREHENSIVE_SPREADS[0])
      setError('')
      setAiReading(null)
      setAiLoading(false)
@@ -385,17 +376,12 @@ function NewReadingPageContent() {
         throw new Error('Failed to analyze question')
       }
 
-      const { layoutType, spreadType, confidence, reason, ambiguous, focus } = await response.json()
+      const { spreadId, confidence, reason, ambiguous, focus } = await response.json()
 
       // Apply the optimized settings
-      setLayoutType(layoutType)
-
-      if (layoutType === 3 && spreadType) {
-        setThreeCardSpreadType(spreadType)
-      } else if (layoutType === 5 && spreadType) {
-        setFiveCardSpreadType(spreadType)
-      } else if (layoutType === 7 && spreadType) {
-        setSevenCardSpreadType(spreadType)
+      const spread = COMPREHENSIVE_SPREADS.find(s => s.id === spreadId)
+      if (spread) {
+        setSelectedSpread(spread)
       }
 
       // Store optimization metadata
@@ -404,21 +390,19 @@ function NewReadingPageContent() {
       // Save to localStorage for persistence
       localStorage.setItem('lastOptimised', JSON.stringify({
         question,
-        layoutType,
-        spreadType,
+        spreadId,
         optimizationResult: { confidence, reason, ambiguous, focus }
       }))
 
       // Update URL for shareable link
       const params = new URLSearchParams()
       params.set('q', question)
-      params.set('r', layoutType.toString())
-      if (spreadType) params.set('s', spreadType)
+      params.set('s', spreadId)
       router.replace(`/read/new?${params.toString()}`, { scroll: false })
 
       // Show AI feedback instead of auto-navigating
       setAiFeedback({
-        spreadType: spreadType || 'general',
+        spreadType: spread ? spread.label : 'General Reading',
         reason,
         confidence: confidence || 85
       })
@@ -563,81 +547,38 @@ function NewReadingPageContent() {
                     </div>
                   )}
 
-                  {/* Reading Type Selection */}
+                  {/* Spread Selection */}
                   <div className="space-y-2">
-                    <Label htmlFor="layout" className="text-foreground font-medium">Reading Type:</Label>
-                    <Select value={layoutType.toString()} onValueChange={(value) => { setLayoutType(parseInt(value) as 3 | 5 | 9 | 36); setAiFeedback(null); }}>
-                      <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary h-12" aria-describedby="layout-help">
+                    <Label htmlFor="spread" className="text-foreground font-medium">Choose Your Spread:</Label>
+                    <Select value={selectedSpread.id} onValueChange={(value) => {
+                      const spread = COMPREHENSIVE_SPREADS.find(s => s.id === value)
+                      if (spread) {
+                        setSelectedSpread(spread)
+                        setAiFeedback(null)
+                      }
+                    }}>
+                      <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary h-12" aria-describedby="spread-help">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-card border-border">
-                        {LAYOUTS.map((layout) => (
-                          <SelectItem key={layout.value} value={layout.value.toString()} className="text-card-foreground hover:bg-accent focus:bg-accent">
-                            {layout.label}
+                        {COMPREHENSIVE_SPREADS.map((spread) => (
+                          <SelectItem key={spread.id} value={spread.id} className="text-card-foreground hover:bg-accent focus:bg-accent">
+                            <div className="flex flex-col">
+                              <span className="font-medium">{spread.label}</span>
+                              <span className="text-xs text-muted-foreground">{spread.description} ({spread.cards} cards)</span>
+                            </div>
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
-                    <div id="layout-help" className="text-xs text-muted-foreground italic">
-                      Choose the number of cards for your reading spread
+                    <div id="spread-help" className="text-xs text-muted-foreground italic">
+                      Select the spread that best fits your question
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              {/* Spread Details - Collapsible */}
-              {layoutType > 3 && !isPhysical && (
-                <CollapsibleCard
-                  title="Customize Spread Type"
-                  icon={<Shuffle className="w-4 h-4" />}
-                  defaultOpen={false}
-                  className="border-muted/50"
-                >
-                  <div className="space-y-4">
-                    {layoutType === 5 && (
-                      <div className="space-y-2">
-                        <Label htmlFor="five-card-spread">5-Card Spread Type:</Label>
-                        <Select value={fiveCardSpreadType} onValueChange={(value) => { setFiveCardSpreadType(value); setAiFeedback(null); }}>
-                          <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent className="bg-card border-border">
-                            {FIVE_CARD_SPREADS.map((spread) => (
-                              <SelectItem key={spread.value} value={spread.value} className="text-card-foreground hover:bg-accent focus:bg-accent">
-                                {spread.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <div className="text-xs text-muted-foreground italic">
-                          Choose how to interpret your 5-card spread
-                        </div>
-                      </div>
-                    )}
 
-                    {layoutType === 7 && (
-                      <div className="space-y-2">
-                        <Label htmlFor="seven-card-spread">7-Card Spread Type:</Label>
-                        <Select value={sevenCardSpreadType} onValueChange={(value) => { setSevenCardSpreadType(value); setAiFeedback(null); }}>
-                          <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent className="bg-card border-border">
-                            {SEVEN_CARD_SPREADS.map((spread) => (
-                              <SelectItem key={spread.value} value={spread.value} className="text-card-foreground hover:bg-accent focus:bg-accent">
-                                {spread.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <div className="text-xs text-muted-foreground italic">
-                          Choose how to interpret your 7-card spread
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </CollapsibleCard>
-              )}
 
               {/* Reading Method - Collapsible */}
               <CollapsibleCard
@@ -677,30 +618,9 @@ function NewReadingPageContent() {
                         id="physical-cards"
                         value={physicalCards}
                         onChange={(e) => setPhysicalCards(e.target.value)}
-                        placeholder={(() => {
-                          switch (layoutType) {
-                            case 3:
-                              return `Enter 3 card numbers (1-36) separated by commas, spaces, or new lines.
-Example: 1, 15, 28
-Or: Rider, Sun, Key`;
-                            case 5:
-                              return `Enter 5 card numbers (1-36) separated by commas, spaces, or new lines.
-Example: 1, 15, 28, 7, 22
-Or: Rider, Sun, Key, Snake, Paths`;
-                            case 9:
-                              return `Enter 9 card numbers (1-36) separated by commas, spaces, or new lines.
-Example: 1, 15, 28, 7, 22, 33, 12, 19, 31
-Or: Rider, Sun, Key, Snake, Paths, Moon, Birds, Tower, Lilies`;
-                            case 36:
-                              return `Enter all 36 card numbers (1-36) in the order they appeared in your Grand Tableau spread.
-Example: 1, 15, 28, 7, 22, 33, 12, 19, 31, 4, 8, 16, 25, 2, 35, 6, 9, 13, 20, 27...
-Or: Rider, Sun, Key, Snake, Paths, Moon, Birds, Tower, Lilies, House, Coffin, Stars...`;
-                            default:
-                              return `Enter ${layoutType} card numbers (1-36) separated by commas, spaces, or new lines.
-Example: 1, 15, 28
-Or: Rider, Sun, Key`;
-                          }
-                        })()}
+                         placeholder={`Enter ${selectedSpread.cards} card numbers (1-36) separated by commas, spaces, or new lines for "${selectedSpread.label}".
+Example: ${selectedSpread.cards === 3 ? '1, 15, 28' : selectedSpread.cards === 5 ? '1, 15, 28, 7, 22' : selectedSpread.cards === 36 ? '1, 15, 28, 7, 22, 33, 12, 19, 31...' : '1, 15, 28'}
+Or: ${selectedSpread.cards === 3 ? 'Rider, Sun, Key' : selectedSpread.cards === 5 ? 'Rider, Sun, Key, Snake, Paths' : selectedSpread.cards === 36 ? 'Rider, Sun, Key, Snake, Paths, Moon, Birds...' : 'Rider, Sun, Key'}`}
                         className="bg-background border-border text-foreground placeholder:text-muted-foreground min-h-[100px] rounded-xl focus:border-primary focus:ring-primary/20 resize-none"
                         rows={4}
                       />
@@ -786,9 +706,9 @@ Or: Rider, Sun, Key`;
                     Draw Your Cards
                     <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-0.5 bg-gradient-to-r from-primary to-primary/60 rounded-full"></div>
                   </h2>
-                   <p className="text-muted-foreground text-lg italic">
-                     Drawing {layoutType} cards from the sacred deck
-                   </p>
+                    <p className="text-muted-foreground text-lg italic">
+                      Drawing {selectedSpread.cards} cards from the sacred deck
+                    </p>
                    {optimizationResult?.focus && (
                      <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
                        <span>Focus: {optimizationResult.focus.charAt(0).toUpperCase() + optimizationResult.focus.slice(1)}</span>
@@ -800,9 +720,9 @@ Or: Rider, Sun, Key`;
                   <div className="text-center space-y-4">
                     <div className="p-6 bg-muted/50 rounded-xl border border-border">
                       <h3 className="text-lg font-semibold text-foreground mb-2">Your Physical Cards</h3>
-                      <div className="text-sm text-muted-foreground mb-4">
-                        Ready to analyze your {layoutType} manually drawn cards
-                      </div>
+                       <div className="text-sm text-muted-foreground mb-4">
+                         Ready to analyze your {selectedSpread.cards} manually drawn cards
+                       </div>
                        <Button
                          onClick={() => handleDraw(allCards)}
                          disabled={!physicalCards.trim()}
@@ -813,11 +733,11 @@ Or: Rider, Sun, Key`;
                     </div>
                   </div>
                  ) : (
-                   <Deck
-                     cards={allCards}
-                     drawCount={layoutType}
-                     onDraw={handleDraw}
-                   />
+                    <Deck
+                      cards={allCards}
+                      drawCount={selectedSpread.cards}
+                      onDraw={handleDraw}
+                    />
                  )}
 
                  <div className="text-center">
@@ -856,32 +776,30 @@ Or: Rider, Sun, Key`;
                </div>
 
                   <ReadingViewer
-                    reading={{
-                      id: 'temp',
-                       title: 'Your Reading',
-                       question,
-                       layoutType: layoutType,
-                       cards: drawnCards,
-                      slug: 'temp',
-                       isPublic: false,
-                      createdAt: new Date(),
-                      updatedAt: new Date(),
-                    }}
+                     reading={{
+                       id: 'temp',
+                        title: 'Your Reading',
+                        question,
+                        layoutType: selectedSpread.cards,
+                        cards: drawnCards,
+                       slug: 'temp',
+                        isPublic: false,
+                       createdAt: new Date(),
+                       updatedAt: new Date(),
+                     }}
                     allCards={allCards}
-                     showShareButton={false}
-                      threeCardSpreadType={layoutType === 3 ? threeCardSpreadType : undefined}
-                      fiveCardSpreadType={layoutType === 5 ? fiveCardSpreadType : undefined}
-                     sevenCardSpreadType={layoutType === 7 ? sevenCardSpreadType : undefined}
+                      showShareButton={false}
+                      spreadId={selectedSpread.id}
                   />
 
                 {/* Show traditional meanings while AI loads or if AI fails */}
                  {(aiLoading || (!aiReading && !aiLoading)) && (
-                   <CardInterpretation
-                     cards={drawnCards}
-                     allCards={allCards}
-                        layoutType={layoutType}
-                     question={question}
-                   />
+                    <CardInterpretation
+                      cards={drawnCards}
+                      allCards={allCards}
+                      spreadId={selectedSpread.id}
+                      question={question}
+                    />
                  )}
 
                <AIReadingDisplay
@@ -896,9 +814,9 @@ Or: Rider, Sun, Key`;
                    name: getCardById(allCards, card.id)?.name || 'Unknown',
                    position: card.position
                  }))}
-                allCards={allCards}
-                  layoutType={layoutType}
-                question={question}
+                 allCards={allCards}
+                 spreadId={selectedSpread.id}
+                 question={question}
               />
 
 

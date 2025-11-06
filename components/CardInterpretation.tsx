@@ -9,7 +9,7 @@ import { BookOpen, RotateCcw } from 'lucide-react'
 interface CardInterpretationProps {
   cards: ReadingCard[]
   allCards: CardType[]
-  layoutType: number
+  spreadId?: string
   question: string
 }
 
@@ -18,15 +18,18 @@ interface PositionInfo {
   description: string
 }
 
-const getPositionInfo = (position: number, layoutType: number): PositionInfo => {
-  if (layoutType === 3) {
+const getPositionInfo = (position: number, spreadId?: string): PositionInfo => {
+  // Default positions based on card count
+  const cardCount = spreadId ? (spreadId === 'grand-tableau' ? 36 : spreadId.includes('3') ? 3 : spreadId.includes('5') ? 5 : spreadId.includes('7') ? 7 : spreadId.includes('9') ? 9 : 3) : 3
+
+  if (cardCount === 3) {
     const positions = [
       { title: "Past", description: "What has led to your current situation" },
       { title: "Present", description: "Your current circumstances and energies" },
       { title: "Future", description: "What is likely to develop" }
     ]
     return positions[position] || { title: `Position ${position + 1}`, description: "" }
-  } else if (layoutType === 5) {
+  } else if (cardCount === 5) {
     const positions = [
       { title: "Past", description: "Events that have shaped your situation" },
       { title: "Present", description: "Your current state of being" },
@@ -35,7 +38,7 @@ const getPositionInfo = (position: number, layoutType: number): PositionInfo => 
       { title: "Outcome", description: "Potential result if current path continues" }
     ]
     return positions[position] || { title: `Position ${position + 1}`, description: "" }
-  } else if (layoutType === 9) {
+  } else if (cardCount === 9) {
     const positions = [
       { title: "Past Influences", description: "Distant past affecting the situation" },
       { title: "Recent Past", description: "Immediate past events" },
@@ -54,7 +57,7 @@ const getPositionInfo = (position: number, layoutType: number): PositionInfo => 
   }
 }
 
-export function CardInterpretation({ cards, allCards, layoutType, question }: CardInterpretationProps) {
+export function CardInterpretation({ cards, allCards, spreadId, question }: CardInterpretationProps) {
   const getCardMeaning = (card: ReadingCard): string => {
     const fullCard = getCardById(allCards, card.id)
     if (!fullCard) return "Card meaning not found"
@@ -81,7 +84,7 @@ export function CardInterpretation({ cards, allCards, layoutType, question }: Ca
       <CardContent className="space-y-4">
         {cards.map((card, index) => {
           const fullCard = getCardById(allCards, card.id)
-          const positionInfo = getPositionInfo(index, layoutType)
+          const positionInfo = getPositionInfo(index, spreadId)
           const meaning = getCardMeaning(card)
           const keywords = getCardKeywords(card)
           

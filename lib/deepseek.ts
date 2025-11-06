@@ -17,10 +17,7 @@ export interface AIReadingRequest {
     name: string
     position: number
   }>
-  layoutType: number
-  threeCardSpreadType?: string
-  fiveCardSpreadType?: string
-  sevenCardSpreadType?: string
+  spreadId: string
   userLocale?: string
 }
 

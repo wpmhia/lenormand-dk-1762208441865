@@ -5,13 +5,13 @@ const cache = new Map<string, { result: any; timestamp: number }>()
 const CACHE_TTL = 5 * 60 * 1000 // 5 minutes
 
 const VALID_SPREADS = [
-  '3-card Past-Present-Future',
-  '3-card Yes-No-Maybe',
-  '5-card Structured',
-  '7-card Relationship Double-Significator',
-  '7-card Week-Ahead',
-  '9-card Comprehensive',
-  '36-card Grand Tableau',
+  'past-present-future',
+  'yes-no-maybe',
+  'structured-reading',
+  'relationship-double-significator',
+  'week-ahead',
+  'comprehensive',
+  'grand-tableau',
 ] as const;
 
 const SYSTEM_PROMPT = `
@@ -31,16 +31,16 @@ You are a Lenormand spread selector. Analyze the question and return ONLY this J
 - complex: Multiple life areas, comprehensive readings, general guidance
 
 **Selection rules:**
-1. future → 9-card Comprehensive
-2. yesno → 3-card Yes-No-Maybe
-3. relationship → 7-card Relationship Double-Significator
-4. complex → 5-card Structured
+1. future → comprehensive
+2. yesno → yes-no-maybe
+3. relationship → relationship-double-significator
+4. complex → structured-reading
 
 Examples:
-- "Will I get the job?" → yesno, "3-card Yes-No-Maybe", "Binary career decision"
-- "What will 2026 bring us?" → future, "9-card Comprehensive", "Year timeframe forecast"
-- "Tell me about love" → relationship, "7-card Relationship Double-Significator", "Love and romance reading"
-- "What about money, health and work?" → complex, "5-card Structured", "Multiple life areas"
+- "Will I get the job?" → yesno, "yes-no-maybe", "Binary career decision"
+- "What will 2026 bring us?" → future, "comprehensive", "Year timeframe forecast"
+- "Tell me about love" → relationship, "relationship-double-significator", "Love and romance reading"
+- "What about money, health and work?" → complex, "structured-reading", "Multiple life areas"
 `;
 
 interface OptimizeRequest {
@@ -48,8 +48,7 @@ interface OptimizeRequest {
 }
 
 interface OptimizeResponse {
-  layoutType: 3 | 5 | 7 | 9 | 36
-  spreadType?: string
+  spreadId: string
   confidence?: number
   reason?: string
   ambiguous?: boolean
@@ -60,23 +59,19 @@ interface OptimizeResponse {
 const QUESTION_PATTERNS = {
   future: {
     keywords: ['what will happen', 'what will become', 'what is the outcome', 'what is the result', 'what comes next', 'what is coming', 'what lies ahead', 'tomorrow', 'next week', 'next month', 'next year', 'in the future', '2026', '2025', 'annual', 'year ahead'],
-    layoutType: 9 as const,
-    spreadType: 'comprehensive'
+    spreadId: 'comprehensive'
   },
   yesno: {
     keywords: ['is it yes or no', 'will it happen', 'should i do it', 'can i expect', 'will i get', 'is it possible', 'will i succeed', 'should i proceed', 'yes or no'],
-    layoutType: 3 as const,
-    spreadType: 'yes-no-maybe'
+    spreadId: 'yes-no-maybe'
   },
   relationship: {
     keywords: ['relationship', 'love', 'romance', 'partner', 'boyfriend', 'girlfriend', 'husband', 'wife', 'dating', 'marriage', 'breakup', 'divorce', 'soulmate', 'crush'],
-    layoutType: 7 as const,
-    spreadType: 'relationship-double-significator'
+    spreadId: 'relationship-double-significator'
   },
   complex: {
     keywords: ['comprehensive', 'detailed', 'thorough', 'in-depth', 'complete', 'full picture', 'everything', 'overall', 'life in general', 'general outlook', 'major events', 'multiple areas', 'money', 'health', 'work', 'career'],
-    layoutType: 9 as const,
-    spreadType: 'comprehensive'
+    spreadId: 'structured-reading'
   }
 }
 
@@ -100,7 +95,7 @@ function detectScope(text: string): { scope: 'micro' | 'macro'; reason: string }
     : { scope: 'micro', reason: 'Single-issue or short-term' };
 }
 
-async function analyzeQuestion(question: string): Promise<{ layoutType: 3 | 5 | 7 | 9 | 36; spreadType?: string; confidence?: number; reason?: string; ambiguous?: boolean; focus?: string }> {
+async function analyzeQuestion(question: string): Promise<{ spreadId: string; confidence?: number; reason?: string; ambiguous?: boolean; focus?: string }> {
   // Auto-capitalise months and common pronouns/names
   const capitalisedQuestion = question.replace(/\b(i\b|january|february|march|april|may|june|july|august|september|october|november|december)\b/gi, w => w.charAt(0).toUpperCase() + w.slice(1))
 
@@ -108,7 +103,7 @@ async function analyzeQuestion(question: string): Promise<{ layoutType: 3 | 5 | 
 
   // Check for Grand Tableau requests
   if (lowerQuestion.includes('grand tableau') || lowerQuestion.includes('full deck') || lowerQuestion.includes('all cards')) {
-    return { layoutType: 36 }
+    return { spreadId: 'grand-tableau' }
   }
 
   // Detect scope for potential spread upgrades
@@ -119,24 +114,21 @@ async function analyzeQuestion(question: string): Promise<{ layoutType: 3 | 5 | 
   if (aiCategory) {
     const pattern = QUESTION_PATTERNS[aiCategory as keyof typeof QUESTION_PATTERNS]
     if (pattern) {
-      let layoutType = pattern.layoutType
-      let spreadType = pattern.spreadType
+      let spreadId = pattern.spreadId
 
       // Upgrade spread for macro scope questions
       if (scope === 'macro') {
-        if (layoutType <= 5) {
-          layoutType = 9 // Upgrade to comprehensive
-          spreadType = undefined // Comprehensive doesn't have specific spread type
-        } else if (layoutType === 7) {
-          layoutType = 36 // Upgrade to Grand Tableau for very broad questions
-          spreadType = undefined
+        // For macro scope, upgrade to more comprehensive spreads
+        if (spreadId === 'yes-no-maybe' || spreadId === 'structured-reading') {
+          spreadId = 'comprehensive' // Upgrade to comprehensive for broad questions
+        } else if (spreadId === 'relationship-double-significator') {
+          spreadId = 'grand-tableau' // Upgrade to Grand Tableau for very broad relationship questions
         }
-        // For 9, keep as is; for 36, already max
+        // For comprehensive and grand-tableau, keep as is
       }
 
        return {
-        layoutType,
-        spreadType,
+        spreadId,
         confidence: 95, // High confidence for AI classification
         reason: `AI classified as ${aiCategory} category`,
         focus: aiCategory,
@@ -147,8 +139,7 @@ async function analyzeQuestion(question: string): Promise<{ layoutType: 3 | 5 | 
 
   // Fallback when AI fails
   return {
-    layoutType: 5,
-    spreadType: 'structured-reading',
+    spreadId: 'structured-reading',
     confidence: 30,
     reason: 'AI unavailable, using general structured reading',
     focus: 'general',
@@ -226,8 +217,7 @@ export async function POST(request: NextRequest) {
     const result = await analyzeQuestion(question)
     
     const response: OptimizeResponse = {
-      layoutType: result.layoutType,
-      spreadType: result.spreadType,
+      spreadId: result.spreadId,
       confidence: result.confidence,
       reason: result.reason,
       ambiguous: result.ambiguous,
