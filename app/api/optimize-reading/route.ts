@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { classifyQuestion } from '@/lib/deepseek'
 
+// Simple in-memory cache for optimization results (5-minute TTL)
+const cache = new Map<string, { result: any; timestamp: number }>()
+const CACHE_TTL = 5 * 60 * 1000 // 5 minutes
+
 interface OptimizeRequest {
   question: string
 }
@@ -11,6 +15,7 @@ interface OptimizeResponse {
   confidence?: number
   reason?: string
   ambiguous?: boolean
+  focus?: string
 }
 
 // Question analysis patterns
@@ -114,7 +119,10 @@ function detectScope(text: string): { scope: 'micro' | 'macro'; reason: string }
 }
 
 async function analyzeQuestion(question: string): Promise<{ layoutType: 3 | 5 | 7 | 9 | 36; spreadType?: string }> {
-  const lowerQuestion = question.toLowerCase()
+  // Auto-capitalise months and common pronouns/names
+  const capitalisedQuestion = question.replace(/\b(i\b|january|february|march|april|may|june|july|august|september|october|november|december)\b/gi, w => w.charAt(0).toUpperCase() + w.slice(1))
+
+  const lowerQuestion = capitalisedQuestion.toLowerCase()
 
   // Check for complex/comprehensive requests first
   if (QUESTION_PATTERNS.complex.keywords.some(keyword => lowerQuestion.includes(keyword))) {
@@ -153,7 +161,8 @@ async function analyzeQuestion(question: string): Promise<{ layoutType: 3 | 5 | 
         layoutType,
         spreadType,
         confidence: 90, // High confidence for AI classification
-        reason: `AI classified as ${aiCategory} category`
+        reason: `AI classified as ${aiCategory} category`,
+        focus: aiCategory
       }
     }
   }
@@ -229,7 +238,8 @@ async function analyzeQuestion(question: string): Promise<{ layoutType: 3 | 5 | 
       spreadType,
       confidence: Math.round(confidence),
       reason,
-      ambiguous
+      ambiguous,
+      focus: bestMatch.key
     }
   }
   
@@ -238,22 +248,30 @@ async function analyzeQuestion(question: string): Promise<{ layoutType: 3 | 5 | 
     layoutType: 3,
     spreadType: 'general-reading',
     confidence: 0,
-    reason: 'No specific patterns detected, using general reading'
+    reason: 'No specific patterns detected, using general reading',
+    focus: 'general'
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
     const body: OptimizeRequest = await request.json()
-    
+
     if (!body.question || typeof body.question !== 'string') {
       return NextResponse.json(
         { error: 'Question is required' },
         { status: 400 }
       )
     }
-    
+
     const question = body.question.trim()
+
+    // Check cache first
+    const cacheKey = question.toLowerCase()
+    const cached = cache.get(cacheKey)
+    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+      return NextResponse.json(cached.result)
+    }
     
     if (question.length < 5) {
       return NextResponse.json(
@@ -274,9 +292,16 @@ export async function POST(request: NextRequest) {
     
     const response: OptimizeResponse = {
       layoutType: result.layoutType,
-      spreadType: result.spreadType
+      spreadType: result.spreadType,
+      confidence: result.confidence,
+      reason: result.reason,
+      ambiguous: result.ambiguous,
+      focus: result.focus
     }
-    
+
+    // Cache the result
+    cache.set(cacheKey, { result: response, timestamp: Date.now() })
+
     return NextResponse.json(response)
     
   } catch (error) {

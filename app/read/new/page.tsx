@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, Suspense } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Card as CardType, ReadingCard } from '@/lib/types'
 import { Deck } from '@/components/Deck'
@@ -51,6 +51,7 @@ const SEVEN_CARD_SPREADS = [
 
 function NewReadingPageContent() {
   const searchParams = useSearchParams()
+  const router = useRouter()
   const [allCards, setAllCards] = useState<CardType[]>([])
   const [drawnCards, setDrawnCards] = useState<ReadingCard[]>([])
   const [layoutType, setLayoutType] = useState<3 | 5 | 7 | 9 | 36>(3)
@@ -73,7 +74,45 @@ function NewReadingPageContent() {
     confidence?: number
     reason?: string
     ambiguous?: boolean
+    focus?: string
   } | null>(null)
+
+  // Load from URL params or localStorage on mount
+  useEffect(() => {
+    const urlQuestion = searchParams.get('q')
+    const urlLayout = searchParams.get('r')
+    const urlSpread = searchParams.get('s')
+
+    if (urlQuestion || urlLayout) {
+      // Load from URL params
+      if (urlQuestion) setQuestion(urlQuestion)
+      if (urlLayout) setLayoutType(parseInt(urlLayout) || 3)
+      if (urlSpread) {
+        const layout = parseInt(urlLayout || '3')
+        if (layout === 3) setThreeCardSpreadType(urlSpread)
+        else if (layout === 5) setFiveCardSpreadType(urlSpread)
+        else if (layout === 7) setSevenCardSpreadType(urlSpread)
+      }
+    } else {
+      // Fallback to localStorage
+      const lastOptimised = localStorage.getItem('lastOptimised')
+      if (lastOptimised) {
+        try {
+          const data = JSON.parse(lastOptimised)
+          setQuestion(data.question || '')
+          setLayoutType(data.layoutType || 3)
+          if (data.spreadType) {
+            if (data.layoutType === 3) setThreeCardSpreadType(data.spreadType)
+            else if (data.layoutType === 5) setFiveCardSpreadType(data.spreadType)
+            else if (data.layoutType === 7) setSevenCardSpreadType(data.spreadType)
+          }
+          setOptimizationResult(data.optimizationResult || null)
+        } catch (e) {
+          // Ignore invalid data
+        }
+      }
+    }
+  }, [searchParams])
 
   // AI-related state
   const [aiReading, setAiReading] = useState<AIReadingResponse | null>(null)
@@ -334,7 +373,7 @@ function NewReadingPageContent() {
         throw new Error('Failed to analyze question')
       }
 
-      const { layoutType, spreadType, confidence, reason, ambiguous } = await response.json()
+      const { layoutType, spreadType, confidence, reason, ambiguous, focus } = await response.json()
 
       // Apply the optimized settings
       setLayoutType(layoutType)
@@ -348,7 +387,22 @@ function NewReadingPageContent() {
       }
 
       // Store optimization metadata
-      setOptimizationResult({ confidence, reason, ambiguous })
+      setOptimizationResult({ confidence, reason, ambiguous, focus })
+
+      // Save to localStorage for persistence
+      localStorage.setItem('lastOptimised', JSON.stringify({
+        question,
+        layoutType,
+        spreadType,
+        optimizationResult: { confidence, reason, ambiguous, focus }
+      }))
+
+      // Update URL for shareable link
+      const params = new URLSearchParams()
+      params.set('q', question)
+      params.set('r', layoutType.toString())
+      if (spreadType) params.set('s', spreadType)
+      router.replace(`/read/new?${params.toString()}`, { scroll: false })
 
       // Auto-proceed to drawing step for quick AI auto-select
       setStep('drawing')
@@ -460,16 +514,20 @@ function NewReadingPageContent() {
                     <h3 className="text-lg font-medium text-foreground">
                       Not sure which spread fits your question?
                     </h3>
+                    <div aria-live="polite" aria-atomic="true" className="sr-only">
+                      {isAnalyzingQuestion ? 'Analyzing your question for the best spread' : ''}
+                    </div>
                     <Button
                       onClick={analyzeQuestionAndOptimize}
                       disabled={!question.trim() || isAnalyzingQuestion}
                       variant="outline"
                       className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/30 hover:border-primary/50 hover:bg-primary/20 text-primary font-medium px-6 py-2 rounded-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                      aria-describedby="ai-button-help"
                     >
                       <Sparkles className={`w-4 h-4 mr-2 ${isAnalyzingQuestion ? 'animate-spin' : ''}`} />
                       {isAnalyzingQuestion ? 'Analyzing & Proceeding...' : 'AI Auto-Select & Start Reading'}
                     </Button>
-                    <p className="text-sm text-muted-foreground">
+                    <p id="ai-button-help" className="text-sm text-muted-foreground">
                       Our AI will analyze your question, select the perfect spread, and take you directly to the reading.
                     </p>
                   </div>
@@ -690,9 +748,14 @@ Or: Rider, Sun, Key`;
                     Draw Your Cards
                     <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-0.5 bg-gradient-to-r from-primary to-primary/60 rounded-full"></div>
                   </h2>
-                  <p className="text-muted-foreground text-lg italic">
-                    Drawing {layoutType} cards from the sacred deck
-                  </p>
+                   <p className="text-muted-foreground text-lg italic">
+                     Drawing {layoutType} cards from the sacred deck
+                   </p>
+                   {optimizationResult?.focus && (
+                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
+                       <span>Focus: {optimizationResult.focus.charAt(0).toUpperCase() + optimizationResult.focus.slice(1)}</span>
+                     </div>
+                   )}
                 </div>
 
                  {isPhysical ? (
