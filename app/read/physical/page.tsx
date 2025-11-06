@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Card as CardType, ReadingCard } from '@/lib/types'
 import { ReadingViewer } from '@/components/ReadingViewer'
 import { AIReadingDisplay } from '@/components/AIReadingDisplay'
@@ -263,7 +263,7 @@ function PhysicalReadingPage() {
             <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-32 h-0.5 bg-gradient-to-r from-primary to-primary/60 rounded-full"></div>
           </h1>
           <p className="text-muted-foreground text-lg italic">
-            Interpret the cards you've drawn from your own deck
+            Interpret the cards you&apos;ve drawn from your own deck
           </p>
         </div>
 
