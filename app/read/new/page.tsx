@@ -318,7 +318,9 @@ function NewReadingPageContent() {
       }
    }, [question, allCards, selectedSpread, mountedRef])
 
-   const handleDraw = useCallback(async (cards: CardType[]) => {
+
+
+    const handleDraw = useCallback(async (cards: CardType[]) => {
       const currentPath = path
       const currentSpread = selectedSpread
       
