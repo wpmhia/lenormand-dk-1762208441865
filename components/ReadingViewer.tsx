@@ -95,6 +95,15 @@ const getPositionInfo = (position: number, spreadId?: string): PositionInfo => {
         2: { label: "Position 3", meaning: "Third card in the flowing narrative" },
         3: { label: "Position 4", meaning: "Fourth card in the flowing narrative" },
         4: { label: "Position 5", meaning: "Fifth card in the flowing narrative" }
+      },
+      "relationship-double-significator": {
+        0: { label: "Partner 1 - Past", meaning: "Left partner's past experiences and history affecting the relationship" },
+        1: { label: "Partner 1 - Present", meaning: "Left partner's current feelings, thoughts, and situation in the relationship" },
+        2: { label: "Partner 1 - Future", meaning: "Left partner's hopes, expectations, and vision for the relationship's future" },
+        3: { label: "Relationship Core", meaning: "The central dynamic, challenge, or connection that sits between both partners" },
+        4: { label: "Partner 2 - Past", meaning: "Right partner's past experiences and history affecting the relationship" },
+        5: { label: "Partner 2 - Present", meaning: "Right partner's current feelings, thoughts, and situation in the relationship" },
+        6: { label: "Partner 2 - Future", meaning: "Right partner's hopes, expectations, and vision for the relationship's future" }
       }
     }
 
