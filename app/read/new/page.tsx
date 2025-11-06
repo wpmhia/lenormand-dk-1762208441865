@@ -511,9 +511,7 @@ function NewReadingPageContent() {
 
                   {/* AI Auto-Select Button */}
                   <div className="text-center space-y-3">
-                    <h3>
-                      Not sure which spread fits your question?
-                    </h3>
+
                     <div aria-live="polite" aria-atomic="true" className="sr-only">
                       {isAnalyzingQuestion ? 'Analyzing your question for the best spread' : ''}
                     </div>
