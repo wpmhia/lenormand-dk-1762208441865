@@ -511,25 +511,99 @@ function NewReadingPageContent() {
                     </div>
                   </div>
 
-                  {/* AI Auto-Select Button */}
-                  <div className="text-center space-y-3">
-                    <div aria-live="polite" aria-atomic="true" className="sr-only">
-                      {isAnalyzingQuestion ? 'Analyzing your question for the best spread' : ''}
-                    </div>
-                    <Button
-                      onClick={analyzeQuestionAndOptimize}
-                      disabled={!question.trim() || isAnalyzingQuestion}
-                      variant="outline"
-                      className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/30 hover:border-primary/50 hover:bg-primary/20 text-primary font-medium px-6 py-2 rounded-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                      aria-describedby="ai-button-help"
-                    >
-                      <Sparkles className={`w-4 h-4 mr-2 ${isAnalyzingQuestion ? 'animate-spin' : ''}`} />
-                      {isAnalyzingQuestion ? 'Analyzing...' : 'AI Auto-Select Spread'}
-                    </Button>
-                    <p id="ai-button-help" className="text-sm text-muted-foreground">
-                      Our AI will analyze your question and suggest the best spread for your reading.
-                    </p>
-                  </div>
+                   {/* Card Source Selection - Primary Choice */}
+                   <div className="space-y-4">
+                     <div className="text-center">
+                       <Label className="text-foreground font-medium text-lg mb-4 block">
+                         How would you like to get your cards?
+                       </Label>
+                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
+                         {/* AI Auto-Select Option */}
+                         <div
+                           className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:scale-105 ${
+                             !isPhysical
+                               ? 'bg-primary/10 border-primary shadow-lg shadow-primary/20'
+                               : 'bg-muted/50 border-border hover:border-primary/30'
+                           }`}
+                           onClick={() => setIsPhysical(false)}
+                         >
+                           <div className="text-center space-y-3">
+                             <div className="w-12 h-12 mx-auto bg-primary/20 rounded-full flex items-center justify-center">
+                               <Sparkles className="w-6 h-6 text-primary" />
+                             </div>
+                             <div>
+                               <h3 className="font-semibold text-foreground mb-1">AI Auto-Select</h3>
+                               <p className="text-sm text-muted-foreground mb-3">
+                                 Let AI analyze your question and suggest the perfect spread
+                               </p>
+                               <Button
+                                 onClick={(e) => {
+                                   e.stopPropagation();
+                                   analyzeQuestionAndOptimize();
+                                 }}
+                                 disabled={!question.trim() || isAnalyzingQuestion}
+                                 variant="outline"
+                                 size="sm"
+                                 className="bg-primary/10 border-primary/30 hover:bg-primary/20 text-primary"
+                               >
+                                 <Sparkles className={`w-4 h-4 mr-2 ${isAnalyzingQuestion ? 'animate-spin' : ''}`} />
+                                 {isAnalyzingQuestion ? 'Analyzing...' : 'Get AI Suggestion'}
+                               </Button>
+                             </div>
+                           </div>
+                         </div>
+
+                         {/* Physical Cards Option */}
+                         <div
+                           className={`rounded-xl border-2 cursor-pointer transition-all duration-300 hover:scale-105 ${
+                             isPhysical
+                               ? 'bg-primary/10 border-primary shadow-lg shadow-primary/20'
+                               : 'bg-muted/50 border-border hover:border-primary/30'
+                           }`}
+                           onClick={() => setIsPhysical(true)}
+                         >
+                           <div className="p-6 text-center space-y-3">
+                             <div className="w-12 h-12 mx-auto bg-primary/20 rounded-full flex items-center justify-center">
+                               <Shuffle className="w-6 h-6 text-primary" />
+                             </div>
+                             <div>
+                               <h3 className="font-semibold text-foreground mb-1">Physical Cards</h3>
+                               <p className="text-sm text-muted-foreground">
+                                 Use cards from your own Lenormand deck
+                               </p>
+                               <div className="mt-3 text-xs text-primary font-medium">
+                                 ⭐ Unique Feature
+                               </div>
+                             </div>
+                           </div>
+
+                           {/* Physical Cards Input - Shows when selected */}
+                           {isPhysical && (
+                             <div className="px-6 pb-6 border-t border-primary/20 mt-4 pt-4">
+                               <div className="space-y-2">
+                                 <Label htmlFor="physical-cards" className="text-foreground font-medium text-sm">
+                                   Enter Your Cards:
+                                 </Label>
+                                 <Textarea
+                                   id="physical-cards"
+                                   value={physicalCards}
+                                   onChange={(e) => setPhysicalCards(e.target.value)}
+                                   placeholder={`Enter ${selectedSpread.cards} card numbers (1-36) separated by commas, spaces, or new lines for "${selectedSpread.label}".
+Example: ${selectedSpread.cards === 3 ? '1, 15, 28' : selectedSpread.cards === 5 ? '1, 15, 28, 7, 22' : selectedSpread.cards === 36 ? '1, 15, 28, 7, 22, 33, 12, 19, 31...' : '1, 15, 28'}
+Or: ${selectedSpread.cards === 3 ? 'Rider, Sun, Key' : selectedSpread.cards === 5 ? 'Rider, Sun, Key, Snake, Paths' : selectedSpread.cards === 36 ? 'Rider, Sun, Key, Snake, Paths, Moon, Birds...' : 'Rider, Sun, Key'}`}
+                                   className="bg-background border-border text-foreground placeholder:text-muted-foreground min-h-[80px] rounded-lg focus:border-primary focus:ring-primary/20 resize-none"
+                                   aria-describedby="physical-cards-help"
+                                 />
+                                 <div id="physical-cards-help" className="text-xs text-muted-foreground">
+                                   Enter card numbers (1-36) or names from your physical deck
+                                 </div>
+                               </div>
+                             </div>
+                           )}
+                         </div>
+                       </div>
+                     </div>
+                   </div>
 
                   {/* AI Feedback Banner */}
                   {aiFeedback && (
@@ -580,57 +654,7 @@ function NewReadingPageContent() {
 
 
 
-              {/* Reading Method - Collapsible */}
-              <CollapsibleCard
-                title="Reading Method"
-                icon={<Settings className="w-4 h-4" />}
-                defaultOpen={false}
-                className="border-muted/50"
-              >
-                <div className="space-y-4">
-                  {/* Physical Cards Toggle */}
-                  <div
-                    className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-colors ${isPhysical ? 'bg-primary/10 border-primary/30' : 'bg-muted/80 border-border hover:bg-muted'}`}
-                    onClick={() => setIsPhysical(!isPhysical)}
-                  >
-                    <div className="space-y-1">
-                      <Label htmlFor="physical-mode" className="text-foreground font-medium text-sm">
-                        Use Physical Cards
-                      </Label>
-                      <p className="text-xs text-muted-foreground">
-                        Enter cards from your physical Lenormand deck
-                      </p>
-                    </div>
-                    <Switch
-                      id="physical-mode"
-                      checked={isPhysical}
-                      onCheckedChange={setIsPhysical}
-                      onClick={(e) => e.stopPropagation()}
-                      aria-label="Toggle between virtual and physical card reading"
-                    />
-                  </div>
 
-                  {/* Physical Cards Input */}
-                  {isPhysical && (
-                    <div className="space-y-2">
-                      <Label htmlFor="physical-cards">Enter Your Cards:</Label>
-                      <Textarea
-                        id="physical-cards"
-                        value={physicalCards}
-                        onChange={(e) => setPhysicalCards(e.target.value)}
-                         placeholder={`Enter ${selectedSpread.cards} card numbers (1-36) separated by commas, spaces, or new lines for "${selectedSpread.label}".
-Example: ${selectedSpread.cards === 3 ? '1, 15, 28' : selectedSpread.cards === 5 ? '1, 15, 28, 7, 22' : selectedSpread.cards === 36 ? '1, 15, 28, 7, 22, 33, 12, 19, 31...' : '1, 15, 28'}
-Or: ${selectedSpread.cards === 3 ? 'Rider, Sun, Key' : selectedSpread.cards === 5 ? 'Rider, Sun, Key, Snake, Paths' : selectedSpread.cards === 36 ? 'Rider, Sun, Key, Snake, Paths, Moon, Birds...' : 'Rider, Sun, Key'}`}
-                        className="bg-background border-border text-foreground placeholder:text-muted-foreground min-h-[100px] rounded-xl focus:border-primary focus:ring-primary/20 resize-none"
-                        rows={4}
-                      />
-                      <div className="text-xs text-muted-foreground italic">
-                        Enter card numbers (1-36) or names separated by commas, spaces, or new lines
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </CollapsibleCard>
 
               {/* Advanced Options - Collapsible */}
               {optimizationResult && (
