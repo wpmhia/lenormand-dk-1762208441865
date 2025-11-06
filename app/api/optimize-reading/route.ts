@@ -18,29 +18,42 @@ const SYSTEM_PROMPT = `
 You are a Lenormand spread selector. Analyze the question and return ONLY this JSON:
 \`\`\`json
 {
-  "readingType": "string", // e.g. "Annual Forecast", "Relationship", "Career"
+  "readingType": "string", // must be one of: future, yesno, relationship, complex
   "spreadType": "string",  // must be one of: ${VALID_SPREADS.join(', ')}
   "reason": "string"       // one short sentence explaining your choice
 }
 \`\`\`
 
+**Classification rules:**
+- future: Questions about what will happen, outcomes, next steps, year-ahead, annual forecasts
+- yesno: Binary decisions, will it happen, should I do it, yes/no questions
+- relationship: Love, romance, partners, dating, marriage, relationships
+- complex: Multiple life areas, comprehensive readings, general guidance
+
 **Selection rules:**
-1. Year questions (2026, next year, annual) → 9-card Comprehensive
-2. Yes/No or binary decisions → 3-card Yes-No-Maybe
-3. Relationship/love questions → 7-card Relationship Double-Significator
-4. General life guidance or multiple areas → 5-card Structured
-5. Family scope or broad topics → upgrade to larger spreads (7, 9, 36)
-6. **Never default to 3-card unless truly binary**
+1. future → 9-card Comprehensive
+2. yesno → 3-card Yes-No-Maybe
+3. relationship → 7-card Relationship Double-Significator
+4. complex → 5-card Structured
 
 Examples:
-- "Will I get the job?" → 3-card Yes-No-Maybe, "Career", "Binary decision"
-- "What will 2026 bring us?" → 9-card Comprehensive, "Annual Forecast", "Year timeframe"
-- "Tell me about love" → 7-card Relationship Double-Significator, "Relationship", "Love topic"
-- "What about money, health and work?" → 9-card Comprehensive, "General", "Multiple life areas"
+- "Will I get the job?" → yesno, "3-card Yes-No-Maybe", "Binary career decision"
+- "What will 2026 bring us?" → future, "9-card Comprehensive", "Year timeframe forecast"
+- "Tell me about love" → relationship, "7-card Relationship Double-Significator", "Love and romance reading"
+- "What about money, health and work?" → complex, "5-card Structured", "Multiple life areas"
 `;
 
 interface OptimizeRequest {
   question: string
+}
+
+interface OptimizeResponse {
+  layoutType: 3 | 5 | 7 | 9 | 36
+  spreadType?: string
+  confidence?: number
+  reason?: string
+  ambiguous?: boolean
+  focus?: string
 }
 
 // Question analysis patterns
