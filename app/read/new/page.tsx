@@ -589,14 +589,14 @@ function NewReadingPageContent() {
                                           <SelectValue />
                                         </SelectTrigger>
                                         <SelectContent className="bg-card border-border">
-                                          {COMPREHENSIVE_SPREADS.map((spread) => (
-                                   <SelectItem key={spread.id} value={spread.id} className="text-card-foreground hover:bg-accent focus:bg-accent">
-                                     <div className="flex flex-col min-w-0">
-                                       <span className="font-medium truncate">{spread.label}</span>
-                                       <span className="text-xs text-muted-foreground leading-tight">{spread.description} ({spread.cards} cards)</span>
-                                     </div>
-                                   </SelectItem>
-                                          ))}
+                                  {COMPREHENSIVE_SPREADS.map((spread) => (
+                                    <SelectItem key={spread.id} value={spread.id} className="text-card-foreground hover:bg-accent focus:bg-accent py-3">
+                                      <div className="flex flex-col min-w-0">
+                                        <span className="font-medium">{spread.label}</span>
+                                        <span className="text-xs text-muted-foreground leading-tight">{spread.description} ({spread.cards} cards)</span>
+                                      </div>
+                                    </SelectItem>
+                                  ))}
                                         </SelectContent>
                                       </Select>
                                     </div>
@@ -621,14 +621,14 @@ function NewReadingPageContent() {
                                 <SelectValue />
                               </SelectTrigger>
                               <SelectContent className="bg-card border-border">
-                                 {COMPREHENSIVE_SPREADS.map((spread) => (
-                                   <SelectItem key={spread.id} value={spread.id} className="text-card-foreground hover:bg-accent focus:bg-accent">
-                                     <div className="flex flex-col min-w-0">
-                                       <span className="font-medium truncate">{spread.label}</span>
-                                       <span className="text-xs text-muted-foreground leading-tight">{spread.description} ({spread.cards} cards)</span>
-                                     </div>
-                                   </SelectItem>
-                                 ))}
+                                   {COMPREHENSIVE_SPREADS.map((spread) => (
+                                    <SelectItem key={spread.id} value={spread.id} className="text-card-foreground hover:bg-accent focus:bg-accent py-3">
+                                      <div className="flex flex-col min-w-0">
+                                        <span className="font-medium">{spread.label}</span>
+                                        <span className="text-xs text-muted-foreground leading-tight">{spread.description} ({spread.cards} cards)</span>
+                                      </div>
+                                    </SelectItem>
+                                  ))}
                               </SelectContent>
                             </Select>
                           </div>
