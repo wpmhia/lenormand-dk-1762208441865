@@ -68,6 +68,13 @@ function NewReadingPageContent() {
   const [error, setError] = useState('')
   const [step, setStep] = useState<'setup' | 'drawing' | 'ai-analysis'>('setup')
 
+  // Optimization results
+  const [optimizationResult, setOptimizationResult] = useState<{
+    confidence?: number
+    reason?: string
+    ambiguous?: boolean
+  } | null>(null)
+
   // AI-related state
   const [aiReading, setAiReading] = useState<AIReadingResponse | null>(null)
   const [aiLoading, setAiLoading] = useState(false)
@@ -306,6 +313,13 @@ function NewReadingPageContent() {
       return
     }
 
+    // Re-ask check: ensure question has punctuation and reasonable length
+    const cleanQuestion = question.trim().replace(/[.!?？]+$/, '')
+    if (!/[?？]/.test(question) && cleanQuestion.length < 40) {
+      setError('Questions usually work better when you add a "?" and a few more details. Try: "Will I get the job?"')
+      return
+    }
+
     setIsAnalyzingQuestion(true)
     setError('')
 
@@ -320,7 +334,7 @@ function NewReadingPageContent() {
         throw new Error('Failed to analyze question')
       }
 
-      const { layoutType, spreadType } = await response.json()
+      const { layoutType, spreadType, confidence, reason, ambiguous } = await response.json()
 
       // Apply the optimized settings
       setLayoutType(layoutType)
@@ -332,6 +346,9 @@ function NewReadingPageContent() {
       } else if (layoutType === 7 && spreadType) {
         setSevenCardSpreadType(spreadType)
       }
+
+      // Store optimization metadata
+      setOptimizationResult({ confidence, reason, ambiguous })
 
       // Auto-proceed to drawing step for quick AI auto-select
       setStep('drawing')
@@ -609,9 +626,42 @@ Or: Rider, Sun, Key`;
 
 
 
-               </div>
+                </div>
 
-                  <Button
+                  {/* Optimization feedback */}
+                  {optimizationResult && (
+                    <div className="space-y-3 p-4 bg-muted/30 rounded-xl border border-border">
+                      {optimizationResult.ambiguous && (
+                        <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400">
+                          <span className="text-sm font-medium">⚠️ Heads-up:</span>
+                          <span className="text-sm">This question mixes multiple themes—consider narrowing it down or doing separate readings.</span>
+                        </div>
+                      )}
+
+                      {optimizationResult.confidence !== undefined && (
+                        <div className="space-y-1">
+                          <div className="flex items-center justify-between text-sm">
+                            <span className="text-muted-foreground">AI match confidence</span>
+                            <span className="font-medium">{optimizationResult.confidence}%</span>
+                          </div>
+                          <div className="w-full bg-muted rounded-full h-2">
+                            <div
+                              className="bg-primary h-2 rounded-full transition-all duration-300"
+                              style={{ width: `${optimizationResult.confidence}%` }}
+                            />
+                          </div>
+                        </div>
+                      )}
+
+                      {optimizationResult.reason && (
+                        <p className="text-xs text-muted-foreground italic">
+                          {optimizationResult.reason}
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                   <Button
                    onClick={() => setStep('drawing')}
                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30 rounded-xl py-3 font-semibold transition-all duration-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                     disabled={!question.trim() || (isPhysical && !physicalCards.trim())}

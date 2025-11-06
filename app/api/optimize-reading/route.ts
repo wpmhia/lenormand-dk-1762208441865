@@ -8,6 +8,9 @@ interface OptimizeRequest {
 interface OptimizeResponse {
   layoutType: 3 | 5 | 7 | 9 | 36
   spreadType?: string
+  confidence?: number
+  reason?: string
+  ambiguous?: boolean
 }
 
 // Question analysis patterns
@@ -148,7 +151,9 @@ async function analyzeQuestion(question: string): Promise<{ layoutType: 3 | 5 | 
 
       return {
         layoutType,
-        spreadType
+        spreadType,
+        confidence: 90, // High confidence for AI classification
+        reason: `AI classified as ${aiCategory} category`
       }
     }
   }
@@ -191,26 +196,50 @@ async function analyzeQuestion(question: string): Promise<{ layoutType: 3 | 5 | 
     let layoutType = bestMatch.pattern.layoutType
     let spreadType = bestMatch.pattern.spreadType
 
+    // Calculate confidence (best score as percentage of max possible score)
+    const maxPossibleScore = 10 // Rough estimate
+    const confidence = Math.min(100, (bestMatch.score / maxPossibleScore) * 100)
+
+    // Check for ambiguity (multiple categories with scores within 20% of best)
+    const bestScore = bestMatch.score
+    const ambiguous = filteredScores.filter(item => item.score >= bestScore * 0.8).length > 1
+
+    // Generate reason
+    let reason = `Detected keywords for ${bestMatch.key} category`
+    if (scope === 'macro') {
+      reason += ' + macro scope upgrade'
+    }
+
     // Upgrade spread for macro scope questions
     if (scope === 'macro') {
       if (layoutType <= 5) {
         layoutType = 9 // Upgrade to comprehensive
         spreadType = undefined // Comprehensive doesn't have specific spread type
+        reason += ' (upgraded to comprehensive for broad scope)'
       } else if (layoutType === 7) {
         layoutType = 36 // Upgrade to Grand Tableau for very broad questions
         spreadType = undefined
+        reason += ' (upgraded to Grand Tableau for broad scope)'
       }
       // For 9, keep as is; for 36, already max
     }
 
     return {
       layoutType,
-      spreadType
+      spreadType,
+      confidence: Math.round(confidence),
+      reason,
+      ambiguous
     }
   }
   
   // Default to 3-card general reading if no patterns match
-  return { layoutType: 3, spreadType: 'general-reading' }
+  return {
+    layoutType: 3,
+    spreadType: 'general-reading',
+    confidence: 0,
+    reason: 'No specific patterns detected, using general reading'
+  }
 }
 
 export async function POST(request: NextRequest) {
