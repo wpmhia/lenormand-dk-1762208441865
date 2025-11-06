@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { classifyQuestion } from '@/lib/deepseek'
 
 interface OptimizeRequest {
   question: string
@@ -89,18 +90,32 @@ const QUESTION_PATTERNS = {
   }
 }
 
-function analyzeQuestion(question: string): { layoutType: 3 | 5 | 7 | 9 | 36; spreadType?: string } {
+async function analyzeQuestion(question: string): Promise<{ layoutType: 3 | 5 | 7 | 9 | 36; spreadType?: string }> {
   const lowerQuestion = question.toLowerCase()
-  
+
   // Check for complex/comprehensive requests first
   if (QUESTION_PATTERNS.complex.keywords.some(keyword => lowerQuestion.includes(keyword))) {
     return { layoutType: 9 }
   }
-  
+
   // Check for Grand Tableau requests
   if (lowerQuestion.includes('grand tableau') || lowerQuestion.includes('full deck') || lowerQuestion.includes('all cards')) {
     return { layoutType: 36 }
   }
+
+  // Try AI classification first
+  const aiCategory = await classifyQuestion(question)
+  if (aiCategory) {
+    const pattern = QUESTION_PATTERNS[aiCategory as keyof typeof QUESTION_PATTERNS]
+    if (pattern) {
+      return {
+        layoutType: pattern.layoutType,
+        spreadType: pattern.spreadType
+      }
+    }
+  }
+
+  // Fallback to keyword-based analysis
   
   // Score each pattern based on weighted keyword matches
   const scores = Object.entries(QUESTION_PATTERNS).map(([key, pattern]) => {
@@ -173,7 +188,7 @@ export async function POST(request: NextRequest) {
     }
     
     // Analyze the question and determine optimal reading
-    const result = analyzeQuestion(question)
+    const result = await analyzeQuestion(question)
     
     const response: OptimizeResponse = {
       layoutType: result.layoutType,

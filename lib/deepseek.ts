@@ -82,6 +82,78 @@ function isSafePrompt(question: string): boolean {
   return !blockedKeywords.some(keyword => text.includes(keyword))
 }
 
+// Classify question category using AI
+export async function classifyQuestion(question: string): Promise<string | null> {
+  if (!isDeepSeekAvailable()) {
+    return null
+  }
+
+  if (!isSafePrompt(question)) {
+    return 'general' // Safe fallback
+  }
+
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout for classification
+
+  try {
+    const response = await fetch(`${DEEPSEEK_BASE_URL}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
+        'User-Agent': 'Lenormand-DK/1.0'
+      },
+      body: JSON.stringify({
+        model: 'deepseek-chat',
+        messages: [
+          {
+            role: 'system',
+            content: `Classify this Lenormand question into exactly one of these categories. Return only the category name in lowercase, no explanation:
+
+future - questions about what will happen, outcomes, future events
+timing - questions about when something will happen, timeframes, dates
+decision - questions about choices, what to do, options
+yesno - yes/no questions, will I/can I questions
+problem - questions about issues, challenges, obstacles
+solution - questions about solutions, fixes, advice
+relationship - questions about love, partners, relationships
+career - questions about work, jobs, professional matters
+wellness - questions about health, emotions, personal growth
+money - questions about finances, money, wealth
+general - general guidance, life questions
+complex - comprehensive or detailed analysis needed`
+          },
+          { role: 'user', content: question }
+        ],
+        temperature: 0.1,
+        max_tokens: 20
+      }),
+      signal: controller.signal
+    })
+
+    if (!response.ok) {
+      console.warn('DeepSeek classification failed:', response.status)
+      return null
+    }
+
+    const data = await response.json()
+    const category = data.choices?.[0]?.message?.content?.trim().toLowerCase()
+
+    // Validate it's a known category
+    const validCategories = ['future', 'timing', 'decision', 'yesno', 'problem', 'solution', 'relationship', 'career', 'wellness', 'money', 'general', 'complex']
+    if (validCategories.includes(category)) {
+      return category
+    }
+
+    return null
+  } catch (error) {
+    console.warn('DeepSeek classification error:', error)
+    return null
+  } finally {
+    clearTimeout(timeoutId)
+  }
+}
+
 // Main function to get AI reading
 export async function getAIReading(request: AIReadingRequest): Promise<AIReadingResponse | null> {
   if (!isDeepSeekAvailable()) {
