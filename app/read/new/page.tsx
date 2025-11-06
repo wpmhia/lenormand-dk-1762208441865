@@ -18,7 +18,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { Sparkles } from 'lucide-react'
+import { Sparkles, Dice1 } from 'lucide-react'
 import { getCards, drawCards, getCardById } from '@/lib/data'
 import { getAIReading, AIReadingRequest, AIReadingResponse, isDeepSeekAvailable } from '@/lib/deepseek'
 
@@ -81,6 +81,7 @@ function NewReadingPageContent() {
   } | null>(null)
   const [aiRetryCount, setAiRetryCount] = useState(0)
   const [showStartOverConfirm, setShowStartOverConfirm] = useState(false)
+  const [isAnalyzingQuestion, setIsAnalyzingQuestion] = useState(false)
 
   const resetReading = () => {
      setStep('setup')
@@ -282,7 +283,7 @@ function NewReadingPageContent() {
     setShowStartOverConfirm(true)
   }
 
-   const confirmStartOver = () => {
+  const confirmStartOver = () => {
      setDrawnCards([])
      setStep('setup')
      setQuestion('')
@@ -297,7 +298,48 @@ function NewReadingPageContent() {
      setAiError(null)
      setAiErrorDetails(null)
      setShowStartOverConfirm(false)
-   }
+    }
+
+  const analyzeQuestionAndOptimize = async () => {
+    if (!question.trim()) {
+      setError('Please enter a question first')
+      return
+    }
+
+    setIsAnalyzingQuestion(true)
+    setError('')
+
+    try {
+      const response = await fetch('/api/optimize-reading', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: question.trim() })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to analyze question')
+      }
+
+      const { layoutType, spreadType } = await response.json()
+
+      // Apply the optimized settings
+      setLayoutType(layoutType)
+      
+      if (layoutType === 3 && spreadType) {
+        setThreeCardSpreadType(spreadType)
+      } else if (layoutType === 5 && spreadType) {
+        setFiveCardSpreadType(spreadType)
+      } else if (layoutType === 7 && spreadType) {
+        setSevenCardSpreadType(spreadType)
+      }
+
+    } catch (error) {
+      console.error('Error analyzing question:', error)
+      setError('Failed to analyze question. Please try again.')
+    } finally {
+      setIsAnalyzingQuestion(false)
+    }
+  }
 
 
 
@@ -390,13 +432,25 @@ function NewReadingPageContent() {
                  <div id="question-count" className="text-right text-xs text-muted-foreground" aria-live="polite">
                    {questionCharCount}/500 characters
                  </div>
-                <div id="question-help" className="text-xs text-muted-foreground italic">
-                  Let your question breathe, and the cards will whisper their wisdom
-                </div>
-                </div>
+                 <div id="question-help" className="text-xs text-muted-foreground italic">
+                   Let your question breathe, and the cards will whisper their wisdom
+                 </div>
+                 </div>
 
+                 {/* Lucky Button */}
+                 <div className="flex justify-center">
+                   <Button
+                     onClick={analyzeQuestionAndOptimize}
+                     disabled={!question.trim() || isAnalyzingQuestion}
+                     variant="outline"
+                     className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/30 hover:border-primary/50 hover:bg-primary/20 text-primary font-medium px-6 py-2 rounded-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                   >
+                     <Dice1 className={`w-4 h-4 mr-2 ${isAnalyzingQuestion ? 'animate-spin' : ''}`} />
+                     {isAnalyzingQuestion ? 'Analyzing...' : 'Optimize Reading'}
+                   </Button>
+                 </div>
 
-                 <div className="space-y-4">
+                  <div className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="layout">Reading Type:</Label>
                       <Select value={layoutType.toString()} onValueChange={(value) => setLayoutType(parseInt(value) as 3 | 5 | 9 | 36)}>
