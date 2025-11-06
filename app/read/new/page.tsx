@@ -540,94 +540,123 @@ function NewReadingPageContent() {
                      </div>
                    ) : (
                      <div className="space-y-4">
-                       {/* AI Analysis Button */}
-                       <div className="text-center">
-                         <Button
-                           onClick={handleAnalyzeAndChoose}
-                           disabled={!question.trim() || isAnalyzingQuestion}
-                           className="w-full max-w-md bg-secondary hover:bg-secondary/90 text-secondary-foreground"
-                         >
-                           <Sparkles className={`w-4 h-4 mr-2 ${isAnalyzingQuestion ? 'animate-spin' : ''}`} />
-                           {isAnalyzingQuestion ? 'Analyzing...' : '✨ Analyze & Choose Best Spread'}
-                         </Button>
-                       </div>
+                        {/* AI Analysis Button - Only for virtual path */}
+                        {path === 'virtual' && (
+                          <div className="text-center">
+                            <Button
+                              onClick={handleAnalyzeAndChoose}
+                              disabled={!question.trim() || isAnalyzingQuestion}
+                              className="w-full max-w-md bg-secondary hover:bg-secondary/90 text-secondary-foreground"
+                            >
+                              <Sparkles className={`w-4 h-4 mr-2 ${isAnalyzingQuestion ? 'animate-spin' : ''}`} />
+                              {isAnalyzingQuestion ? 'Analyzing...' : '✨ Analyze & Choose Best Spread'}
+                            </Button>
+                          </div>
+                        )}
 
-                       {/* AI Result Display */}
-                       {aiResult && (
-                         <div className="max-w-md mx-auto">
-                           <div className="p-4 rounded-lg bg-muted/50 border border-border">
-                             <div className="flex items-start gap-3">
-                               <Sparkles className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                               <div className="flex-1">
-                                 <div className="flex items-center gap-2 mb-2">
-                                   <span className="text-sm font-medium text-primary">
-                                     AI Recommendation
-                                   </span>
-                                   <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full">
-                                     {aiResult.confidence}% match
-                                   </span>
-                                 </div>
-                                 <p className="text-sm text-foreground mb-2">{aiResult.reason}</p>
-                                 <button 
-                                   onClick={() => setShowManualPicker(!showManualPicker)}
-                                   className="text-xs text-muted-foreground underline hover:text-foreground"
-                                 >
-                                   {showManualPicker ? 'Keep recommendation' : 'Change spread'}
-                                 </button>
-                                 {showManualPicker && (
-                                   <div className="mt-3 space-y-2">
-                                     <Label htmlFor="manual-spread" className="text-foreground font-medium text-sm">
-                                       Choose different spread:
-                                     </Label>
-                                     <Select value={selectedSpread.id} onValueChange={(value) => {
-                                       const spread = COMPREHENSIVE_SPREADS.find(s => s.id === value)
-                                       if (spread) setSelectedSpread(spread)
-                                     }}>
-                                       <SelectTrigger className="bg-background border-border text-card-foreground rounded-lg focus:border-primary h-10">
-                                         <SelectValue />
-                                       </SelectTrigger>
-                                       <SelectContent className="bg-card border-border">
-                                         {COMPREHENSIVE_SPREADS.map((spread) => (
-                                           <SelectItem key={spread.id} value={spread.id} className="text-card-foreground hover:bg-accent focus:bg-accent">
-                                             <div className="flex flex-col">
-                                               <span className="font-medium">{spread.label}</span>
-                                               <span className="text-xs text-muted-foreground">{spread.description} ({spread.cards} cards)</span>
-                                             </div>
-                                           </SelectItem>
-                                         ))}
-                                       </SelectContent>
-                                     </Select>
-                                   </div>
-                                 )}
-                               </div>
-                             </div>
-                           </div>
-                         </div>
-                       )}
+                        {/* AI Result Display - Only for virtual path */}
+                        {aiResult && path === 'virtual' && (
+                          <div className="max-w-md mx-auto">
+                            <div className="p-4 rounded-lg bg-muted/50 border border-border">
+                              <div className="flex items-start gap-3">
+                                <Sparkles className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                                <div className="flex-1">
+                                  <div className="flex items-center gap-2 mb-2">
+                                    <span className="text-sm font-medium text-primary">
+                                      AI Recommendation
+                                    </span>
+                                    <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full">
+                                      {aiResult.confidence}% match
+                                    </span>
+                                  </div>
+                                  <p className="text-sm text-foreground mb-2">{aiResult.reason}</p>
+                                  <button 
+                                    onClick={() => setShowManualPicker(!showManualPicker)}
+                                    className="text-xs text-muted-foreground underline hover:text-foreground"
+                                  >
+                                    {showManualPicker ? 'Keep recommendation' : 'Change spread'}
+                                  </button>
+                                  {showManualPicker && (
+                                    <div className="mt-3 space-y-2">
+                                      <Label htmlFor="manual-spread" className="text-foreground font-medium text-sm">
+                                        Choose different spread:
+                                      </Label>
+                                      <Select value={selectedSpread.id} onValueChange={(value) => {
+                                        const spread = COMPREHENSIVE_SPREADS.find(s => s.id === value)
+                                        if (spread) setSelectedSpread(spread)
+                                      }}>
+                                        <SelectTrigger className="bg-background border-border text-card-foreground rounded-lg focus:border-primary h-10">
+                                          <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent className="bg-card border-border">
+                                          {COMPREHENSIVE_SPREADS.map((spread) => (
+                                            <SelectItem key={spread.id} value={spread.id} className="text-card-foreground hover:bg-accent focus:bg-accent">
+                                              <div className="flex flex-col">
+                                                <span className="font-medium">{spread.label}</span>
+                                                <span className="text-xs text-muted-foreground">{spread.description} ({spread.cards} cards)</span>
+                                              </div>
+                                            </SelectItem>
+                                          ))}
+                                        </SelectContent>
+                                      </Select>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Manual Spread Selection - Always show for physical path */}
+                        {path === 'physical' && (
+                          <div className="space-y-2">
+                            <Label htmlFor="manual-spread" className="text-foreground font-medium">
+                              Choose Your Spread:
+                            </Label>
+                            <Select value={selectedSpread.id} onValueChange={(value) => {
+                              const spread = COMPREHENSIVE_SPREADS.find(s => s.id === value)
+                              if (spread) setSelectedSpread(spread)
+                            }}>
+                              <SelectTrigger className="bg-background border-border text-card-foreground rounded-lg focus:border-primary h-10">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent className="bg-card border-border">
+                                {COMPREHENSIVE_SPREADS.map((spread) => (
+                                  <SelectItem key={spread.id} value={spread.id} className="text-card-foreground hover:bg-accent focus:bg-accent">
+                                    <div className="flex flex-col">
+                                      <span className="font-medium">{spread.label}</span>
+                                      <span className="text-xs text-muted-foreground">{spread.description} ({spread.cards} cards)</span>
+                                    </div>
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        )}
                      </div>
                     )}
 
-                    {/* Physical Cards Input */}
-                    {path === 'physical' && (
-                      <div className="space-y-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="physical-cards" className="text-foreground font-medium">
-                            Enter Your Cards ({selectedSpread.cards} cards):
-                          </Label>
-                          <Textarea
-                            id="physical-cards"
-                            value={physicalCards}
-                            onChange={(e) => setPhysicalCards(e.target.value)}
-                            placeholder={`Enter ${selectedSpread.cards} card numbers (1-36) or names, separated by commas, spaces, or newlines\n\nExample: 1, 5, 12 or Rider, Clover, Birds`}
-                            className="bg-background border-border text-foreground placeholder:text-muted-foreground min-h-[120px] rounded-xl focus:border-primary focus:ring-primary/20 resize-none"
-                            rows={4}
-                          />
-                          <p className="text-xs text-muted-foreground">
-                            💡 You can use card numbers (1-36) or card names. Separate with commas, spaces, or newlines.
-                          </p>
-                        </div>
-                      </div>
-                    )}
+                     {/* Physical Cards Input */}
+                     {path === 'physical' && selectedSpread && (
+                       <div className="space-y-4">
+                         <div className="space-y-2">
+                           <Label htmlFor="physical-cards" className="text-foreground font-medium">
+                             Enter Your Cards ({selectedSpread.cards} cards):
+                           </Label>
+                           <Textarea
+                             id="physical-cards"
+                             value={physicalCards}
+                             onChange={(e) => setPhysicalCards(e.target.value)}
+                             placeholder={`Enter ${selectedSpread.cards} card numbers (1-36) or names, separated by commas, spaces, or newlines\n\nExample: 1, 5, 12 or Rider, Clover, Birds`}
+                             className="bg-background border-border text-foreground placeholder:text-muted-foreground min-h-[120px] rounded-xl focus:border-primary focus:ring-primary/20 resize-none"
+                             rows={4}
+                           />
+                           <p className="text-xs text-muted-foreground">
+                             💡 You can use card numbers (1-36) or card names. Separate with commas, spaces, or newlines.
+                           </p>
+                         </div>
+                       </div>
+                     )}
 
                  </CardContent>
               </Card>
@@ -790,22 +819,25 @@ function NewReadingPageContent() {
                     />
                  )}
 
-               <AIReadingDisplay
-                aiReading={aiReading}
-                isLoading={aiLoading}
-                error={aiError}
-                errorDetails={aiErrorDetails}
-                onRetry={retryAIAnalysis}
-                retryCount={aiRetryCount}
-                 cards={drawnCards.map(card => ({
-                   id: card.id,
-                   name: getCardById(allCards, card.id)?.name || 'Unknown',
-                   position: card.position
-                 }))}
-                 allCards={allCards}
-                 spreadId={selectedSpread.id}
-                 question={question}
-              />
+               {/* AI Reading Display - Only for virtual path */}
+               {path === 'virtual' && (
+                 <AIReadingDisplay
+                  aiReading={aiReading}
+                  isLoading={aiLoading}
+                  error={aiError}
+                  errorDetails={aiErrorDetails}
+                  onRetry={retryAIAnalysis}
+                  retryCount={aiRetryCount}
+                   cards={drawnCards.map(card => ({
+                     id: card.id,
+                     name: getCardById(allCards, card.id)?.name || 'Unknown',
+                     position: card.position
+                   }))}
+                   allCards={allCards}
+                   spreadId={selectedSpread.id}
+                   question={question}
+                 />
+               )}
 
 
             </CardContent>
