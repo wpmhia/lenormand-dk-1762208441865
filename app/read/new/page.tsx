@@ -590,11 +590,12 @@ function NewReadingPageContent() {
                                         </SelectTrigger>
                                         <SelectContent className="bg-card border-border">
                                   {COMPREHENSIVE_SPREADS.map((spread) => (
-                                    <SelectItem key={spread.id} value={spread.id} className="text-card-foreground hover:bg-accent focus:bg-accent py-3">
-                                      <div className="flex flex-col min-w-0">
-                                        <span className="font-medium">{spread.label}</span>
-                                        <span className="text-xs text-muted-foreground leading-tight">{spread.description} ({spread.cards} cards)</span>
-                                      </div>
+                                    <SelectItem
+                                      key={spread.id}
+                                      value={spread.id}
+                                      className="text-card-foreground hover:bg-accent focus:bg-accent py-3"
+                                    >
+                                      {`${spread.label} (${spread.cards} cards)`}
                                     </SelectItem>
                                   ))}
                                         </SelectContent>
@@ -622,13 +623,14 @@ function NewReadingPageContent() {
                               </SelectTrigger>
                               <SelectContent className="bg-card border-border">
                                    {COMPREHENSIVE_SPREADS.map((spread) => (
-                                    <SelectItem key={spread.id} value={spread.id} className="text-card-foreground hover:bg-accent focus:bg-accent py-3">
-                                      <div className="flex flex-col min-w-0">
-                                        <span className="font-medium">{spread.label}</span>
-                                        <span className="text-xs text-muted-foreground leading-tight">{spread.description} ({spread.cards} cards)</span>
-                                      </div>
-                                    </SelectItem>
-                                  ))}
+                                     <SelectItem
+                                       key={spread.id}
+                                       value={spread.id}
+                                       className="text-card-foreground hover:bg-accent focus:bg-accent py-3"
+                                     >
+                                       {`${spread.label} (${spread.cards} cards)`}
+                                     </SelectItem>
+                                   ))}
                               </SelectContent>
                             </Select>
                           </div>
