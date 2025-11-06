@@ -18,7 +18,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { Eye } from 'lucide-react'
+import { Eye, Timer, Zap } from 'lucide-react'
 import { CollapsibleCard } from '@/components/CollapsibleCard'
 import { getCards, drawCards, getCardById } from '@/lib/data'
 import { getAIReading, AIReadingRequest, AIReadingResponse, isDeepSeekAvailable } from '@/lib/deepseek'
@@ -145,6 +145,7 @@ function NewReadingPageContent() {
     fields?: string[]
   } | null>(null)
   const [aiRetryCount, setAiRetryCount] = useState(0)
+  const [aiRetryCooldown, setAiRetryCooldown] = useState(0)
   const [showStartOverConfirm, setShowStartOverConfirm] = useState(false)
   const [isAnalyzingQuestion, setIsAnalyzingQuestion] = useState(false)
 
@@ -480,6 +481,7 @@ function NewReadingPageContent() {
 
 
   const retryAIAnalysis = () => {
+    setAiRetryCooldown(0) // Reset cooldown immediately when retrying
     if (drawnCards.length > 0) {
       performAIAnalysis(drawnCards, true)
     }
@@ -609,6 +611,23 @@ function NewReadingPageContent() {
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [handleKeyDown])
+
+  // Cooldown timer for AI retry
+  useEffect(() => {
+    if (aiRetryCooldown > 0) {
+      const timer = setTimeout(() => {
+        setAiRetryCooldown(prev => prev - 1)
+      }, 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [aiRetryCooldown])
+
+  // Start cooldown when AI fails
+  useEffect(() => {
+    if (aiError && !aiLoading) {
+      setAiRetryCooldown(30) // 30 second cooldown
+    }
+  }, [aiError, aiLoading])
 
   return (
     <TooltipProvider>
@@ -1059,25 +1078,55 @@ function NewReadingPageContent() {
                     />
                  )}
 
-               {/* AI Reading Display - Only for virtual path */}
-               {path === 'virtual' && (
-                 <AIReadingDisplay
-                  aiReading={aiReading}
-                  isLoading={aiLoading}
-                  error={aiError}
-                  errorDetails={aiErrorDetails}
-                  onRetry={retryAIAnalysis}
-                  retryCount={aiRetryCount}
-                   cards={drawnCards.map(card => ({
-                     id: card.id,
-                     name: getCardById(allCards, card.id)?.name || 'Unknown',
-                     position: card.position
-                   }))}
-                   allCards={allCards}
-                   spreadId={selectedSpread.id}
-                   question={question}
-                 />
-               )}
+                {/* AI Reading Display - Only for virtual path */}
+                {path === 'virtual' && (
+                  <AIReadingDisplay
+                   aiReading={aiReading}
+                   isLoading={aiLoading}
+                   error={aiError}
+                   errorDetails={aiErrorDetails}
+                   onRetry={retryAIAnalysis}
+                   retryCount={aiRetryCount}
+                    cards={drawnCards.map(card => ({
+                      id: card.id,
+                      name: getCardById(allCards, card.id)?.name || 'Unknown',
+                      position: card.position
+                    }))}
+                    allCards={allCards}
+                    spreadId={selectedSpread.id}
+                    question={question}
+                  />
+                )}
+
+                {/* Fallback Retry Button for Physical Path */}
+                {path === 'physical' && aiError && !aiLoading && aiRetryCount < 3 && (
+                  <div className="text-center pt-4">
+                    <Button
+                      onClick={retryAIAnalysis}
+                      variant="outline"
+                      size="sm"
+                      className="border-primary text-primary hover:bg-primary/10"
+                      disabled={aiRetryCooldown > 0}
+                    >
+                      {aiRetryCooldown > 0 ? (
+                        <>
+                          <Timer className="w-4 h-4 mr-2" />
+                          Retry in {aiRetryCooldown}s
+                        </>
+                      ) : (
+                        <>
+                          <Zap className="w-4 h-4 mr-2" />
+                          Try AI Analysis Again
+                        </>
+                      )}
+                    </Button>
+                    {aiRetryCount > 0 && (
+                      <p className="text-xs text-muted-foreground mt-2">
+                        Attempt {aiRetryCount} of 3
+                      </p>
+                    )}
+                  </div>
+                )}
 
 
             </CardContent>
