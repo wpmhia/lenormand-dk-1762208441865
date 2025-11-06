@@ -27,15 +27,15 @@ import { getAIReading, AIReadingRequest, AIReadingResponse, isDeepSeekAvailable 
 // Comprehensive spread selection - direct manual control
 const COMPREHENSIVE_SPREADS = [
   // 3-Card Spreads
+  { id: "sentence-3", cards: 3, label: "Sentence Reading", description: "Flowing 3-card sentence interpretation" },
   { id: "past-present-future", cards: 3, label: "Past, Present, Future", description: "Classic timeline reading" },
   { id: "yes-no-maybe", cards: 3, label: "Yes or No", description: "Binary decision guidance" },
   { id: "situation-challenge-advice", cards: 3, label: "Situation, Challenge, Advice", description: "Problem-solving spread" },
   { id: "mind-body-spirit", cards: 3, label: "Mind, Body, Spirit", description: "Holistic balance reading" },
-  { id: "sentence-3", cards: 3, label: "Sentence Reading", description: "Flowing 3-card sentence interpretation" },
 
   // 5-Card Spreads
-  { id: "structured-reading", cards: 5, label: "Structured Reading", description: "Detailed situation analysis" },
   { id: "sentence-5", cards: 5, label: "Sentence Reading", description: "Flowing 5-card sentence interpretation" },
+  { id: "structured-reading", cards: 5, label: "Structured Reading", description: "Detailed situation analysis" },
 
   // 7-Card Spreads
   { id: "week-ahead", cards: 7, label: "Week Ahead", description: "7-day forecast" },
