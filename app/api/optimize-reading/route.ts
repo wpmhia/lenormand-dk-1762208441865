@@ -42,168 +42,6 @@ interface OptimizeRequest {
   question: string
 }
 
-interface OptimizeResponse {
-  layoutType: 3 | 5 | 7 | 9 | 36
-  spreadType?: string
-  confidence?: number
-  reason?: string
-  ambiguous?: boolean
-  focus?: string
-}
-
-export async function POST(request: NextRequest) {
-  try {
-    const body: OptimizeRequest = await request.json()
-
-    if (!body.question || typeof body.question !== 'string') {
-      return NextResponse.json(
-        { error: 'Question is required' },
-        { status: 400 }
-      )
-    }
-
-    const question = body.question.trim()
-
-    // Check cache first
-    const cacheKey = question.toLowerCase()
-    const cached = cache.get(cacheKey)
-    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
-      return NextResponse.json(cached.result)
-    }
-
-    try {
-      // DeepSeek call
-      const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'deepseek-chat',
-          messages: [
-            { role: 'system', content: SYSTEM_PROMPT },
-            { role: 'user', content: question },
-          ],
-          temperature: 0.1,
-          response_format: { type: 'json_object' },
-        }),
-      });
-
-      if (!response.ok) throw new Error(`DeepSeek error: ${response.status}`);
-
-      const data = await response.json();
-      const aiChoice = JSON.parse(data.choices[0].message.content);
-
-      // Safety: validate spread exists
-      if (!VALID_SPREADS.includes(aiChoice.spreadType)) {
-        throw new Error(`Invalid spread: ${aiChoice.spreadType}`);
-      }
-
-      // Map spreadType to layoutType and spreadType
-      let layoutType: 3 | 5 | 7 | 9 | 36;
-      let spreadType: string | undefined;
-
-      if (aiChoice.spreadType === '3-card Past-Present-Future') {
-        layoutType = 3;
-        spreadType = 'past-present-future';
-      } else if (aiChoice.spreadType === '3-card Yes-No-Maybe') {
-        layoutType = 3;
-        spreadType = 'yes-no-maybe';
-      } else if (aiChoice.spreadType === '5-card Structured') {
-        layoutType = 5;
-        spreadType = 'structured-reading';
-      } else if (aiChoice.spreadType === '7-card Relationship Double-Significator') {
-        layoutType = 7;
-        spreadType = 'relationship-double-significator';
-      } else if (aiChoice.spreadType === '7-card Week-Ahead') {
-        layoutType = 7;
-        spreadType = 'week-ahead';
-      } else if (aiChoice.spreadType === '9-card Comprehensive') {
-        layoutType = 9;
-        spreadType = undefined;
-      } else if (aiChoice.spreadType === '36-card Grand Tableau') {
-        layoutType = 36;
-        spreadType = undefined;
-      } else {
-        throw new Error(`Unknown spread: ${aiChoice.spreadType}`);
-      }
-
-      const result = {
-        layoutType,
-        spreadType,
-        confidence: 95, // High confidence for AI selection
-        reason: aiChoice.reason,
-        focus: aiChoice.readingType.toLowerCase().replace(/\s+/g, '-')
-      };
-
-      // Cache the result
-      cache.set(cacheKey, { result, timestamp: Date.now() });
-
-      return NextResponse.json(result);
-    } catch (error) {
-      console.error('AI selection failed:', error);
-
-      // Smart fallback: NEVER 3-card by default
-      const t = question.toLowerCase();
-      let fallback = {
-        layoutType: 5 as const,
-        spreadType: 'structured-reading',
-        confidence: 50,
-        reason: 'AI unavailable - using structured default',
-        focus: 'general'
-      };
-
-      if (t.includes('year') || t.includes('2025') || t.includes('2026')) {
-        fallback = {
-          layoutType: 9 as const,
-          spreadType: undefined,
-          confidence: 70,
-          reason: 'AI unavailable - detected annual scope',
-          focus: 'annual-forecast'
-        };
-      } else if (t.includes('family') || t.includes('relationship') || t.includes('love')) {
-        fallback = {
-          layoutType: 7 as const,
-          spreadType: 'relationship-double-significator',
-          confidence: 70,
-          reason: 'AI unavailable - detected relationship scope',
-          focus: 'relationship'
-        };
-      } else if (t.includes('yes') && t.includes('no')) {
-        fallback = {
-          layoutType: 3 as const,
-          spreadType: 'yes-no-maybe',
-          confidence: 80,
-          reason: 'AI unavailable - detected yes/no format',
-          focus: 'yesno'
-        };
-      }
-
-      // Cache the fallback
-      cache.set(cacheKey, { result: fallback, timestamp: Date.now() });
-
-      return NextResponse.json(fallback);
-    }
-
-  } catch (error) {
-    console.error('Error optimizing reading:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
-  }
-}
-
-interface OptimizeResponse {
-  layoutType: 3 | 5 | 7 | 9 | 36
-  spreadType?: string
-  confidence?: number
-  reason?: string
-  ambiguous?: boolean
-  focus?: string
-}
-
 // Question analysis patterns
 const QUESTION_PATTERNS = {
   // Time-based questions
@@ -304,7 +142,7 @@ function detectScope(text: string): { scope: 'micro' | 'macro'; reason: string }
     : { scope: 'micro', reason: 'Single-issue or short-term' };
 }
 
-async function analyzeQuestion(question: string): Promise<{ layoutType: 3 | 5 | 7 | 9 | 36; spreadType?: string }> {
+async function analyzeQuestion(question: string): Promise<{ layoutType: 3 | 5 | 7 | 9 | 36; spreadType?: string; confidence?: number; reason?: string; ambiguous?: boolean; focus?: string }> {
   // Auto-capitalise months and common pronouns/names
   const capitalisedQuestion = question.replace(/\b(i\b|january|february|march|april|may|june|july|august|september|october|november|december)\b/gi, w => w.charAt(0).toUpperCase() + w.slice(1))
 
@@ -343,13 +181,14 @@ async function analyzeQuestion(question: string): Promise<{ layoutType: 3 | 5 | 
         // For 9, keep as is; for 36, already max
       }
 
-      return {
-        layoutType,
-        spreadType,
-        confidence: 90, // High confidence for AI classification
-        reason: `AI classified as ${aiCategory} category`,
-        focus: aiCategory
-      }
+       return {
+         layoutType,
+         spreadType,
+         confidence: 90, // High confidence for AI classification
+         reason: `AI classified as ${aiCategory} category`,
+         focus: aiCategory,
+         ambiguous: false
+       }
     }
   }
 
@@ -429,13 +268,46 @@ async function analyzeQuestion(question: string): Promise<{ layoutType: 3 | 5 | 
     }
   }
   
-  // Default to 3-card general reading if no patterns match
-  return {
-    layoutType: 3,
-    spreadType: 'general-reading',
-    confidence: 0,
-    reason: 'No specific patterns detected, using general reading',
-    focus: 'general'
+   // Default to 3-card general reading if no patterns match
+   return {
+     layoutType: 3,
+     spreadType: 'general-reading',
+     confidence: 0,
+     reason: 'No specific patterns detected, using general reading',
+     focus: 'general',
+     ambiguous: false
+   }
+}
+
+// AI classification function using DeepSeek
+async function classifyQuestion(question: string): Promise<string | null> {
+  try {
+    const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'deepseek-chat',
+        messages: [
+          { role: 'system', content: SYSTEM_PROMPT },
+          { role: 'user', content: question },
+        ],
+        temperature: 0.1,
+        response_format: { type: 'json_object' },
+      }),
+    });
+
+    if (!response.ok) throw new Error(`DeepSeek error: ${response.status}`);
+
+    const data = await response.json();
+    const aiChoice = JSON.parse(data.choices[0].message.content);
+
+    return aiChoice.readingType;
+  } catch (error) {
+    console.error('AI classification failed:', error);
+    return null;
   }
 }
 
