@@ -126,6 +126,9 @@ h6 { @apply text-base md:text-lg; }
   .heading-5 { @apply text-lg md:text-xl font-medium text-foreground; }
   .heading-6 { @apply text-base md:text-lg font-medium text-foreground; }
 
+  /* Crimson font override for specific elements */
+  .crimson-font { font-family: 'Crimson Pro', 'Crimson Text', serif !important; }
+
    /* Global containers */
   .container {
     @apply mx-auto px-4 sm:px-6 lg:px-8;
