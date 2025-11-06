@@ -60,7 +60,13 @@ function NewReadingPageContent() {
   const [allCards, setAllCards] = useState<CardType[]>([])
   const [drawnCards, setDrawnCards] = useState<ReadingCard[]>([])
   const [selectedSpread, setSelectedSpread] = useState(COMPREHENSIVE_SPREADS[0]) // Default to first spread
-  const [path, setPath] = useState<'virtual' | 'physical' | null>(null)
+  const [path, setPath] = useState<'virtual' | 'physical' | null>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('preferredPath')
+      return saved as 'virtual' | 'physical' | null
+    }
+    return null
+  })
   const [showManualPicker, setShowManualPicker] = useState(false)
   const [aiResult, setAiResult] = useState<{
     spreadId: string;
@@ -69,6 +75,8 @@ function NewReadingPageContent() {
   } | null>(null)
   const [physicalCards, setPhysicalCards] = useState('')
   const [physicalCardsError, setPhysicalCardsError] = useState<string | null>(null)
+  const [parsedCards, setParsedCards] = useState<CardType[]>([])
+  const [cardSuggestions, setCardSuggestions] = useState<string[]>([])
 
   const [question, setQuestion] = useState('')
   const [questionCharCount, setQuestionCharCount] = useState(0)
@@ -79,6 +87,13 @@ function NewReadingPageContent() {
   const [step, setStep] = useState<'setup' | 'drawing' | 'ai-analysis'>('setup')
 
 
+
+  // Save path preference to localStorage
+  useEffect(() => {
+    if (path && typeof window !== 'undefined') {
+      localStorage.setItem('preferredPath', path)
+    }
+  }, [path])
 
   // Load from URL params or localStorage on mount
   useEffect(() => {
@@ -312,7 +327,82 @@ function NewReadingPageContent() {
       }
    }, [question, allCards, selectedSpread, mountedRef])
 
+   // Live parser for real-time card validation
+   const liveParseCards = useCallback((input: string, targetCount: number) => {
+     if (!input.trim()) {
+       setParsedCards([])
+       setCardSuggestions([])
+       setPhysicalCardsError(null)
+       return
+     }
 
+     const cardInputs = input.split(/[,;\s\n]+/).map(s => s.trim()).filter(s => s.length > 0)
+     const foundCards: CardType[] = []
+     const suggestions: string[] = []
+     
+     for (const cardInput of cardInputs.slice(0, targetCount)) {
+       let card: CardType | undefined
+
+       // Try to find by number first
+       const num = parseInt(cardInput)
+       if (!isNaN(num) && num >= 1 && num <= 36) {
+         card = allCards.find(c => c.id === num.toString())
+       }
+
+       // If not found by number, try by name (with typo tolerance)
+       if (!card) {
+         const inputLower = cardInput.toLowerCase()
+         card = allCards.find(c => {
+           const nameLower = c.name.toLowerCase()
+           return nameLower === inputLower || 
+                  nameLower.includes(inputLower) || 
+                  inputLower.includes(nameLower) ||
+                  // Simple typo tolerance: remove trailing 's'
+                  (inputLower.endsWith('s') && nameLower === inputLower.slice(0, -1)) ||
+                  (nameLower.endsWith('s') && inputLower === nameLower.slice(0, -1))
+         })
+       }
+
+       if (card) {
+         foundCards.push(card)
+       } else {
+         // Find closest matches for suggestions
+         const inputLower = cardInput.toLowerCase()
+         const matches = allCards
+           .filter(c => {
+             const nameLower = c.name.toLowerCase()
+             return nameLower.includes(inputLower) || inputLower.includes(nameLower)
+           })
+           .slice(0, 3)
+           .map(c => c.name)
+         
+         if (matches.length > 0) {
+           suggestions.push(...matches)
+         }
+       }
+     }
+
+     setParsedCards(foundCards)
+     setCardSuggestions([...new Set(suggestions)]) // Remove duplicates
+     
+     // Validation
+     if (cardInputs.length > targetCount) {
+       setPhysicalCardsError(`Too many cards. Please enter exactly ${targetCount} cards.`)
+     } else if (cardInputs.length < targetCount) {
+       setPhysicalCardsError(null) // Allow partial input
+     } else if (foundCards.length !== targetCount) {
+       setPhysicalCardsError(`Some cards not recognized. Please check your input.`)
+     } else {
+       setPhysicalCardsError(null)
+     }
+   }, [allCards])
+
+   // Update live parsing when physical cards input changes
+   useEffect(() => {
+     if (path === 'physical') {
+       liveParseCards(physicalCards, selectedSpread.cards)
+     }
+   }, [physicalCards, selectedSpread.cards, path, liveParseCards])
 
    const parsePhysicalCards = useCallback((allCards: CardType[]): ReadingCard[] => {
      const input = physicalCards.trim()
@@ -571,30 +661,57 @@ function NewReadingPageContent() {
                     </div>
                   </div>
 
-                   {/* Simple Path Selection */}
-                   {!path ? (
-                     <div className="space-y-4">
-                       <div className="text-center">
-                         <Label className="text-foreground font-medium text-lg mb-4 block">
-                           Do you already have cards drawn?
-                         </Label>
-                         <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-                           <Button
-                             onClick={() => setPath('virtual')}
-                             className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30"
-                           >
-                             No, draw for me
-                           </Button>
+                    {/* Hero Path Selection */}
+                    {!path ? (
+                      <div className="space-y-6">
+                        <div className="text-center space-y-4">
+                          <Label className="text-foreground font-medium text-lg mb-4 block">
+                            Choose your reading path
+                          </Label>
+                          <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-lg mx-auto">
                             <Button
-                              variant="outline"
-                              onClick={() => setPath('physical')}
-                              className="flex-1 border-border text-foreground hover:bg-muted"
+                              onClick={() => {
+                                setPath('virtual')
+                                // Auto-focus question field for editing
+                                setTimeout(() => {
+                                  const questionField = document.getElementById('question') as HTMLTextAreaElement
+                                  if (questionField) questionField.focus()
+                                }, 100)
+                              }}
+                              className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30 h-16 text-base font-medium"
+                              size="lg"
                             >
-                              Yes, I have cards
+                              ✨ Draw cards for me
                             </Button>
-                         </div>
-                       </div>
-                     </div>
+                             <Button
+                               variant="outline"
+                               onClick={() => {
+                                 setPath('physical')
+                                 // Set default spread and focus textarea
+                                 setSelectedSpread(COMPREHENSIVE_SPREADS.find(s => s.id === 'past-present-future') || COMPREHENSIVE_SPREADS[0])
+                                 setTimeout(() => {
+                                   const textarea = document.querySelector('textarea[id="physical-cards"]') as HTMLTextAreaElement
+                                   if (textarea) textarea.focus()
+                                 }, 100)
+                               }}
+                               className="flex-1 border-border text-foreground hover:bg-muted h-16 text-base font-medium"
+                               size="lg"
+                             >
+                               🎴 I already have cards
+                             </Button>
+                          </div>
+                          <div className="text-sm text-muted-foreground space-y-2 mt-4">
+                            <p className="flex items-center justify-center gap-2">
+                              <span className="w-2 h-2 bg-primary/60 rounded-full"></span>
+                              Cards are shuffled in your browser—no account needed.
+                            </p>
+                            <p className="flex items-center justify-center gap-2">
+                              <span className="w-2 h-2 bg-muted-foreground/60 rounded-full"></span>
+                              Your cards stay on your table; we only interpret them.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
                    ) : (
                      <div className="space-y-4">
                         {/* AI Analysis Button - Only for virtual path */}
