@@ -560,6 +560,25 @@ function NewReadingPageContent() {
                           </Button>
                         </div>
 
+                        {/* AI Action - Shows when AI is selected */}
+                        {!isPhysical && (
+                          <div className="mt-3 max-w-xl mx-auto">
+                            <div className="text-center space-y-2">
+                              <Button
+                                onClick={analyzeQuestionAndOptimize}
+                                disabled={!question.trim() || isAnalyzingQuestion}
+                                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30"
+                              >
+                                <Sparkles className={`w-4 h-4 mr-2 ${isAnalyzingQuestion ? 'animate-spin' : ''}`} />
+                                {isAnalyzingQuestion ? 'Analyzing Your Question...' : 'Get AI Spread Suggestion'}
+                              </Button>
+                              <p className="text-xs text-muted-foreground">
+                                AI will analyze your question and recommend the perfect spread
+                              </p>
+                            </div>
+                          </div>
+                        )}
+
                         {/* Physical Cards Input - Compact */}
                         {isPhysical && (
                           <div className="mt-3 max-w-xl mx-auto">
