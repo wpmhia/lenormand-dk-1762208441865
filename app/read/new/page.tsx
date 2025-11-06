@@ -328,20 +328,28 @@ function NewReadingPageContent() {
       }
    }, [question, allCards, selectedSpread, mountedRef])
 
-   // Live parser for real-time card validation
-   const liveParseCards = useCallback((input: string, targetCount: number) => {
-     if (!input.trim()) {
-       setParsedCards([])
-       setCardSuggestions([])
-       setPhysicalCardsError(null)
-       return
-     }
+    // Live parser for real-time card validation
+    const liveParseCards = useCallback((input: string, targetCount: number) => {
+      if (!input.trim()) {
+        setParsedCards([])
+        setCardSuggestions([])
+        setPhysicalCardsError(null)
+        return
+      }
 
-     const cardInputs = input.split(/[,;\s\n]+/).map(s => s.trim()).filter(s => s.length > 0)
-     const foundCards: CardType[] = []
-     const suggestions: string[] = []
+      const cardInputs = input.split(/[,;\s\n]+/).map(s => s.trim()).filter(s => s.length > 0)
+      const foundCards: CardType[] = []
+      const suggestions: string[] = []
+      
+      // Filter out common non-card words
+      const filteredInputs = cardInputs.filter(input => {
+        const lower = input.toLowerCase()
+        return !['cards', 'card', 'the', 'a', 'an'].includes(lower) && 
+               !isNaN(parseInt(input)) || // Keep numbers
+               allCards.some(c => c.name.toLowerCase().includes(lower) || lower.includes(c.name.toLowerCase())) // Keep potential card names
+      })
      
-     for (const cardInput of cardInputs.slice(0, targetCount)) {
+      for (const cardInput of filteredInputs.slice(0, targetCount)) {
        let card: CardType | undefined
 
        // Try to find by number first
@@ -386,16 +394,16 @@ function NewReadingPageContent() {
      setParsedCards(foundCards)
      setCardSuggestions([...new Set(suggestions)]) // Remove duplicates
      
-     // Validation
-     if (cardInputs.length > targetCount) {
-       setPhysicalCardsError(`Too many cards. Please enter exactly ${targetCount} cards.`)
-     } else if (cardInputs.length < targetCount) {
-       setPhysicalCardsError(null) // Allow partial input
-     } else if (foundCards.length !== targetCount) {
-       setPhysicalCardsError(`Some cards not recognized. Please check your input.`)
-     } else {
-       setPhysicalCardsError(null)
-     }
+      // Validation
+      if (filteredInputs.length > targetCount) {
+        setPhysicalCardsError(`Too many cards. Please enter exactly ${targetCount} cards.`)
+      } else if (filteredInputs.length < targetCount) {
+        setPhysicalCardsError(null) // Allow partial input
+      } else if (foundCards.length !== targetCount) {
+        setPhysicalCardsError(`Some cards not recognized. Please check your input.`)
+      } else {
+        setPhysicalCardsError(null)
+      }
    }, [allCards])
 
    // Update live parsing when physical cards input changes
