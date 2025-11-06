@@ -26,27 +26,27 @@ import { getAIReading, AIReadingRequest, AIReadingResponse, isDeepSeekAvailable 
 
 // Comprehensive spread selection - direct manual control
 const COMPREHENSIVE_SPREADS = [
-  // 3-Card Spreads
-  { id: "sentence-3", cards: 3, label: "Sentence Reading (3 cards)", description: "Flowing 3-card sentence interpretation" },
-  { id: "past-present-future", cards: 3, label: "Past, Present, Future (3 cards)", description: "Classic timeline reading" },
-  { id: "yes-no-maybe", cards: 3, label: "Yes or No (3 cards)", description: "Binary decision guidance" },
-  { id: "situation-challenge-advice", cards: 3, label: "Situation, Challenge, Advice (3 cards)", description: "Problem-solving spread" },
-  { id: "mind-body-spirit", cards: 3, label: "Mind, Body, Spirit (3 cards)", description: "Holistic balance reading" },
+   // 3-Card Spreads
+   { id: "sentence-3", cards: 3, label: "Sentence Reading", description: "Flowing 3-card sentence interpretation" },
+   { id: "past-present-future", cards: 3, label: "Past, Present, Future", description: "Classic timeline reading" },
+   { id: "yes-no-maybe", cards: 3, label: "Yes or No", description: "Binary decision guidance" },
+   { id: "situation-challenge-advice", cards: 3, label: "Situation, Challenge, Advice", description: "Problem-solving spread" },
+   { id: "mind-body-spirit", cards: 3, label: "Mind, Body, Spirit", description: "Holistic balance reading" },
 
-  // 5-Card Spreads
-  { id: "sentence-5", cards: 5, label: "Sentence Reading (5 cards)", description: "Flowing 5-card sentence interpretation" },
-  { id: "structured-reading", cards: 5, label: "Structured Reading (5 cards)", description: "Detailed situation analysis" },
+   // 5-Card Spreads
+   { id: "sentence-5", cards: 5, label: "Sentence Reading", description: "Flowing 5-card sentence interpretation" },
+   { id: "structured-reading", cards: 5, label: "Structured Reading", description: "Detailed situation analysis" },
 
-  // 7-Card Spreads
-  { id: "week-ahead", cards: 7, label: "Week Ahead (7 cards)", description: "7-day forecast" },
-  { id: "relationship-double-significator", cards: 7, label: "Relationship Reading (7 cards)", description: "Love and partnership guidance" },
+   // 7-Card Spreads
+   { id: "week-ahead", cards: 7, label: "Week Ahead", description: "7-day forecast" },
+   { id: "relationship-double-significator", cards: 7, label: "Relationship Reading", description: "Love and partnership guidance" },
 
-  // 9-Card Spreads
-  { id: "comprehensive", cards: 9, label: "Annual Forecast (9 cards)", description: "Year-ahead comprehensive reading" },
+   // 9-Card Spreads
+   { id: "comprehensive", cards: 9, label: "Annual Forecast", description: "Year-ahead comprehensive reading" },
 
-  // 36-Card Spreads
-  { id: "grand-tableau", cards: 36, label: "Grand Tableau (36 cards)", description: "Full deck comprehensive reading" }
-]
+   // 36-Card Spreads
+   { id: "grand-tableau", cards: 36, label: "Grand Tableau", description: "Full deck comprehensive reading" }
+ ]
 
 
 
