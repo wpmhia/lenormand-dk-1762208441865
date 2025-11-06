@@ -25,16 +25,17 @@ You are a Lenormand spread selector. Analyze the question and return ONLY this J
 \`\`\`
 
 **Selection rules:**
-1. Timeframe matters: "2025", "next year", "whole year" → 9-card or 36-card.
-2. Scope matters: "family", "us", "everything" → larger spreads (7, 9, 36).
-3. Simplicity matters: "yes/no", "today", "this week" → smaller spreads (3, 5, 7).
-4. **Never default to 3-card unless the question is truly tiny.**
-5. When in doubt, size up: 5-card is safer than 3-card for ambiguous questions.
+1. Year questions (2026, next year, annual) → 9-card Comprehensive
+2. Yes/No or binary decisions → 3-card Yes-No-Maybe
+3. Relationship/love questions → 7-card Relationship Double-Significator
+4. General life guidance or multiple areas → 5-card Structured
+5. Family scope or broad topics → upgrade to larger spreads (7, 9, 36)
+6. **Never default to 3-card unless truly binary**
 
 Examples:
 - "Will I get the job?" → 3-card Yes-No-Maybe, "Career", "Binary decision"
-- "What will 2025 bring us as a family?" → 9-card Comprehensive, "Annual Forecast", "Year scope + family system"
-- "Tell me about love" → 7-card Relationship, "Relationship", "Broad topic needs depth"
+- "What will 2026 bring us?" → 9-card Comprehensive, "Annual Forecast", "Year timeframe"
+- "Tell me about love" → 7-card Relationship Double-Significator, "Relationship", "Love topic"
 - "What about money, health and work?" → 9-card Comprehensive, "General", "Multiple life areas"
 `;
 
@@ -44,81 +45,25 @@ interface OptimizeRequest {
 
 // Question analysis patterns
 const QUESTION_PATTERNS = {
-  // Time-based questions
   future: {
-    keywords: ['what will happen', 'what will become', 'what is the outcome', 'what is the result', 'what comes next', 'what is coming', 'what lies ahead', 'tomorrow', 'next week', 'next month', 'next year', 'in the future'],
-    layoutType: 3 as const,
-    spreadType: 'past-present-future'
-  },
-  timing: {
-    keywords: ['when', 'timing', 'how long', 'how soon', 'time', 'date', 'week', 'month', 'year'],
-    layoutType: 7 as const,
-    spreadType: 'week-ahead'
-  },
-  
-  // Decision/Choice questions
-  decision: {
-    keywords: ['should i choose', 'which option', 'what should i do', 'decision between', 'either or', 'which path', 'what to choose', 'select between', 'pick one'],
-    layoutType: 3 as const,
-    spreadType: 'situation-challenge-advice'
+    keywords: ['what will happen', 'what will become', 'what is the outcome', 'what is the result', 'what comes next', 'what is coming', 'what lies ahead', 'tomorrow', 'next week', 'next month', 'next year', 'in the future', '2026', '2025', 'annual', 'year ahead'],
+    layoutType: 9 as const,
+    spreadType: 'comprehensive'
   },
   yesno: {
-    keywords: ['is it yes or no', 'will it happen', 'should i do it', 'can i expect', 'will i get', 'is it possible', 'will i succeed', 'should i proceed'],
+    keywords: ['is it yes or no', 'will it happen', 'should i do it', 'can i expect', 'will i get', 'is it possible', 'will i succeed', 'should i proceed', 'yes or no'],
     layoutType: 3 as const,
     spreadType: 'yes-no-maybe'
   },
-  
-  // Problem/Challenge questions
-  problem: {
-    keywords: ['problem', 'issue', 'challenge', 'obstacle', 'difficulty', 'struggle', 'blocked', 'stuck', 'conflict', 'trouble'],
-    layoutType: 5 as const,
-    spreadType: 'structured-reading'
-  },
-  solution: {
-    keywords: ['solution', 'solve', 'fix', 'resolve', 'overcome', 'help', 'advice', 'guidance', 'how to'],
-    layoutType: 5 as const,
-    spreadType: 'structured-reading'
-  },
-  
-  // Relationship questions
   relationship: {
-    keywords: ['relationship', 'love', 'romance', 'partner', 'boyfriend', 'girlfriend', 'husband', 'wife', 'dating', 'marriage', 'breakup', 'divorce'],
+    keywords: ['relationship', 'love', 'romance', 'partner', 'boyfriend', 'girlfriend', 'husband', 'wife', 'dating', 'marriage', 'breakup', 'divorce', 'soulmate', 'crush'],
     layoutType: 7 as const,
     spreadType: 'relationship-double-significator'
   },
-  
-  // Work/Career questions
-  career: {
-    keywords: ['job', 'career', 'work', 'business', 'promotion', 'boss', 'colleague', 'company', 'office', 'professional'],
-    layoutType: 5 as const,
-    spreadType: 'structured-reading'
-  },
-  
-  // Health/Wellness questions (non-medical)
-  wellness: {
-    keywords: ['health', 'wellness', 'energy', 'stress', 'anxiety', 'mood', 'emotional', 'mental', 'balance', 'self-care'],
-    layoutType: 3 as const,
-    spreadType: 'mind-body-spirit'
-  },
-  
-  // Financial questions
-  money: {
-    keywords: ['money', 'financial', 'finance', 'income', 'salary', 'investment', 'debt', 'savings', 'wealth', 'rich', 'poor'],
-    layoutType: 5 as const,
-    spreadType: 'structured-reading'
-  },
-  
-  // General/Life questions
-  general: {
-    keywords: ['life', 'path', 'journey', 'purpose', 'meaning', 'guidance', 'insight', 'understanding', 'clarity'],
-    layoutType: 3 as const,
-    spreadType: 'general-reading'
-  },
-  
-  // Complex/Comprehensive questions
   complex: {
-    keywords: ['comprehensive', 'detailed', 'thorough', 'in-depth', 'complete', 'full picture', 'everything', 'overall'],
-    layoutType: 9 as const
+    keywords: ['comprehensive', 'detailed', 'thorough', 'in-depth', 'complete', 'full picture', 'everything', 'overall', 'life in general', 'general outlook', 'major events', 'multiple areas', 'money', 'health', 'work', 'career'],
+    layoutType: 9 as const,
+    spreadType: 'comprehensive'
   }
 }
 
@@ -147,11 +92,6 @@ async function analyzeQuestion(question: string): Promise<{ layoutType: 3 | 5 | 
   const capitalisedQuestion = question.replace(/\b(i\b|january|february|march|april|may|june|july|august|september|october|november|december)\b/gi, w => w.charAt(0).toUpperCase() + w.slice(1))
 
   const lowerQuestion = capitalisedQuestion.toLowerCase()
-
-  // Check for complex/comprehensive requests first
-  if (QUESTION_PATTERNS.complex.keywords.some(keyword => lowerQuestion.includes(keyword))) {
-    return { layoutType: 9 }
-  }
 
   // Check for Grand Tableau requests
   if (lowerQuestion.includes('grand tableau') || lowerQuestion.includes('full deck') || lowerQuestion.includes('all cards')) {
@@ -182,101 +122,25 @@ async function analyzeQuestion(question: string): Promise<{ layoutType: 3 | 5 | 
       }
 
        return {
-         layoutType,
-         spreadType,
-         confidence: 90, // High confidence for AI classification
-         reason: `AI classified as ${aiCategory} category`,
-         focus: aiCategory,
-         ambiguous: false
-       }
+        layoutType,
+        spreadType,
+        confidence: 95, // High confidence for AI classification
+        reason: `AI classified as ${aiCategory} category`,
+        focus: aiCategory,
+        ambiguous: false
+      }
     }
   }
 
-  // Fallback to keyword-based analysis
-  
-  // Score each pattern based on weighted keyword matches
-  const scores = Object.entries(QUESTION_PATTERNS).map(([key, pattern]) => {
-    let score = 0
-    pattern.keywords.forEach(keyword => {
-      if (lowerQuestion.includes(keyword)) {
-        // Higher weight for longer, more specific phrases
-        const weight = keyword.length > 10 ? 3 : keyword.length > 5 ? 2 : 1
-        score += weight
-      }
-    })
-    return { key, score, pattern }
-  })
-
-  // Context-aware adjustments
-  scores.forEach(item => {
-    // Boost decision patterns for questions starting with "should I" or "which"
-    if ((lowerQuestion.startsWith('should i') || lowerQuestion.startsWith('which')) && item.key === 'decision') {
-      item.score += 2
-    }
-    // Boost yesno for questions starting with "will I" or "can I"
-    if ((lowerQuestion.startsWith('will i') || lowerQuestion.startsWith('can i')) && item.key === 'yesno') {
-      item.score += 2
-    }
-  })
-
-  // Filter out zero scores
-  const filteredScores = scores.filter(item => item.score > 0)
-  
-  // Sort by score (highest first)
-  filteredScores.sort((a, b) => b.score - a.score)
-
-  if (filteredScores.length > 0) {
-    const bestMatch = filteredScores[0]
-    let layoutType = bestMatch.pattern.layoutType
-    let spreadType = bestMatch.pattern.spreadType
-
-    // Calculate confidence (best score as percentage of max possible score)
-    const maxPossibleScore = 10 // Rough estimate
-    const confidence = Math.min(100, (bestMatch.score / maxPossibleScore) * 100)
-
-    // Check for ambiguity (multiple categories with scores within 20% of best)
-    const bestScore = bestMatch.score
-    const ambiguous = filteredScores.filter(item => item.score >= bestScore * 0.8).length > 1
-
-    // Generate reason
-    let reason = `Detected keywords for ${bestMatch.key} category`
-    if (scope === 'macro') {
-      reason += ' + macro scope upgrade'
-    }
-
-    // Upgrade spread for macro scope questions
-    if (scope === 'macro') {
-      if (layoutType <= 5) {
-        layoutType = 9 // Upgrade to comprehensive
-        spreadType = undefined // Comprehensive doesn't have specific spread type
-        reason += ' (upgraded to comprehensive for broad scope)'
-      } else if (layoutType === 7) {
-        layoutType = 36 // Upgrade to Grand Tableau for very broad questions
-        spreadType = undefined
-        reason += ' (upgraded to Grand Tableau for broad scope)'
-      }
-      // For 9, keep as is; for 36, already max
-    }
-
-    return {
-      layoutType,
-      spreadType,
-      confidence: Math.round(confidence),
-      reason,
-      ambiguous,
-      focus: bestMatch.key
-    }
+  // Fallback when AI fails
+  return {
+    layoutType: 5,
+    spreadType: 'structured-reading',
+    confidence: 30,
+    reason: 'AI unavailable, using general structured reading',
+    focus: 'general',
+    ambiguous: false
   }
-  
-   // Default to 3-card general reading if no patterns match
-   return {
-     layoutType: 3,
-     spreadType: 'general-reading',
-     confidence: 0,
-     reason: 'No specific patterns detected, using general reading',
-     focus: 'general',
-     ambiguous: false
-   }
 }
 
 // AI classification function using DeepSeek
