@@ -13,7 +13,7 @@ interface OptimizeResponse {
 const QUESTION_PATTERNS = {
   // Time-based questions
   future: {
-    keywords: ['future', 'will', 'happen', 'become', 'outcome', 'result', 'next', 'coming', 'ahead', 'tomorrow', 'next week', 'next month', 'next year'],
+    keywords: ['what will happen', 'what will become', 'what is the outcome', 'what is the result', 'what comes next', 'what is coming', 'what lies ahead', 'tomorrow', 'next week', 'next month', 'next year', 'in the future'],
     layoutType: 3 as const,
     spreadType: 'past-present-future'
   },
@@ -25,12 +25,12 @@ const QUESTION_PATTERNS = {
   
   // Decision/Choice questions
   decision: {
-    keywords: ['should', 'choose', 'decision', 'option', 'which', 'either', 'or', 'between', 'select', 'pick'],
+    keywords: ['should i choose', 'which option', 'what should i do', 'decision between', 'either or', 'which path', 'what to choose', 'select between', 'pick one'],
     layoutType: 3 as const,
     spreadType: 'situation-challenge-advice'
   },
   yesno: {
-    keywords: ['yes', 'no', 'whether', 'if', 'can', 'will i', 'should i', 'do i'],
+    keywords: ['is it yes or no', 'will it happen', 'should i do it', 'can i expect', 'will i get', 'is it possible', 'will i succeed', 'should i proceed'],
     layoutType: 3 as const,
     spreadType: 'yes-no-maybe'
   },
@@ -102,17 +102,39 @@ function analyzeQuestion(question: string): { layoutType: 3 | 5 | 7 | 9 | 36; sp
     return { layoutType: 36 }
   }
   
-  // Score each pattern based on keyword matches
+  // Score each pattern based on weighted keyword matches
   const scores = Object.entries(QUESTION_PATTERNS).map(([key, pattern]) => {
-    const matches = pattern.keywords.filter(keyword => lowerQuestion.includes(keyword)).length
-    return { key, score: matches, pattern }
-  }).filter(item => item.score > 0)
+    let score = 0
+    pattern.keywords.forEach(keyword => {
+      if (lowerQuestion.includes(keyword)) {
+        // Higher weight for longer, more specific phrases
+        const weight = keyword.length > 10 ? 3 : keyword.length > 5 ? 2 : 1
+        score += weight
+      }
+    })
+    return { key, score, pattern }
+  })
+
+  // Context-aware adjustments
+  scores.forEach(item => {
+    // Boost decision patterns for questions starting with "should I" or "which"
+    if ((lowerQuestion.startsWith('should i') || lowerQuestion.startsWith('which')) && item.key === 'decision') {
+      item.score += 2
+    }
+    // Boost yesno for questions starting with "will I" or "can I"
+    if ((lowerQuestion.startsWith('will i') || lowerQuestion.startsWith('can i')) && item.key === 'yesno') {
+      item.score += 2
+    }
+  })
+
+  // Filter out zero scores
+  const filteredScores = scores.filter(item => item.score > 0)
   
   // Sort by score (highest first)
-  scores.sort((a, b) => b.score - a.score)
-  
-  if (scores.length > 0) {
-    const bestMatch = scores[0]
+  filteredScores.sort((a, b) => b.score - a.score)
+
+  if (filteredScores.length > 0) {
+    const bestMatch = filteredScores[0]
     return {
       layoutType: bestMatch.pattern.layoutType,
       spreadType: bestMatch.pattern.spreadType
