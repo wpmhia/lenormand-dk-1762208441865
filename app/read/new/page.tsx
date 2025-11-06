@@ -547,18 +547,7 @@ function NewReadingPageContent() {
                      </div>
                    )}
 
-                   {/* Physical Cards Escape Hatch */}
-                   <div className="pt-4 border-t border-border text-center">
-                     <p className="text-xs text-muted-foreground">
-                       Already have cards?{" "}
-                       <button 
-                         onClick={() => router.push('/read/physical')}
-                         className="text-primary underline hover:text-primary/80"
-                       >
-                         Interpret your draw
-                       </button>
-                     </p>
-                   </div>
+
                 </CardContent>
               </Card>
 
