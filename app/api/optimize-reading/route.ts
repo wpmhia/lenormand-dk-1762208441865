@@ -90,6 +90,26 @@ const QUESTION_PATTERNS = {
   }
 }
 
+// Scope detector for macro vs micro questions
+function detectScope(text: string): { scope: 'micro' | 'macro'; reason: string } {
+  const t = text.toLowerCase();
+
+  const yearPhrases   = /\b(2026|2025|next year|whole year|entire year|annual|year ahead)\b/i;
+  const familyPhrases = /\b(family|us as a family|household|kids?|children|partner|together)\b/i;
+  const broadPhrases  = /\b(everything|all areas|life in general|general outlook|major events)\b/i;
+  const multiMonth    = /\b(quarter|six.month|9.month|12.month|jan.*feb.*mar)\b/i;
+
+  let score = 0;
+  if (yearPhrases.test(t))   score++;
+  if (familyPhrases.test(t)) score++;
+  if (broadPhrases.test(t))  score++;
+  if (multiMonth.test(t))    score++;
+
+  return score >= 2
+    ? { scope: 'macro', reason: 'Long time-frame + multi-person subject' }
+    : { scope: 'micro', reason: 'Single-issue or short-term' };
+}
+
 async function analyzeQuestion(question: string): Promise<{ layoutType: 3 | 5 | 7 | 9 | 36; spreadType?: string }> {
   const lowerQuestion = question.toLowerCase()
 
@@ -103,14 +123,32 @@ async function analyzeQuestion(question: string): Promise<{ layoutType: 3 | 5 | 
     return { layoutType: 36 }
   }
 
+  // Detect scope for potential spread upgrades
+  const { scope } = detectScope(question)
+
   // Try AI classification first
   const aiCategory = await classifyQuestion(question)
   if (aiCategory) {
     const pattern = QUESTION_PATTERNS[aiCategory as keyof typeof QUESTION_PATTERNS]
     if (pattern) {
+      let layoutType = pattern.layoutType
+      let spreadType = pattern.spreadType
+
+      // Upgrade spread for macro scope questions
+      if (scope === 'macro') {
+        if (layoutType <= 5) {
+          layoutType = 9 // Upgrade to comprehensive
+          spreadType = undefined // Comprehensive doesn't have specific spread type
+        } else if (layoutType === 7) {
+          layoutType = 36 // Upgrade to Grand Tableau for very broad questions
+          spreadType = undefined
+        }
+        // For 9, keep as is; for 36, already max
+      }
+
       return {
-        layoutType: pattern.layoutType,
-        spreadType: pattern.spreadType
+        layoutType,
+        spreadType
       }
     }
   }
@@ -150,9 +188,24 @@ async function analyzeQuestion(question: string): Promise<{ layoutType: 3 | 5 | 
 
   if (filteredScores.length > 0) {
     const bestMatch = filteredScores[0]
+    let layoutType = bestMatch.pattern.layoutType
+    let spreadType = bestMatch.pattern.spreadType
+
+    // Upgrade spread for macro scope questions
+    if (scope === 'macro') {
+      if (layoutType <= 5) {
+        layoutType = 9 // Upgrade to comprehensive
+        spreadType = undefined // Comprehensive doesn't have specific spread type
+      } else if (layoutType === 7) {
+        layoutType = 36 // Upgrade to Grand Tableau for very broad questions
+        spreadType = undefined
+      }
+      // For 9, keep as is; for 36, already max
+    }
+
     return {
-      layoutType: bestMatch.pattern.layoutType,
-      spreadType: bestMatch.pattern.spreadType
+      layoutType,
+      spreadType
     }
   }
   
