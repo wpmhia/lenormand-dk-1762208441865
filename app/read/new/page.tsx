@@ -512,98 +512,77 @@ function NewReadingPageContent() {
                   </div>
 
                    {/* Card Source Selection - Primary Choice */}
-                   <div className="space-y-4">
-                     <div className="text-center">
-                       <Label className="text-foreground font-medium text-lg mb-4 block">
-                         How would you like to get your cards?
-                       </Label>
-                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl mx-auto">
-                         {/* AI Auto-Select Option */}
-                         <div
-                           className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:scale-105 ${
-                             !isPhysical
-                               ? 'bg-primary/10 border-primary shadow-lg shadow-primary/20'
-                               : 'bg-muted/50 border-border hover:border-primary/30'
-                           }`}
-                           onClick={() => setIsPhysical(false)}
-                         >
-                           <div className="text-center space-y-3">
-                             <div className="w-12 h-12 mx-auto bg-primary/20 rounded-full flex items-center justify-center">
-                               <Sparkles className="w-6 h-6 text-primary" />
-                             </div>
-                             <div>
-                               <h3 className="font-semibold text-foreground mb-1">AI Auto-Select</h3>
-                               <p className="text-sm text-muted-foreground mb-3">
-                                 Let AI analyze your question and suggest the perfect spread
-                               </p>
-                               <Button
-                                 onClick={(e) => {
-                                   e.stopPropagation();
-                                   analyzeQuestionAndOptimize();
-                                 }}
-                                 disabled={!question.trim() || isAnalyzingQuestion}
-                                 variant="outline"
-                                 size="sm"
-                                 className="bg-primary/10 border-primary/30 hover:bg-primary/20 text-primary"
-                               >
-                                 <Sparkles className={`w-4 h-4 mr-2 ${isAnalyzingQuestion ? 'animate-spin' : ''}`} />
-                                 {isAnalyzingQuestion ? 'Analyzing...' : 'Get AI Suggestion'}
-                               </Button>
-                             </div>
-                           </div>
-                         </div>
+                    <div className="space-y-3">
+                      <div className="text-center">
+                        <Label className="text-foreground font-medium mb-3 block">
+                          Card Source:
+                        </Label>
+                        <div className="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
+                          {/* AI Auto-Select Option */}
+                          <Button
+                            variant={isPhysical ? "outline" : "default"}
+                            onClick={() => setIsPhysical(false)}
+                            className={`flex-1 h-auto py-3 px-4 justify-start transition-all duration-300 ${
+                              !isPhysical
+                                ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30'
+                                : 'bg-muted/50 hover:bg-muted border-border text-foreground'
+                            }`}
+                          >
+                            <div className="flex items-center gap-3 w-full">
+                              <Sparkles className="w-5 h-5 flex-shrink-0" />
+                              <div className="text-left">
+                                <div className="font-medium">AI Auto-Select</div>
+                                <div className="text-xs opacity-80">Virtual card drawing</div>
+                              </div>
+                            </div>
+                          </Button>
 
-                         {/* Physical Cards Option */}
-                         <div
-                           className={`rounded-xl border-2 cursor-pointer transition-all duration-300 hover:scale-105 ${
-                             isPhysical
-                               ? 'bg-primary/10 border-primary shadow-lg shadow-primary/20'
-                               : 'bg-muted/50 border-border hover:border-primary/30'
-                           }`}
-                           onClick={() => setIsPhysical(true)}
-                         >
-                           <div className="p-6 text-center space-y-3">
-                             <div className="w-12 h-12 mx-auto bg-primary/20 rounded-full flex items-center justify-center">
-                               <Shuffle className="w-6 h-6 text-primary" />
-                             </div>
-                             <div>
-                               <h3 className="font-semibold text-foreground mb-1">Physical Cards</h3>
-                               <p className="text-sm text-muted-foreground">
-                                 Use cards from your own Lenormand deck
-                               </p>
-                               <div className="mt-3 text-xs text-primary font-medium">
-                                 ⭐ Unique Feature
-                               </div>
-                             </div>
-                           </div>
+                          {/* Physical Cards Option */}
+                          <Button
+                            variant={isPhysical ? "default" : "outline"}
+                            onClick={() => setIsPhysical(true)}
+                            className={`flex-1 h-auto py-3 px-4 justify-start transition-all duration-300 ${
+                              isPhysical
+                                ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30'
+                                : 'bg-muted/50 hover:bg-muted border-border text-foreground'
+                            }`}
+                          >
+                            <div className="flex items-center gap-3 w-full">
+                              <Shuffle className="w-5 h-5 flex-shrink-0" />
+                              <div className="text-left">
+                                <div className="font-medium flex items-center gap-2">
+                                  Physical Cards
+                                  <span className="text-xs bg-primary/20 px-2 py-0.5 rounded-full">⭐ Unique</span>
+                                </div>
+                                <div className="text-xs opacity-80">Use your own deck</div>
+                              </div>
+                            </div>
+                          </Button>
+                        </div>
 
-                           {/* Physical Cards Input - Shows when selected */}
-                           {isPhysical && (
-                             <div className="px-6 pb-6 border-t border-primary/20 mt-4 pt-4">
-                               <div className="space-y-2">
-                                 <Label htmlFor="physical-cards" className="text-foreground font-medium text-sm">
-                                   Enter Your Cards:
-                                 </Label>
-                                 <Textarea
-                                   id="physical-cards"
-                                   value={physicalCards}
-                                   onChange={(e) => setPhysicalCards(e.target.value)}
-                                   placeholder={`Enter ${selectedSpread.cards} card numbers (1-36) separated by commas, spaces, or new lines for "${selectedSpread.label}".
-Example: ${selectedSpread.cards === 3 ? '1, 15, 28' : selectedSpread.cards === 5 ? '1, 15, 28, 7, 22' : selectedSpread.cards === 36 ? '1, 15, 28, 7, 22, 33, 12, 19, 31...' : '1, 15, 28'}
-Or: ${selectedSpread.cards === 3 ? 'Rider, Sun, Key' : selectedSpread.cards === 5 ? 'Rider, Sun, Key, Snake, Paths' : selectedSpread.cards === 36 ? 'Rider, Sun, Key, Snake, Paths, Moon, Birds...' : 'Rider, Sun, Key'}`}
-                                   className="bg-background border-border text-foreground placeholder:text-muted-foreground min-h-[80px] rounded-lg focus:border-primary focus:ring-primary/20 resize-none"
-                                   aria-describedby="physical-cards-help"
-                                 />
-                                 <div id="physical-cards-help" className="text-xs text-muted-foreground">
-                                   Enter card numbers (1-36) or names from your physical deck
-                                 </div>
-                               </div>
-                             </div>
-                           )}
-                         </div>
-                       </div>
-                     </div>
-                   </div>
+                        {/* Physical Cards Input - Compact */}
+                        {isPhysical && (
+                          <div className="mt-3 max-w-xl mx-auto">
+                            <div className="space-y-2">
+                              <Label htmlFor="physical-cards" className="text-foreground font-medium text-sm">
+                                Enter {selectedSpread.cards} cards:
+                              </Label>
+                              <Textarea
+                                id="physical-cards"
+                                value={physicalCards}
+                                onChange={(e) => setPhysicalCards(e.target.value)}
+                                placeholder={`Card numbers (1-36) or names. Example: 1, 15, 28`}
+                                className="bg-background border-border text-foreground placeholder:text-muted-foreground min-h-[60px] rounded-lg focus:border-primary focus:ring-primary/20 resize-none text-sm"
+                                aria-describedby="physical-cards-help"
+                              />
+                              <div id="physical-cards-help" className="text-xs text-muted-foreground text-center">
+                                Enter card numbers or names separated by commas
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
 
                   {/* AI Feedback Banner */}
                   {aiFeedback && (
