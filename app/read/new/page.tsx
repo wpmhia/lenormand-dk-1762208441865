@@ -511,7 +511,7 @@ function NewReadingPageContent() {
 
                   {/* AI Auto-Select Button */}
                   <div className="text-center space-y-3">
-                    <h3 className="text-lg font-medium text-foreground">
+                    <h3 className="text-lg font-medium text-foreground" style={{ fontFamily: "'Crimson Pro', 'Crimson Text', serif" }}>
                       Not sure which spread fits your question?
                     </h3>
                     <div aria-live="polite" aria-atomic="true" className="sr-only">
