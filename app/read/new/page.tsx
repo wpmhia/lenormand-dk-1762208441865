@@ -738,8 +738,9 @@ function NewReadingPageContent() {
                           <Label className="text-foreground font-medium text-lg mb-4 block">
                             Choose your reading path
                           </Label>
-                          <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-lg mx-auto">
-                            <Button
+                           <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-lg mx-auto">
+                             {console.log('🎴 Rendering physical button')}
+                             <Button
                               onClick={() => {
                                 setPath('virtual')
                                 // Auto-focus question field for editing
@@ -753,21 +754,23 @@ function NewReadingPageContent() {
                             >
                               ✨ Draw cards for me
                             </Button>
-                               <Button
-                                variant="outline"
-                                onClick={() => {
-                                  alert('Physical button clicked!')
-                                  setPath('physical')
-                                  // Set default spread and focus textarea
-                                  setSelectedSpread(COMPREHENSIVE_SPREADS.find(s => s.id === 'past-present-future') || COMPREHENSIVE_SPREADS[0])
-                                  setTimeout(() => {
-                                    const textarea = document.querySelector('textarea[id="physical-cards"]') as HTMLTextAreaElement
-                                    if (textarea) textarea.focus()
-                                  }, 100)
-                                }}
-                               className="flex-1 border-border text-foreground hover:bg-muted h-16 text-base font-medium"
-                               size="lg"
-                             >
+                                <Button
+                                 variant="outline"
+                                 onClick={() => {
+                                   console.log('🎴 Physical button clicked!')
+                                   alert('Physical button clicked!')
+                                   setPath('physical')
+                                   // Set default spread and focus textarea
+                                   setSelectedSpread(COMPREHENSIVE_SPREADS.find(s => s.id === 'past-present-future') || COMPREHENSIVE_SPREADS[0])
+                                   setTimeout(() => {
+                                     const textarea = document.querySelector('textarea[id="physical-cards"]') as HTMLTextAreaElement
+                                     if (textarea) textarea.focus()
+                                   }, 100)
+                                 }}
+                                 onMouseDown={() => console.log('🎴 Physical button mouse down')}
+                                className="flex-1 border-border text-foreground hover:bg-muted h-16 text-base font-medium"
+                                size="lg"
+                              >
                                🎴 I already have cards
                              </Button>
                           </div>
