@@ -753,17 +753,18 @@ function NewReadingPageContent() {
                             >
                               ✨ Draw cards for me
                             </Button>
-                             <Button
-                               variant="outline"
-                               onClick={() => {
-                                 setPath('physical')
-                                 // Set default spread and focus textarea
-                                 setSelectedSpread(COMPREHENSIVE_SPREADS.find(s => s.id === 'past-present-future') || COMPREHENSIVE_SPREADS[0])
-                                 setTimeout(() => {
-                                   const textarea = document.querySelector('textarea[id="physical-cards"]') as HTMLTextAreaElement
-                                   if (textarea) textarea.focus()
-                                 }, 100)
-                               }}
+                               <Button
+                                variant="outline"
+                                onClick={() => {
+                                  alert('Physical button clicked!')
+                                  setPath('physical')
+                                  // Set default spread and focus textarea
+                                  setSelectedSpread(COMPREHENSIVE_SPREADS.find(s => s.id === 'past-present-future') || COMPREHENSIVE_SPREADS[0])
+                                  setTimeout(() => {
+                                    const textarea = document.querySelector('textarea[id="physical-cards"]') as HTMLTextAreaElement
+                                    if (textarea) textarea.focus()
+                                  }, 100)
+                                }}
                                className="flex-1 border-border text-foreground hover:bg-muted h-16 text-base font-medium"
                                size="lg"
                              >
@@ -883,8 +884,8 @@ function NewReadingPageContent() {
                      </div>
                     )}
 
-                     {/* Physical Cards Input */}
-                     {path === 'physical' && selectedSpread && (
+                      {/* Physical Cards Input */}
+                      {path === 'physical' && selectedSpread && (
                        <div className="space-y-4">
                           <div className="space-y-3">
                             <div className="flex items-center justify-between">
