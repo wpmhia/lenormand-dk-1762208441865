@@ -215,17 +215,108 @@ function NewReadingPageContent() {
        }
      }, [physicalCards, selectedSpread, path])
 
-  const fetchCards = async () => {
-    try {
-      const cards = await getCards()
-      setAllCards(cards)
-    } catch (error) {
-      console.error('Error fetching cards:', error)
-      setError('Failed to load cards')
-    }
-  }
+   const fetchCards = async () => {
+     try {
+       const cards = await getCards()
+       setAllCards(cards)
+     } catch (error) {
+       console.error('Error fetching cards:', error)
+       setError('Failed to load cards')
+     }
+   }
 
+   const performAIAnalysis = useCallback(async (readingCards: ReadingCard[], isRetry = false) => {
+      if (!mountedRef.current) return
+      
+      // Cancel previous request if exists
+      aiRequestRef.current?.abort()
+      const controller = new AbortController()
+      aiRequestRef.current = controller
+      
+      setAiLoading(true)
+      setAiError(null)
+      setAiErrorDetails(null)
 
+      if (!isRetry) {
+        setAiRetryCount(0)
+      }
+
+      // Set a timeout to prevent indefinite loading
+      const loadingTimeout = setTimeout(() => {
+        if (mountedRef.current) {
+          console.log('AI loading timeout reached')
+          setAiLoading(false)
+          setAiError('AI analysis timed out. You can still save your reading.')
+        }
+      }, 35000) // 35 seconds
+
+      try {
+        const aiRequest: AIReadingRequest = {
+          question: question.trim(),
+
+          cards: readingCards.map(card => ({
+            id: card.id,
+            name: getCardById(allCards, card.id)?.name || 'Unknown',
+            position: card.position
+          })),
+          spreadId: selectedSpread.id,
+          userLocale: navigator.language
+        }
+
+        const timeoutId = setTimeout(() => controller.abort(), 45000) // 45 second timeout
+
+        const response = await fetch('/api/readings/interpret', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(aiRequest),
+          signal: controller.signal
+        })
+
+        clearTimeout(timeoutId)
+
+        if (!response.ok) {
+          const errorData = await response.json()
+          // Set detailed error information for better user guidance
+          if (mountedRef.current) {
+            setAiErrorDetails({
+              type: errorData.type,
+              helpUrl: errorData.helpUrl,
+              action: errorData.action,
+              waitTime: errorData.waitTime,
+              fields: errorData.fields
+            })
+          }
+          throw new Error(errorData.error || 'AI analysis failed')
+        }
+
+        const aiResult = await response.json()
+        if (mountedRef.current) {
+          setAiReading(aiResult)
+          setAiRetryCount(0) // Reset on success
+        }
+      } catch (error) {
+        console.error('AI analysis error:', error)
+        let errorMessage = 'AI analysis failed'
+
+        if (error instanceof Error) {
+          if (error.name === 'AbortError') {
+            errorMessage = 'AI analysis is taking longer than expected. The service may be busy - please try again in a moment.'
+          } else {
+            errorMessage = error.message
+          }
+        }
+
+        if (mountedRef.current) {
+          setAiError(errorMessage)
+          setAiRetryCount(prev => prev + 1)
+        }
+      } finally {
+        clearTimeout(loadingTimeout)
+        if (mountedRef.current) {
+          setAiLoading(false)
+        }
+      }
+   }, [question, allCards, selectedSpread, mountedRef])
 
    const handleDraw = useCallback(async (cards: CardType[]) => {
       const currentPath = path
@@ -253,7 +344,7 @@ function NewReadingPageContent() {
       }
     }, [path, selectedSpread, performAIAnalysis, parsePhysicalCards])
 
-   const parsePhysicalCards = (allCards: CardType[]): ReadingCard[] => {
+   const parsePhysicalCards = useCallback((allCards: CardType[]): ReadingCard[] => {
      const input = physicalCards.trim()
      if (!input) {
        throw new Error('Please enter card numbers or names')
@@ -297,101 +388,10 @@ function NewReadingPageContent() {
        })
      }
 
-     return readingCards
-   }
+      return readingCards
+    }, [physicalCards, selectedSpread])
 
-   const performAIAnalysis = async (readingCards: ReadingCard[], isRetry = false) => {
-     if (!mountedRef.current) return
-     
-     // Cancel previous request if exists
-     aiRequestRef.current?.abort()
-     const controller = new AbortController()
-     aiRequestRef.current = controller
-     
-     setAiLoading(true)
-     setAiError(null)
-     setAiErrorDetails(null)
 
-     if (!isRetry) {
-       setAiRetryCount(0)
-     }
-
-     // Set a timeout to prevent indefinite loading
-     const loadingTimeout = setTimeout(() => {
-       if (mountedRef.current) {
-         console.log('AI loading timeout reached')
-         setAiLoading(false)
-         setAiError('AI analysis timed out. You can still save your reading.')
-       }
-     }, 35000) // 35 seconds
-
-     try {
-       const aiRequest: AIReadingRequest = {
-         question: question.trim(),
-
-         cards: readingCards.map(card => ({
-           id: card.id,
-           name: getCardById(allCards, card.id)?.name || 'Unknown',
-           position: card.position
-         })),
-         spreadId: selectedSpread.id,
-         userLocale: navigator.language
-       }
-
-       const timeoutId = setTimeout(() => controller.abort(), 45000) // 45 second timeout
-
-       const response = await fetch('/api/readings/interpret', {
-         method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify(aiRequest),
-         signal: controller.signal
-       })
-
-       clearTimeout(timeoutId)
-
-       if (!response.ok) {
-         const errorData = await response.json()
-         // Set detailed error information for better user guidance
-         if (mountedRef.current) {
-           setAiErrorDetails({
-             type: errorData.type,
-             helpUrl: errorData.helpUrl,
-             action: errorData.action,
-             waitTime: errorData.waitTime,
-             fields: errorData.fields
-           })
-         }
-         throw new Error(errorData.error || 'AI analysis failed')
-       }
-
-       const aiResult = await response.json()
-       if (mountedRef.current) {
-         setAiReading(aiResult)
-         setAiRetryCount(0) // Reset on success
-       }
-     } catch (error) {
-       console.error('AI analysis error:', error)
-       let errorMessage = 'AI analysis failed'
-
-       if (error instanceof Error) {
-         if (error.name === 'AbortError') {
-           errorMessage = 'AI analysis is taking longer than expected. The service may be busy - please try again in a moment.'
-         } else {
-           errorMessage = error.message
-         }
-       }
-
-       if (mountedRef.current) {
-         setAiError(errorMessage)
-         setAiRetryCount(prev => prev + 1)
-       }
-     } finally {
-       clearTimeout(loadingTimeout)
-       if (mountedRef.current) {
-         setAiLoading(false)
-       }
-     }
-  }
 
   const retryAIAnalysis = () => {
     if (drawnCards.length > 0) {
