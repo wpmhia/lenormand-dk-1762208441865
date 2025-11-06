@@ -695,7 +695,7 @@ function NewReadingPageContent() {
         <AnimatePresence mode="wait">
           {step === 'setup' && (
             <motion.div
-              key="setup"
+              key={`setup-${path}`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -739,40 +739,41 @@ function NewReadingPageContent() {
                             Choose your reading path
                           </Label>
                            <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-lg mx-auto">
-                             {console.log('🎴 Rendering physical button')}
                              <Button
-                              onClick={() => {
-                                setPath('virtual')
-                                // Auto-focus question field for editing
-                                setTimeout(() => {
-                                  const questionField = document.getElementById('question') as HTMLTextAreaElement
-                                  if (questionField) questionField.focus()
-                                }, 100)
-                              }}
-                              className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30 h-16 text-base font-medium"
-                              size="lg"
-                            >
-                              ✨ Draw cards for me
-                            </Button>
-                                <Button
-                                 variant="outline"
-                                 onClick={() => {
-                                   console.log('🎴 Physical button clicked!')
-                                   alert('Physical button clicked!')
-                                   setPath('physical')
-                                   // Set default spread and focus textarea
-                                   setSelectedSpread(COMPREHENSIVE_SPREADS.find(s => s.id === 'past-present-future') || COMPREHENSIVE_SPREADS[0])
-                                   setTimeout(() => {
-                                     const textarea = document.querySelector('textarea[id="physical-cards"]') as HTMLTextAreaElement
-                                     if (textarea) textarea.focus()
-                                   }, 100)
-                                 }}
-                                 onMouseDown={() => console.log('🎴 Physical button mouse down')}
+                               onClick={() => {
+                                 setPath('virtual')
+                                 // Auto-focus question field for editing
+                                 setTimeout(() => {
+                                   const questionField = document.getElementById('question') as HTMLTextAreaElement
+                                   if (questionField) questionField.focus()
+                                 }, 100)
+                               }}
+                               className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30 h-16 text-base font-medium"
+                               size="lg"
+                             >
+                               ✨ Draw cards for me
+                             </Button>
+                              <Button
+                                variant="outline"
+                                onClick={() => {
+                                  console.log('Setting path to physical')
+                                  setPath('physical')
+                                  const defaultSpread = COMPREHENSIVE_SPREADS.find(s => s.id === 'past-present-future') || COMPREHENSIVE_SPREADS[0]
+                                  console.log('Setting spread:', defaultSpread.id)
+                                  setSelectedSpread(defaultSpread)
+                                  setTimeout(() => {
+                                    const textarea = document.querySelector('textarea[id="physical-cards"]') as HTMLTextAreaElement
+                                    if (textarea) {
+                                      console.log('Focusing textarea')
+                                      textarea.focus()
+                                    }
+                                  }, 100)
+                                }}
                                 className="flex-1 border-border text-foreground hover:bg-muted h-16 text-base font-medium"
                                 size="lg"
                               >
-                               🎴 I already have cards
-                             </Button>
+                                🎴 I already have cards
+                              </Button>
                           </div>
                           <div className="text-sm text-muted-foreground space-y-2 mt-4">
                             <p className="flex items-center justify-center gap-2">
