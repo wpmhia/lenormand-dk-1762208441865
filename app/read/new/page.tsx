@@ -387,9 +387,9 @@ function NewReadingPageContent() {
                   aria-describedby="question-help question-count"
                   required
                 />
-                <div id="question-count" className="text-right text-xs text-muted-foreground" aria-live="polite">
-                  {questionCharCount}/200 characters
-                </div>
+                 <div id="question-count" className="text-right text-xs text-muted-foreground" aria-live="polite">
+                   {questionCharCount}/500 characters
+                 </div>
                 <div id="question-help" className="text-xs text-muted-foreground italic">
                   Let your question breathe, and the cards will whisper their wisdom
                 </div>
