@@ -320,32 +320,6 @@ function NewReadingPageContent() {
 
 
 
-    const handleDraw = useCallback(async (cards: CardType[]) => {
-      const currentPath = path
-      const currentSpread = selectedSpread
-      
-      try {
-        let readingCards: ReadingCard[];
-        
-        if (currentPath === 'physical') {
-          // Parse physical cards input
-          readingCards = parsePhysicalCards(cards);
-        } else {
-          // Draw random cards (virtual path)
-          readingCards = drawCards(cards, currentSpread.cards);
-        }
-
-        setDrawnCards(readingCards)
-
-        // Start AI analysis (API route handles availability)
-        setStep('ai-analysis')
-        await performAIAnalysis(readingCards)
-      } catch (error) {
-        console.error('Error in handleDraw:', error)
-        setError(error instanceof Error ? error.message : 'An error occurred while processing your cards')
-      }
-    }, [path, selectedSpread, performAIAnalysis, parsePhysicalCards])
-
    const parsePhysicalCards = useCallback((allCards: CardType[]): ReadingCard[] => {
      const input = physicalCards.trim()
      if (!input) {
@@ -392,6 +366,32 @@ function NewReadingPageContent() {
 
       return readingCards
     }, [physicalCards, selectedSpread])
+
+    const handleDraw = useCallback(async (cards: CardType[]) => {
+      const currentPath = path
+      const currentSpread = selectedSpread
+      
+      try {
+        let readingCards: ReadingCard[];
+        
+        if (currentPath === 'physical') {
+          // Parse physical cards input
+          readingCards = parsePhysicalCards(cards);
+        } else {
+          // Draw random cards (virtual path)
+          readingCards = drawCards(cards, currentSpread.cards);
+        }
+
+        setDrawnCards(readingCards)
+
+        // Start AI analysis (API route handles availability)
+        setStep('ai-analysis')
+        await performAIAnalysis(readingCards)
+      } catch (error) {
+        console.error('Error in handleDraw:', error)
+        setError(error instanceof Error ? error.message : 'An error occurred while processing your cards')
+      }
+    }, [path, selectedSpread, performAIAnalysis, parsePhysicalCards])
 
 
 
