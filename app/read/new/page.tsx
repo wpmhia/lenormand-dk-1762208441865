@@ -128,6 +128,11 @@ function NewReadingPageContent() {
   const [aiRetryCount, setAiRetryCount] = useState(0)
   const [showStartOverConfirm, setShowStartOverConfirm] = useState(false)
   const [isAnalyzingQuestion, setIsAnalyzingQuestion] = useState(false)
+  const [aiFeedback, setAiFeedback] = useState<{
+    spreadType: string;
+    reason: string;
+    confidence: number;
+  } | null>(null)
 
   const resetReading = () => {
      setStep('setup')
@@ -135,15 +140,16 @@ function NewReadingPageContent() {
      setQuestion('')
      setQuestionCharCount(0)
      setLayoutType(3)
-     setThreeCardSpreadType("general-reading")
-     setSevenCardSpreadType("week-ahead")
-     setError('')
-     setAiReading(null)
-     setAiLoading(false)
-     setAiError(null)
-     setAiErrorDetails(null)
-     setIsPhysical(false)
-     setPhysicalCards('')
+      setThreeCardSpreadType("general-reading")
+      setSevenCardSpreadType("week-ahead")
+      setError('')
+      setAiReading(null)
+      setAiLoading(false)
+      setAiError(null)
+      setAiErrorDetails(null)
+      setIsPhysical(false)
+      setPhysicalCards('')
+      setAiFeedback(null)
    }
 
   useEffect(() => {
@@ -151,11 +157,16 @@ function NewReadingPageContent() {
     resetReading()
   }, [])
 
-  useEffect(() => {
-    if (searchParams.get('reset')) {
-      resetReading()
-    }
-  }, [searchParams])
+   useEffect(() => {
+     if (searchParams.get('reset')) {
+       resetReading()
+     }
+   }, [searchParams])
+
+   // Clear AI feedback when question changes
+   useEffect(() => {
+     setAiFeedback(null)
+   }, [question])
 
   const fetchCards = async () => {
     try {
@@ -404,8 +415,12 @@ function NewReadingPageContent() {
       if (spreadType) params.set('s', spreadType)
       router.replace(`/read/new?${params.toString()}`, { scroll: false })
 
-      // Auto-proceed to drawing step for quick AI auto-select
-      setStep('drawing')
+      // Show AI feedback instead of auto-navigating
+      setAiFeedback({
+        spreadType: spreadType || 'general',
+        reason,
+        confidence: confidence || 85
+      })
 
     } catch (error) {
       console.error('Error analyzing question:', error)
@@ -523,17 +538,31 @@ function NewReadingPageContent() {
                       aria-describedby="ai-button-help"
                     >
                       <Sparkles className={`w-4 h-4 mr-2 ${isAnalyzingQuestion ? 'animate-spin' : ''}`} />
-                      {isAnalyzingQuestion ? 'Analyzing & Proceeding...' : 'AI Auto-Select & Start Reading'}
+                      {isAnalyzingQuestion ? 'Analyzing...' : 'AI Auto-Select Spread'}
                     </Button>
-                    <p id="ai-button-help" className="text-sm text-muted-foreground">
-                      Our AI will analyze your question, select the perfect spread, and take you directly to the reading.
-                    </p>
-                  </div>
+                     <p id="ai-button-help" className="text-sm text-muted-foreground">
+                       Our AI will analyze your question and suggest the best spread for your reading.
+                     </p>
+                   </div>
+
+                   {aiFeedback && (
+                     <div className="mt-4 p-3 rounded-lg bg-slate-800/50 border border-slate-700">
+                       <div className="flex items-center gap-2 text-sm text-slate-300 mb-1">
+                         <span className="px-2 py-0.5 rounded bg-slate-700 text-slate-100 text-xs">
+                           AI match {aiFeedback.confidence}%
+                         </span>
+                         <span>{aiFeedback.reason}</span>
+                       </div>
+                        <p className="text-xs text-slate-400">
+                          Review the selection below, then click &ldquo;Continue to Draw Cards&rdquo; when ready.
+                        </p>
+                     </div>
+                   )}
 
                   <div className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="layout">Reading Type:</Label>
-                      <Select value={layoutType.toString()} onValueChange={(value) => setLayoutType(parseInt(value) as 3 | 5 | 9 | 36)}>
+                       <Select value={layoutType.toString()} onValueChange={(value) => { setLayoutType(parseInt(value) as 3 | 5 | 9 | 36); setAiFeedback(null); }}>
                        <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary" aria-describedby="layout-help">
                         <SelectValue />
                       </SelectTrigger>
@@ -553,7 +582,7 @@ function NewReadingPageContent() {
                       {layoutType === 3 && !isPhysical && (
                        <div className="space-y-2">
                          <Label htmlFor="three-card-spread">3-Card Spread Type:</Label>
-                         <Select value={threeCardSpreadType} onValueChange={setThreeCardSpreadType}>
+                          <Select value={threeCardSpreadType} onValueChange={(value) => { setThreeCardSpreadType(value); setAiFeedback(null); }}>
                            <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary" aria-describedby="spread-help">
                              <SelectValue />
                            </SelectTrigger>
@@ -574,7 +603,7 @@ function NewReadingPageContent() {
                        {layoutType === 5 && !isPhysical && (
                         <div className="space-y-2">
                           <Label htmlFor="five-card-spread">5-Card Spread Type:</Label>
-                          <Select value={fiveCardSpreadType} onValueChange={setFiveCardSpreadType}>
+                          <Select value={fiveCardSpreadType} onValueChange={(value) => { setFiveCardSpreadType(value); setAiFeedback(null); }}>
                             <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary" aria-describedby="five-spread-help">
                               <SelectValue />
                             </SelectTrigger>
@@ -595,7 +624,7 @@ function NewReadingPageContent() {
                        {layoutType === 7 && !isPhysical && (
                        <div className="space-y-2">
                          <Label htmlFor="seven-card-spread">7-Card Spread Type:</Label>
-                         <Select value={sevenCardSpreadType} onValueChange={setSevenCardSpreadType}>
+                          <Select value={sevenCardSpreadType} onValueChange={(value) => { setSevenCardSpreadType(value); setAiFeedback(null); }}>
                            <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary" aria-describedby="seven-spread-help">
                              <SelectValue />
                            </SelectTrigger>
