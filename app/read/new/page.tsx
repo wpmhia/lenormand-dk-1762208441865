@@ -56,8 +56,13 @@ function NewReadingPageContent() {
   const [allCards, setAllCards] = useState<CardType[]>([])
   const [drawnCards, setDrawnCards] = useState<ReadingCard[]>([])
   const [selectedSpread, setSelectedSpread] = useState(COMPREHENSIVE_SPREADS[0]) // Default to first spread
-    const [isPhysical, setIsPhysical] = useState(false)
-   const [physicalCards, setPhysicalCards] = useState<string>("")
+  const [path, setPath] = useState<'virtual' | null>(null)
+  const [showManualPicker, setShowManualPicker] = useState(false)
+  const [aiResult, setAiResult] = useState<{
+    spreadId: string;
+    reason: string;
+    confidence: number;
+  } | null>(null)
 
   const [question, setQuestion] = useState('')
   const [questionCharCount, setQuestionCharCount] = useState(0)
@@ -127,11 +132,7 @@ function NewReadingPageContent() {
   const [aiRetryCount, setAiRetryCount] = useState(0)
   const [showStartOverConfirm, setShowStartOverConfirm] = useState(false)
   const [isAnalyzingQuestion, setIsAnalyzingQuestion] = useState(false)
-  const [aiFeedback, setAiFeedback] = useState<{
-    spreadType: string;
-    reason: string;
-    confidence: number;
-  } | null>(null)
+
 
    const resetReading = () => {
       setStep('setup')
@@ -144,9 +145,9 @@ function NewReadingPageContent() {
        setAiLoading(false)
        setAiError(null)
        setAiErrorDetails(null)
-       setIsPhysical(false)
-       setPhysicalCards('')
-       setAiFeedback(null)
+        setPath(null)
+        setShowManualPicker(false)
+        setAiResult(null)
     }
 
   useEffect(() => {
@@ -160,10 +161,11 @@ function NewReadingPageContent() {
      }
    }, [searchParams])
 
-   // Clear AI feedback when question changes
-   useEffect(() => {
-     setAiFeedback(null)
-   }, [question])
+    // Clear AI result when question changes
+    useEffect(() => {
+      setAiResult(null)
+      setShowManualPicker(false)
+    }, [question])
 
   const fetchCards = async () => {
     try {
@@ -175,76 +177,23 @@ function NewReadingPageContent() {
     }
   }
 
-  const parsePhysicalCards = (allCards: CardType[]): ReadingCard[] => {
-    const input = physicalCards.trim()
-    if (!input) {
-      throw new Error('Please enter card numbers or names')
-    }
 
-    // Split by commas, spaces, or newlines
-    const cardInputs = input.split(/[,;\s\n]+/).map(s => s.trim()).filter(s => s.length > 0)
 
-    if (cardInputs.length !== selectedSpread.cards) {
-      throw new Error(`Please enter exactly ${selectedSpread.cards} cards. You entered ${cardInputs.length}.`)
-    }
+   const handleDraw = async (cards: CardType[]) => {
+     try {
+       // Draw random cards (virtual path only)
+       const readingCards = drawCards(cards, selectedSpread.cards)
 
-    const readingCards: ReadingCard[] = []
+       setDrawnCards(readingCards)
 
-    for (let i = 0; i < cardInputs.length; i++) {
-      const input = cardInputs[i].toLowerCase()
-      let card: CardType | undefined
-
-      // Try to find by number first
-      const cardNumber = parseInt(input)
-      if (!isNaN(cardNumber) && cardNumber >= 1 && cardNumber <= 36) {
-        card = allCards.find(c => c.id === cardNumber)
-      }
-
-      // If not found by number, try to find by name
-      if (!card) {
-        card = allCards.find(c => c.name.toLowerCase() === input || c.name.toLowerCase().includes(input))
-      }
-
-      if (!card) {
-        throw new Error(`Card "${cardInputs[i]}" not found. Please use card numbers (1-36) or card names.`)
-      }
-
-      // Check for duplicates
-      if (readingCards.some(rc => rc.id === card!.id)) {
-        throw new Error(`Duplicate card: ${card.name}. Each card can only be used once.`)
-      }
-
-       readingCards.push({
-         id: card.id,
-         position: i
-       })
-    }
-
-    return readingCards
-  }
-
-  const handleDraw = async (cards: CardType[]) => {
-    try {
-      let readingCards: ReadingCard[]
-
-      if (isPhysical) {
-        // Parse physical card input
-        readingCards = parsePhysicalCards(cards)
-      } else {
-        // Draw random cards
-        readingCards = drawCards(cards, selectedSpread.cards)
-      }
-
-      setDrawnCards(readingCards)
-
-      // Start AI analysis (API route handles availability)
-      setStep('ai-analysis')
-      await performAIAnalysis(readingCards)
-    } catch (error) {
-      console.error('Error in handleDraw:', error)
-      setError(error instanceof Error ? error.message : 'An error occurred while processing your cards')
-    }
-  }
+       // Start AI analysis (API route handles availability)
+       setStep('ai-analysis')
+       await performAIAnalysis(readingCards)
+     } catch (error) {
+       console.error('Error in handleDraw:', error)
+       setError(error instanceof Error ? error.message : 'An error occurred while processing your cards')
+     }
+   }
 
   const performAIAnalysis = async (readingCards: ReadingCard[], isRetry = false) => {
     setAiLoading(true)
@@ -349,16 +298,9 @@ function NewReadingPageContent() {
      setShowStartOverConfirm(false)
     }
 
-  const analyzeQuestionAndOptimize = async () => {
+  const handleAnalyzeAndChoose = async () => {
     if (!question.trim()) {
       setError('Please enter a question first')
-      return
-    }
-
-    // Re-ask check: ensure question has punctuation and reasonable length
-    const cleanQuestion = question.trim().replace(/[.!?？]+$/, '')
-    if (!/[?？]/.test(question) && cleanQuestion.length < 40) {
-      setError('Questions usually work better when you add a "?" and a few more details. Try: "Will I get the job?"')
       return
     }
 
@@ -387,25 +329,18 @@ function NewReadingPageContent() {
       // Store optimization metadata
       setOptimizationResult({ confidence, reason, ambiguous, focus })
 
-      // Save to localStorage for persistence
-      localStorage.setItem('lastOptimised', JSON.stringify({
-        question,
-        spreadId,
-        optimizationResult: { confidence, reason, ambiguous, focus }
-      }))
+      // Set AI result for inline display
+      setAiResult({
+        spreadId: spreadId,
+        reason: reason,
+        confidence: confidence || 85
+      })
 
       // Update URL for shareable link
       const params = new URLSearchParams()
       params.set('q', question)
       params.set('s', spreadId)
       router.replace(`/read/new?${params.toString()}`, { scroll: false })
-
-      // Show AI feedback instead of auto-navigating
-      setAiFeedback({
-        spreadType: spread ? spread.label : 'General Reading',
-        reason,
-        confidence: confidence || 85
-      })
 
     } catch (error) {
       console.error('Error analyzing question:', error)
@@ -414,6 +349,14 @@ function NewReadingPageContent() {
       setIsAnalyzingQuestion(false)
     }
   }
+
+  const getButtonLabel = () => {
+    if (!question.trim()) return "Draw & Interpret";
+    if (aiResult) return `Draw ${selectedSpread.cards}-Card Spread & Interpret`;
+    return "Draw & Interpret";
+  }
+
+  const canProceed = question.trim() && path === 'virtual';
 
 
 
@@ -511,142 +454,111 @@ function NewReadingPageContent() {
                     </div>
                   </div>
 
-                   {/* Card Source Selection - Primary Choice */}
-                    <div className="space-y-3">
-                      <div className="text-center">
-                        <Label className="text-foreground font-medium mb-3 block">
-                          Card Source:
-                        </Label>
-                        <div className="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
-                          {/* AI Auto-Select Option */}
-                          <Button
-                            variant={isPhysical ? "outline" : "default"}
-                            onClick={() => setIsPhysical(false)}
-                            className={`flex-1 h-auto py-3 px-4 justify-start transition-all duration-300 ${
-                              !isPhysical
-                                ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30'
-                                : 'bg-muted/50 hover:bg-muted border-border text-foreground'
-                            }`}
-                          >
-                            <div className="flex items-center gap-3 w-full">
-                              <Sparkles className="w-5 h-5 flex-shrink-0" />
-                              <div className="text-left">
-                                <div className="font-medium">AI Auto-Select</div>
-                                <div className="text-xs opacity-80">Virtual card drawing</div>
-                              </div>
-                            </div>
-                          </Button>
+                   {/* Simple Path Selection */}
+                   {!path ? (
+                     <div className="space-y-4">
+                       <div className="text-center">
+                         <Label className="text-foreground font-medium text-lg mb-4 block">
+                           Do you already have cards drawn?
+                         </Label>
+                         <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+                           <Button
+                             onClick={() => setPath('virtual')}
+                             className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30"
+                           >
+                             No, draw for me
+                           </Button>
+                           <Button
+                             variant="outline"
+                             onClick={() => router.push('/read/physical')}
+                             className="flex-1 border-border text-foreground hover:bg-muted"
+                           >
+                             Yes, I have cards
+                           </Button>
+                         </div>
+                       </div>
+                     </div>
+                   ) : (
+                     <div className="space-y-4">
+                       {/* AI Analysis Button */}
+                       <div className="text-center">
+                         <Button
+                           onClick={handleAnalyzeAndChoose}
+                           disabled={!question.trim() || isAnalyzingQuestion}
+                           className="w-full max-w-md bg-secondary hover:bg-secondary/90 text-secondary-foreground"
+                         >
+                           <Sparkles className={`w-4 h-4 mr-2 ${isAnalyzingQuestion ? 'animate-spin' : ''}`} />
+                           {isAnalyzingQuestion ? 'Analyzing...' : '✨ Analyze & Choose Best Spread'}
+                         </Button>
+                       </div>
 
-                          {/* Physical Cards Option */}
-                          <Button
-                            variant={isPhysical ? "default" : "outline"}
-                            onClick={() => setIsPhysical(true)}
-                            className={`flex-1 h-auto py-3 px-4 justify-start transition-all duration-300 ${
-                              isPhysical
-                                ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30'
-                                : 'bg-muted/50 hover:bg-muted border-border text-foreground'
-                            }`}
-                          >
-                            <div className="flex items-center gap-3 w-full">
-                              <Shuffle className="w-5 h-5 flex-shrink-0" />
-                              <div className="text-left">
-                                <div className="font-medium flex items-center gap-2">
-                                  Physical Cards
-                                  <span className="text-xs bg-primary/20 px-2 py-0.5 rounded-full">⭐ Unique</span>
-                                </div>
-                                <div className="text-xs opacity-80">Use your own deck</div>
-                              </div>
-                            </div>
-                          </Button>
-                        </div>
+                       {/* AI Result Display */}
+                       {aiResult && (
+                         <div className="max-w-md mx-auto">
+                           <div className="p-4 rounded-lg bg-muted/50 border border-border">
+                             <div className="flex items-start gap-3">
+                               <Sparkles className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                               <div className="flex-1">
+                                 <div className="flex items-center gap-2 mb-2">
+                                   <span className="text-sm font-medium text-primary">
+                                     AI Recommendation
+                                   </span>
+                                   <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full">
+                                     {aiResult.confidence}% match
+                                   </span>
+                                 </div>
+                                 <p className="text-sm text-foreground mb-2">{aiResult.reason}</p>
+                                 <button 
+                                   onClick={() => setShowManualPicker(!showManualPicker)}
+                                   className="text-xs text-muted-foreground underline hover:text-foreground"
+                                 >
+                                   {showManualPicker ? 'Keep recommendation' : 'Change spread'}
+                                 </button>
+                                 {showManualPicker && (
+                                   <div className="mt-3 space-y-2">
+                                     <Label htmlFor="manual-spread" className="text-foreground font-medium text-sm">
+                                       Choose different spread:
+                                     </Label>
+                                     <Select value={selectedSpread.id} onValueChange={(value) => {
+                                       const spread = COMPREHENSIVE_SPREADS.find(s => s.id === value)
+                                       if (spread) setSelectedSpread(spread)
+                                     }}>
+                                       <SelectTrigger className="bg-background border-border text-card-foreground rounded-lg focus:border-primary h-10">
+                                         <SelectValue />
+                                       </SelectTrigger>
+                                       <SelectContent className="bg-card border-border">
+                                         {COMPREHENSIVE_SPREADS.map((spread) => (
+                                           <SelectItem key={spread.id} value={spread.id} className="text-card-foreground hover:bg-accent focus:bg-accent">
+                                             <div className="flex flex-col">
+                                               <span className="font-medium">{spread.label}</span>
+                                               <span className="text-xs text-muted-foreground">{spread.description} ({spread.cards} cards)</span>
+                                             </div>
+                                           </SelectItem>
+                                         ))}
+                                       </SelectContent>
+                                     </Select>
+                                   </div>
+                                 )}
+                               </div>
+                             </div>
+                           </div>
+                         </div>
+                       )}
+                     </div>
+                   )}
 
-                        {/* AI Action - Shows when AI is selected */}
-                        {!isPhysical && (
-                          <div className="mt-3 max-w-xl mx-auto">
-                            <div className="text-center space-y-2">
-                              <Button
-                                onClick={analyzeQuestionAndOptimize}
-                                disabled={!question.trim() || isAnalyzingQuestion}
-                                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30"
-                              >
-                                <Sparkles className={`w-4 h-4 mr-2 ${isAnalyzingQuestion ? 'animate-spin' : ''}`} />
-                                {isAnalyzingQuestion ? 'Analyzing Your Question...' : 'Get AI Spread Suggestion'}
-                              </Button>
-                              <p className="text-xs text-muted-foreground">
-                                AI will analyze your question and recommend the perfect spread
-                              </p>
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Physical Cards Input - Compact */}
-                        {isPhysical && (
-                          <div className="mt-3 max-w-xl mx-auto">
-                            <div className="space-y-2">
-                              <Label htmlFor="physical-cards" className="text-foreground font-medium text-sm">
-                                Enter {selectedSpread.cards} cards:
-                              </Label>
-                              <Textarea
-                                id="physical-cards"
-                                value={physicalCards}
-                                onChange={(e) => setPhysicalCards(e.target.value)}
-                                placeholder={`Card numbers (1-36) or names. Example: 1, 15, 28`}
-                                className="bg-background border-border text-foreground placeholder:text-muted-foreground min-h-[60px] rounded-lg focus:border-primary focus:ring-primary/20 resize-none text-sm"
-                                aria-describedby="physical-cards-help"
-                              />
-                              <div id="physical-cards-help" className="text-xs text-muted-foreground text-center">
-                                Enter card numbers or names separated by commas
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                  {/* AI Feedback Banner */}
-                  {aiFeedback && (
-                    <div className="p-4 rounded-xl bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20">
-                      <div className="flex items-center gap-2 text-sm text-primary mb-2">
-                        <Sparkles className="w-4 h-4" />
-                        <span className="px-2 py-0.5 rounded bg-primary/20 text-primary text-xs font-medium">
-                          AI match {aiFeedback.confidence}%
-                        </span>
-                      </div>
-                      <p className="text-sm text-primary/80 mb-2">{aiFeedback.reason}</p>
-                      <p className="text-xs text-primary/60">
-                        Review the selection below, then click &ldquo;Continue to Draw Cards&rdquo; when ready.
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Spread Selection */}
-                  <div className="space-y-2">
-                    <Label htmlFor="spread" className="text-foreground font-medium">Choose Your Spread:</Label>
-                    <Select value={selectedSpread.id} onValueChange={(value) => {
-                      const spread = COMPREHENSIVE_SPREADS.find(s => s.id === value)
-                      if (spread) {
-                        setSelectedSpread(spread)
-                        setAiFeedback(null)
-                      }
-                    }}>
-                      <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary h-12" aria-describedby="spread-help">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="bg-card border-border">
-                        {COMPREHENSIVE_SPREADS.map((spread) => (
-                          <SelectItem key={spread.id} value={spread.id} className="text-card-foreground hover:bg-accent focus:bg-accent">
-                            <div className="flex flex-col">
-                              <span className="font-medium">{spread.label}</span>
-                              <span className="text-xs text-muted-foreground">{spread.description} ({spread.cards} cards)</span>
-                            </div>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <div id="spread-help" className="text-xs text-muted-foreground italic">
-                      Select the spread that best fits your question
-                    </div>
-                  </div>
+                   {/* Physical Cards Escape Hatch */}
+                   <div className="pt-4 border-t border-border text-center">
+                     <p className="text-xs text-muted-foreground">
+                       Already have cards?{" "}
+                       <button 
+                         onClick={() => router.push('/read/physical')}
+                         className="text-primary underline hover:text-primary/80"
+                       >
+                         Interpret your draw
+                       </button>
+                     </p>
+                   </div>
                 </CardContent>
               </Card>
 
@@ -694,20 +606,22 @@ function NewReadingPageContent() {
                 </CollapsibleCard>
               )}
 
-              {/* Sticky Continue Button */}
-              <div className="sticky bottom-4 z-10 mt-6">
-                <Card className="border-border bg-card/95 backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden">
-                  <CardContent className="p-4">
-                    <Button
-                      onClick={() => setStep('drawing')}
-                      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30 rounded-xl py-3 font-semibold transition-all duration-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                      disabled={!question.trim() || (isPhysical && !physicalCards.trim())}
-                    >
-                      {isPhysical ? "Continue to Reading" : "Continue to Draw Cards"}
-                    </Button>
-                  </CardContent>
-                </Card>
-              </div>
+               {/* Unified Primary Button */}
+               {path === 'virtual' && (
+                 <div className="sticky bottom-4 z-10 mt-6">
+                   <Card className="border-border bg-card/95 backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden">
+                     <CardContent className="p-4">
+                       <Button
+                         onClick={() => setStep('drawing')}
+                         className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30 rounded-xl py-3 font-semibold transition-all duration-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                         disabled={!canProceed}
+                       >
+                         {getButtonLabel()}
+                       </Button>
+                     </CardContent>
+                   </Card>
+                 </div>
+               )}
             </motion.div>
           )}
         </AnimatePresence>
@@ -738,29 +652,11 @@ function NewReadingPageContent() {
                    )}
                 </div>
 
-                 {isPhysical ? (
-                  <div className="text-center space-y-4">
-                    <div className="p-6 bg-muted/50 rounded-xl border border-border">
-                      <h3 className="text-lg font-semibold text-foreground mb-2">Your Physical Cards</h3>
-                       <div className="text-sm text-muted-foreground mb-4">
-                         Ready to analyze your {selectedSpread.cards} manually drawn cards
-                       </div>
-                       <Button
-                         onClick={() => handleDraw(allCards)}
-                         disabled={!physicalCards.trim()}
-                         className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30"
-                       >
-                         Analyze My Cards
-                       </Button>
-                    </div>
-                  </div>
-                 ) : (
-                    <Deck
-                      cards={allCards}
-                      drawCount={selectedSpread.cards}
-                      onDraw={handleDraw}
-                    />
-                 )}
+                 <Deck
+                   cards={allCards}
+                   drawCount={selectedSpread.cards}
+                   onDraw={handleDraw}
+                 />
 
                  <div className="text-center">
                    <Button
