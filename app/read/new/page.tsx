@@ -18,7 +18,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { Sparkles, Dice1 } from 'lucide-react'
+import { Sparkles, Dice1, Settings, Shuffle, Eye } from 'lucide-react'
+import { CollapsibleCard } from '@/components/CollapsibleCard'
 import { getCards, drawCards, getCardById } from '@/lib/data'
 import { getAIReading, AIReadingRequest, AIReadingResponse, isDeepSeekAvailable } from '@/lib/deepseek'
 
@@ -495,38 +496,39 @@ function NewReadingPageContent() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3, ease: "easeOut" }}
-              className="space-y-6"
+              className="space-y-4"
             >
-            <Card className="border-border bg-card backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden">
-              <CardHeader>
-                <CardTitle className="text-card-foreground text-xl">
-                  Your Sacred Question:
-                </CardTitle>
-              </CardHeader>
+              {/* Essential Section - Always Visible */}
+              <Card className="border-border bg-card backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-card-foreground text-xl flex items-center gap-2">
+                    <Eye className="w-5 h-5" />
+                    Your Sacred Question
+                  </CardTitle>
+                </CardHeader>
                 <CardContent className="space-y-6">
-                <div className="space-y-3">
-                <Textarea
-                  id="question"
-                  value={question}
-                  onChange={(e) => {
-                    setQuestion(e.target.value)
-                    setQuestionCharCount(e.target.value.length)
-                  }}
-                  placeholder="What guidance do the cards have for me today?"
-                  className="bg-background border-border text-foreground placeholder:text-muted-foreground min-h-[120px] rounded-xl focus:border-primary focus:ring-primary/20 resize-none"
-                  maxLength={500}
-                  aria-describedby="question-help question-count"
-                  required
-                />
-                 <div id="question-count" className="text-right text-xs text-muted-foreground" aria-live="polite">
-                   {questionCharCount}/500 characters
-                 </div>
-
-                 </div>
+                  {/* Question Input */}
+                  <div className="space-y-3">
+                    <Textarea
+                      id="question"
+                      value={question}
+                      onChange={(e) => {
+                        setQuestion(e.target.value)
+                        setQuestionCharCount(e.target.value.length)
+                      }}
+                      placeholder="What guidance do the cards have for me today?"
+                      className="bg-background border-border text-foreground placeholder:text-muted-foreground min-h-[100px] rounded-xl focus:border-primary focus:ring-primary/20 resize-none"
+                      maxLength={500}
+                      aria-describedby="question-help question-count"
+                      required
+                    />
+                    <div id="question-count" className="text-right text-xs text-muted-foreground" aria-live="polite">
+                      {questionCharCount}/500 characters
+                    </div>
+                  </div>
 
                   {/* AI Auto-Select Button */}
                   <div className="text-center space-y-3">
-
                     <div aria-live="polite" aria-atomic="true" className="sr-only">
                       {isAnalyzingQuestion ? 'Analyzing your question for the best spread' : ''}
                     </div>
@@ -540,30 +542,32 @@ function NewReadingPageContent() {
                       <Sparkles className={`w-4 h-4 mr-2 ${isAnalyzingQuestion ? 'animate-spin' : ''}`} />
                       {isAnalyzingQuestion ? 'Analyzing...' : 'AI Auto-Select Spread'}
                     </Button>
-                     <p id="ai-button-help" className="text-sm text-muted-foreground">
-                       Our AI will analyze your question and suggest the best spread for your reading.
-                     </p>
-                   </div>
+                    <p id="ai-button-help" className="text-sm text-muted-foreground">
+                      Our AI will analyze your question and suggest the best spread for your reading.
+                    </p>
+                  </div>
 
-                   {aiFeedback && (
-                     <div className="mt-4 p-3 rounded-lg bg-slate-800/50 border border-slate-700">
-                       <div className="flex items-center gap-2 text-sm text-slate-300 mb-1">
-                         <span className="px-2 py-0.5 rounded bg-slate-700 text-slate-100 text-xs">
-                           AI match {aiFeedback.confidence}%
-                         </span>
-                         <span>{aiFeedback.reason}</span>
-                       </div>
-                        <p className="text-xs text-slate-400">
-                          Review the selection below, then click &ldquo;Continue to Draw Cards&rdquo; when ready.
-                        </p>
-                     </div>
-                   )}
+                  {/* AI Feedback Banner */}
+                  {aiFeedback && (
+                    <div className="p-4 rounded-xl bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20">
+                      <div className="flex items-center gap-2 text-sm text-primary mb-2">
+                        <Sparkles className="w-4 h-4" />
+                        <span className="px-2 py-0.5 rounded bg-primary/20 text-primary text-xs font-medium">
+                          AI match {aiFeedback.confidence}%
+                        </span>
+                      </div>
+                      <p className="text-sm text-primary/80 mb-2">{aiFeedback.reason}</p>
+                      <p className="text-xs text-primary/60">
+                        Review the selection below, then click &ldquo;Continue to Draw Cards&rdquo; when ready.
+                      </p>
+                    </div>
+                  )}
 
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="layout">Reading Type:</Label>
-                       <Select value={layoutType.toString()} onValueChange={(value) => { setLayoutType(parseInt(value) as 3 | 5 | 9 | 36); setAiFeedback(null); }}>
-                       <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary" aria-describedby="layout-help">
+                  {/* Reading Type Selection */}
+                  <div className="space-y-2">
+                    <Label htmlFor="layout" className="text-foreground font-medium">Reading Type:</Label>
+                    <Select value={layoutType.toString()} onValueChange={(value) => { setLayoutType(parseInt(value) as 3 | 5 | 9 | 36); setAiFeedback(null); }}>
+                      <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary h-12" aria-describedby="layout-help">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-card border-border">
@@ -574,187 +578,194 @@ function NewReadingPageContent() {
                         ))}
                       </SelectContent>
                     </Select>
-                     <div id="layout-help" className="text-xs text-muted-foreground italic">
-                       Choose the number of cards for your reading spread
-                     </div>
-                   </div>
+                    <div id="layout-help" className="text-xs text-muted-foreground italic">
+                      Choose the number of cards for your reading spread
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
 
-                      {layoutType === 3 && !isPhysical && (
-                       <div className="space-y-2">
-                         <Label htmlFor="three-card-spread">3-Card Spread Type:</Label>
-                          <Select value={threeCardSpreadType} onValueChange={(value) => { setThreeCardSpreadType(value); setAiFeedback(null); }}>
-                           <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary" aria-describedby="spread-help">
-                             <SelectValue />
-                           </SelectTrigger>
-                           <SelectContent className="bg-card border-border">
-                             {THREE_CARD_SPREADS.map((spread) => (
-                               <SelectItem key={spread.value} value={spread.value} className="text-card-foreground hover:bg-accent focus:bg-accent">
-                                 {spread.label}
-                               </SelectItem>
-                             ))}
-                           </SelectContent>
-                         </Select>
-                         <div id="spread-help" className="text-xs text-muted-foreground italic">
-                           Choose how to interpret your 3-card spread
-                         </div>
-                       </div>
-                       )}
-
-                       {layoutType === 5 && !isPhysical && (
-                        <div className="space-y-2">
-                          <Label htmlFor="five-card-spread">5-Card Spread Type:</Label>
-                          <Select value={fiveCardSpreadType} onValueChange={(value) => { setFiveCardSpreadType(value); setAiFeedback(null); }}>
-                            <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary" aria-describedby="five-spread-help">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent className="bg-card border-border">
-                              {FIVE_CARD_SPREADS.map((spread) => (
-                                <SelectItem key={spread.value} value={spread.value} className="text-card-foreground hover:bg-accent focus:bg-accent">
-                                  {spread.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <div id="five-spread-help" className="text-xs text-muted-foreground italic">
-                            Choose how to interpret your 5-card spread
-                          </div>
-                        </div>
-                       )}
-
-                       {layoutType === 7 && !isPhysical && (
-                       <div className="space-y-2">
-                         <Label htmlFor="seven-card-spread">7-Card Spread Type:</Label>
-                          <Select value={sevenCardSpreadType} onValueChange={(value) => { setSevenCardSpreadType(value); setAiFeedback(null); }}>
-                           <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary" aria-describedby="seven-spread-help">
-                             <SelectValue />
-                           </SelectTrigger>
-                           <SelectContent className="bg-card border-border">
-                             {SEVEN_CARD_SPREADS.map((spread) => (
-                               <SelectItem key={spread.value} value={spread.value} className="text-card-foreground hover:bg-accent focus:bg-accent">
-                                 {spread.label}
-                               </SelectItem>
-                             ))}
-                           </SelectContent>
-                         </Select>
-                         <div id="seven-spread-help" className="text-xs text-muted-foreground italic">
-                           Choose how to interpret your 7-card spread
-                         </div>
-                       </div>
-                      )}
-
-
-
-                    {isPhysical && (
-                      <div className="space-y-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="physical-cards">Enter Your Cards:</Label>
-                          <Textarea
-                            id="physical-cards"
-                            value={physicalCards}
-                            onChange={(e) => setPhysicalCards(e.target.value)}
-                             placeholder={(() => {
-                               switch (layoutType) {
-                                 case 3:
-                                   return `Enter 3 card numbers (1-36) separated by commas, spaces, or new lines.
-Example: 1, 15, 28
-Or: Rider, Sun, Key`;
-                                 case 5:
-                                   return `Enter 5 card numbers (1-36) separated by commas, spaces, or new lines.
-Example: 1, 15, 28, 7, 22
-Or: Rider, Sun, Key, Snake, Paths`;
-                                 case 9:
-                                   return `Enter 9 card numbers (1-36) separated by commas, spaces, or new lines.
-Example: 1, 15, 28, 7, 22, 33, 12, 19, 31
-Or: Rider, Sun, Key, Snake, Paths, Moon, Birds, Tower, Lilies`;
-                                 case 36:
-                                   return `Enter all 36 card numbers (1-36) in the order they appeared in your Grand Tableau spread.
-Example: 1, 15, 28, 7, 22, 33, 12, 19, 31, 4, 8, 16, 25, 2, 35, 6, 9, 13, 20, 27...
-Or: Rider, Sun, Key, Snake, Paths, Moon, Birds, Tower, Lilies, House, Coffin, Stars...`;
-                                 default:
-                                   return `Enter ${layoutType} card numbers (1-36) separated by commas, spaces, or new lines.
-Example: 1, 15, 28
-Or: Rider, Sun, Key`;
-                               }
-                             })()}
-                            className="bg-background border-border text-foreground placeholder:text-muted-foreground min-h-[120px] rounded-xl focus:border-primary focus:ring-primary/20 resize-none"
-                            rows={4}
-                          />
-                          <div className="text-xs text-muted-foreground italic">
-                            Enter card numbers (1-36) or names separated by commas, spaces, or new lines
-                          </div>
+              {/* Spread Details - Collapsible */}
+              {layoutType > 3 && !isPhysical && (
+                <CollapsibleCard
+                  title="Customize Spread Type"
+                  icon={<Shuffle className="w-4 h-4" />}
+                  defaultOpen={false}
+                  className="border-muted/50"
+                >
+                  <div className="space-y-4">
+                    {layoutType === 5 && (
+                      <div className="space-y-2">
+                        <Label htmlFor="five-card-spread">5-Card Spread Type:</Label>
+                        <Select value={fiveCardSpreadType} onValueChange={(value) => { setFiveCardSpreadType(value); setAiFeedback(null); }}>
+                          <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="bg-card border-border">
+                            {FIVE_CARD_SPREADS.map((spread) => (
+                              <SelectItem key={spread.value} value={spread.value} className="text-card-foreground hover:bg-accent focus:bg-accent">
+                                {spread.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <div className="text-xs text-muted-foreground italic">
+                          Choose how to interpret your 5-card spread
                         </div>
                       </div>
                     )}
 
-                    {/* Physical Cards Toggle */}
-                     <div
-                        className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-colors ${isPhysical ? 'bg-primary/10 border-primary/30' : 'bg-muted/80 border-border hover:bg-muted'}`}
-                        onClick={() => setIsPhysical(!isPhysical)}
-                     >
-                      <div className="space-y-1">
-                        <Label htmlFor="physical-mode" className="text-foreground font-medium text-sm">
-                          Use Physical Cards
-                        </Label>
-                        <p className="text-xs text-muted-foreground">
-                          Enter cards from your physical Lenormand deck
-                        </p>
+                    {layoutType === 7 && (
+                      <div className="space-y-2">
+                        <Label htmlFor="seven-card-spread">7-Card Spread Type:</Label>
+                        <Select value={sevenCardSpreadType} onValueChange={(value) => { setSevenCardSpreadType(value); setAiFeedback(null); }}>
+                          <SelectTrigger className="bg-background border-border text-card-foreground rounded-xl focus:border-primary">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="bg-card border-border">
+                            {SEVEN_CARD_SPREADS.map((spread) => (
+                              <SelectItem key={spread.value} value={spread.value} className="text-card-foreground hover:bg-accent focus:bg-accent">
+                                {spread.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <div className="text-xs text-muted-foreground italic">
+                          Choose how to interpret your 7-card spread
+                        </div>
                       </div>
-                      <Switch
-                        id="physical-mode"
-                        checked={isPhysical}
-                        onCheckedChange={setIsPhysical}
-                        onClick={(e) => e.stopPropagation()}
-                        aria-label="Toggle between virtual and physical card reading"
-                      />
+                    )}
+                  </div>
+                </CollapsibleCard>
+              )}
+
+              {/* Reading Method - Collapsible */}
+              <CollapsibleCard
+                title="Reading Method"
+                icon={<Settings className="w-4 h-4" />}
+                defaultOpen={false}
+                className="border-muted/50"
+              >
+                <div className="space-y-4">
+                  {/* Physical Cards Toggle */}
+                  <div
+                    className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-colors ${isPhysical ? 'bg-primary/10 border-primary/30' : 'bg-muted/80 border-border hover:bg-muted'}`}
+                    onClick={() => setIsPhysical(!isPhysical)}
+                  >
+                    <div className="space-y-1">
+                      <Label htmlFor="physical-mode" className="text-foreground font-medium text-sm">
+                        Use Physical Cards
+                      </Label>
+                      <p className="text-xs text-muted-foreground">
+                        Enter cards from your physical Lenormand deck
+                      </p>
                     </div>
+                    <Switch
+                      id="physical-mode"
+                      checked={isPhysical}
+                      onCheckedChange={setIsPhysical}
+                      onClick={(e) => e.stopPropagation()}
+                      aria-label="Toggle between virtual and physical card reading"
+                    />
+                  </div>
 
-
-
-
-                </div>
-
-                  {/* Optimization feedback */}
-                  {optimizationResult && (
-                    <div className="space-y-3 p-4 bg-muted/30 rounded-xl border border-border">
-                      {optimizationResult.ambiguous && (
-                        <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400">
-                          <span className="text-sm font-medium">⚠️ Heads-up:</span>
-                          <span className="text-sm">This question mixes multiple themes—consider narrowing it down or doing separate readings.</span>
-                        </div>
-                      )}
-
-                      {optimizationResult.confidence !== undefined && (
-                        <div className="space-y-1">
-                          <div className="flex items-center justify-between text-sm">
-                            <span className="text-muted-foreground">AI match confidence</span>
-                            <span className="font-medium">{optimizationResult.confidence}%</span>
-                          </div>
-                          <div className="w-full bg-muted rounded-full h-2">
-                            <div
-                              className="bg-primary h-2 rounded-full transition-all duration-300"
-                              style={{ width: `${optimizationResult.confidence}%` }}
-                            />
-                          </div>
-                        </div>
-                      )}
-
-                      {optimizationResult.reason && (
-                        <p className="text-xs text-muted-foreground italic">
-                          {optimizationResult.reason}
-                        </p>
-                      )}
+                  {/* Physical Cards Input */}
+                  {isPhysical && (
+                    <div className="space-y-2">
+                      <Label htmlFor="physical-cards">Enter Your Cards:</Label>
+                      <Textarea
+                        id="physical-cards"
+                        value={physicalCards}
+                        onChange={(e) => setPhysicalCards(e.target.value)}
+                        placeholder={(() => {
+                          switch (layoutType) {
+                            case 3:
+                              return `Enter 3 card numbers (1-36) separated by commas, spaces, or new lines.
+Example: 1, 15, 28
+Or: Rider, Sun, Key`;
+                            case 5:
+                              return `Enter 5 card numbers (1-36) separated by commas, spaces, or new lines.
+Example: 1, 15, 28, 7, 22
+Or: Rider, Sun, Key, Snake, Paths`;
+                            case 9:
+                              return `Enter 9 card numbers (1-36) separated by commas, spaces, or new lines.
+Example: 1, 15, 28, 7, 22, 33, 12, 19, 31
+Or: Rider, Sun, Key, Snake, Paths, Moon, Birds, Tower, Lilies`;
+                            case 36:
+                              return `Enter all 36 card numbers (1-36) in the order they appeared in your Grand Tableau spread.
+Example: 1, 15, 28, 7, 22, 33, 12, 19, 31, 4, 8, 16, 25, 2, 35, 6, 9, 13, 20, 27...
+Or: Rider, Sun, Key, Snake, Paths, Moon, Birds, Tower, Lilies, House, Coffin, Stars...`;
+                            default:
+                              return `Enter ${layoutType} card numbers (1-36) separated by commas, spaces, or new lines.
+Example: 1, 15, 28
+Or: Rider, Sun, Key`;
+                          }
+                        })()}
+                        className="bg-background border-border text-foreground placeholder:text-muted-foreground min-h-[100px] rounded-xl focus:border-primary focus:ring-primary/20 resize-none"
+                        rows={4}
+                      />
+                      <div className="text-xs text-muted-foreground italic">
+                        Enter card numbers (1-36) or names separated by commas, spaces, or new lines
+                      </div>
                     </div>
                   )}
+                </div>
+              </CollapsibleCard>
 
-                   <Button
-                   onClick={() => setStep('drawing')}
-                   className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30 rounded-xl py-3 font-semibold transition-all duration-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                    disabled={!question.trim() || (isPhysical && !physicalCards.trim())}
-                 >
-                    {isPhysical ? "Continue to Reading" : "Continue to Draw Cards"}
-                 </Button>
-             </CardContent>
-           </Card>
+              {/* Advanced Options - Collapsible */}
+              {optimizationResult && (
+                <CollapsibleCard
+                  title="Reading Insights"
+                  icon={<Sparkles className="w-4 h-4" />}
+                  defaultOpen={false}
+                  className="border-muted/50"
+                >
+                  <div className="space-y-3">
+                    {optimizationResult.ambiguous && (
+                      <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400">
+                        <span className="text-sm font-medium">⚠️ Heads-up:</span>
+                        <span className="text-sm">This question mixes multiple themes—consider narrowing it down or doing separate readings.</span>
+                      </div>
+                    )}
+
+                    {optimizationResult.confidence !== undefined && (
+                      <div className="space-y-1">
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-muted-foreground">AI match confidence</span>
+                          <span className="font-medium">{optimizationResult.confidence}%</span>
+                        </div>
+                        <div className="w-full bg-muted rounded-full h-2">
+                          <div
+                            className="bg-primary h-2 rounded-full transition-all duration-300"
+                            style={{ width: `${optimizationResult.confidence}%` }}
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {optimizationResult.reason && (
+                      <p className="text-xs text-muted-foreground italic">
+                        {optimizationResult.reason}
+                      </p>
+                    )}
+                  </div>
+                </CollapsibleCard>
+              )}
+
+              {/* Sticky Continue Button */}
+              <div className="sticky bottom-4 z-10 mt-6">
+                <Card className="border-border bg-card/95 backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden">
+                  <CardContent className="p-4">
+                    <Button
+                      onClick={() => setStep('drawing')}
+                      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30 rounded-xl py-3 font-semibold transition-all duration-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                      disabled={!question.trim() || (isPhysical && !physicalCards.trim())}
+                    >
+                      {isPhysical ? "Continue to Reading" : "Continue to Draw Cards"}
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
