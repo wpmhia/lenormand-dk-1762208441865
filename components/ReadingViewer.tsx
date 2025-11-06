@@ -77,7 +77,7 @@ const getPositionInfo = (position: number, spreadId?: string): PositionInfo => {
         1: { label: "Center Card", meaning: "Tie-breaker card if the count is equal between positive and negative cards" },
         2: { label: "Third Card", meaning: "Contributes to the Yes/No count based on its positive or negative meaning" }
       },
-      "general-reading-3": {
+      "sentence-3": {
         0: { label: "Opening Element", meaning: "Primary element - can represent past, mind, or situation depending on context" },
         1: { label: "Central Element", meaning: "Core element - can represent present, body, or action depending on context" },
         2: { label: "Closing Element", meaning: "Final element - can represent future, spirit, or outcome; check mirror relationship with central element" }
@@ -89,7 +89,7 @@ const getPositionInfo = (position: number, spreadId?: string): PositionInfo => {
         3: { label: "Outcome", meaning: "The likely result of your current path" },
         4: { label: "Final Result", meaning: "The ultimate conclusion or long-term outcome" }
       },
-      "general-reading-5": {
+      "sentence-5": {
         0: { label: "Position 1", meaning: "First card in the flowing narrative" },
         1: { label: "Position 2", meaning: "Second card in the flowing narrative" },
         2: { label: "Position 3", meaning: "Third card in the flowing narrative" },
