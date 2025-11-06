@@ -792,9 +792,9 @@ function NewReadingPageContent() {
                    <Sparkles className="w-6 h-6 text-primary" />
                    AI Analysis
                  </h2>
-                   <p className="text-muted-foreground">
-                      The sibyl weaves wisdom from your {layoutType} sacred cards
-                   </p>
+                    <p className="text-muted-foreground">
+                       The sibyl weaves wisdom from your {selectedSpread.cards} sacred cards
+                    </p>
                </div>
 
                   <ReadingViewer
