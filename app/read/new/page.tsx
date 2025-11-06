@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, Suspense } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Card as CardType, ReadingCard } from '@/lib/types'
@@ -18,7 +18,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { Sparkles, Dice1, Settings, Shuffle, Eye } from 'lucide-react'
+import { Sparkles, Eye } from 'lucide-react'
 import { CollapsibleCard } from '@/components/CollapsibleCard'
 import { getCards, drawCards, getCardById } from '@/lib/data'
 import { getAIReading, AIReadingRequest, AIReadingResponse, isDeepSeekAvailable } from '@/lib/deepseek'
@@ -53,6 +53,10 @@ const COMPREHENSIVE_SPREADS = [
 function NewReadingPageContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
+  
+  // Refs for cleanup and request management
+  const mountedRef = useRef(true)
+  const aiRequestRef = useRef<AbortController | null>(null)
   const [allCards, setAllCards] = useState<CardType[]>([])
   const [drawnCards, setDrawnCards] = useState<ReadingCard[]>([])
   const [selectedSpread, setSelectedSpread] = useState(COMPREHENSIVE_SPREADS[0]) // Default to first spread
@@ -64,6 +68,7 @@ function NewReadingPageContent() {
     confidence: number;
   } | null>(null)
   const [physicalCards, setPhysicalCards] = useState('')
+  const [physicalCardsError, setPhysicalCardsError] = useState<string | null>(null)
 
   const [question, setQuestion] = useState('')
   const [questionCharCount, setQuestionCharCount] = useState(0)
@@ -135,39 +140,80 @@ function NewReadingPageContent() {
   const [isAnalyzingQuestion, setIsAnalyzingQuestion] = useState(false)
 
 
-   const resetReading = () => {
-      setStep('setup')
-      setDrawnCards([])
-      setQuestion('')
-      setQuestionCharCount(0)
-      setSelectedSpread(COMPREHENSIVE_SPREADS[0])
-       setError('')
-       setAiReading(null)
-       setAiLoading(false)
-       setAiError(null)
-       setAiErrorDetails(null)
-        setPath(null)
-        setShowManualPicker(false)
-        setAiResult(null)
-        setPhysicalCards('')
+   const resetReading = (options = { keepUrlParams: false, closeConfirmDialog: false }) => {
+       setStep('setup')
+       setDrawnCards([])
+       setQuestion('')
+       setQuestionCharCount(0)
+       setSelectedSpread(COMPREHENSIVE_SPREADS[0])
+        setError('')
+        setAiReading(null)
+        setAiLoading(false)
+        setAiError(null)
+        setAiErrorDetails(null)
+         setPath(null)
+         setShowManualPicker(false)
+         setAiResult(null)
+         setPhysicalCards('')
+         setPhysicalCardsError(null)
+         
+         if (options.closeConfirmDialog) {
+           setShowStartOverConfirm(false)
+         }
+         
+         // Cancel any ongoing AI requests
+         aiRequestRef.current?.abort()
+         
+         // Clear URL params if not keeping them
+         if (!options.keepUrlParams) {
+           router.replace('/read/new')
+         }
     }
 
   useEffect(() => {
     fetchCards()
-    resetReading()
+    
+    // Cleanup on unmount
+    return () => {
+      mountedRef.current = false
+      aiRequestRef.current?.abort()
+    }
   }, [])
 
    useEffect(() => {
      if (searchParams.get('reset')) {
        resetReading()
      }
-   }, [searchParams])
+   }, [searchParams.toString(), resetReading])
 
-    // Clear AI result when question changes
-    useEffect(() => {
-      setAiResult(null)
-      setShowManualPicker(false)
-    }, [question])
+     // Clear AI result when question changes
+     useEffect(() => {
+       setAiResult(null)
+       setShowManualPicker(false)
+     }, [question])
+
+     // Real-time validation for physical cards
+     useEffect(() => {
+       if (path === 'physical' && physicalCards) {
+         const validatePhysicalCards = (input: string, requiredCount: number): string | null => {
+           const trimmedInput = input.trim()
+           if (!trimmedInput) return null
+           
+           const cardInputs = trimmedInput.split(/[,;\s\n]+/).map(s => s.trim()).filter(s => s.length > 0)
+           
+           if (cardInputs.length !== requiredCount) {
+             return `Please enter exactly ${requiredCount} cards. You entered ${cardInputs.length}.`
+           }
+           
+           return null
+         }
+         
+         const error = validatePhysicalCards(physicalCards, selectedSpread.cards)
+         setPhysicalCardsError(error)
+       } else {
+         setPhysicalCardsError(null)
+       }
+     }, [physicalCards, selectedSpread, path])
 
   const fetchCards = async () => {
     try {
@@ -181,28 +227,31 @@ function NewReadingPageContent() {
 
 
 
-   const handleDraw = async (cards: CardType[]) => {
-     try {
-       let readingCards: ReadingCard[];
-       
-       if (path === 'physical') {
-         // Parse physical cards input
-         readingCards = parsePhysicalCards(cards);
-       } else {
-         // Draw random cards (virtual path)
-         readingCards = drawCards(cards, selectedSpread.cards);
-       }
+   const handleDraw = useCallback(async (cards: CardType[]) => {
+      const currentPath = path
+      const currentSpread = selectedSpread
+      
+      try {
+        let readingCards: ReadingCard[];
+        
+        if (currentPath === 'physical') {
+          // Parse physical cards input
+          readingCards = parsePhysicalCards(cards);
+        } else {
+          // Draw random cards (virtual path)
+          readingCards = drawCards(cards, currentSpread.cards);
+        }
 
-       setDrawnCards(readingCards)
+        setDrawnCards(readingCards)
 
-       // Start AI analysis (API route handles availability)
-       setStep('ai-analysis')
-       await performAIAnalysis(readingCards)
-     } catch (error) {
-       console.error('Error in handleDraw:', error)
-       setError(error instanceof Error ? error.message : 'An error occurred while processing your cards')
-     }
-   }
+        // Start AI analysis (API route handles availability)
+        setStep('ai-analysis')
+        await performAIAnalysis(readingCards)
+      } catch (error) {
+        console.error('Error in handleDraw:', error)
+        setError(error instanceof Error ? error.message : 'An error occurred while processing your cards')
+      }
+    }, [path, selectedSpread, performAIAnalysis, parsePhysicalCards])
 
    const parsePhysicalCards = (allCards: CardType[]): ReadingCard[] => {
      const input = physicalCards.trim()
@@ -251,81 +300,97 @@ function NewReadingPageContent() {
      return readingCards
    }
 
-  const performAIAnalysis = async (readingCards: ReadingCard[], isRetry = false) => {
-    setAiLoading(true)
-    setAiError(null)
-    setAiErrorDetails(null)
+   const performAIAnalysis = async (readingCards: ReadingCard[], isRetry = false) => {
+     if (!mountedRef.current) return
+     
+     // Cancel previous request if exists
+     aiRequestRef.current?.abort()
+     const controller = new AbortController()
+     aiRequestRef.current = controller
+     
+     setAiLoading(true)
+     setAiError(null)
+     setAiErrorDetails(null)
 
-    if (!isRetry) {
-      setAiRetryCount(0)
-    }
+     if (!isRetry) {
+       setAiRetryCount(0)
+     }
 
-    // Set a timeout to prevent indefinite loading
-    const loadingTimeout = setTimeout(() => {
-      console.log('AI loading timeout reached')
-      setAiLoading(false)
-      setAiError('AI analysis timed out. You can still save your reading.')
-    }, 35000) // 35 seconds
+     // Set a timeout to prevent indefinite loading
+     const loadingTimeout = setTimeout(() => {
+       if (mountedRef.current) {
+         console.log('AI loading timeout reached')
+         setAiLoading(false)
+         setAiError('AI analysis timed out. You can still save your reading.')
+       }
+     }, 35000) // 35 seconds
 
-    try {
-      const aiRequest: AIReadingRequest = {
-        question: question.trim(),
+     try {
+       const aiRequest: AIReadingRequest = {
+         question: question.trim(),
 
-        cards: readingCards.map(card => ({
-          id: card.id,
-          name: getCardById(allCards, card.id)?.name || 'Unknown',
-          position: card.position
-        })),
-        spreadId: selectedSpread.id,
-        userLocale: navigator.language
-      }
+         cards: readingCards.map(card => ({
+           id: card.id,
+           name: getCardById(allCards, card.id)?.name || 'Unknown',
+           position: card.position
+         })),
+         spreadId: selectedSpread.id,
+         userLocale: navigator.language
+       }
 
-      const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), 45000) // 45 second timeout
+       const timeoutId = setTimeout(() => controller.abort(), 45000) // 45 second timeout
 
-      const response = await fetch('/api/readings/interpret', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(aiRequest),
-        signal: controller.signal
-      })
+       const response = await fetch('/api/readings/interpret', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify(aiRequest),
+         signal: controller.signal
+       })
 
-      clearTimeout(timeoutId)
+       clearTimeout(timeoutId)
 
-      if (!response.ok) {
-        const errorData = await response.json()
-        // Set detailed error information for better user guidance
-        setAiErrorDetails({
-          type: errorData.type,
-          helpUrl: errorData.helpUrl,
-          action: errorData.action,
-          waitTime: errorData.waitTime,
-          fields: errorData.fields
-        })
-        throw new Error(errorData.error || 'AI analysis failed')
-      }
+       if (!response.ok) {
+         const errorData = await response.json()
+         // Set detailed error information for better user guidance
+         if (mountedRef.current) {
+           setAiErrorDetails({
+             type: errorData.type,
+             helpUrl: errorData.helpUrl,
+             action: errorData.action,
+             waitTime: errorData.waitTime,
+             fields: errorData.fields
+           })
+         }
+         throw new Error(errorData.error || 'AI analysis failed')
+       }
 
-      const aiResult = await response.json()
-      setAiReading(aiResult)
-      setAiRetryCount(0) // Reset on success
-    } catch (error) {
-      console.error('AI analysis error:', error)
-      let errorMessage = 'AI analysis failed'
+       const aiResult = await response.json()
+       if (mountedRef.current) {
+         setAiReading(aiResult)
+         setAiRetryCount(0) // Reset on success
+       }
+     } catch (error) {
+       console.error('AI analysis error:', error)
+       let errorMessage = 'AI analysis failed'
 
-      if (error instanceof Error) {
-        if (error.name === 'AbortError') {
-          errorMessage = 'AI analysis is taking longer than expected. The service may be busy - please try again in a moment.'
-        } else {
-          errorMessage = error.message
-        }
-      }
+       if (error instanceof Error) {
+         if (error.name === 'AbortError') {
+           errorMessage = 'AI analysis is taking longer than expected. The service may be busy - please try again in a moment.'
+         } else {
+           errorMessage = error.message
+         }
+       }
 
-      setAiError(errorMessage)
-      setAiRetryCount(prev => prev + 1)
-    } finally {
-      clearTimeout(loadingTimeout)
-      setAiLoading(false)
-    }
+       if (mountedRef.current) {
+         setAiError(errorMessage)
+         setAiRetryCount(prev => prev + 1)
+       }
+     } finally {
+       clearTimeout(loadingTimeout)
+       if (mountedRef.current) {
+         setAiLoading(false)
+       }
+     }
   }
 
   const retryAIAnalysis = () => {
@@ -340,23 +405,8 @@ function NewReadingPageContent() {
   }
 
    const confirmStartOver = () => {
-      setDrawnCards([])
-      setStep('setup')
-      setQuestion('')
-      setQuestionCharCount(0)
-
-       setSelectedSpread(COMPREHENSIVE_SPREADS[0])
-      setError('')
-      setAiReading(null)
-      setAiLoading(false)
-      setAiError(null)
-      setAiErrorDetails(null)
-      setShowStartOverConfirm(false)
-      setPath(null)
-      setPhysicalCards('')
-      setShowManualPicker(false)
-      setAiResult(null)
-     }
+       resetReading({ closeConfirmDialog: true })
+      }
 
   const handleAnalyzeAndChoose = async () => {
     if (!question.trim()) {
@@ -416,9 +466,20 @@ function NewReadingPageContent() {
     return path === 'physical' ? "Interpret Cards" : "Draw & Interpret";
   }
 
-  const canProceed = question.trim() && (path === 'virtual' || (path === 'physical' && physicalCards.trim()));
+  const canProceed = question.trim() && (path === 'virtual' || (path === 'physical' && physicalCards.trim() && !physicalCardsError));
 
-
+  // Memoize reading data to prevent unnecessary re-renders
+  const readingData = useMemo(() => ({
+    id: 'temp',
+    title: 'Your Reading',
+    question,
+    layoutType: selectedSpread.cards,
+    cards: drawnCards,
+    slug: 'temp',
+    isPublic: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  }), [question, selectedSpread.cards, drawnCards])
 
   return (
     <TooltipProvider>
@@ -433,30 +494,30 @@ function NewReadingPageContent() {
             Let the ancient cards reveal what your heart already knows
           </p>
 
-          {/* Progress Indicator */}
-          <div className="mt-8 flex items-center justify-center space-x-6">
-            <div className={`flex items-center ${step === 'setup' ? 'text-primary' : 'text-muted-foreground'}`}>
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'setup' ? 'bg-primary border-primary shadow-lg shadow-primary/30 text-primary-foreground' : 'bg-muted border-muted-foreground text-muted-foreground dark:bg-muted/50 dark:border-muted-foreground/50'}`}>
-                1
-              </div>
-              <span className="ml-3 text-sm font-medium">Setup</span>
-            </div>
-            <div className={`w-12 h-0.5 rounded-full ${step === 'drawing' || step === 'ai-analysis' ? 'bg-primary' : 'bg-muted'}`}></div>
-            <div className={`flex items-center ${step === 'drawing' ? 'text-primary' : 'text-muted-foreground'}`}>
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'drawing' ? 'bg-primary border-primary shadow-lg shadow-primary/30 text-primary-foreground' : 'bg-muted border-muted-foreground text-muted-foreground dark:bg-muted/50 dark:border-muted-foreground/50'}`}>
-                2
-              </div>
-              <span className="ml-3 text-sm font-medium">{path === 'physical' ? 'Enter' : 'Draw'}</span>
-            </div>
-            <div className={`w-12 h-0.5 rounded-full ${step === 'ai-analysis' ? 'bg-primary' : 'bg-muted'}`}></div>
-            <div className={`flex items-center ${step === 'ai-analysis' ? 'text-primary' : 'text-muted-foreground'}`}>
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'ai-analysis' ? 'bg-primary border-primary shadow-lg shadow-primary/30 text-primary-foreground' : 'bg-muted border-muted-foreground text-muted-foreground dark:bg-muted/50 dark:border-muted-foreground/50'}`}>
-                3
-              </div>
-              <span className="ml-3 text-sm font-medium">Analyze</span>
-            </div>
+           {/* Progress Indicator */}
+           <div className="mt-8 flex items-center justify-center space-x-6" role="progressbar" aria-label="Reading progress">
+             <div className={`flex items-center ${step === 'setup' ? 'text-primary' : 'text-muted-foreground'}`} aria-label="Step 1: Setup" aria-current={step === 'setup' ? 'step' : undefined}>
+               <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'setup' ? 'bg-primary border-primary shadow-lg shadow-primary/30 text-primary-foreground' : 'bg-muted border-muted-foreground text-muted-foreground dark:bg-muted/50 dark:border-muted-foreground/50'}`} aria-hidden="true">
+                 1
+               </div>
+               <span className="ml-3 text-sm font-medium">Setup</span>
+             </div>
+             <div className={`w-12 h-0.5 rounded-full ${step === 'drawing' || step === 'ai-analysis' ? 'bg-primary' : 'bg-muted'}`} aria-hidden="true"></div>
+             <div className={`flex items-center ${step === 'drawing' ? 'text-primary' : 'text-muted-foreground'}`} aria-label={`Step 2: ${path === 'physical' ? 'Enter' : 'Draw'}`} aria-current={step === 'drawing' ? 'step' : undefined}>
+               <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'drawing' ? 'bg-primary border-primary shadow-lg shadow-primary/30 text-primary-foreground' : 'bg-muted border-muted-foreground text-muted-foreground dark:bg-muted/50 dark:border-muted-foreground/50'}`} aria-hidden="true">
+                 2
+               </div>
+               <span className="ml-3 text-sm font-medium">{path === 'physical' ? 'Enter' : 'Draw'}</span>
+             </div>
+             <div className={`w-12 h-0.5 rounded-full ${step === 'ai-analysis' ? 'bg-primary' : 'bg-muted'}`} aria-hidden="true"></div>
+             <div className={`flex items-center ${step === 'ai-analysis' ? 'text-primary' : 'text-muted-foreground'}`} aria-label="Step 3: Analyze" aria-current={step === 'ai-analysis' ? 'step' : undefined}>
+               <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'ai-analysis' ? 'bg-primary border-primary shadow-lg shadow-primary/30 text-primary-foreground' : 'bg-muted border-muted-foreground text-muted-foreground dark:bg-muted/50 dark:border-muted-foreground/50'}`} aria-hidden="true">
+                 3
+               </div>
+               <span className="ml-3 text-sm font-medium">Analyze</span>
+             </div>
 
-          </div>
+           </div>
         </div>
 
         {error && (
@@ -543,14 +604,15 @@ function NewReadingPageContent() {
                         {/* AI Analysis Button - Only for virtual path */}
                         {path === 'virtual' && (
                           <div className="text-center">
-                            <Button
-                              onClick={handleAnalyzeAndChoose}
-                              disabled={!question.trim() || isAnalyzingQuestion}
-                              className="w-full max-w-md bg-secondary hover:bg-secondary/90 text-secondary-foreground"
-                            >
-                              <Sparkles className={`w-4 h-4 mr-2 ${isAnalyzingQuestion ? 'animate-spin' : ''}`} />
-                              {isAnalyzingQuestion ? 'Analyzing...' : '✨ Analyze & Choose Best Spread'}
-                            </Button>
+                             <Button
+                               onClick={handleAnalyzeAndChoose}
+                               disabled={!question.trim() || isAnalyzingQuestion}
+                               className="w-full max-w-md bg-secondary hover:bg-secondary/90 text-secondary-foreground"
+                               aria-busy={isAnalyzingQuestion}
+                             >
+                               <Sparkles className={`w-4 h-4 mr-2 ${isAnalyzingQuestion ? 'animate-spin' : ''}`} />
+                               {isAnalyzingQuestion ? 'Analyzing...' : '✨ Analyze & Choose Best Spread'}
+                             </Button>
                           </div>
                         )}
 
@@ -653,9 +715,14 @@ function NewReadingPageContent() {
                              className="bg-background border-border text-foreground placeholder:text-muted-foreground min-h-[120px] rounded-xl focus:border-primary focus:ring-primary/20 resize-none"
                              rows={4}
                            />
-                           <p className="text-xs text-muted-foreground">
-                             💡 You can use card numbers (1-36) or card names. Separate with commas, spaces, or newlines.
-                           </p>
+                            {physicalCardsError && (
+                              <p className="text-xs text-destructive">
+                                {physicalCardsError}
+                              </p>
+                            )}
+                            <p className="text-xs text-muted-foreground">
+                              💡 You can use card numbers (1-36) or card names. Separate with commas, spaces, or newlines.
+                            </p>
                          </div>
                        </div>
                      )}
@@ -712,13 +779,14 @@ function NewReadingPageContent() {
                  <div className="sticky bottom-4 z-10 mt-6">
                    <Card className="border-border bg-card/95 backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden">
                      <CardContent className="p-4">
-                       <Button
-                         onClick={() => path === 'physical' ? handleDraw(allCards) : setStep('drawing')}
-                         className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30 rounded-xl py-3 font-semibold transition-all duration-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                         disabled={!canProceed}
-                       >
-                         {getButtonLabel()}
-                       </Button>
+                        <Button
+                          onClick={() => path === 'physical' ? handleDraw(allCards) : setStep('drawing')}
+                          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30 rounded-xl py-3 font-semibold transition-all duration-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                          disabled={!canProceed}
+                          aria-busy={aiLoading}
+                        >
+                          {getButtonLabel()}
+                        </Button>
                      </CardContent>
                    </Card>
                  </div>
@@ -794,22 +862,12 @@ function NewReadingPageContent() {
                     </p>
                </div>
 
-                  <ReadingViewer
-                     reading={{
-                       id: 'temp',
-                        title: 'Your Reading',
-                        question,
-                        layoutType: selectedSpread.cards,
-                        cards: drawnCards,
-                       slug: 'temp',
-                        isPublic: false,
-                       createdAt: new Date(),
-                       updatedAt: new Date(),
-                     }}
-                    allCards={allCards}
-                      showShareButton={false}
-                      spreadId={selectedSpread.id}
-                  />
+                   <ReadingViewer
+                      reading={readingData}
+                     allCards={allCards}
+                       showShareButton={false}
+                       spreadId={selectedSpread.id}
+                   />
 
                 {/* Show traditional meanings while AI loads or if AI fails */}
                  {(aiLoading || (!aiReading && !aiLoading)) && (
