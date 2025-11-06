@@ -1,12 +1,198 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { classifyQuestion } from '@/lib/deepseek'
 
 // Simple in-memory cache for optimization results (5-minute TTL)
 const cache = new Map<string, { result: any; timestamp: number }>()
 const CACHE_TTL = 5 * 60 * 1000 // 5 minutes
 
+const VALID_SPREADS = [
+  '3-card Past-Present-Future',
+  '3-card Yes-No-Maybe',
+  '5-card Structured',
+  '7-card Relationship Double-Significator',
+  '7-card Week-Ahead',
+  '9-card Comprehensive',
+  '36-card Grand Tableau',
+] as const;
+
+const SYSTEM_PROMPT = `
+You are a Lenormand spread selector. Analyze the question and return ONLY this JSON:
+\`\`\`json
+{
+  "readingType": "string", // e.g. "Annual Forecast", "Relationship", "Career"
+  "spreadType": "string",  // must be one of: ${VALID_SPREADS.join(', ')}
+  "reason": "string"       // one short sentence explaining your choice
+}
+\`\`\`
+
+**Selection rules:**
+1. Timeframe matters: "2025", "next year", "whole year" → 9-card or 36-card.
+2. Scope matters: "family", "us", "everything" → larger spreads (7, 9, 36).
+3. Simplicity matters: "yes/no", "today", "this week" → smaller spreads (3, 5, 7).
+4. **Never default to 3-card unless the question is truly tiny.**
+5. When in doubt, size up: 5-card is safer than 3-card for ambiguous questions.
+
+Examples:
+- "Will I get the job?" → 3-card Yes-No-Maybe, "Career", "Binary decision"
+- "What will 2025 bring us as a family?" → 9-card Comprehensive, "Annual Forecast", "Year scope + family system"
+- "Tell me about love" → 7-card Relationship, "Relationship", "Broad topic needs depth"
+- "What about money, health and work?" → 9-card Comprehensive, "General", "Multiple life areas"
+`;
+
 interface OptimizeRequest {
   question: string
+}
+
+interface OptimizeResponse {
+  layoutType: 3 | 5 | 7 | 9 | 36
+  spreadType?: string
+  confidence?: number
+  reason?: string
+  ambiguous?: boolean
+  focus?: string
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body: OptimizeRequest = await request.json()
+
+    if (!body.question || typeof body.question !== 'string') {
+      return NextResponse.json(
+        { error: 'Question is required' },
+        { status: 400 }
+      )
+    }
+
+    const question = body.question.trim()
+
+    // Check cache first
+    const cacheKey = question.toLowerCase()
+    const cached = cache.get(cacheKey)
+    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+      return NextResponse.json(cached.result)
+    }
+
+    try {
+      // DeepSeek call
+      const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'deepseek-chat',
+          messages: [
+            { role: 'system', content: SYSTEM_PROMPT },
+            { role: 'user', content: question },
+          ],
+          temperature: 0.1,
+          response_format: { type: 'json_object' },
+        }),
+      });
+
+      if (!response.ok) throw new Error(`DeepSeek error: ${response.status}`);
+
+      const data = await response.json();
+      const aiChoice = JSON.parse(data.choices[0].message.content);
+
+      // Safety: validate spread exists
+      if (!VALID_SPREADS.includes(aiChoice.spreadType)) {
+        throw new Error(`Invalid spread: ${aiChoice.spreadType}`);
+      }
+
+      // Map spreadType to layoutType and spreadType
+      let layoutType: 3 | 5 | 7 | 9 | 36;
+      let spreadType: string | undefined;
+
+      if (aiChoice.spreadType === '3-card Past-Present-Future') {
+        layoutType = 3;
+        spreadType = 'past-present-future';
+      } else if (aiChoice.spreadType === '3-card Yes-No-Maybe') {
+        layoutType = 3;
+        spreadType = 'yes-no-maybe';
+      } else if (aiChoice.spreadType === '5-card Structured') {
+        layoutType = 5;
+        spreadType = 'structured-reading';
+      } else if (aiChoice.spreadType === '7-card Relationship Double-Significator') {
+        layoutType = 7;
+        spreadType = 'relationship-double-significator';
+      } else if (aiChoice.spreadType === '7-card Week-Ahead') {
+        layoutType = 7;
+        spreadType = 'week-ahead';
+      } else if (aiChoice.spreadType === '9-card Comprehensive') {
+        layoutType = 9;
+        spreadType = undefined;
+      } else if (aiChoice.spreadType === '36-card Grand Tableau') {
+        layoutType = 36;
+        spreadType = undefined;
+      } else {
+        throw new Error(`Unknown spread: ${aiChoice.spreadType}`);
+      }
+
+      const result = {
+        layoutType,
+        spreadType,
+        confidence: 95, // High confidence for AI selection
+        reason: aiChoice.reason,
+        focus: aiChoice.readingType.toLowerCase().replace(/\s+/g, '-')
+      };
+
+      // Cache the result
+      cache.set(cacheKey, { result, timestamp: Date.now() });
+
+      return NextResponse.json(result);
+    } catch (error) {
+      console.error('AI selection failed:', error);
+
+      // Smart fallback: NEVER 3-card by default
+      const t = question.toLowerCase();
+      let fallback = {
+        layoutType: 5 as const,
+        spreadType: 'structured-reading',
+        confidence: 50,
+        reason: 'AI unavailable - using structured default',
+        focus: 'general'
+      };
+
+      if (t.includes('year') || t.includes('2025') || t.includes('2026')) {
+        fallback = {
+          layoutType: 9 as const,
+          spreadType: undefined,
+          confidence: 70,
+          reason: 'AI unavailable - detected annual scope',
+          focus: 'annual-forecast'
+        };
+      } else if (t.includes('family') || t.includes('relationship') || t.includes('love')) {
+        fallback = {
+          layoutType: 7 as const,
+          spreadType: 'relationship-double-significator',
+          confidence: 70,
+          reason: 'AI unavailable - detected relationship scope',
+          focus: 'relationship'
+        };
+      } else if (t.includes('yes') && t.includes('no')) {
+        fallback = {
+          layoutType: 3 as const,
+          spreadType: 'yes-no-maybe',
+          confidence: 80,
+          reason: 'AI unavailable - detected yes/no format',
+          focus: 'yesno'
+        };
+      }
+
+      // Cache the fallback
+      cache.set(cacheKey, { result: fallback, timestamp: Date.now() });
+
+      return NextResponse.json(fallback);
+    }
+
+  } catch (error) {
+    console.error('Error optimizing reading:', error)
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    )
+  }
 }
 
 interface OptimizeResponse {
