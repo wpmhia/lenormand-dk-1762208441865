@@ -437,18 +437,24 @@ function NewReadingPageContent() {
                  </div>
                  </div>
 
-                 {/* Lucky Button */}
-                 <div className="flex justify-center">
-                   <Button
-                     onClick={analyzeQuestionAndOptimize}
-                     disabled={!question.trim() || isAnalyzingQuestion}
-                     variant="outline"
-                     className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/30 hover:border-primary/50 hover:bg-primary/20 text-primary font-medium px-6 py-2 rounded-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                   >
-                     <Dice1 className={`w-4 h-4 mr-2 ${isAnalyzingQuestion ? 'animate-spin' : ''}`} />
-                     {isAnalyzingQuestion ? 'Analyzing...' : 'Optimize Reading'}
-                   </Button>
-                 </div>
+                  {/* AI Auto-Select Button */}
+                  <div className="text-center space-y-3">
+                    <h3 className="text-lg font-medium text-foreground">
+                      Not sure which spread fits your question?
+                    </h3>
+                    <Button
+                      onClick={analyzeQuestionAndOptimize}
+                      disabled={!question.trim() || isAnalyzingQuestion}
+                      variant="outline"
+                      className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/30 hover:border-primary/50 hover:bg-primary/20 text-primary font-medium px-6 py-2 rounded-xl transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                    >
+                      <Sparkles className={`w-4 h-4 mr-2 ${isAnalyzingQuestion ? 'animate-spin' : ''}`} />
+                      {isAnalyzingQuestion ? 'Analyzing...' : 'AI Auto-Select Spread for Me'}
+                    </Button>
+                    <p className="text-sm text-muted-foreground">
+                      Our AI will read your question and pick the perfect layout—skip this if you already know what you want.
+                    </p>
+                  </div>
 
                   <div className="space-y-4">
                     <div className="space-y-2">
