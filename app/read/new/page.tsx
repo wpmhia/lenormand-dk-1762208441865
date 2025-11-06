@@ -18,7 +18,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { Sparkles, Eye } from 'lucide-react'
+import { Eye } from 'lucide-react'
 import { CollapsibleCard } from '@/components/CollapsibleCard'
 import { getCards, drawCards, getCardById } from '@/lib/data'
 import { getAIReading, AIReadingRequest, AIReadingResponse, isDeepSeekAvailable } from '@/lib/deepseek'
@@ -78,13 +78,7 @@ function NewReadingPageContent() {
   const [error, setError] = useState('')
   const [step, setStep] = useState<'setup' | 'drawing' | 'ai-analysis'>('setup')
 
-  // Optimization results
-  const [optimizationResult, setOptimizationResult] = useState<{
-    confidence?: number
-    reason?: string
-    ambiguous?: boolean
-    focus?: string
-  } | null>(null)
+
 
   // Load from URL params or localStorage on mount
   useEffect(() => {
@@ -116,7 +110,7 @@ function NewReadingPageContent() {
             )
             if (spread) setSelectedSpread(spread)
           }
-          setOptimizationResult(data.optimizationResult || null)
+
         } catch (e) {
           // Ignore invalid data
         }
@@ -612,7 +606,7 @@ function NewReadingPageContent() {
                                className="w-full max-w-md bg-secondary hover:bg-secondary/90 text-secondary-foreground"
                                aria-busy={isAnalyzingQuestion}
                              >
-                               <Sparkles className={`w-4 h-4 mr-2 ${isAnalyzingQuestion ? 'animate-spin' : ''}`} />
+
                                {isAnalyzingQuestion ? 'Analyzing...' : '✨ Analyze & Choose Best Spread'}
                              </Button>
                           </div>
@@ -623,7 +617,7 @@ function NewReadingPageContent() {
                           <div className="max-w-md mx-auto">
                             <div className="p-4 rounded-lg bg-muted/50 border border-border">
                               <div className="flex items-start gap-3">
-                                <Sparkles className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+
                                 <div className="flex-1">
                                   <div className="flex items-center gap-2 mb-2">
                                     <span className="text-sm font-medium text-primary">
@@ -736,45 +730,7 @@ function NewReadingPageContent() {
 
 
 
-              {/* Advanced Options - Collapsible */}
-              {optimizationResult && (
-                <CollapsibleCard
-                  title="Reading Insights"
-                  icon={<Sparkles className="w-4 h-4" />}
-                  defaultOpen={false}
-                  className="border-muted/50"
-                >
-                  <div className="space-y-3">
-                    {optimizationResult.ambiguous && (
-                      <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400">
-                        <span className="text-sm font-medium">⚠️ Heads-up:</span>
-                        <span className="text-sm">This question mixes multiple themes—consider narrowing it down or doing separate readings.</span>
-                      </div>
-                    )}
 
-                    {optimizationResult.confidence !== undefined && (
-                      <div className="space-y-1">
-                        <div className="flex items-center justify-between text-sm">
-                          <span className="text-muted-foreground">AI match confidence</span>
-                          <span className="font-medium">{optimizationResult.confidence}%</span>
-                        </div>
-                        <div className="w-full bg-muted rounded-full h-2">
-                          <div
-                            className="bg-primary h-2 rounded-full transition-all duration-300"
-                            style={{ width: `${optimizationResult.confidence}%` }}
-                          />
-                        </div>
-                      </div>
-                    )}
-
-                    {optimizationResult.reason && (
-                      <p className="text-xs text-muted-foreground italic">
-                        {optimizationResult.reason}
-                      </p>
-                    )}
-                  </div>
-                </CollapsibleCard>
-              )}
 
                {/* Unified Primary Button */}
                {path && (path === 'virtual' || path === 'physical') && (
@@ -816,11 +772,7 @@ function NewReadingPageContent() {
                     <p className="text-muted-foreground text-lg italic">
                       Drawing {selectedSpread.cards} cards from the sacred deck
                     </p>
-                   {optimizationResult?.focus && (
-                     <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium">
-                       <span>Focus: {optimizationResult.focus.charAt(0).toUpperCase() + optimizationResult.focus.slice(1)}</span>
-                     </div>
-                   )}
+
                 </div>
 
                  <Deck
@@ -856,7 +808,7 @@ function NewReadingPageContent() {
             <CardContent className="space-y-6 p-8 relative z-10">
               <div className="text-center">
                  <h2 className="text-2xl font-semibold mb-2 text-foreground flex items-center justify-center gap-2">
-                   <Sparkles className="w-6 h-6 text-primary" />
+
                    AI Analysis
                  </h2>
                     <p className="text-muted-foreground">
