@@ -759,9 +759,41 @@ function NewReadingPageContent() {
                           </div>
                         </div>
                       </div>
-                   ) : (
-                     <div className="space-y-4">
-                        {/* AI Analysis Button - Only for virtual path */}
+                    ) : (
+                      <div className="space-y-4">
+                        {/* Path Switcher */}
+                        <div className="flex items-center justify-center gap-2 mb-4">
+                          <span className="text-sm text-muted-foreground">Reading method:</span>
+                          <div className="flex bg-muted rounded-lg p-1">
+                            <Button
+                              size="sm"
+                              variant={path === 'virtual' ? 'default' : 'ghost'}
+                              onClick={() => {
+                                setPath('virtual')
+                                setPhysicalCards('')
+                                setPhysicalCardsError(null)
+                                setParsedCards([])
+                                setCardSuggestions([])
+                              }}
+                              className="text-xs"
+                            >
+                              ✨ Virtual Draw
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant={path === 'physical' ? 'default' : 'ghost'}
+                              onClick={() => {
+                                setPath('physical')
+                                setSelectedSpread(COMPREHENSIVE_SPREADS.find(s => s.id === 'past-present-future') || COMPREHENSIVE_SPREADS[0])
+                              }}
+                              className="text-xs"
+                            >
+                              🎴 Physical Cards
+                            </Button>
+                          </div>
+                        </div>
+
+                         {/* AI Analysis Button - Only for virtual path */}
                         {path === 'virtual' && (
                           <div className="text-center">
                              <Button
