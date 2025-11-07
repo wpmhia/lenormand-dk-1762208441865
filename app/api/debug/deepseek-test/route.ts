@@ -11,7 +11,7 @@ export async function GET() {
 
   try {
     const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY
-    const DEEPSEEK_BASE_URL = process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com/v1'
+    const DEEPSEEK_BASE_URL = process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com'
 
     console.log('=== DeepSeek Direct Test ===')
     console.log('API Key exists:', !!DEEPSEEK_API_KEY)

@@ -133,7 +133,7 @@ function NewReadingPageContent() {
 
     // Check if API key is available (exposed to client for hosted environments)
     const apiKey = process.env.NEXT_PUBLIC_DEEPSEEK_API_KEY
-    const baseUrl = process.env.NEXT_PUBLIC_DEEPSEEK_BASE_URL || 'https://api.deepseek.com/v1'
+    const baseUrl = process.env.NEXT_PUBLIC_DEEPSEEK_BASE_URL || 'https://api.deepseek.com'
 
     // DeepSeek API uses /chat/completions endpoint
     const apiUrl = `${baseUrl}/chat/completions`
