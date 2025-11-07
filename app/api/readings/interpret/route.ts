@@ -10,18 +10,17 @@ export const maxDuration = 45
 
 export async function POST(request: NextRequest) {
   try {
-    if (process.env.NODE_ENV === 'development') {
-      console.log('=== AI Interpretation Request Started ===')
-      console.log('Environment check:', {
-        hasApiKey: !!process.env.DEEPSEEK_API_KEY,
-        apiKeyLength: process.env.DEEPSEEK_API_KEY?.length || 0,
-        baseUrl: process.env.DEEPSEEK_BASE_URL || 'DEFAULT'
-      })
-    }
+    console.log('=== AI Interpretation Request Started ===')
+    console.log('Environment check:', {
+      nodeEnv: process.env.NODE_ENV,
+      hasApiKey: !!process.env.DEEPSEEK_API_KEY,
+      apiKeyLength: process.env.DEEPSEEK_API_KEY?.length || 0,
+      baseUrl: process.env.DEEPSEEK_BASE_URL || 'DEFAULT'
+    })
 
     // Rate limiting check
     if (!canMakeAIRequest()) {
-      if (process.env.NODE_ENV === 'development') console.log('Rate limited')
+      console.log('Rate limited - blocking request')
       return NextResponse.json(
         { 
           error: 'Please wait 2 seconds between readings. This ensures quality interpretations for everyone.',
@@ -78,9 +77,9 @@ export async function POST(request: NextRequest) {
       cards: enrichedCards
     }
 
-    if (process.env.NODE_ENV === 'development') console.log('Calling getAIReading...')
+    console.log('Calling getAIReading...')
     const aiReading = await getAIReading(aiRequest)
-    if (process.env.NODE_ENV === 'development') console.log('AI reading result:', aiReading ? 'SUCCESS' : 'NULL')
+    console.log('AI reading result:', aiReading ? 'SUCCESS' : 'NULL')
 
     if (!aiReading) {
       if (process.env.NODE_ENV === 'development') console.log('AI reading returned null')
@@ -100,18 +99,17 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (process.env.NODE_ENV === 'development') console.log('=== AI Interpretation Request Success ===')
+    console.log('=== AI Interpretation Request Success ===')
     return NextResponse.json(aiReading)
   } catch (error) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error('=== AI Interpretation Error ===')
-      console.error('Error details:', error)
-      console.error('Error stack:', error instanceof Error ? error.stack : 'No stack')
-      console.error('Environment at error:', {
-        hasApiKey: !!process.env.DEEPSEEK_API_KEY,
-        baseUrl: process.env.DEEPSEEK_BASE_URL
-      })
-    }
+    console.error('=== AI Interpretation Error ===')
+    console.error('Error details:', error)
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack')
+    console.error('Environment at error:', {
+      nodeEnv: process.env.NODE_ENV,
+      hasApiKey: !!process.env.DEEPSEEK_API_KEY,
+      baseUrl: process.env.DEEPSEEK_BASE_URL
+    })
 
     // Handle safety violations
     if (error instanceof Error && error.message.includes('Cannot provide readings')) {

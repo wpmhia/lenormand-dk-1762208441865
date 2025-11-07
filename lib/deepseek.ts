@@ -205,8 +205,14 @@ complex - comprehensive or detailed analysis needed`
 
 // Main function to get AI reading
 export async function getAIReading(request: AIReadingRequest): Promise<AIReadingResponse | null> {
+  console.log('getAIReading called with:', {
+    question: request.question?.substring(0, 50) + '...',
+    cardCount: request.cards?.length,
+    spreadId: request.spreadId
+  })
+
   if (!isDeepSeekAvailable()) {
-    if (process.env.NODE_ENV === 'development') console.warn('DeepSeek API not configured')
+    console.warn('DeepSeek API not configured - isDeepSeekAvailable returned false')
     return null
   }
 
@@ -246,9 +252,16 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
       const timeoutId = setTimeout(() => controller.abort(), 40000) // 40 second timeout
 
       try {
-        if (process.env.NODE_ENV === 'development') {
-          console.log(`🤖 DeepSeek API attempt ${attempt + 1}/${maxRetries + 1}`)
-        }
+        console.log(`🤖 DeepSeek API attempt ${attempt + 1}/${maxRetries + 1}`)
+        console.log('Request payload:', {
+          model: 'deepseek-chat',
+          messages: [{
+            role: 'system',
+            content: systemPrompt.substring(0, 100) + '...'
+          }],
+          temperature: 0.5,
+          max_tokens: 300
+        })
 
         const response = await fetch(`${DEEPSEEK_BASE_URL}/chat/completions`, {
           method: 'POST',
@@ -283,11 +296,13 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
           throw new Error('No response content from DeepSeek API')
         }
 
-        if (process.env.NODE_ENV === 'development') {
-          console.log(`✅ DeepSeek API attempt ${attempt + 1} succeeded`)
-        }
+        console.log(`✅ DeepSeek API attempt ${attempt + 1} succeeded`)
+        console.log('Raw response preview:', rawResponse.substring(0, 100) + '...')
 
-        return parseAIResponse(rawResponse, layoutType, threeCardSpreadType, fiveCardSpreadType)
+        const result = parseAIResponse(rawResponse, layoutType, threeCardSpreadType, fiveCardSpreadType)
+        console.log('Parsed result:', result ? 'SUCCESS' : 'FAILED')
+
+        return result
 
       } catch (error) {
         clearTimeout(timeoutId)
