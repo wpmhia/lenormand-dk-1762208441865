@@ -215,9 +215,22 @@ export function AIReadingDisplay({
     return (
       <Card className="border-border bg-card slide-in-left">
         <CardContent className="pt-6">
-          <div className="text-center text-muted-foreground">
-            <p>AI analysis not available for this reading.</p>
-            <p className="text-sm mt-1">Traditional card meanings are shown below.</p>
+          <div className="text-center text-muted-foreground space-y-4">
+            <div>
+              <p>AI analysis not available for this reading.</p>
+              <p className="text-sm mt-1">Traditional card meanings are shown below.</p>
+            </div>
+            {onRetry && (
+              <Button
+                onClick={onRetry}
+                variant="outline"
+                size="sm"
+                className="border-primary text-primary hover:bg-primary/10"
+              >
+                <Zap className="w-4 h-4 mr-2" />
+                Try AI Analysis Again
+              </Button>
+            )}
           </div>
         </CardContent>
       </Card>

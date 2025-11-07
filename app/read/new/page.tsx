@@ -278,8 +278,14 @@ function NewReadingPageContent() {
 
         const aiResult = await response.json()
         if (mountedRef.current) {
-          setAiReading(aiResult)
-          setAiRetryCount(0) // Reset on success
+          if (aiResult) {
+            setAiReading(aiResult)
+            setAiRetryCount(0) // Reset on success
+          } else {
+            // API returned null, treat as error
+            setAiError('AI service returned no analysis. Please try again.')
+            setAiRetryCount(prev => prev + 1)
+          }
         }
       } catch (error) {
         console.error('AI analysis error:', error)
