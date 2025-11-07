@@ -1092,25 +1092,23 @@ function NewReadingPageContent() {
                     />
                  )}
 
-                {/* AI Reading Display - Only for virtual path */}
-                {path === 'virtual' && (
-                  <AIReadingDisplay
-                   aiReading={aiReading}
-                   isLoading={aiLoading}
-                   error={aiError}
-                   errorDetails={aiErrorDetails}
-                   onRetry={retryAIAnalysis}
-                   retryCount={aiRetryCount}
-                    cards={drawnCards.map(card => ({
-                      id: card.id,
-                      name: getCardById(allCards, card.id)?.name || 'Unknown',
-                      position: card.position
-                    }))}
-                    allCards={allCards}
-                    spreadId={selectedSpread.id}
-                    question={question}
-                  />
-                )}
+                 {/* AI Reading Display - Available for both paths */}
+                 <AIReadingDisplay
+                  aiReading={aiReading}
+                  isLoading={aiLoading}
+                  error={aiError}
+                  errorDetails={aiErrorDetails}
+                  onRetry={retryAIAnalysis}
+                  retryCount={aiRetryCount}
+                   cards={drawnCards.map(card => ({
+                     id: card.id,
+                     name: getCardById(allCards, card.id)?.name || 'Unknown',
+                     position: card.position
+                   }))}
+                   allCards={allCards}
+                   spreadId={selectedSpread.id}
+                   question={question}
+                 />
 
                 {/* Fallback Retry Button for Physical Path */}
                 {path === 'physical' && aiError && !aiLoading && aiRetryCount < 3 && (
