@@ -10,6 +10,7 @@ export async function POST(request: NextRequest) {
         { id: 24, name: "Heart", position: 2 },
         { id: 31, name: "Sun", position: 3 }
       ],
+      spreadId: "past-present-future",
       layoutType: 3,
       userLocale: 'en'
     }

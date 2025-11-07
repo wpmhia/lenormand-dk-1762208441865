@@ -135,11 +135,14 @@ function NewReadingPageContent() {
     const apiKey = process.env.NEXT_PUBLIC_DEEPSEEK_API_KEY
     const baseUrl = process.env.NEXT_PUBLIC_DEEPSEEK_BASE_URL || 'https://api.deepseek.com'
 
-    // DeepSeek API uses /v1/chat/completions endpoint
-    const apiUrl = `${baseUrl}/v1/chat/completions`
+    // DeepSeek API uses /chat/completions endpoint
+    const apiUrl = `${baseUrl}/chat/completions`
+
+    console.log('🔑 API Key available:', !!apiKey)
+    console.log('🌐 API URL:', apiUrl)
 
     if (!apiKey) {
-      console.error('No DeepSeek API key available')
+      console.error('❌ No DeepSeek API key available')
       return null
     }
 
@@ -150,8 +153,8 @@ function NewReadingPageContent() {
     const fiveCardSpreadType = spreadInfo.fiveCardSpreadType
     const sevenCardSpreadType = spreadInfo.sevenCardSpreadType
 
-    // Build system prompt
-    const SYSTEM_PROMPT_TEMPLATE = `You are a Lenormand card reader. Provide direct, practical guidance in clear, everyday language. Do not use conversational phrases like "Of course" or "Certainly". Start directly with the reading interpretation.
+// Build system prompt
+    const systemPrompt = `You are a Lenormand card reader. Provide direct, practical guidance in clear, everyday language. Do not use conversational phrases like "Of course" or "Certainly". Start directly with the reading interpretation.
 
 Key meanings: Rider=news/speed, Clover=luck, Ship=travel/distance, House=home/stability, Tree=health/growth, Clouds=confusion, Snake=issues/betrayal, Coffin=end/closure, Bouquet=gifts/pleasure, Scythe=cutting change, Whip=repetition/conflict, Birds=communication/anxiety, Child=new beginnings, Fox=cunning/work, Bear=strength/money, Stars=hope/goals, Stork=change/movement, Dog=loyalty/friends, Tower=authority/structure, Garden=social/public, Mountain=obstacles, Crossroads=choices, Mice=loss/worry, Heart=love/emotions, Ring=commitment/cycles, Book=secrets/learning, Letter=communication, Man=masculine energy, Woman=feminine energy, Lily=peace/maturity, Sun=success/clarity, Moon=intuition/emotions, Key=importance/solutions, Fish=finance/abundance, Anchor=stability/security, Cross=burden/fate.
 
@@ -159,7 +162,7 @@ Reading rules: Adjacent cards modify each other. Position matters.
 
 3-card spreads: past-present-future (timeline), situation-challenge-advice (problem-solving), mind-body-spirit (holistic), yes-no-maybe (count positive vs negative card meanings with majority rules, center card as tie-breaker), general (flexible narrative flow: can be read as past-present-future OR mind-body-spirit OR situation-action-outcome, always analyze mirror relationship between positions 1&3 for hidden tension or harmony).
 
-5-card spreads: For structured readings, read left→right as premise (foundation) – obstacle (challenge) – what helps (resources/support) – outcome (result) – final result (ultimate conclusion). Use flexible 5-stage scripts like situation-cause-solution-development-resolution or past-present-future-advice-outcome. Always analyze knighting (positions 1-3-5: the journey's progression) and mirroring (1-5: beginning vs end, 2-4: challenge vs development) for extra nuance and hidden connections. For general readings, read as a flowing sentence interpretation that weaves all 5 cards into a cohesive narrative.
+5-card spreads: For structured readings, read left→right as premise (foundation) – obstacle (challenge) – what helps (resources/support) – outcome (result) – final result (ultimate conclusion). Use flexible 5-stage scripts like situation-cause-solution-development-resolution or past-present-future-advice-outcome. Always analyze knighting (positions 1-3-5: journey's progression) and mirroring (1-5: beginning vs end, 2-4: challenge vs development) for extra nuance and hidden connections. For general readings, read as a flowing sentence interpretation that weaves all 5 cards into a cohesive narrative.
 
 7-card spreads: For Week-Ahead spreads, read Monday→Sunday as weekly progression. Monday (new beginnings/fresh energy) → Tuesday (challenges/work) → Wednesday (communication/connections) → Thursday (progress/momentum) → Friday (social/completion) → Saturday (rest/reflection) → Sunday (closure/spirituality). Always analyze knighting (positions 1-3-5-7) to reveal the running theme or weekly energy pattern. For Relationship Double-Significator spreads, read in triangular layout: positions 1-2-3 (left partner's past-present-future view), position 4 (what sits between them), positions 5-6-7 (right partner's past-present-future view). The central card reveals relationship dynamics and challenges.
 
@@ -174,7 +177,8 @@ Lang=en Q=${request.question} Cards=${request.cards.map(card => `${card.name}:${
     const payload = {
       model: 'deepseek-chat',
       messages: [
-        { role: 'system', content: SYSTEM_PROMPT_TEMPLATE },
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: `Please provide a Lenormand reading for this question: "${request.question}" with these cards: ${request.cards.map(card => `${card.name} (position ${card.position})`).join(', ')}. Spread type: ${layoutType}card${layoutType === 3 ? `-${threeCardSpreadType}` : layoutType === 5 ? `-${fiveCardSpreadType}` : layoutType === 7 ? `-${sevenCardSpreadType}` : ''}.` }
       ],
       temperature: 0.5,
       top_p: 0.85,
@@ -336,6 +340,7 @@ Lang=en Q=${request.question} Cards=${request.cards.map(card => `${card.name}:${
    }
 
    const performAIAnalysis = useCallback(async (readingCards: ReadingCard[], isRetry = false) => {
+      console.log('🚀 performAIAnalysis called with:', { cardCount: readingCards.length, isRetry })
       if (!mountedRef.current) return
       
       // Cancel previous request if exists
@@ -350,6 +355,7 @@ Lang=en Q=${request.question} Cards=${request.cards.map(card => `${card.name}:${
       if (!isRetry) {
         setAiRetryCount(0)
       }
+      console.log('📊 AI loading state set to true')
 
       // Set a timeout to prevent indefinite loading
       const loadingTimeout = setTimeout(() => {
@@ -399,9 +405,9 @@ Lang=en Q=${request.question} Cards=${request.cards.map(card => `${card.name}:${
       } catch (error) {
         console.error('❌ AI analysis fetch error:', error)
         console.error('Error details:', {
-          name: error?.name,
-          message: error?.message,
-          stack: error?.stack
+          name: error instanceof Error ? error.name : 'Unknown',
+          message: error instanceof Error ? error.message : 'Unknown error',
+          stack: error instanceof Error ? error.stack : 'No stack'
         })
 
         let errorMessage = 'AI analysis failed'
@@ -443,21 +449,21 @@ Lang=en Q=${request.question} Cards=${request.cards.map(card => `${card.name}:${
       // Filter out common non-card words
       const filteredInputs = cardInputs.filter(input => {
         const lower = input.toLowerCase()
-        return !['cards', 'card', 'the', 'a', 'an'].includes(lower) && 
-               !isNaN(parseInt(input)) || // Keep numbers
+        return (!['cards', 'card', 'the', 'a', 'an'].includes(lower) && 
+               !isNaN(parseInt(input))) || // Keep numbers
                allCards.some(c => c.name.toLowerCase().includes(lower) || lower.includes(c.name.toLowerCase())) // Keep potential card names
       })
      
       for (const cardInput of filteredInputs.slice(0, targetCount)) {
        let card: CardType | undefined
 
-       // Try to find by number first
-       const num = parseInt(cardInput)
-       if (!isNaN(num) && num >= 1 && num <= 36) {
-         card = allCards.find(c => c.id === num.toString())
-       }
+     // Try to find by number first
+     const num = parseInt(cardInput)
+     if (!isNaN(num) && num >= 1 && num <= 36) {
+       card = allCards.find(c => c.id === num)
+     }
 
-       // If not found by number, try by name (with typo tolerance)
+     // If not found by number, try by name (with typo tolerance)
        if (!card) {
          const inputLower = cardInput.toLowerCase()
          card = allCards.find(c => {
@@ -491,7 +497,7 @@ Lang=en Q=${request.question} Cards=${request.cards.map(card => `${card.name}:${
      }
 
      setParsedCards(foundCards)
-     setCardSuggestions([...new Set(suggestions)]) // Remove duplicates
+     setCardSuggestions(Array.from(new Set(suggestions))) // Remove duplicates
      
       // Validation
       if (filteredInputs.length > targetCount) {
@@ -534,7 +540,7 @@ Lang=en Q=${request.question} Cards=${request.cards.map(card => `${card.name}:${
        // Try to find by number first
        const num = parseInt(cardInput)
        if (!isNaN(num) && num >= 1 && num <= 36) {
-         card = allCards.find(c => c.id === num.toString())
+         card = allCards.find(c => c.id === num)
        }
 
        // If not found by number, try by name
@@ -560,6 +566,7 @@ Lang=en Q=${request.question} Cards=${request.cards.map(card => `${card.name}:${
     }, [physicalCards, selectedSpread])
 
     const handleDraw = useCallback(async (cards: CardType[]) => {
+      console.log('🎯 handleDraw called with:', { cardCount: cards.length, path, spreadId: selectedSpread.id })
       const currentPath = path
       const currentSpread = selectedSpread
       
@@ -574,9 +581,11 @@ Lang=en Q=${request.question} Cards=${request.cards.map(card => `${card.name}:${
           readingCards = drawCards(cards, currentSpread.cards);
         }
 
+        console.log('📋 Reading cards generated:', readingCards)
         setDrawnCards(readingCards)
 
         // Start AI analysis (API route handles availability)
+        console.log('🤖 Starting AI analysis step...')
         setStep('ai-analysis')
         await performAIAnalysis(readingCards)
       } catch (error) {
@@ -601,8 +610,8 @@ Lang=en Q=${request.question} Cards=${request.cards.map(card => `${card.name}:${
   }
 
    const confirmStartOver = () => {
-       resetReading({ closeConfirmDialog: true })
-      }
+        resetReading({ keepUrlParams: false, closeConfirmDialog: true })
+       }
 
   const handleAnalyzeAndChoose = async () => {
     if (!question.trim()) {
@@ -633,7 +642,7 @@ Lang=en Q=${request.question} Cards=${request.cards.map(card => `${card.name}:${
       }
 
       // Store optimization metadata
-      setOptimizationResult({ confidence, reason, ambiguous, focus })
+      // setOptimizationResult({ confidence, reason, ambiguous, focus }) // Commented out - state not defined
 
       // Set AI result for inline display
       setAiResult({
@@ -1050,7 +1059,7 @@ Lang=en Q=${request.question} Cards=${request.cards.map(card => `${card.name}:${
                                   setPhysicalCards(truncatedValue)
                                   // Show toast notification
                                   if (typeof window !== 'undefined' && window.alert) {
-                                    // Simple toast fallback
+                                    window.alert('Card input truncated to maximum allowed characters')
                                   }
                                 } else {
                                   setPhysicalCards(newValue)
@@ -1121,13 +1130,23 @@ Lang=en Q=${request.question} Cards=${request.cards.map(card => `${card.name}:${
                     <CardContent className="p-4">
                         <Button
                           data-draw-button
-                          onClick={() => path === 'physical' ? handleDraw(allCards) : setStep('drawing')}
+                          onClick={() => {
+                            if (path === 'physical') {
+                              handleDraw(allCards)
+                            } else {
+                              // For virtual cards, draw directly and start AI
+                              const readingCards = drawCards(allCards, selectedSpread.cards)
+                              setDrawnCards(readingCards)
+                              setStep('ai-analysis')
+                              performAIAnalysis(readingCards)
+                            }
+                          }}
                           className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30 rounded-xl py-3 font-semibold transition-all duration-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                           disabled={!canProceed}
                           aria-busy={aiLoading}
                         >
-                         {getButtonLabel()}
-                       </Button>
+                          {getButtonLabel()}
+                        </Button>
                     </CardContent>
                   </Card>
                 </div>
