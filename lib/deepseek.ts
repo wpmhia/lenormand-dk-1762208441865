@@ -132,23 +132,29 @@ export async function classifyQuestion(question: string): Promise<string | null>
     return 'general' // Safe fallback
   }
 
-  const controller = new AbortController()
-  const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout for classification
+  // Simple retry for classification (1 retry)
+  for (let attempt = 0; attempt <= 1; attempt++) {
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout for classification
 
-  try {
-    const response = await fetch(`${DEEPSEEK_BASE_URL}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
-        'User-Agent': 'Lenormand-DK/1.0'
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        messages: [
-          {
-            role: 'system',
-            content: `Classify this Lenormand question into exactly one of these categories. Return only the category name in lowercase, no explanation:
+    try {
+      if (process.env.NODE_ENV === 'development' && attempt > 0) {
+        console.log(`🤖 Classification retry ${attempt}/1`)
+      }
+
+      const response = await fetch(`${DEEPSEEK_BASE_URL}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
+          'User-Agent': 'Lenormand-DK/1.0'
+        },
+        body: JSON.stringify({
+          model: 'deepseek-chat',
+          messages: [
+            {
+              role: 'system',
+              content: `Classify this Lenormand question into exactly one of these categories. Return only the category name in lowercase, no explanation:
 
 future - questions about what will happen, outcomes, future events
 timing - questions about when something will happen, timeframes, dates
@@ -162,36 +168,39 @@ wellness - questions about health, emotions, personal growth
 money - questions about finances, money, wealth
 general - general guidance, life questions
 complex - comprehensive or detailed analysis needed`
-          },
-          { role: 'user', content: question }
-        ],
-        temperature: 0.1,
-        max_tokens: 20
-      }),
-      signal: controller.signal
-    })
+            },
+            { role: 'user', content: question }
+          ],
+          temperature: 0.1,
+          max_tokens: 20
+        }),
+        signal: controller.signal
+      })
 
-    if (!response.ok) {
-      console.warn('DeepSeek classification failed:', response.status)
+      if (!response.ok) {
+        if (attempt === 0) console.warn('DeepSeek classification failed:', response.status)
+        continue // Retry
+      }
+
+      const data = await response.json()
+      const category = data.choices?.[0]?.message?.content?.trim().toLowerCase()
+
+      // Validate it's a known category
+      const validCategories = ['future', 'timing', 'decision', 'yesno', 'problem', 'solution', 'relationship', 'career', 'wellness', 'money', 'general', 'complex']
+      if (validCategories.includes(category)) {
+        return category
+      }
+
       return null
+    } catch (error) {
+      if (attempt === 0) console.warn('DeepSeek classification error:', error)
+      // Continue to retry
+    } finally {
+      clearTimeout(timeoutId)
     }
-
-    const data = await response.json()
-    const category = data.choices?.[0]?.message?.content?.trim().toLowerCase()
-
-    // Validate it's a known category
-    const validCategories = ['future', 'timing', 'decision', 'yesno', 'problem', 'solution', 'relationship', 'career', 'wellness', 'money', 'general', 'complex']
-    if (validCategories.includes(category)) {
-      return category
-    }
-
-    return null
-  } catch (error) {
-    console.warn('DeepSeek classification error:', error)
-    return null
-  } finally {
-    clearTimeout(timeoutId)
   }
+
+  return null
 }
 
 // Main function to get AI reading
@@ -228,65 +237,87 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
       spread: payload.spread
     })
 
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), 40000) // 40 second timeout
+    // Retry logic for API calls
+    const maxRetries = 2
+    let lastError: Error | null = null
 
-    try {
-      const response = await fetch(`${DEEPSEEK_BASE_URL}/chat/completions`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
-          'User-Agent': 'Lenormand-DK/1.0'
-        },
-        body: JSON.stringify({
-          model: 'deepseek-chat',
-          messages: [
-            { role: 'system', content: systemPrompt }
-          ],
-          temperature: 0.5,
-          top_p: 0.85,
-          max_tokens: 300 // Reduced for faster responses
-        }),
-        signal: controller.signal
-      })
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 40000) // 40 second timeout
 
-      clearTimeout(timeoutId)
+      try {
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`🤖 DeepSeek API attempt ${attempt + 1}/${maxRetries + 1}`)
+        }
 
-    if (!response.ok) {
-      throw new Error(`DeepSeek API error: ${response.status} ${response.statusText}`)
-    }
-
-    const data = await response.json()
-    const rawResponse = data.choices[0]?.message?.content
-
-    if (!rawResponse) {
-      throw new Error('No response from DeepSeek API')
-    }
-
-    return parseAIResponse(rawResponse, layoutType, threeCardSpreadType, fiveCardSpreadType)
-  } catch (error) {
-    if (process.env.NODE_ENV === 'development') {
-      console.error('AI Reading error:', error)
-
-      // Enhanced error logging for Vercel debugging
-      if (error instanceof Error) {
-        console.error('Error details:', {
-          name: error.name,
-          message: error.message,
-          stack: error.stack,
-          isAbortError: error.name === 'AbortError',
-          envCheck: {
-            hasApiKey: !!process.env.DEEPSEEK_API_KEY,
-            baseUrl: process.env.DEEPSEEK_BASE_URL,
-            nodeEnv: process.env.NODE_ENV
-          }
+        const response = await fetch(`${DEEPSEEK_BASE_URL}/chat/completions`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
+            'User-Agent': 'Lenormand-DK/1.0'
+          },
+          body: JSON.stringify({
+            model: 'deepseek-chat',
+            messages: [
+              { role: 'system', content: systemPrompt }
+            ],
+            temperature: 0.5,
+            top_p: 0.85,
+            max_tokens: 300 // Reduced for faster responses
+          }),
+          signal: controller.signal
         })
+
+        clearTimeout(timeoutId)
+
+        if (!response.ok) {
+          const errorText = await response.text()
+          throw new Error(`DeepSeek API error: ${response.status} ${response.statusText} - ${errorText}`)
+        }
+
+        const data = await response.json()
+        const rawResponse = data.choices[0]?.message?.content
+
+        if (!rawResponse) {
+          throw new Error('No response content from DeepSeek API')
+        }
+
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`✅ DeepSeek API attempt ${attempt + 1} succeeded`)
+        }
+
+        return parseAIResponse(rawResponse, layoutType, threeCardSpreadType, fiveCardSpreadType)
+
+      } catch (error) {
+        clearTimeout(timeoutId)
+        lastError = error instanceof Error ? error : new Error('Unknown error')
+
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`❌ DeepSeek API attempt ${attempt + 1} failed:`, lastError.message)
+        }
+
+        // Don't retry on abort or certain errors
+        if (lastError.name === 'AbortError' || lastError.message.includes('API key')) {
+          break
+        }
+
+        // Wait before retry (exponential backoff)
+        if (attempt < maxRetries) {
+          const waitTime = Math.pow(2, attempt) * 1000 // 1s, 2s, 4s
+          if (process.env.NODE_ENV === 'development') {
+            console.log(`⏳ Waiting ${waitTime}ms before retry...`)
+          }
+          await new Promise(resolve => setTimeout(resolve, waitTime))
+        }
       }
     }
-    
+
+    // All retries failed
+    if (process.env.NODE_ENV === 'development') {
+      console.error('❌ All DeepSeek API attempts failed:', lastError?.message)
+    }
     return null
-  }
 }
 
 // Simplified user prompt (now handled in system prompt)

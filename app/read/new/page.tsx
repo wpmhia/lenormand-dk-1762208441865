@@ -252,21 +252,12 @@ function NewReadingPageContent() {
 
         const timeoutId = setTimeout(() => controller.abort(), 45000) // 45 second timeout
 
-        console.log('🤖 AI Analysis Debug:');
-        console.log('   Question:', question.trim());
-        console.log('   Spread:', selectedSpread.id);
-        console.log('   Cards:', readingCards.map(c => `${c.id}:${getCardById(allCards, c.id)?.name || 'Unknown'}`));
-        console.log('   AI Request:', aiRequest);
-
         const response = await fetch('/api/readings/interpret', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(aiRequest),
           signal: controller.signal
         })
-
-        console.log('   Response status:', response.status);
-        console.log('   Response ok:', response.ok);
 
         clearTimeout(timeoutId)
 
@@ -286,26 +277,19 @@ function NewReadingPageContent() {
         }
 
         const aiResult = await response.json()
-        console.log('   AI Result:', aiResult);
-        console.log('   Result type:', typeof aiResult);
-        console.log('   Has storyline:', !!aiResult?.storyline);
 
         if (mountedRef.current) {
           if (aiResult) {
-            console.log('   ✅ Setting AI reading');
             setAiReading(aiResult)
             setAiRetryCount(0) // Reset on success
           } else {
-            console.log('   ❌ AI result is null/empty');
             // API returned null, treat as error
             setAiError('AI service returned no analysis. Please try again.')
             setAiRetryCount(prev => prev + 1)
           }
         }
       } catch (error) {
-        console.error('❌ AI analysis error:', error)
-        console.error('   Error name:', error?.name)
-        console.error('   Error message:', error?.message)
+        console.error('AI analysis error:', error)
         let errorMessage = 'AI analysis failed'
 
         if (error instanceof Error) {
@@ -316,7 +300,6 @@ function NewReadingPageContent() {
           }
         }
 
-        console.log('   Setting error:', errorMessage);
         if (mountedRef.current) {
           setAiError(errorMessage)
           setAiRetryCount(prev => prev + 1)
