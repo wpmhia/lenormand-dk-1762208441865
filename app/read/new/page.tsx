@@ -133,7 +133,10 @@ function NewReadingPageContent() {
 
     // Check if API key is available (exposed to client for hosted environments)
     const apiKey = process.env.NEXT_PUBLIC_DEEPSEEK_API_KEY
-    const baseUrl = process.env.NEXT_PUBLIC_DEEPSEEK_BASE_URL || 'https://api.deepseek.com/v1'
+    const baseUrl = process.env.NEXT_PUBLIC_DEEPSEEK_BASE_URL || 'https://api.deepseek.com'
+
+    // DeepSeek API uses /v1/chat/completions endpoint
+    const apiUrl = `${baseUrl}/v1/chat/completions`
 
     if (!apiKey) {
       console.error('No DeepSeek API key available')
@@ -178,10 +181,10 @@ Lang=en Q=${request.question} Cards=${request.cards.map(card => `${card.name}:${
       max_tokens: 300
     }
 
-    console.log('📤 Sending to DeepSeek API:', { url: baseUrl, payload })
+    console.log('📤 Sending to DeepSeek API:', { url: apiUrl, payload })
 
     try {
-      const response = await fetch(`${baseUrl}/chat/completions`, {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
