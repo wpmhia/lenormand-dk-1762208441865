@@ -21,7 +21,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Eye, Timer, Zap } from 'lucide-react'
 import { CollapsibleCard } from '@/components/CollapsibleCard'
 import { getCards, drawCards, getCardById } from '@/lib/data'
-import { getAIReading, AIReadingRequest, AIReadingResponse, isDeepSeekAvailable, parseSpreadId } from '@/lib/deepseek'
+import { getAIReading, AIReadingRequest, AIReadingResponse, parseSpreadId } from '@/lib/deepseek'
 
 
 // Comprehensive spread selection - direct manual control
@@ -111,6 +111,20 @@ function NewReadingPageContent() {
     // No localStorage loading for new readings - start fresh
   }, [searchParams])
 
+  // Check AI availability from server endpoint
+  useEffect(() => {
+    async function checkAI() {
+      try {
+        const res = await fetch('/api/ai/status')
+        const json = await res.json()
+        setAiAvailable(Boolean(json?.available))
+      } catch (e) {
+        setAiAvailable(false)
+      }
+    }
+    checkAI()
+  }, [])
+
   // AI-related state
   const [aiReading, setAiReading] = useState<AIReadingResponse | null>(null)
   const [aiLoading, setAiLoading] = useState(false)
@@ -124,6 +138,7 @@ function NewReadingPageContent() {
   } | null>(null)
   const [aiRetryCount, setAiRetryCount] = useState(0)
   const [aiRetryCooldown, setAiRetryCooldown] = useState(0)
+  const [aiAvailable, setAiAvailable] = useState<boolean | null>(null)
   const [showStartOverConfirm, setShowStartOverConfirm] = useState(false)
   const [isAnalyzingQuestion, setIsAnalyzingQuestion] = useState(false)
 
