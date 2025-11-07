@@ -666,9 +666,9 @@ Lang=en Q=${request.question} Cards=${request.cards.map(card => `${card.name}:${
   }
 
   const getButtonLabel = () => {
-    if (!question.trim()) return path === 'physical' ? "Interpret Cards" : "Draw & Interpret";
-    if (aiResult) return path === 'physical' ? `Interpret ${selectedSpread.cards} Cards` : `Draw ${selectedSpread.cards}-Card Spread & Interpret`;
-    return path === 'physical' ? "Interpret Cards" : "Draw & Interpret";
+    if (!question.trim()) return path === 'physical' ? "Interpret Cards" : "Shuffle & Draw";
+    if (aiResult) return path === 'physical' ? `Interpret ${selectedSpread.cards} Cards` : `Shuffle & Draw ${selectedSpread.cards} Cards`;
+    return path === 'physical' ? "Interpret Cards" : "Shuffle & Draw";
   }
 
   const canProceed = question.trim() && (path === 'virtual' || (path === 'physical' && physicalCards.trim() && !physicalCardsError));
@@ -1130,17 +1130,14 @@ Lang=en Q=${request.question} Cards=${request.cards.map(card => `${card.name}:${
                     <CardContent className="p-4">
                         <Button
                           data-draw-button
-                          onClick={() => {
-                            if (path === 'physical') {
-                              handleDraw(allCards)
-                            } else {
-                              // For virtual cards, draw directly and start AI
-                              const readingCards = drawCards(allCards, selectedSpread.cards)
-                              setDrawnCards(readingCards)
-                              setStep('ai-analysis')
-                              performAIAnalysis(readingCards)
-                            }
-                          }}
+                           onClick={() => {
+                             if (path === 'physical') {
+                               handleDraw(allCards)
+                             } else {
+                               // For virtual cards, go to shuffle screen first
+                               setStep('drawing')
+                             }
+                           }}
                           className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30 rounded-xl py-3 font-semibold transition-all duration-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                           disabled={!canProceed}
                           aria-busy={aiLoading}
