@@ -95,7 +95,7 @@ function NewReadingPageContent() {
     }
   }, [path])
 
-  // Load from URL params or localStorage on mount
+  // Load from URL params on mount (no localStorage fallback for new readings)
   useEffect(() => {
     const urlQuestion = searchParams.get('q')
     const urlSpreadId = searchParams.get('s')
@@ -107,30 +107,8 @@ function NewReadingPageContent() {
         const spread = COMPREHENSIVE_SPREADS.find(s => s.id === urlSpreadId)
         if (spread) setSelectedSpread(spread)
       }
-    } else {
-      // Fallback to localStorage
-      const lastOptimised = localStorage.getItem('lastOptimised')
-      if (lastOptimised) {
-        try {
-          const data = JSON.parse(lastOptimised)
-          setQuestion(data.question || '')
-          if (data.spreadId) {
-            const spread = COMPREHENSIVE_SPREADS.find(s => s.id === data.spreadId)
-            if (spread) setSelectedSpread(spread)
-          } else if (data.layoutType && data.spreadType) {
-            // Legacy format - convert to new format
-            const spread = COMPREHENSIVE_SPREADS.find(s =>
-              s.cards === data.layoutType &&
-              (s.id === data.spreadType || s.id.includes(data.spreadType))
-            )
-            if (spread) setSelectedSpread(spread)
-          }
-
-        } catch (e) {
-          // Ignore invalid data
-        }
-      }
     }
+    // No localStorage loading for new readings - start fresh
   }, [searchParams])
 
   // AI-related state
