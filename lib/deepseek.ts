@@ -35,7 +35,7 @@ export interface AIReadingResponse {
 }
 
 // Helper function to parse spreadId and derive layout information
-function parseSpreadId(spreadId: string): {
+export function parseSpreadId(spreadId: string): {
   layoutType: number
   threeCardSpreadType?: string
   fiveCardSpreadType?: string
