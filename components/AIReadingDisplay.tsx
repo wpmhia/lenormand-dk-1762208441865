@@ -211,7 +211,9 @@ export function AIReadingDisplay({
     )
   }
 
-  if (!aiReading) {
+  // Only show "not available" if AI has been attempted (isLoading is false and no error)
+  // This prevents showing fallback on initial load before AI is attempted
+  if (!aiReading && !isLoading && !error) {
     return (
       <Card className="border-border bg-card slide-in-left">
         <CardContent className="pt-6">
