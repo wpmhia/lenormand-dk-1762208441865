@@ -254,7 +254,6 @@ function NewReadingPageContent() {
       // Set a timeout to prevent indefinite loading
       const loadingTimeout = setTimeout(() => {
         if (mountedRef.current) {
-          console.log('AI loading timeout reached')
           setAiLoading(false)
           setAiError('AI analysis timed out. You can still save your reading.')
         }
@@ -695,7 +694,7 @@ function NewReadingPageContent() {
         <AnimatePresence mode="wait">
           {step === 'setup' && (
             <motion.div
-              key={`setup-${path}`}
+              key="setup"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -756,17 +755,12 @@ function NewReadingPageContent() {
                               <Button
                                 variant="outline"
                                 onClick={() => {
-                                  console.log('Setting path to physical')
                                   setPath('physical')
-                                  const defaultSpread = COMPREHENSIVE_SPREADS.find(s => s.id === 'past-present-future') || COMPREHENSIVE_SPREADS[0]
-                                  console.log('Setting spread:', defaultSpread.id)
-                                  setSelectedSpread(defaultSpread)
+                                  // Set default spread and focus textarea
+                                  setSelectedSpread(COMPREHENSIVE_SPREADS.find(s => s.id === 'past-present-future') || COMPREHENSIVE_SPREADS[0])
                                   setTimeout(() => {
                                     const textarea = document.querySelector('textarea[id="physical-cards"]') as HTMLTextAreaElement
-                                    if (textarea) {
-                                      console.log('Focusing textarea')
-                                      textarea.focus()
-                                    }
+                                    if (textarea) textarea.focus()
                                   }, 100)
                                 }}
                                 className="flex-1 border-border text-foreground hover:bg-muted h-16 text-base font-medium"
@@ -924,7 +918,6 @@ function NewReadingPageContent() {
                                   // Show toast notification
                                   if (typeof window !== 'undefined' && window.alert) {
                                     // Simple toast fallback
-                                    console.log(`Kept first ${selectedSpread.cards} cards.`)
                                   }
                                 } else {
                                   setPhysicalCards(newValue)
