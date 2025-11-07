@@ -21,7 +21,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Eye, Timer, Zap } from 'lucide-react'
 import { CollapsibleCard } from '@/components/CollapsibleCard'
 import { getCards, drawCards, getCardById } from '@/lib/data'
-import { getAIReading, AIReadingRequest, AIReadingResponse, isDeepSeekAvailable } from '@/lib/deepseek'
+import { getAIReading, AIReadingRequest, AIReadingResponse, isDeepSeekAvailable, parseSpreadId } from '@/lib/deepseek'
 
 
 // Comprehensive spread selection - direct manual control
@@ -126,6 +126,125 @@ function NewReadingPageContent() {
   const [aiRetryCooldown, setAiRetryCooldown] = useState(0)
   const [showStartOverConfirm, setShowStartOverConfirm] = useState(false)
   const [isAnalyzingQuestion, setIsAnalyzingQuestion] = useState(false)
+
+  // Client-side AI analysis since API routes don't work in hosted environment
+  const performClientSideAI = useCallback(async (request: AIReadingRequest, signal?: AbortSignal): Promise<AIReadingResponse | null> => {
+    console.log('🤖 Performing client-side AI analysis')
+
+    // Check if API key is available (exposed to client for hosted environments)
+    const apiKey = process.env.NEXT_PUBLIC_DEEPSEEK_API_KEY
+    const baseUrl = process.env.NEXT_PUBLIC_DEEPSEEK_BASE_URL || 'https://api.deepseek.com/v1'
+
+    if (!apiKey) {
+      console.error('No DeepSeek API key available')
+      return null
+    }
+
+    // Parse spread information
+    const spreadInfo = parseSpreadId(request.spreadId)
+    const layoutType = spreadInfo.layoutType
+    const threeCardSpreadType = spreadInfo.threeCardSpreadType
+    const fiveCardSpreadType = spreadInfo.fiveCardSpreadType
+    const sevenCardSpreadType = spreadInfo.sevenCardSpreadType
+
+    // Build system prompt
+    const SYSTEM_PROMPT_TEMPLATE = `You are a Lenormand card reader. Provide direct, practical guidance in clear, everyday language. Do not use conversational phrases like "Of course" or "Certainly". Start directly with the reading interpretation.
+
+Key meanings: Rider=news/speed, Clover=luck, Ship=travel/distance, House=home/stability, Tree=health/growth, Clouds=confusion, Snake=issues/betrayal, Coffin=end/closure, Bouquet=gifts/pleasure, Scythe=cutting change, Whip=repetition/conflict, Birds=communication/anxiety, Child=new beginnings, Fox=cunning/work, Bear=strength/money, Stars=hope/goals, Stork=change/movement, Dog=loyalty/friends, Tower=authority/structure, Garden=social/public, Mountain=obstacles, Crossroads=choices, Mice=loss/worry, Heart=love/emotions, Ring=commitment/cycles, Book=secrets/learning, Letter=communication, Man=masculine energy, Woman=feminine energy, Lily=peace/maturity, Sun=success/clarity, Moon=intuition/emotions, Key=importance/solutions, Fish=finance/abundance, Anchor=stability/security, Cross=burden/fate.
+
+Reading rules: Adjacent cards modify each other. Position matters.
+
+3-card spreads: past-present-future (timeline), situation-challenge-advice (problem-solving), mind-body-spirit (holistic), yes-no-maybe (count positive vs negative card meanings with majority rules, center card as tie-breaker), general (flexible narrative flow: can be read as past-present-future OR mind-body-spirit OR situation-action-outcome, always analyze mirror relationship between positions 1&3 for hidden tension or harmony).
+
+5-card spreads: For structured readings, read left→right as premise (foundation) – obstacle (challenge) – what helps (resources/support) – outcome (result) – final result (ultimate conclusion). Use flexible 5-stage scripts like situation-cause-solution-development-resolution or past-present-future-advice-outcome. Always analyze knighting (positions 1-3-5: the journey's progression) and mirroring (1-5: beginning vs end, 2-4: challenge vs development) for extra nuance and hidden connections. For general readings, read as a flowing sentence interpretation that weaves all 5 cards into a cohesive narrative.
+
+7-card spreads: For Week-Ahead spreads, read Monday→Sunday as weekly progression. Monday (new beginnings/fresh energy) → Tuesday (challenges/work) → Wednesday (communication/connections) → Thursday (progress/momentum) → Friday (social/completion) → Saturday (rest/reflection) → Sunday (closure/spirituality). Always analyze knighting (positions 1-3-5-7) to reveal the running theme or weekly energy pattern. For Relationship Double-Significator spreads, read in triangular layout: positions 1-2-3 (left partner's past-present-future view), position 4 (what sits between them), positions 5-6-7 (right partner's past-present-future view). The central card reveals relationship dynamics and challenges.
+
+9-card spreads (3x3 grid): Read in three layers - first horizontal time flow (top row: recent past, middle row: present, bottom row: near future), then vertical life areas (left column: inner world/thoughts/feelings, middle column: direct actions/central issue, right column: outside world/influences), finally diagonal karmic drivers (top-left to bottom-right: developing life path, top-right to bottom-left: corrective/blocking energy).
+
+Grand Tableau (36-card spread): Traditional Lenormand reading sequence - 1. Locate significator (Woman #29 or Man #28) representing the querent, 2. Read "cross of the moment" (5-card cross: significator's full row + full column) for core message, 3. Read four corners (1-36-6-31) for fixed frame of situation, 4. Read four center cards (13-16-12-11) for what's secretly driving the matter, 5. Read nine-card square around significator (±1 card in row/column) for immediate influences, 6. Count in patterns (7s or 5s from significator) to tell story through time, 7. Note knights (90° positions), mirrors (opposite), and house meanings where cards fall.
+
+Write 100-130 words. Weave actionable guidance naturally throughout the reading narrative for a cohesive, flowing interpretation.
+
+Lang=en Q=${request.question} Cards=${request.cards.map(card => `${card.name}:${card.position}`).join(',')} Spread=${layoutType}card${layoutType === 3 ? `-${threeCardSpreadType}` : layoutType === 5 ? `-${fiveCardSpreadType}` : layoutType === 7 ? `-${sevenCardSpreadType}` : ''}`
+
+    const payload = {
+      model: 'deepseek-chat',
+      messages: [
+        { role: 'system', content: SYSTEM_PROMPT_TEMPLATE },
+      ],
+      temperature: 0.5,
+      top_p: 0.85,
+      max_tokens: 300
+    }
+
+    console.log('📤 Sending to DeepSeek API:', { url: baseUrl, payload })
+
+    try {
+      const response = await fetch(`${baseUrl}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify(payload),
+        signal
+      })
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error('DeepSeek API error:', response.status, errorText)
+        return null
+      }
+
+      const data = await response.json()
+      const rawResponse = data.choices?.[0]?.message?.content
+
+      if (!rawResponse) {
+        console.error('No response content from DeepSeek')
+        return null
+      }
+
+      console.log('✅ DeepSeek response received')
+
+      // Parse the response (simplified parsing)
+      const cleanResponse = rawResponse.trim()
+
+      // Simple parsing - look for structured format
+      const lines = cleanResponse.split('\n').map(line => line.trim()).filter(line => line.length > 0)
+
+      let storyline = cleanResponse
+      let risk = 'Trust your intuition and the guidance you receive'
+      let timing = 'The timing will become clear as events unfold'
+      let action = 'Follow the guidance revealed in your cards'
+
+      // Try to extract action from last sentences
+      const sentences = cleanResponse.match(/[^.!?]+[.!?]+/g) || []
+      for (let i = sentences.length - 1; i >= Math.max(0, sentences.length - 3); i--) {
+        const sentence = sentences[i].trim()
+        if (sentence.length > 10 && sentence.length < 80) {
+          const actionWords = /\b(consider|try|focus|remember|look|wait|reach|take|be|stay|call|email|visit|ask|share|write|plan|prepare|trust|let|accept|embrace|release|move|step|pause|rest|listen|watch|notice|pay|start|begin|continue|stop|change|transform|create|build|connect|communicate|express|give|receive|learn|teach|explore|discover|heal|grow|strengthen|support|help|guide|lead|follow|choose|decide|act|do)\b/i
+          if (actionWords.test(sentence)) {
+            action = sentence.replace(/[.!?]+$/, '')
+            storyline = cleanResponse.replace(sentences.slice(i).join(''), '').trim()
+            break
+          }
+        }
+      }
+
+      return {
+        storyline: storyline || 'The cards offer guidance for your situation.',
+        risk,
+        timing,
+        action,
+        rawResponse
+      }
+
+    } catch (error) {
+      console.error('Client-side AI error:', error)
+      return null
+    }
+  }, [])
 
 
    const resetReading = (options = { keepUrlParams: false, closeConfirmDialog: false }) => {
@@ -252,43 +371,15 @@ function NewReadingPageContent() {
 
         const timeoutId = setTimeout(() => controller.abort(), 45000) // 45 second timeout
 
-        console.log('🔄 Starting AI analysis fetch to /api/readings/interpret')
+        console.log('🔄 Starting AI analysis (client-side)')
         console.log('📤 Request payload:', aiRequest)
 
-        const response = await fetch('/api/readings/interpret', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(aiRequest),
-          signal: controller.signal
-        })
-
-        console.log('📥 Response received:', {
-          status: response.status,
-          statusText: response.statusText,
-          ok: response.ok,
-          url: response.url,
-          headers: Object.fromEntries(response.headers.entries())
-        })
+        // Client-side AI call since API routes don't work in hosted environment
+        const aiResult = await performClientSideAI(aiRequest, controller.signal)
 
         clearTimeout(timeoutId)
 
-        if (!response.ok) {
-          const errorData = await response.json()
-          // Set detailed error information for better user guidance
-          if (mountedRef.current) {
-            setAiErrorDetails({
-              type: errorData.type,
-              helpUrl: errorData.helpUrl,
-              action: errorData.action,
-              waitTime: errorData.waitTime,
-              fields: errorData.fields
-            })
-          }
-          throw new Error(errorData.error || 'AI analysis failed')
-        }
-
-        const aiResult = await response.json()
-        console.log('📄 Response body:', aiResult)
+        console.log('📄 AI result:', aiResult)
 
         if (mountedRef.current) {
           if (aiResult) {
@@ -493,12 +584,13 @@ function NewReadingPageContent() {
 
 
 
-  const retryAIAnalysis = () => {
+  const retryAIAnalysis = useCallback(() => {
+    console.log('🔄 Retrying AI analysis')
     setAiRetryCooldown(0) // Reset cooldown immediately when retrying
     if (drawnCards.length > 0) {
       performAIAnalysis(drawnCards, true)
     }
-  }
+  }, [drawnCards, performAIAnalysis])
 
 
   const handleStartOver = () => {
