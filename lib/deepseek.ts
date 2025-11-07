@@ -19,6 +19,10 @@ export interface AIReadingRequest {
   }>
   spreadId: string
   userLocale?: string
+  layoutType?: number
+  threeCardSpreadType?: string
+  fiveCardSpreadType?: string
+  sevenCardSpreadType?: string
 }
 
 // AI Reading response interface
@@ -28,6 +32,45 @@ export interface AIReadingResponse {
   timing: string
   action: string
   rawResponse: string
+}
+
+// Helper function to parse spreadId and derive layout information
+function parseSpreadId(spreadId: string): {
+  layoutType: number
+  threeCardSpreadType?: string
+  fiveCardSpreadType?: string
+  sevenCardSpreadType?: string
+} {
+  // Map spreadId to layout type and spread type
+  const spreadMappings: Record<string, {
+    layoutType: number
+    threeCardSpreadType?: string
+    fiveCardSpreadType?: string
+    sevenCardSpreadType?: string
+  }> = {
+    // 3-card spreads
+    "sentence-3": { layoutType: 3, threeCardSpreadType: "general-reading" },
+    "past-present-future": { layoutType: 3, threeCardSpreadType: "past-present-future" },
+    "yes-no-maybe": { layoutType: 3, threeCardSpreadType: "yes-no-maybe" },
+    "situation-challenge-advice": { layoutType: 3, threeCardSpreadType: "situation-challenge-advice" },
+    "mind-body-spirit": { layoutType: 3, threeCardSpreadType: "mind-body-spirit" },
+
+    // 5-card spreads
+    "sentence-5": { layoutType: 5, fiveCardSpreadType: "general-reading" },
+    "structured-reading": { layoutType: 5, fiveCardSpreadType: "structured-reading" },
+
+    // 7-card spreads
+    "week-ahead": { layoutType: 7, sevenCardSpreadType: "week-ahead" },
+    "relationship-double-significator": { layoutType: 7, sevenCardSpreadType: "relationship-double-significator" },
+
+    // 9-card spreads
+    "comprehensive": { layoutType: 9 },
+
+    // 36-card spreads
+    "grand-tableau": { layoutType: 36 }
+  }
+
+  return spreadMappings[spreadId] || { layoutType: 3, threeCardSpreadType: "general-reading" }
 }
 
 
@@ -162,11 +205,18 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
     throw new Error('Cannot provide readings for medical, legal, or sensitive topics. Please consult appropriate professionals.')
   }
 
+  // Parse spreadId to get layout information
+  const spreadInfo = parseSpreadId(request.spreadId)
+  const layoutType = request.layoutType || spreadInfo.layoutType
+  const threeCardSpreadType = request.threeCardSpreadType || spreadInfo.threeCardSpreadType
+  const fiveCardSpreadType = request.fiveCardSpreadType || spreadInfo.fiveCardSpreadType
+  const sevenCardSpreadType = request.sevenCardSpreadType || spreadInfo.sevenCardSpreadType
+
     // Build optimized payload for faster processing
       const payload = {
         lang: 'en',
         q: request.question,
-        spread: `${request.layoutType}card${request.layoutType === 3 ? `-${request.threeCardSpreadType}` : request.layoutType === 5 ? `-${request.fiveCardSpreadType}` : request.layoutType === 7 ? `-${request.sevenCardSpreadType}` : ''}`,
+        spread: `${layoutType}card${layoutType === 3 ? `-${threeCardSpreadType}` : layoutType === 5 ? `-${fiveCardSpreadType}` : layoutType === 7 ? `-${sevenCardSpreadType}` : ''}`,
         cards: request.cards.map(card => `${card.name}:${card.position}`).join(',')
       }
 
@@ -214,7 +264,7 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
       throw new Error('No response from DeepSeek API')
     }
 
-    return parseAIResponse(rawResponse, request.layoutType, request.threeCardSpreadType, request.fiveCardSpreadType)
+    return parseAIResponse(rawResponse, layoutType, threeCardSpreadType, fiveCardSpreadType)
   } catch (error) {
     if (process.env.NODE_ENV === 'development') {
       console.error('AI Reading error:', error)
