@@ -252,11 +252,22 @@ function NewReadingPageContent() {
 
         const timeoutId = setTimeout(() => controller.abort(), 45000) // 45 second timeout
 
+        console.log('🔄 Starting AI analysis fetch to /api/readings/interpret')
+        console.log('📤 Request payload:', aiRequest)
+
         const response = await fetch('/api/readings/interpret', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(aiRequest),
           signal: controller.signal
+        })
+
+        console.log('📥 Response received:', {
+          status: response.status,
+          statusText: response.statusText,
+          ok: response.ok,
+          url: response.url,
+          headers: Object.fromEntries(response.headers.entries())
         })
 
         clearTimeout(timeoutId)
@@ -277,19 +288,28 @@ function NewReadingPageContent() {
         }
 
         const aiResult = await response.json()
+        console.log('📄 Response body:', aiResult)
 
         if (mountedRef.current) {
           if (aiResult) {
+            console.log('✅ Setting AI reading in state')
             setAiReading(aiResult)
             setAiRetryCount(0) // Reset on success
           } else {
+            console.log('❌ AI result is null/empty')
             // API returned null, treat as error
             setAiError('AI service returned no analysis. Please try again.')
             setAiRetryCount(prev => prev + 1)
           }
         }
       } catch (error) {
-        console.error('AI analysis error:', error)
+        console.error('❌ AI analysis fetch error:', error)
+        console.error('Error details:', {
+          name: error?.name,
+          message: error?.message,
+          stack: error?.stack
+        })
+
         let errorMessage = 'AI analysis failed'
 
         if (error instanceof Error) {
@@ -300,6 +320,7 @@ function NewReadingPageContent() {
           }
         }
 
+        console.log('Setting error state:', errorMessage)
         if (mountedRef.current) {
           setAiError(errorMessage)
           setAiRetryCount(prev => prev + 1)
