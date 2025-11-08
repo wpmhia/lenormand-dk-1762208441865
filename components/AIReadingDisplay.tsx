@@ -44,8 +44,36 @@ export function AIReadingDisplay({
   question = ''
 }: AIReadingDisplayProps) {
 
-  // Don't render anything if no AI reading and no error
-  if (!aiReading && !error) {
+  // Show loading state if loading and no error
+  if (isLoading && !error) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        <Card className="border-border bg-card slide-in-up">
+          <CardHeader>
+            <CardTitle className="text-card-foreground flex items-center gap-2">
+              <Zap className="w-5 h-5 text-primary/80 animate-pulse" />
+              The Sibyl Speaks
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="text-center space-y-4">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+              <p className="text-muted-foreground">Consulting the ancient wisdom...</p>
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+    )
+  }
+
+  // Don't render anything if no AI reading, not loading, and no error
+  if (!aiReading && !error && !isLoading) {
     return null
   }
 
