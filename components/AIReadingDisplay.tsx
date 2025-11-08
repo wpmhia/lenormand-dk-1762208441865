@@ -44,10 +44,10 @@ export function AIReadingDisplay({
   question = ''
 }: AIReadingDisplayProps) {
 
-
-
-
-
+  // Don't render anything if no AI reading and no error
+  if (!aiReading && !error) {
+    return null
+  }
 
   if (error) {
     const getErrorIcon = () => {
@@ -256,11 +256,13 @@ export function AIReadingDisplay({
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Continuous Prose Reading */}
-        <section aria-labelledby="reading-heading">
-          <div className="text-muted-foreground leading-relaxed text-base font-light">
-            <ReactMarkdown>{aiReading.storyline}</ReactMarkdown>
-          </div>
-        </section>
+        {aiReading && (
+          <section aria-labelledby="reading-heading">
+            <div className="text-muted-foreground leading-relaxed text-base font-light">
+              <ReactMarkdown>{aiReading.storyline}</ReactMarkdown>
+            </div>
+          </section>
+        )}
 
 
 
