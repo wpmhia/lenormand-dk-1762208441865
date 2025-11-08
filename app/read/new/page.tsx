@@ -353,6 +353,30 @@ function NewReadingPageContent() {
     }
   }, [question, allCards, selectedSpread, mountedRef])
 
+  const parsePhysicalCards = useCallback((allCards: CardType[]): ReadingCard[] => {
+    const input = physicalCards.trim()
+    if (!input) return []
+
+    const cardInputs = input.split(/[,;\s\n]+/).map(s => s.trim()).filter(s => s.length > 0)
+    const readingCards: ReadingCard[] = []
+
+    cardInputs.forEach((cardInput, i) => {
+      const card = allCards.find(c =>
+        c.name.toLowerCase().includes(cardInput.toLowerCase()) ||
+        c.keywords.some(k => k.toLowerCase().includes(cardInput.toLowerCase()))
+      )
+      if (card) {
+        readingCards.push({
+          id: card.id,
+          name: card.name,
+          position: i
+        })
+      }
+    })
+
+    return readingCards
+  }, [physicalCards])
+
   const handleDraw = useCallback(async (cards: CardType[]) => {
     console.log('🎯 handleDraw called with:', { cardCount: cards.length, path, spreadId: selectedSpread.id })
     console.log('🎯 About to call performAIAnalysis')
@@ -492,30 +516,6 @@ function NewReadingPageContent() {
     setParsedCards(foundCards)
     setCardSuggestions(suggestions)
   }, [allCards])
-
-  const parsePhysicalCards = useCallback((allCards: CardType[]): ReadingCard[] => {
-    const input = physicalCards.trim()
-    if (!input) return []
-
-    const cardInputs = input.split(/[,;\s\n]+/).map(s => s.trim()).filter(s => s.length > 0)
-    const readingCards: ReadingCard[] = []
-
-    cardInputs.forEach((cardInput, i) => {
-      const card = allCards.find(c =>
-        c.name.toLowerCase().includes(cardInput.toLowerCase()) ||
-        c.keywords.some(k => k.toLowerCase().includes(cardInput.toLowerCase()))
-      )
-      if (card) {
-        readingCards.push({
-          id: card.id,
-          name: card.name,
-          position: i
-        })
-      }
-    })
-
-    return readingCards
-  }, [physicalCards])
 
   const retryAIAnalysis = useCallback(() => {
     if (drawnCards.length > 0) {
