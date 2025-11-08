@@ -360,36 +360,6 @@ function NewReadingPageContent() {
     return readingCards
   }, [physicalCards])
 
-  const handleDraw = useCallback(async (cards: CardType[]) => {
-    console.log('🎯 handleDraw called with:', { cardCount: cards.length, path, spreadId: selectedSpread.id })
-    console.log('🎯 About to call performAIAnalysis')
-    const currentPath = path
-    const currentSpread = selectedSpread
-
-    try {
-      let readingCards: ReadingCard[];
-
-      if (currentPath === 'physical') {
-        // Parse physical cards input
-        readingCards = parsePhysicalCards(cards);
-      } else {
-        // Draw random cards (virtual path)
-        readingCards = drawCards(cards, currentSpread.cards);
-      }
-
-      console.log('📋 Reading cards generated:', readingCards)
-      setDrawnCards(readingCards)
-
-      // Start AI analysis (API route handles availability)
-      console.log('🤖 Starting AI analysis step...')
-      setStep('ai-analysis')
-      await performAIAnalysis(readingCards)
-    } catch (error) {
-      console.error('Error in handleDraw:', error)
-      setError(error instanceof Error ? error.message : 'An error occurred while processing your cards')
-    }
-  }, [path, selectedSpread, performAIAnalysis, parsePhysicalCards])
-
   const performAIAnalysis = useCallback(async (readingCards: ReadingCard[], isRetry = false) => {
     console.log('🚀 performAIAnalysis called with:', { cardCount: readingCards.length, isRetry })
     console.log('🚀 AI analysis starting...')
@@ -517,7 +487,37 @@ function NewReadingPageContent() {
     }
   }, [question, allCards, selectedSpread, mountedRef])
 
-  const retryAIAnalysis = useCallback(() => {
+  const handleDraw = useCallback(async (cards: CardType[]) => {
+    console.log('🎯 handleDraw called with:', { cardCount: cards.length, path, spreadId: selectedSpread.id })
+    console.log('🎯 About to call performAIAnalysis')
+    const currentPath = path
+    const currentSpread = selectedSpread
+
+    try {
+      let readingCards: ReadingCard[];
+
+      if (currentPath === 'physical') {
+        // Parse physical cards input
+        readingCards = parsePhysicalCards(cards);
+      } else {
+        // Draw random cards (virtual path)
+        readingCards = drawCards(cards, currentSpread.cards);
+      }
+
+      console.log('📋 Reading cards generated:', readingCards)
+      setDrawnCards(readingCards)
+
+      // Start AI analysis (API route handles availability)
+      console.log('🤖 Starting AI analysis step...')
+      setStep('ai-analysis')
+      await performAIAnalysis(readingCards)
+    } catch (error) {
+      console.error('Error in handleDraw:', error)
+      setError(error instanceof Error ? error.message : 'An error occurred while processing your cards')
+    }
+   }, [path, selectedSpread, performAIAnalysis, parsePhysicalCards])
+
+   const retryAIAnalysis = useCallback(() => {
     if (drawnCards.length > 0) {
       performAIAnalysis(drawnCards, true)
     }
