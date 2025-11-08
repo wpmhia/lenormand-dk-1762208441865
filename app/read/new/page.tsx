@@ -111,20 +111,6 @@ function NewReadingPageContent() {
     // No localStorage loading for new readings - start fresh
   }, [searchParams])
 
-  // Check AI availability from server endpoint
-  useEffect(() => {
-    async function checkAI() {
-      try {
-        const res = await fetch('/api/ai/status')
-        const json = await res.json()
-        setAiAvailable(Boolean(json?.available))
-      } catch (e) {
-        setAiAvailable(false)
-      }
-    }
-    checkAI()
-  }, [])
-
   // AI-related state
   const [aiReading, setAiReading] = useState<AIReadingResponse | null>(null)
   const [aiLoading, setAiLoading] = useState(false)
@@ -142,6 +128,20 @@ function NewReadingPageContent() {
   const [aiAttempted, setAiAttempted] = useState(false)
   const [showStartOverConfirm, setShowStartOverConfirm] = useState(false)
   const [isAnalyzingQuestion, setIsAnalyzingQuestion] = useState(false)
+
+  // Check AI availability from server endpoint
+  useEffect(() => {
+    async function checkAI() {
+      try {
+        const res = await fetch('/api/ai/status')
+        const json = await res.json()
+        setAiAvailable(Boolean(json?.available))
+      } catch (e) {
+        setAiAvailable(false)
+      }
+    }
+    checkAI()
+  }, [])
 
 
 
