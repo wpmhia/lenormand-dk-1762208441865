@@ -72,9 +72,34 @@ export function AIReadingDisplay({
     )
   }
 
-  // Don't render anything if no AI reading, not loading, and no error
+  // Show initial state if no AI reading, not loading, and no error
   if (!aiReading && !error && !isLoading) {
-    return null
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        <Card className="border-border bg-card slide-in-up">
+          <CardHeader>
+            <CardTitle className="text-card-foreground flex items-center gap-2">
+              <Zap className="w-5 h-5 text-primary/80" />
+              The Sibyl Speaks
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="text-center space-y-4">
+              <div className="text-muted-foreground">
+                <p className="text-sm">AI-powered insights will appear here after your cards are drawn.</p>
+                <p className="text-xs mt-2 opacity-75">The ancient wisdom awaits your question...</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </motion.div>
+    )
   }
 
   if (error) {
