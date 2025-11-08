@@ -534,365 +534,39 @@ function NewReadingPageContent() {
   return (
     <TooltipProvider>
       <div className="min-h-screen bg-background text-foreground">
-        {/* Header */}
-        <div className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-40">
-          <div className="container mx-auto px-4 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => router.push('/')}
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  ← Back to Home
-                </Button>
-                <div className="h-6 w-px bg-border"></div>
-                <h1 className="text-xl font-semibold">New Reading</h1>
-              </div>
+        <div className="container mx-auto px-4 py-8 max-w-4xl relative z-10">
 
-              <div className="flex items-center gap-2">
+          {/* Start Over Confirmation Dialog */}
+          <Dialog open={showStartOverConfirm} onOpenChange={setShowStartOverConfirm}>
+            <DialogContent className="bg-card border-border">
+              <DialogHeader>
+                <DialogTitle className="text-card-foreground">Start Over?</DialogTitle>
+                <DialogDescription className="text-muted-foreground">
+                  This will reset your current reading and all progress. This action cannot be undone.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
                 <Button
                   variant="outline"
-                  size="sm"
-                  onClick={() => setShowStartOverConfirm(true)}
-                  className="text-muted-foreground hover:text-foreground"
+                  onClick={() => setShowStartOverConfirm(false)}
+                  className="border-border text-card-foreground hover:bg-muted"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={confirmStartOver}
+                  className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
                 >
                   Start Over
                 </Button>
-              </div>
-            </div>
-          </div>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
-
-        {/* Main Content */}
-        <div className="container mx-auto px-4 py-8">
-          <AnimatePresence mode="wait">
-            {step === 'setup' && (
-              <motion.div
-                key="setup"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-              >
-                <Card className="border-border bg-card backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative max-w-2xl mx-auto">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50"></div>
-                  <CardContent className="space-y-8 p-8 relative z-10">
-                    <div className="text-center">
-                      <h2 className="text-3xl font-semibold mb-4 text-foreground">
-                        What would you like to know?
-                      </h2>
-                       <p className="text-muted-foreground">
-                         Ask your question and we&apos;ll guide you through creating a personalized Lenormand reading
-                       </p>
-                    </div>
-
-                    {/* Question Input */}
-                    <div className="space-y-4">
-                      <Label htmlFor="question" className="text-sm font-medium">
-                        Your Question
-                      </Label>
-                      <Textarea
-                        id="question"
-                        placeholder="What guidance do you seek from the cards?"
-                        value={question}
-                        onChange={(e) => setQuestion(e.target.value)}
-                        className="min-h-[120px] resize-none"
-                        maxLength={500}
-                      />
-                      <div className="flex justify-between items-center text-sm text-muted-foreground">
-                        <span>{questionCharCount}/500 characters</span>
-                        {isAnalyzingQuestion && (
-                          <span className="flex items-center gap-2">
-                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
-                            Analyzing...
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Path Selection */}
-                    <div className="space-y-4">
-                      <Label className="text-sm font-medium">Reading Method</Label>
-                      <div className="grid grid-cols-2 gap-4">
-                        <Button
-                          variant={path === 'virtual' ? 'default' : 'outline'}
-                          onClick={() => setPath('virtual')}
-                          className="h-20 flex-col gap-2"
-                        >
-                          <Eye className="w-6 h-6" />
-                          Virtual Reading
-                          <span className="text-xs opacity-75">Cards drawn for you</span>
-                        </Button>
-                        <Button
-                          variant={path === 'physical' ? 'default' : 'outline'}
-                          onClick={() => setPath('physical')}
-                          className="h-20 flex-col gap-2"
-                        >
-                          <Timer className="w-6 h-6" />
-                          Physical Reading
-                          <span className="text-xs opacity-75">Use your own cards</span>
-                        </Button>
-                      </div>
-                    </div>
-
-                    {/* Spread Selection */}
-                    <div className="space-y-4">
-                      <Label className="text-sm font-medium">Card Spread</Label>
-                      <Select
-                        value={selectedSpread.id}
-                        onValueChange={(value) => {
-                          const spread = COMPREHENSIVE_SPREADS.find(s => s.id === value)
-                          if (spread) setSelectedSpread(spread)
-                        }}
-                      >
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {COMPREHENSIVE_SPREADS.map((spread) => (
-                            <SelectItem key={spread.id} value={spread.id}>
-                              {spread.label} ({spread.cards} cards)
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <p className="text-sm text-muted-foreground">
-                        {selectedSpread.description}
-                      </p>
-                    </div>
-
-                    {/* Proceed Button */}
-                    <Button
-                      onClick={() => setStep('drawing')}
-                      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30 h-16 text-base font-medium"
-                      disabled={!canProceed}
-                      aria-busy={isAnalyzingQuestion}
-                    >
-                      {getButtonLabel()}
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            )}
-
-            {step === 'drawing' && (
-              <motion.div
-                key="drawing"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-              >
-                <Card className="border-border bg-card backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50"></div>
-                  <CardContent className="space-y-8 p-8 relative z-10">
-                    <div className="text-center">
-                      <h2 className="text-3xl font-semibold mb-4 text-foreground">
-                        {path === 'physical' ? 'Enter Your Cards' : 'Draw Your Cards'}
-                      </h2>
-                      <p className="text-muted-foreground">
-                        {path === 'physical'
-                          ? `Enter the ${selectedSpread.cards} cards from your physical deck`
-                          : `We'll draw ${selectedSpread.cards} cards for your ${selectedSpread.label.toLowerCase()} spread`
-                        }
-                      </p>
-                    </div>
-
-                    {path === 'physical' ? (
-                      <div className="space-y-4">
-                        <Label htmlFor="physical-cards" className="text-sm font-medium">
-                          Card Names
-                        </Label>
-                        <Textarea
-                          id="physical-cards"
-                          placeholder={`Example: Rider, Clover, Ship${selectedSpread.cards > 3 ? ', House, Tree' : ''}`}
-                          value={physicalCards}
-                          onChange={(e) => {
-                            setPhysicalCards(e.target.value)
-                            liveParseCards(e.target.value, selectedSpread.cards)
-                          }}
-                          className="min-h-[120px] resize-none"
-                        />
-
-                        {/* Parsed Cards Display */}
-                        {parsedCards.length > 0 && (
-                          <div className="space-y-2">
-                            <p className="text-sm font-medium text-foreground">
-                              Recognized Cards ({parsedCards.length}/{selectedSpread.cards})
-                            </p>
-                            <div className="flex flex-wrap gap-2">
-                              {parsedCards.map((card, index) => (
-                                <Badge key={card.id} variant="secondary" className="text-xs">
-                                  {card.name}
-                                </Badge>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Suggestions */}
-                        {cardSuggestions.length > 0 && (
-                          <div className="space-y-2">
-                            <p className="text-sm font-medium text-amber-600">
-                              Suggestions ({cardSuggestions.length})
-                            </p>
-                            <div className="flex flex-wrap gap-2">
-                              {cardSuggestions.map((suggestion, index) => (
-                                <Badge key={index} variant="outline" className="text-xs border-amber-200 text-amber-700">
-                                  {suggestion}
-                                </Badge>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-
-                        {/* Error */}
-                        {physicalCardsError && (
-                          <Alert variant="destructive">
-                            <AlertDescription>{physicalCardsError}</AlertDescription>
-                          </Alert>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="text-center space-y-4">
-                        <Deck
-                          cards={allCards}
-                          selectedCount={selectedSpread.cards}
-                          onDraw={handleDraw}
-                          disabled={!canProceed}
-                        />
-                      </div>
-                    )}
-
-                    {/* Draw Button */}
-                    <Button
-                      onClick={() => handleDraw(path === 'physical' ? parsedCards : allCards)}
-                      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30 rounded-xl py-3 font-semibold transition-all duration-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
-                      disabled={!canProceed}
-                    >
-                      {getButtonLabel()}
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            )}
-
-            {step === 'ai-analysis' && (
-              <motion.div
-                key="ai-analysis"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
-              >
-                <Card className="border-border bg-card backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-50"></div>
-                  <CardContent className="space-y-6 p-8 relative z-10">
-                    <div className="text-center">
-                      <h2 className="text-2xl font-semibold mb-2 text-foreground flex items-center justify-center gap-2">
-                        <Zap className="w-5 h-5 text-primary/80" />
-                        AI Analysis
-                      </h2>
-                      <p className="text-muted-foreground">
-                        The sibyl weaves wisdom from your {selectedSpread.cards} sacred cards
-                      </p>
-                    </div>
-
-                    <ReadingViewer
-                      reading={readingData}
-                      allCards={allCards}
-                      showShareButton={false}
-                      spreadId={selectedSpread.id}
-                    />
-
-                    {/* Show traditional meanings while AI loads or if AI fails */}
-                    {(aiLoading || (aiAttempted && !aiReading && !aiLoading)) && (
-                      <CardInterpretation
-                        cards={drawnCards}
-                        allCards={allCards}
-                        spreadId={selectedSpread.id}
-                        question={question}
-                      />
-                    )}
-
-                    {/* AI Reading Display - Available for both paths */}
-                    <AIReadingDisplay
-                      aiReading={aiReading}
-                      isLoading={aiLoading}
-                      error={aiError}
-                      errorDetails={aiErrorDetails}
-                      onRetry={retryAIAnalysis}
-                      retryCount={aiRetryCount}
-                      cards={drawnCards.map(card => ({
-                        id: card.id,
-                        name: getCardById(allCards, card.id)?.name || 'Unknown',
-                        position: card.position
-                      }))}
-                      allCards={allCards}
-                      spreadId={selectedSpread.id}
-                      question={question}
-                    />
-
-                    {/* Fallback Retry Button for Physical Path */}
-                    {path === 'physical' && aiError && !aiLoading && aiRetryCount < 3 && (
-                      <div className="text-center pt-4">
-                        <Button
-                          onClick={retryAIAnalysis}
-                          variant="outline"
-                          size="sm"
-                          className="border-primary text-primary hover:bg-primary/10"
-                          disabled={aiRetryCooldown > 0}
-                        >
-                          {aiRetryCooldown > 0 ? (
-                            <>
-                              <Timer className="w-4 h-4 mr-2" />
-                              Retry in {aiRetryCooldown}s
-                            </>
-                          ) : (
-                            'Retry AI Analysis'
-                          )}
-                        </Button>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
-        {/* Start Over Confirmation Dialog */}
-        <Dialog open={showStartOverConfirm} onOpenChange={setShowStartOverConfirm}>
-          <DialogContent className="bg-card border-border">
-            <DialogHeader>
-              <DialogTitle className="text-card-foreground">Start Over?</DialogTitle>
-              <DialogDescription className="text-muted-foreground">
-                This will reset your current reading and all progress. This action cannot be undone.
-              </DialogDescription>
-            </DialogHeader>
-            <DialogFooter>
-              <Button
-                variant="outline"
-                onClick={() => setShowStartOverConfirm(false)}
-                className="border-border text-card-foreground hover:bg-muted"
-              >
-                Cancel
-              </Button>
-              <Button
-                onClick={confirmStartOver}
-                className="bg-destructive hover:bg-destructive/90 text-destructive-foreground"
-              >
-                Start Over
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
       </div>
     </TooltipProvider>
-  )
-}
+   )
+  }
 
 export default function NewReadingPage() {
   return (
