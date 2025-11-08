@@ -112,6 +112,20 @@ function NewReadingPageContent() {
     timestamp: Date.now()
   }), [question, drawnCards, selectedSpread])
 
+  const canProceed = useMemo(() => {
+    if (step === 'setup') {
+      return question.trim().length >= 3 && selectedSpread
+    }
+    if (step === 'drawing') {
+      if (path === 'physical') {
+        return parsedCards.length === selectedSpread.cards && cardSuggestions.length === 0
+      } else {
+        return true // Virtual path always ready
+      }
+    }
+    return false
+  }, [step, question, selectedSpread, path, parsedCards.length, cardSuggestions.length])
+
   // Check AI availability from server endpoint
   useEffect(() => {
     async function checkAI() {
@@ -245,23 +259,9 @@ function NewReadingPageContent() {
       setAiError(null)
       setAiErrorDetails(null)
     }
-  }, [aiLoading])
+   }, [aiLoading])
 
-  const canProceed = useMemo(() => {
-    if (step === 'setup') {
-      return question.trim().length >= 3 && selectedSpread
-    }
-    if (step === 'drawing') {
-      if (path === 'physical') {
-        return parsedCards.length === selectedSpread.cards && cardSuggestions.length === 0
-      } else {
-        return true // Virtual path always ready
-      }
-    }
-    return false
-  }, [step, question, selectedSpread, path, parsedCards.length, cardSuggestions.length])
-
-  const getButtonLabel = useCallback(() => {
+   const getButtonLabel = useCallback(() => {
     if (step === 'setup') {
       return isAnalyzingQuestion ? 'Analyzing...' : '✨ Analyze & Choose Best Spread'
     }
