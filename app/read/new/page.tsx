@@ -226,140 +226,6 @@ function NewReadingPageContent() {
     return () => clearTimeout(timeoutId)
   }, [question, aiAvailable])
 
-  // Handle key down for physical cards input
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-        e.preventDefault()
-        if (canProceed) {
-          handleDraw(parsedCards)
-        }
-      }
-    }
-
-    if (path === 'physical') {
-      document.addEventListener('keydown', handleKeyDown)
-      return () => document.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [path, parsedCards.length, selectedSpread.cards, allCards, canProceed])
-
-  // AI retry cooldown timer
-  useEffect(() => {
-    if (aiRetryCooldown > 0) {
-      const timer = setTimeout(() => {
-        setAiRetryCooldown(prev => prev - 1)
-      }, 1000)
-      return () => clearTimeout(timer)
-    }
-  }, [aiRetryCooldown])
-
-  // Clear AI error when loading starts
-  useEffect(() => {
-    if (aiLoading) {
-      setAiError(null)
-      setAiErrorDetails(null)
-    }
-   }, [aiLoading])
-
-   const getButtonLabel = useCallback(() => {
-    if (step === 'setup') {
-      return isAnalyzingQuestion ? 'Analyzing...' : '✨ Analyze & Choose Best Spread'
-    }
-    if (step === 'drawing') {
-      return path === 'physical' ? '✨ Read Physical Cards' : '🎴 Draw Cards'
-    }
-    return 'Continue'
-  }, [step, path, isAnalyzingQuestion])
-
-  const resetReading = useCallback((options = { keepUrlParams: false, closeConfirmDialog: false }) => {
-    setStep('setup')
-    setDrawnCards([])
-    setQuestion('')
-    setQuestionCharCount(0)
-    setSelectedSpread(COMPREHENSIVE_SPREADS[0])
-    setError('')
-    setAiReading(null)
-    setAiLoading(false)
-    setAiError(null)
-    setAiErrorDetails(null)
-    setAiRetryCount(0)
-    setAiRetryCooldown(0)
-    setAiAttempted(false)
-    setPhysicalCards('')
-    setPhysicalCardsError(null)
-    setParsedCards([])
-    setCardSuggestions([])
-    setAiResult(null)
-
-    if (!options.keepUrlParams) {
-      const newUrl = new URL(window.location.href)
-      newUrl.search = ''
-      router.replace(newUrl.toString(), { scroll: false })
-    }
-
-    if (options.closeConfirmDialog) {
-      setShowStartOverConfirm(false)
-    }
-  }, [router])
-
-  const confirmStartOver = useCallback(() => {
-    resetReading({ closeConfirmDialog: true })
-  }, [resetReading])
-
-  const liveParseCards = useCallback((input: string, targetCount: number) => {
-    if (!input.trim()) {
-      setParsedCards([])
-      setCardSuggestions([])
-      return
-    }
-
-    const cardInputs = input.split(/[,;\s\n]+/).map(s => s.trim()).filter(s => s.length > 0)
-    const foundCards: CardType[] = []
-    const suggestions: string[] = []
-
-    cardInputs.forEach(input => {
-      const lower = input.toLowerCase()
-      if (!['cards', 'card', 'the', 'a', 'an'].includes(lower)) {
-        const card = allCards.find(c =>
-          c.name.toLowerCase().includes(lower) ||
-          c.keywords.some(k => k.toLowerCase().includes(lower))
-        )
-        if (card) {
-          foundCards.push(card)
-        } else {
-          suggestions.push(input)
-        }
-      }
-    })
-
-    setParsedCards(foundCards)
-    setCardSuggestions(suggestions)
-  }, [allCards])
-
-  const parsePhysicalCards = useCallback((allCards: CardType[]): ReadingCard[] => {
-    const input = physicalCards.trim()
-    if (!input) return []
-
-    const cardInputs = input.split(/[,;\s\n]+/).map(s => s.trim()).filter(s => s.length > 0)
-    const readingCards: ReadingCard[] = []
-
-    cardInputs.forEach((cardInput, i) => {
-      const card = allCards.find(c =>
-        c.name.toLowerCase().includes(cardInput.toLowerCase()) ||
-        c.keywords.some(k => k.toLowerCase().includes(cardInput.toLowerCase()))
-      )
-      if (card) {
-        readingCards.push({
-          id: card.id,
-          name: card.name,
-          position: i
-        })
-      }
-    })
-
-    return readingCards
-  }, [physicalCards])
-
   const performAIAnalysis = useCallback(async (readingCards: ReadingCard[], isRetry = false) => {
     console.log('🚀 performAIAnalysis called with:', { cardCount: readingCards.length, isRetry })
     console.log('🚀 AI analysis starting...')
@@ -515,9 +381,143 @@ function NewReadingPageContent() {
       console.error('Error in handleDraw:', error)
       setError(error instanceof Error ? error.message : 'An error occurred while processing your cards')
     }
-   }, [path, selectedSpread, performAIAnalysis, parsePhysicalCards])
+  }, [path, selectedSpread, performAIAnalysis, parsePhysicalCards])
 
-   const retryAIAnalysis = useCallback(() => {
+  // Handle key down for physical cards input
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault()
+        if (canProceed) {
+          handleDraw(parsedCards)
+        }
+      }
+    }
+
+    if (path === 'physical') {
+      document.addEventListener('keydown', handleKeyDown)
+      return () => document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [path, parsedCards, selectedSpread.cards, allCards, canProceed, handleDraw])
+
+  // AI retry cooldown timer
+  useEffect(() => {
+    if (aiRetryCooldown > 0) {
+      const timer = setTimeout(() => {
+        setAiRetryCooldown(prev => prev - 1)
+      }, 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [aiRetryCooldown])
+
+  // Clear AI error when loading starts
+  useEffect(() => {
+    if (aiLoading) {
+      setAiError(null)
+      setAiErrorDetails(null)
+    }
+   }, [aiLoading])
+
+   const getButtonLabel = useCallback(() => {
+    if (step === 'setup') {
+      return isAnalyzingQuestion ? 'Analyzing...' : '✨ Analyze & Choose Best Spread'
+    }
+    if (step === 'drawing') {
+      return path === 'physical' ? '✨ Read Physical Cards' : '🎴 Draw Cards'
+    }
+    return 'Continue'
+  }, [step, path, isAnalyzingQuestion])
+
+  const resetReading = useCallback((options = { keepUrlParams: false, closeConfirmDialog: false }) => {
+    setStep('setup')
+    setDrawnCards([])
+    setQuestion('')
+    setQuestionCharCount(0)
+    setSelectedSpread(COMPREHENSIVE_SPREADS[0])
+    setError('')
+    setAiReading(null)
+    setAiLoading(false)
+    setAiError(null)
+    setAiErrorDetails(null)
+    setAiRetryCount(0)
+    setAiRetryCooldown(0)
+    setAiAttempted(false)
+    setPhysicalCards('')
+    setPhysicalCardsError(null)
+    setParsedCards([])
+    setCardSuggestions([])
+    setAiResult(null)
+
+    if (!options.keepUrlParams) {
+      const newUrl = new URL(window.location.href)
+      newUrl.search = ''
+      router.replace(newUrl.toString(), { scroll: false })
+    }
+
+    if (options.closeConfirmDialog) {
+      setShowStartOverConfirm(false)
+    }
+  }, [router])
+
+  const confirmStartOver = useCallback(() => {
+    resetReading({ closeConfirmDialog: true })
+  }, [resetReading])
+
+  const liveParseCards = useCallback((input: string, targetCount: number) => {
+    if (!input.trim()) {
+      setParsedCards([])
+      setCardSuggestions([])
+      return
+    }
+
+    const cardInputs = input.split(/[,;\s\n]+/).map(s => s.trim()).filter(s => s.length > 0)
+    const foundCards: CardType[] = []
+    const suggestions: string[] = []
+
+    cardInputs.forEach(input => {
+      const lower = input.toLowerCase()
+      if (!['cards', 'card', 'the', 'a', 'an'].includes(lower)) {
+        const card = allCards.find(c =>
+          c.name.toLowerCase().includes(lower) ||
+          c.keywords.some(k => k.toLowerCase().includes(lower))
+        )
+        if (card) {
+          foundCards.push(card)
+        } else {
+          suggestions.push(input)
+        }
+      }
+    })
+
+    setParsedCards(foundCards)
+    setCardSuggestions(suggestions)
+  }, [allCards])
+
+  const parsePhysicalCards = useCallback((allCards: CardType[]): ReadingCard[] => {
+    const input = physicalCards.trim()
+    if (!input) return []
+
+    const cardInputs = input.split(/[,;\s\n]+/).map(s => s.trim()).filter(s => s.length > 0)
+    const readingCards: ReadingCard[] = []
+
+    cardInputs.forEach((cardInput, i) => {
+      const card = allCards.find(c =>
+        c.name.toLowerCase().includes(cardInput.toLowerCase()) ||
+        c.keywords.some(k => k.toLowerCase().includes(cardInput.toLowerCase()))
+      )
+      if (card) {
+        readingCards.push({
+          id: card.id,
+          name: card.name,
+          position: i
+        })
+      }
+    })
+
+    return readingCards
+  }, [physicalCards])
+
+  const retryAIAnalysis = useCallback(() => {
     if (drawnCards.length > 0) {
       performAIAnalysis(drawnCards, true)
     }
