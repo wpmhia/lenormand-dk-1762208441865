@@ -139,6 +139,7 @@ function NewReadingPageContent() {
   const [aiRetryCount, setAiRetryCount] = useState(0)
   const [aiRetryCooldown, setAiRetryCooldown] = useState(0)
   const [aiAvailable, setAiAvailable] = useState<boolean | null>(null)
+  const [aiAttempted, setAiAttempted] = useState(false)
   const [showStartOverConfirm, setShowStartOverConfirm] = useState(false)
   const [isAnalyzingQuestion, setIsAnalyzingQuestion] = useState(false)
 
@@ -152,10 +153,11 @@ function NewReadingPageContent() {
        setQuestionCharCount(0)
        setSelectedSpread(COMPREHENSIVE_SPREADS[0])
         setError('')
-        setAiReading(null)
-        setAiLoading(false)
-        setAiError(null)
-        setAiErrorDetails(null)
+         setAiReading(null)
+         setAiLoading(false)
+         setAiError(null)
+         setAiErrorDetails(null)
+         setAiAttempted(false)
          setPath(null)
          setShowManualPicker(false)
          setAiResult(null)
@@ -239,14 +241,15 @@ function NewReadingPageContent() {
       const controller = new AbortController()
       aiRequestRef.current = controller
       
-      setAiLoading(true)
-      setAiError(null)
-      setAiErrorDetails(null)
+       setAiLoading(true)
+       setAiError(null)
+       setAiErrorDetails(null)
+       setAiAttempted(true)
 
-      if (!isRetry) {
-        setAiRetryCount(0)
-      }
-      console.log('📊 AI loading state set to true')
+       if (!isRetry) {
+         setAiRetryCount(0)
+       }
+       console.log('📊 AI loading state set to true')
 
       // Set a timeout to prevent indefinite loading
       const loadingTimeout = setTimeout(() => {
@@ -1126,8 +1129,8 @@ function NewReadingPageContent() {
                        spreadId={selectedSpread.id}
                    />
 
-                {/* Show traditional meanings while AI loads or if AI fails */}
-                 {(aiLoading || (!aiReading && !aiLoading)) && (
+                 {/* Show traditional meanings while AI loads or if AI fails */}
+                  {(aiLoading || (aiAttempted && !aiReading && !aiLoading)) && (
                     <CardInterpretation
                       cards={drawnCards}
                       allCards={allCards}
