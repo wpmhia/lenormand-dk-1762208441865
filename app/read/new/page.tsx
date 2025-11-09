@@ -323,6 +323,22 @@ function NewReadingPageContent() {
     return () => clearTimeout(timeoutId)
   }, [question, aiAvailable, classifyQuestion])
 
+  // Auto-start AI analysis when entering results step
+  useEffect(() => {
+    if (step === 'results' && drawnCards.length > 0 && !aiReading && !aiLoading && !aiAttempted) {
+      console.log('🔮 Auto-starting AI analysis for results step')
+      performAIAnalysis(drawnCards)
+    }
+  }, [step, drawnCards, aiReading, aiLoading, aiAttempted, performAIAnalysis])
+
+  // Auto-transition to AI analysis step when AI reading is complete
+  useEffect(() => {
+    if (step === 'results' && aiReading && !aiLoading) {
+      console.log('✨ AI analysis complete, transitioning to ai-analysis step')
+      setStep('ai-analysis')
+    }
+  }, [step, aiReading, aiLoading])
+
   const performAIAnalysis = useCallback(async (readingCards: ReadingCard[], isRetry = false) => {
     console.log('🚀 performAIAnalysis called with:', { cardCount: readingCards.length, isRetry })
     console.log('🚀 AI analysis starting...')
@@ -538,17 +554,14 @@ function NewReadingPageContent() {
    }, [aiLoading])
 
    const getButtonLabel = useCallback(() => {
-     if (step === 'setup') {
-       return isAnalyzingQuestion ? 'Analyzing...' : '✨ Analyze & Choose Best Spread'
-     }
-     if (step === 'drawing') {
-       return path === 'physical' ? '✨ Read Physical Cards' : '🎴 Draw Cards'
-     }
-     if (step === 'results') {
-       return '🔮 Get AI Interpretation'
-     }
-     return 'Continue'
-   }, [step, path, isAnalyzingQuestion])
+      if (step === 'setup') {
+        return isAnalyzingQuestion ? 'Analyzing...' : '✨ Analyze & Choose Best Spread'
+      }
+      if (step === 'drawing') {
+        return path === 'physical' ? '✨ Read Physical Cards' : '🎴 Draw Cards'
+      }
+      return 'Continue'
+    }, [step, path, isAnalyzingQuestion])
 
   const resetReading = useCallback((options = { keepUrlParams: false, closeConfirmDialog: false }) => {
     setStep('setup')
@@ -658,19 +671,19 @@ function NewReadingPageContent() {
                <span className="ml-3 text-sm font-medium">{path === 'physical' ? 'Enter' : 'Draw'}</span>
              </div>
              <div className={`w-12 h-0.5 rounded-full ${step === 'results' || step === 'ai-analysis' ? 'bg-primary' : 'bg-muted'}`} aria-hidden="true"></div>
-             <div className={`flex items-center ${step === 'results' ? 'text-primary' : 'text-muted-foreground'}`} aria-label="Step 3: Results" aria-current={step === 'results' ? 'step' : undefined}>
-               <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'results' ? 'bg-primary border-primary shadow-lg shadow-primary/30 text-primary-foreground' : 'bg-muted border-muted-foreground text-muted-foreground dark:bg-muted/50 dark:border-muted-foreground/50'}`} aria-hidden="true">
-                 3
-               </div>
-               <span className="ml-3 text-sm font-medium">Results</span>
-             </div>
-             <div className={`w-12 h-0.5 rounded-full ${step === 'ai-analysis' ? 'bg-primary' : 'bg-muted'}`} aria-hidden="true"></div>
-             <div className={`flex items-center ${step === 'ai-analysis' ? 'text-primary' : 'text-muted-foreground'}`} aria-label="Step 4: Analysis" aria-current={step === 'ai-analysis' ? 'step' : undefined}>
-               <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'ai-analysis' ? 'bg-primary border-primary shadow-lg shadow-primary/30 text-primary-foreground' : 'bg-muted border-muted-foreground text-muted-foreground dark:bg-muted/50 dark:border-muted-foreground/50'}`} aria-hidden="true">
-                 4
-               </div>
-               <span className="ml-3 text-sm font-medium">Analysis</span>
-             </div>
+              <div className={`flex items-center ${step === 'results' ? 'text-primary' : 'text-muted-foreground'}`} aria-label="Step 3: Processing" aria-current={step === 'results' ? 'step' : undefined}>
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'results' ? 'bg-primary border-primary shadow-lg shadow-primary/30 text-primary-foreground' : 'bg-muted border-muted-foreground text-muted-foreground dark:bg-muted/50 dark:border-muted-foreground/50'}`} aria-hidden="true">
+                  3
+                </div>
+                <span className="ml-3 text-sm font-medium">Processing</span>
+              </div>
+              <div className={`w-12 h-0.5 rounded-full ${step === 'ai-analysis' ? 'bg-primary' : 'bg-muted'}`} aria-hidden="true"></div>
+              <div className={`flex items-center ${step === 'ai-analysis' ? 'text-primary' : 'text-muted-foreground'}`} aria-label="Step 4: Interpretation" aria-current={step === 'ai-analysis' ? 'step' : undefined}>
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold border-2 ${step === 'ai-analysis' ? 'bg-primary border-primary shadow-lg shadow-primary/30 text-primary-foreground' : 'bg-muted border-muted-foreground text-muted-foreground dark:bg-muted/50 dark:border-muted-foreground/50'}`} aria-hidden="true">
+                  4
+                </div>
+                <span className="ml-3 text-sm font-medium">Interpretation</span>
+              </div>
 
            </div>
         </div>
@@ -1113,18 +1126,15 @@ function NewReadingPageContent() {
               question={question}
             />
 
-            {/* Button to get AI analysis */}
-            <div className="text-center">
-              <Button
-                onClick={() => {
-                  setStep('ai-analysis')
-                  performAIAnalysis(drawnCards)
-                }}
-                className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30"
-                disabled={aiLoading}
-              >
-                {aiLoading ? 'Getting AI Analysis...' : '🔮 Get AI Interpretation'}
-              </Button>
+            {/* AI Analysis Loading Indicator */}
+            <div className="text-center space-y-4">
+              <div className="flex items-center justify-center gap-3">
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+                <span className="text-muted-foreground">Consulting the ancient wisdom...</span>
+              </div>
+              <div className="text-sm text-muted-foreground">
+                The sibyl is weaving your cards&apos; deeper meanings
+              </div>
             </div>
           </motion.div>
         )}
