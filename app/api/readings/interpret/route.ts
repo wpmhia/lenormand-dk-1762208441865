@@ -11,6 +11,7 @@ export const maxDuration = 45
 export async function POST(request: NextRequest) {
   try {
     console.log('=== AI Interpretation Request Started ===')
+    console.log('🔥 API route called - beginning processing')
     console.log('Environment check:', {
       nodeEnv: process.env.NODE_ENV,
       hasApiKey: !!process.env.DEEPSEEK_API_KEY,
@@ -78,8 +79,9 @@ export async function POST(request: NextRequest) {
     }
 
     console.log('Calling getAIReading...')
-    const aiReading = await getAIReading(aiRequest)
-    console.log('AI reading result:', aiReading ? 'SUCCESS' : 'NULL')
+     const aiReading = await getAIReading(aiRequest)
+     console.log('AI reading result:', aiReading ? 'SUCCESS' : 'NULL')
+     console.log('AI reading details:', aiReading)
 
     if (!aiReading) {
       if (process.env.NODE_ENV === 'development') console.log('AI reading returned null')

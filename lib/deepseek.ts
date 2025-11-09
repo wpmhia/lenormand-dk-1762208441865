@@ -211,14 +211,18 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
     spreadId: request.spreadId
   })
 
+  console.log('🔍 Checking isDeepSeekAvailable...')
   if (!isDeepSeekAvailable()) {
     console.warn('DeepSeek API not configured - isDeepSeekAvailable returned false')
     return null
   }
 
+  console.log('🔍 Checking safety...')
   if (!isSafePrompt(request.question)) {
     throw new Error('Cannot provide readings for medical, legal, or sensitive topics. Please consult appropriate professionals.')
   }
+
+  console.log('✅ Passed initial checks, proceeding...')
 
   // Parse spreadId to get layout information
   const spreadInfo = parseSpreadId(request.spreadId)
@@ -263,6 +267,7 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
           max_tokens: 300
         })
 
+        console.log('🌐 About to make fetch call to DeepSeek API...')
         const response = await fetch(`${DEEPSEEK_BASE_URL}/chat/completions`, {
           method: 'POST',
           headers: {
@@ -282,6 +287,7 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
           signal: controller.signal
         })
 
+        console.log('📥 DeepSeek API response received:', { ok: response.ok, status: response.status })
         clearTimeout(timeoutId)
 
         if (!response.ok) {

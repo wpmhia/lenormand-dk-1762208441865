@@ -123,22 +123,26 @@ function NewReadingPageContent() {
      return false
    }, [step, question, selectedSpread, path, parsedCards.length, cardSuggestions.length, drawnCards.length])
 
-  // Check AI availability from server endpoint
-  useEffect(() => {
-    async function checkAI() {
-      console.log('🤖 Checking AI availability...')
-      try {
-        const res = await fetch('/api/ai/status')
-        const json = await res.json()
-        console.log('🤖 AI availability response:', json)
-        setAiAvailable(Boolean(json?.available))
-      } catch (e) {
-        console.log('🤖 AI availability check failed:', e)
-        setAiAvailable(false)
-      }
-    }
-    checkAI()
-  }, [])
+   // Check AI availability from server endpoint
+   useEffect(() => {
+     async function checkAI() {
+       console.log('🤖 Checking AI availability...')
+       try {
+         console.log('🌐 Fetching /api/ai/status...')
+         const res = await fetch('/api/ai/status')
+         console.log('📥 AI status response received:', { ok: res.ok, status: res.status })
+         const json = await res.json()
+         console.log('🤖 AI availability response:', json)
+         const available = Boolean(json?.available)
+         console.log('🔄 Setting aiAvailable to:', available)
+         setAiAvailable(available)
+       } catch (e) {
+         console.log('❌ AI availability check failed:', e)
+         setAiAvailable(false)
+       }
+     }
+     checkAI()
+   }, [])
 
   // Load cards on mount
   useEffect(() => {
@@ -197,6 +201,21 @@ function NewReadingPageContent() {
   const performAIAnalysis = useCallback(async (readingCards: ReadingCard[], isRetry = false) => {
     console.log('🚀 performAIAnalysis called with:', { cardCount: readingCards.length, isRetry })
     console.log('🚀 AI analysis starting...')
+    console.log('🤖 aiAvailable state:', aiAvailable)
+
+    // Check if AI is available before proceeding
+    if (aiAvailable === false) {
+      console.log('❌ AI not available, skipping analysis')
+      setAiError('AI analysis is not available at this time.')
+      setAiAttempted(true)
+      return
+    }
+
+    if (aiAvailable === null) {
+      console.log('⏳ AI availability still loading, skipping analysis')
+      return
+    }
+
     if (!mountedRef.current) return
 
     // Cancel previous request if exists
@@ -235,44 +254,67 @@ function NewReadingPageContent() {
         userLocale: navigator.language
       }
 
-      const timeoutId = setTimeout(() => controller.abort(), 45000) // 45 second timeout
+       const timeoutId = setTimeout(() => controller.abort(), 45000) // 45 second timeout
 
-      console.log('🔄 Starting AI analysis (server-side)')
-      console.log('📤 Request payload:', aiRequest)
+       console.log('🔄 Starting AI analysis (server-side)')
+       console.log('📤 Request payload:', aiRequest)
+       console.log('🌐 About to make fetch call to /api/readings/interpret')
 
-      // Server-side AI call via API route
-      const response = await fetch('/api/readings/interpret', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(aiRequest),
-        signal: controller.signal
-      })
+       // Server-side AI call via API route
+       const response = await fetch('/api/readings/interpret', {
+         method: 'POST',
+         headers: {
+           'Content-Type': 'application/json',
+         },
+         body: JSON.stringify(aiRequest),
+         signal: controller.signal
+       })
 
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Server error')
-      }
+       console.log('📥 Fetch response received:', { ok: response.ok, status: response.status })
 
-      const aiResult = await response.json()
+       if (!response.ok) {
+         console.log('❌ Response not ok, getting error data...')
+         const errorData = await response.json()
+         console.log('❌ Error data:', errorData)
+         throw new Error(errorData.error || 'Server error')
+       }
+
+       console.log('📄 Getting response text first...')
+       const responseText = await response.text()
+       console.log('📄 Response text length:', responseText.length)
+       console.log('📄 Response text preview:', responseText.substring(0, 200) + '...')
+
+       let aiResult
+       try {
+         aiResult = JSON.parse(responseText)
+         console.log('📄 JSON parsed successfully')
+       } catch (parseError) {
+         console.error('❌ JSON parse error:', parseError)
+         throw new Error('Invalid JSON response from server')
+       }
+       console.log('📄 AI result received:', aiResult)
 
       clearTimeout(timeoutId)
 
       console.log('📄 AI result:', aiResult)
 
-      if (mountedRef.current) {
-        if (aiResult) {
-          console.log('✅ Setting AI reading in state')
-          setAiReading(aiResult)
-          setAiRetryCount(0) // Reset on success
-        } else {
-          console.log('❌ AI result is null/empty')
-          // API returned null, treat as error
-          setAiError('AI service returned no analysis. Please try again.')
-          setAiRetryCount(prev => prev + 1)
-        }
-      }
+       if (mountedRef.current) {
+         console.log('🔄 Component still mounted, processing result...')
+         if (aiResult) {
+           console.log('✅ Setting AI reading in state')
+           console.log('📊 aiResult keys:', Object.keys(aiResult))
+           setAiReading(aiResult)
+           setAiRetryCount(0) // Reset on success
+           console.log('✅ State updated, AI reading set')
+         } else {
+           console.log('❌ AI result is null/empty')
+           // API returned null, treat as error
+           setAiError('AI service returned no analysis. Please try again.')
+           setAiRetryCount(prev => prev + 1)
+         }
+       } else {
+         console.log('⚠️ Component unmounted, skipping state update')
+       }
     } catch (error) {
       clearTimeout(timeoutId)
       console.error('❌ AI analysis failed:', error)
@@ -319,23 +361,24 @@ function NewReadingPageContent() {
         setAiLoading(false)
       }
     }
-  }, [question, allCards, selectedSpread, mountedRef])
+  }, [question, allCards, selectedSpread, mountedRef, aiAvailable])
 
-  // Auto-start AI analysis when entering results step
-  useEffect(() => {
-    if (step === 'results' && drawnCards.length > 0 && !aiReading && !aiLoading && !aiAttempted) {
-      console.log('🔮 Auto-starting AI analysis for results step')
-      performAIAnalysis(drawnCards)
-    }
-  }, [step, drawnCards, aiReading, aiLoading, aiAttempted, performAIAnalysis])
+   // Auto-start AI analysis when entering results step
+   useEffect(() => {
+     if (step === 'results' && drawnCards.length > 0 && !aiReading && !aiLoading && !aiAttempted && aiAvailable === true) {
+       console.log('🔮 Auto-starting AI analysis for results step')
+       performAIAnalysis(drawnCards)
+     }
+   }, [step, drawnCards, aiReading, aiLoading, aiAttempted, aiAvailable, performAIAnalysis])
 
-  // Auto-transition to AI analysis step when AI reading is complete
-  useEffect(() => {
-    if (step === 'results' && aiReading && !aiLoading) {
-      console.log('✨ AI analysis complete, transitioning to ai-analysis step')
-      setStep('ai-analysis')
-    }
-  }, [step, aiReading, aiLoading])
+   // Auto-transition to AI analysis step when AI reading is complete
+   useEffect(() => {
+     console.log('🔄 Transition effect check:', { step, hasAiReading: !!aiReading, aiLoading })
+     if (step === 'results' && aiReading && !aiLoading) {
+       console.log('✨ AI analysis complete, transitioning to ai-analysis step')
+       setStep('ai-analysis')
+     }
+   }, [step, aiReading, aiLoading])
 
   const parsePhysicalCards = useCallback((allCards: CardType[]): ReadingCard[] => {
     const input = physicalCards.trim()
