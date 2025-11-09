@@ -69,12 +69,7 @@ function NewReadingPageContent() {
     }
     return 'virtual'; // Default to 'virtual'
   })
-  const [showManualPicker, setShowManualPicker] = useState(false)
-  const [aiResult, setAiResult] = useState<{
-    question: string
-    cards: ReadingCard[]
-    reading: AIReadingResponse
-  } | null>(null)
+
   const [physicalCards, setPhysicalCards] = useState('')
   const [physicalCardsError, setPhysicalCardsError] = useState<string | null>(null)
   const [parsedCards, setParsedCards] = useState<CardType[]>([])
@@ -100,9 +95,8 @@ function NewReadingPageContent() {
   const [aiRetryCount, setAiRetryCount] = useState(0)
   const [aiRetryCooldown, setAiRetryCooldown] = useState(0)
   const [aiAvailable, setAiAvailable] = useState<boolean | null>(null)
-  const [aiAttempted, setAiAttempted] = useState(false)
-  const [showStartOverConfirm, setShowStartOverConfirm] = useState(false)
-  const [isAnalyzingQuestion, setIsAnalyzingQuestion] = useState(false)
+   const [aiAttempted, setAiAttempted] = useState(false)
+   const [showStartOverConfirm, setShowStartOverConfirm] = useState(false)
 
   // Computed values
   const readingData = useMemo(() => ({
@@ -196,132 +190,9 @@ function NewReadingPageContent() {
     setCardSuggestions(suggestions)
   }, [physicalCards, selectedSpread, path, allCards])
 
-  // Classify question based on keywords
-  const classifyQuestion = useCallback(async (questionText: string): Promise<string> => {
-    const lower = questionText.toLowerCase()
 
-    // Relationship keywords
-    if (lower.includes('love') || lower.includes('relationship') || lower.includes('partner') ||
-        lower.includes('marriage') || lower.includes('romance') || lower.includes('boyfriend') ||
-        lower.includes('girlfriend') || lower.includes('husband') || lower.includes('wife') ||
-        lower.includes('dating') || lower.includes('soulmate')) {
-      return 'relationship'
-    }
 
-    // Career keywords
-    if (lower.includes('job') || lower.includes('career') || lower.includes('work') ||
-        lower.includes('business') || lower.includes('money') || lower.includes('finance') ||
-        lower.includes('promotion') || lower.includes('success') || lower.includes('opportunity')) {
-      return 'career'
-    }
 
-    // Decision keywords
-    if (lower.includes('should i') || lower.includes('choice') || lower.includes('decide') ||
-        lower.includes('yes or no') || lower.includes('option') || lower.includes('choose')) {
-      return 'decision'
-    }
-
-    // Timing keywords
-    if (lower.includes('when') || lower.includes('timing') || lower.includes('soon') ||
-        lower.includes('future') || lower.includes('time') || lower.includes('week') ||
-        lower.includes('month') || lower.includes('year')) {
-      return 'timing'
-    }
-
-    // Future keywords
-    if (lower.includes('what will') || lower.includes('what is coming') || lower.includes('ahead') ||
-        lower.includes('outcome') || lower.includes('result')) {
-      return 'future'
-    }
-
-    return 'general'
-  }, [])
-
-  // Handle AI analysis and spread recommendation
-  const handleAnalyzeAndChoose = useCallback(async () => {
-    if (!question.trim() || !aiAvailable) return
-
-    setIsAnalyzingQuestion(true)
-    try {
-      const category = await classifyQuestion(question)
-      const spreadSuggestions = {
-        'relationship': COMPREHENSIVE_SPREADS.find(s => s.id === 'relationship-double-significator') || COMPREHENSIVE_SPREADS[0],
-        'career': COMPREHENSIVE_SPREADS.find(s => s.id === 'structured-reading') || COMPREHENSIVE_SPREADS[0],
-        'decision': COMPREHENSIVE_SPREADS.find(s => s.id === 'yes-no-maybe') || COMPREHENSIVE_SPREADS[0],
-        'timing': COMPREHENSIVE_SPREADS.find(s => s.id === 'week-ahead') || COMPREHENSIVE_SPREADS[0],
-        'future': COMPREHENSIVE_SPREADS.find(s => s.id === 'past-present-future') || COMPREHENSIVE_SPREADS[0],
-        'general': COMPREHENSIVE_SPREADS[0]
-      }
-      const suggestedSpread = spreadSuggestions[category as keyof typeof spreadSuggestions] || COMPREHENSIVE_SPREADS[0]
-
-      // Create AI result for display
-      const confidence = Math.floor(Math.random() * 20) + 80 // 80-99% confidence
-      const reasons = {
-        'relationship': 'This spread is ideal for relationship questions as it provides detailed insights into partnership dynamics.',
-        'career': 'Perfect for career and financial questions, offering structured guidance on opportunities and challenges.',
-        'decision': 'This binary spread gives clear yes/no guidance for decision-making questions.',
-        'timing': 'Excellent for timing-related questions, providing insights into when events may occur.',
-        'future': 'This classic spread reveals past influences, present situation, and future outcomes.',
-        'general': 'A versatile spread that provides comprehensive insights for any type of question.'
-      }
-
-      setAiResult({
-        question: question.trim(),
-        cards: [], // Will be filled when drawn
-        reading: {
-          interpretation: '',
-          cardInsights: [],
-          overallGuidance: '',
-          warnings: [],
-          confidence: confidence
-        },
-        confidence,
-        reason: reasons[category as keyof typeof reasons] || 'This spread provides balanced insights for your question.',
-        suggestedSpread: suggestedSpread.label
-      })
-
-      setSelectedSpread(suggestedSpread)
-    } catch (error) {
-      console.error('Error analyzing question:', error)
-      // Fallback to default spread
-      setSelectedSpread(COMPREHENSIVE_SPREADS[0])
-    } finally {
-      setIsAnalyzingQuestion(false)
-    }
-  }, [question, aiAvailable, classifyQuestion])
-
-  // Auto-analyze question for spread suggestions
-  useEffect(() => {
-    if (!question.trim() || !aiAvailable) return
-
-    const timeoutId = setTimeout(async () => {
-      setIsAnalyzingQuestion(true)
-      try {
-        const category = await classifyQuestion(question)
-        if (category && mountedRef.current) {
-          // Suggest appropriate spread based on question category
-          const spreadSuggestions = {
-            'relationship': COMPREHENSIVE_SPREADS.find(s => s.id === 'relationship-double-significator') || COMPREHENSIVE_SPREADS[0],
-            'career': COMPREHENSIVE_SPREADS.find(s => s.id === 'structured-reading') || COMPREHENSIVE_SPREADS[0],
-            'decision': COMPREHENSIVE_SPREADS.find(s => s.id === 'yes-no-maybe') || COMPREHENSIVE_SPREADS[0],
-            'timing': COMPREHENSIVE_SPREADS.find(s => s.id === 'week-ahead') || COMPREHENSIVE_SPREADS[0],
-            'future': COMPREHENSIVE_SPREADS.find(s => s.id === 'past-present-future') || COMPREHENSIVE_SPREADS[0],
-            'general': COMPREHENSIVE_SPREADS[0]
-          }
-          const suggestedSpread = spreadSuggestions[category as keyof typeof spreadSuggestions] || COMPREHENSIVE_SPREADS[0]
-          setSelectedSpread(suggestedSpread)
-        }
-      } catch (error) {
-        // Silently fail for question analysis
-      } finally {
-        if (mountedRef.current) {
-          setIsAnalyzingQuestion(false)
-        }
-      }
-    }, 1000)
-
-    return () => clearTimeout(timeoutId)
-  }, [question, aiAvailable, classifyQuestion])
 
   const performAIAnalysis = useCallback(async (readingCards: ReadingCard[], isRetry = false) => {
     console.log('🚀 performAIAnalysis called with:', { cardCount: readingCards.length, isRetry })
@@ -555,13 +426,13 @@ function NewReadingPageContent() {
 
    const getButtonLabel = useCallback(() => {
       if (step === 'setup') {
-        return isAnalyzingQuestion ? 'Analyzing...' : '✨ Analyze & Choose Best Spread'
+        return '✨ Start Reading'
       }
       if (step === 'drawing') {
         return path === 'physical' ? '✨ Read Physical Cards' : '🎴 Draw Cards'
       }
       return 'Continue'
-    }, [step, path, isAnalyzingQuestion])
+    }, [step, path])
 
   const resetReading = useCallback((options = { keepUrlParams: false, closeConfirmDialog: false }) => {
     setStep('setup')
@@ -579,9 +450,8 @@ function NewReadingPageContent() {
     setAiAttempted(false)
     setPhysicalCards('')
     setPhysicalCardsError(null)
-    setParsedCards([])
-    setCardSuggestions([])
-    setAiResult(null)
+     setParsedCards([])
+     setCardSuggestions([])
 
     if (!options.keepUrlParams) {
       const newUrl = new URL(window.location.href)
@@ -843,59 +713,7 @@ function NewReadingPageContent() {
                           </div>
                         )}
 
-                        {/* AI Result Display - Only for virtual path */}
-                        {aiResult && path === 'virtual' && (
-                          <div className="max-w-md mx-auto">
-                            <div className="p-4 rounded-lg bg-muted/50 border border-border">
-                              <div className="flex items-start gap-3">
 
-                                <div className="flex-1">
-                                  <div className="flex items-center gap-2 mb-2">
-                                    <span className="text-sm font-medium text-primary">
-                                      AI Recommendation
-                                    </span>
-                                    <span className="text-xs bg-primary/20 text-primary px-2 py-0.5 rounded-full">
-                                      {aiResult.confidence}% match
-                                    </span>
-                                  </div>
-                                  <p className="text-sm text-foreground mb-2">{aiResult.reason}</p>
-                                  <button
-                                    onClick={() => setShowManualPicker(!showManualPicker)}
-                                    className="text-xs text-muted-foreground underline hover:text-foreground"
-                                  >
-                                    {showManualPicker ? 'Keep recommendation' : 'Change spread'}
-                                  </button>
-                                  {showManualPicker && (
-                                    <div className="mt-3 space-y-2">
-                                      <Label htmlFor="manual-spread" className="text-foreground font-medium text-sm">
-                                        Choose different spread:
-                                      </Label>
-                                      <Select value={selectedSpread.id} onValueChange={(value) => {
-                                        const spread = COMPREHENSIVE_SPREADS.find(s => s.id === value)
-                                        if (spread) setSelectedSpread(spread)
-                                      }}>
-                                        <SelectTrigger className="bg-background border-border text-card-foreground rounded-lg focus:border-primary h-10">
-                                          <SelectValue />
-                                        </SelectTrigger>
-                                        <SelectContent className="bg-card border-border">
-                                   {COMPREHENSIVE_SPREADS.map((spread) => (
-                                     <SelectItem
-                                       key={spread.id}
-                                       value={spread.id}
-                                       className="text-card-foreground hover:bg-accent focus:bg-accent py-3"
-                                     >
-                                       {`${spread.label} (${spread.cards} cards)`}
-                                     </SelectItem>
-                                   ))}
-                                        </SelectContent>
-                                      </Select>
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        )}
 
                          {/* Manual Spread Selection - Show for both paths */}
                          {(path === 'physical' || path === 'virtual') && (
