@@ -262,14 +262,31 @@ function NewReadingPageContent() {
           body: JSON.stringify(aiRequest)
         })
 
-        console.log('📥 Fetch response received:', { ok: response.ok, status: response.status })
+        console.log('📥 Fetch response received:', { ok: response.ok, status: response.status, contentType: response.headers.get('content-type') })
 
         if (!response.ok) {
-          const errorData = await response.json()
+          // Safe error parsing
+          const errorText = await response.text()
+          let errorData
+          try {
+            errorData = JSON.parse(errorText)
+          } catch {
+            // If not JSON, use the text as error message
+            errorData = { error: errorText || 'Server error' }
+          }
           throw new Error(errorData.error || 'Server error')
         }
 
-        const aiResult = await response.json()
+        // Safe JSON parsing
+        const responseText = await response.text()
+        let aiResult
+        try {
+          aiResult = JSON.parse(responseText)
+        } catch (parseError) {
+          console.error('Frontend JSON parse error:', parseError)
+          console.error('Raw response (first 500 chars):', responseText.substring(0, 500))
+          throw new Error('Invalid response format from server')
+        }
         console.log('📄 AI result received:', aiResult)
 
       console.log('📄 AI result:', aiResult)

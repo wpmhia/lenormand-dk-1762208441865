@@ -287,15 +287,31 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
           signal: controller.signal
         })
 
-        console.log('📥 DeepSeek API response received:', { ok: response.ok, status: response.status })
+        console.log('📥 DeepSeek API response received:', { ok: response.ok, status: response.status, contentType: response.headers.get('content-type') })
         clearTimeout(timeoutId)
 
         if (!response.ok) {
+          // For client errors (4xx), don't retry unless it's 429 (rate limit)
+          if (response.status >= 400 && response.status < 500 && response.status !== 429) {
+            const errorText = await response.text()
+            console.error('Client error (no retry):', { status: response.status, body: errorText.substring(0, 500) })
+            throw new Error(`DeepSeek API client error: ${response.status} ${response.statusText} - ${errorText}`)
+          }
+          // For 5xx or 429, let it retry
           const errorText = await response.text()
           throw new Error(`DeepSeek API error: ${response.status} ${response.statusText} - ${errorText}`)
         }
 
-        const data = await response.json()
+        // Safe JSON parsing with diagnostics
+        const responseText = await response.text()
+        let data
+        try {
+          data = JSON.parse(responseText)
+        } catch (parseError) {
+          console.error('JSON parse error:', parseError)
+          console.error('Raw response (first 1000 chars):', responseText.substring(0, 1000))
+          throw new Error(`Invalid JSON response from DeepSeek API: ${parseError.message}`)
+        }
         const rawResponse = data.choices[0]?.message?.content
 
         if (!rawResponse) {
@@ -316,10 +332,21 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
 
         if (process.env.NODE_ENV === 'development') {
           console.log(`❌ DeepSeek API attempt ${attempt + 1} failed:`, lastError.message)
+          console.log('Error details:', { name: lastError.name, message: lastError.message })
         }
 
-        // Don't retry on abort or certain errors
-        if (lastError.name === 'AbortError' || lastError.message.includes('API key')) {
+        // Detect aborts more robustly (AbortError, DOMException, or abort-related messages)
+        const isAbort = lastError.name === 'AbortError' ||
+                       lastError.name === 'DOMException' ||
+                       lastError.message?.includes('aborted') ||
+                       lastError.message?.includes('abort')
+
+        // Don't retry on aborts, client config errors, or JSON parsing errors
+        if (isAbort ||
+            lastError.message.includes('API key') ||
+            lastError.message.includes('Invalid JSON response') ||
+            lastError.message.includes('client error')) {
+          console.log('Not retrying due to:', isAbort ? 'abort' : 'non-retryable error')
           break
         }
 
