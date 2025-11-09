@@ -58,7 +58,7 @@ function NewReadingPageContent() {
 
   console.log('🔮 NewReadingPageContent component mounted')
 
-  const aiRequestRef = useRef<AbortController | null>(null)
+
   const [allCards, setAllCards] = useState<CardType[]>([])
   const [drawnCards, setDrawnCards] = useState<ReadingCard[]>([])
   const [selectedSpread, setSelectedSpread] = useState(COMPREHENSIVE_SPREADS[0]) // Default to first spread
@@ -218,10 +218,7 @@ function NewReadingPageContent() {
 
     if (!mountedRef.current) return
 
-    // Cancel previous request if exists
-    aiRequestRef.current?.abort()
-    const controller = new AbortController()
-    aiRequestRef.current = controller
+
 
     setAiLoading(true)
     setAiError(null)
@@ -231,7 +228,6 @@ function NewReadingPageContent() {
     if (!isRetry) {
       setAiRetryCount(0)
     }
-    console.log('📊 AI loading state set to true')
 
     // Set a timeout to prevent indefinite loading
     const loadingTimeout = setTimeout(() => {
@@ -254,47 +250,27 @@ function NewReadingPageContent() {
         userLocale: navigator.language
       }
 
-       const timeoutId = setTimeout(() => controller.abort(), 45000) // 45 second timeout
+        console.log('🔄 Starting AI analysis (server-side)')
+        console.log('📤 Request payload:', aiRequest)
 
-       console.log('🔄 Starting AI analysis (server-side)')
-       console.log('📤 Request payload:', aiRequest)
-       console.log('🌐 About to make fetch call to /api/readings/interpret')
+        // Server-side AI call via API route
+        const response = await fetch('/api/readings/interpret', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(aiRequest)
+        })
 
-       // Server-side AI call via API route
-       const response = await fetch('/api/readings/interpret', {
-         method: 'POST',
-         headers: {
-           'Content-Type': 'application/json',
-         },
-         body: JSON.stringify(aiRequest),
-         signal: controller.signal
-       })
+        console.log('📥 Fetch response received:', { ok: response.ok, status: response.status })
 
-       console.log('📥 Fetch response received:', { ok: response.ok, status: response.status })
+        if (!response.ok) {
+          const errorData = await response.json()
+          throw new Error(errorData.error || 'Server error')
+        }
 
-       if (!response.ok) {
-         console.log('❌ Response not ok, getting error data...')
-         const errorData = await response.json()
-         console.log('❌ Error data:', errorData)
-         throw new Error(errorData.error || 'Server error')
-       }
-
-       console.log('📄 Getting response text first...')
-       const responseText = await response.text()
-       console.log('📄 Response text length:', responseText.length)
-       console.log('📄 Response text preview:', responseText.substring(0, 200) + '...')
-
-       let aiResult
-       try {
-         aiResult = JSON.parse(responseText)
-         console.log('📄 JSON parsed successfully')
-       } catch (parseError) {
-         console.error('❌ JSON parse error:', parseError)
-         throw new Error('Invalid JSON response from server')
-       }
-       console.log('📄 AI result received:', aiResult)
-
-      clearTimeout(timeoutId)
+        const aiResult = await response.json()
+        console.log('📄 AI result received:', aiResult)
 
       console.log('📄 AI result:', aiResult)
 
@@ -316,7 +292,6 @@ function NewReadingPageContent() {
          console.log('⚠️ Component unmounted, skipping state update')
        }
     } catch (error) {
-      clearTimeout(timeoutId)
       console.error('❌ AI analysis failed:', error)
 
       if (mountedRef.current) {
@@ -551,7 +526,6 @@ function NewReadingPageContent() {
   useEffect(() => {
     return () => {
       mountedRef.current = false
-      aiRequestRef.current?.abort()
     }
   }, [])
 
