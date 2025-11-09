@@ -698,20 +698,7 @@ function NewReadingPageContent() {
                           </div>
                         </div>
 
-                         {/* AI Analysis Button - Only for virtual path */}
-                        {path === 'virtual' && (
-                          <div className="text-center">
-                             <Button
-                               onClick={handleAnalyzeAndChoose}
-                               disabled={!question.trim() || isAnalyzingQuestion}
-                               className="w-full max-w-md bg-secondary hover:bg-secondary/90 text-secondary-foreground"
-                               aria-busy={isAnalyzingQuestion}
-                             >
 
-                               {isAnalyzingQuestion ? 'Analyzing...' : '✨ Analyze & Choose Best Spread'}
-                             </Button>
-                          </div>
-                        )}
 
 
 
