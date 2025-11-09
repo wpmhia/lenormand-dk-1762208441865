@@ -94,7 +94,7 @@ function NewReadingPageContent() {
   } | null>(null)
   const [aiRetryCount, setAiRetryCount] = useState(0)
   const [aiRetryCooldown, setAiRetryCooldown] = useState(0)
-  const [aiAvailable, setAiAvailable] = useState<boolean | null>(null)
+   const [aiAvailable, setAiAvailable] = useState<boolean | null>(null)
    const [aiAttempted, setAiAttempted] = useState(false)
    const [showStartOverConfirm, setShowStartOverConfirm] = useState(false)
 
@@ -123,26 +123,31 @@ function NewReadingPageContent() {
      return false
    }, [step, question, selectedSpread, path, parsedCards.length, cardSuggestions.length, drawnCards.length])
 
-   // Check AI availability from server endpoint
-   useEffect(() => {
-     async function checkAI() {
-       console.log('🤖 Checking AI availability...')
-       try {
-         console.log('🌐 Fetching /api/ai/status...')
-         const res = await fetch('/api/ai/status')
-         console.log('📥 AI status response received:', { ok: res.ok, status: res.status })
-         const json = await res.json()
-         console.log('🤖 AI availability response:', json)
-         const available = Boolean(json?.available)
-         console.log('🔄 Setting aiAvailable to:', available)
-         setAiAvailable(available)
-       } catch (e) {
-         console.log('❌ AI availability check failed:', e)
-         setAiAvailable(false)
-       }
-     }
-     checkAI()
-   }, [])
+    // Check AI availability from server endpoint
+    useEffect(() => {
+      async function checkAI() {
+        console.log('🤖 Checking AI availability...')
+        try {
+          console.log('🌐 Fetching /api/ai/status...')
+          const res = await fetch('/api/ai/status')
+          console.log('📥 AI status response received:', { ok: res.ok, status: res.status })
+          const json = await res.json()
+          console.log('🤖 AI availability response:', json)
+          const available = Boolean(json?.available)
+          console.log('🔄 Setting aiAvailable to:', available)
+          setAiAvailable(available)
+        } catch (e) {
+          console.log('❌ AI availability check failed:', e)
+          setAiAvailable(false)
+        }
+      }
+      checkAI()
+    }, [])
+
+    // Debug AI state changes
+    useEffect(() => {
+      console.log('🔄 AI state changed:', { aiAvailable, aiAttempted, aiLoading, hasAiReading: !!aiReading })
+    }, [aiAvailable, aiAttempted, aiLoading, aiReading])
 
   // Load cards on mount
   useEffect(() => {
@@ -202,21 +207,12 @@ function NewReadingPageContent() {
     console.log('🚀 performAIAnalysis called with:', { cardCount: readingCards.length, isRetry })
     console.log('🚀 AI analysis starting...')
     console.log('🤖 aiAvailable state:', aiAvailable)
+    console.log('🔍 Current state:', { aiAttempted, aiLoading, hasAiReading: !!aiReading })
 
-    // Check if AI is available before proceeding
-    if (aiAvailable === false) {
-      console.log('❌ AI not available, skipping analysis')
-      setAiError('AI analysis is not available at this time.')
-      setAiAttempted(true)
+    if (!mountedRef.current) {
+      console.log('⚠️ Component not mounted, returning')
       return
     }
-
-    if (aiAvailable === null) {
-      console.log('⏳ AI availability still loading, skipping analysis')
-      return
-    }
-
-    if (!mountedRef.current) return
 
 
 
@@ -355,22 +351,33 @@ function NewReadingPageContent() {
     }
   }, [question, allCards, selectedSpread, mountedRef, aiAvailable])
 
-   // Auto-start AI analysis when entering results step
-   useEffect(() => {
-     if (step === 'results' && drawnCards.length > 0 && !aiReading && !aiLoading && !aiAttempted && aiAvailable === true) {
-       console.log('🔮 Auto-starting AI analysis for results step')
-       performAIAnalysis(drawnCards)
-     }
-   }, [step, drawnCards, aiReading, aiLoading, aiAttempted, aiAvailable, performAIAnalysis])
+    // Auto-start AI analysis when entering results step
+    useEffect(() => {
+      console.log('🔍 Auto-start check:', {
+        step,
+        drawnCardsLength: drawnCards.length,
+        hasAiReading: !!aiReading,
+        aiLoading,
+        aiAttempted,
+        aiAvailable
+      })
 
-   // Auto-transition to AI analysis step when AI reading is complete
-   useEffect(() => {
-     console.log('🔄 Transition effect check:', { step, hasAiReading: !!aiReading, aiLoading })
-     if (step === 'results' && aiReading && !aiLoading) {
-       console.log('✨ AI analysis complete, transitioning to ai-analysis step')
-       setStep('ai-analysis')
-     }
-   }, [step, aiReading, aiLoading])
+      if (step === 'results' && drawnCards.length > 0 && !aiReading && !aiLoading && !aiAttempted && (aiAvailable === true || aiAvailable === null)) {
+        console.log('🔮 Auto-starting AI analysis for results step')
+        performAIAnalysis(drawnCards)
+      } else {
+        console.log('🔍 Auto-start conditions not met')
+      }
+    }, [step, drawnCards, aiReading, aiLoading, aiAttempted, aiAvailable, performAIAnalysis])
+
+    // Auto-transition to AI analysis step when AI reading is complete
+    useEffect(() => {
+      console.log('🔄 Transition effect check:', { step, hasAiReading: !!aiReading, aiLoading, aiAvailable, aiAttempted, drawnCardsLength: drawnCards.length })
+      if (step === 'results' && aiReading && !aiLoading) {
+        console.log('✨ AI analysis complete, transitioning to ai-analysis step')
+        setStep('ai-analysis')
+      }
+    }, [step, aiReading, aiLoading, aiAvailable, aiAttempted, drawnCards])
 
   const parsePhysicalCards = useCallback((allCards: CardType[]): ReadingCard[] => {
     const input = physicalCards.trim()
@@ -965,16 +972,33 @@ function NewReadingPageContent() {
               question={question}
             />
 
-            {/* AI Analysis Loading Indicator */}
-            <div className="text-center space-y-4">
-              <div className="flex items-center justify-center gap-3">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-                <span className="text-muted-foreground">Consulting the ancient wisdom...</span>
-              </div>
-              <div className="text-sm text-muted-foreground">
-                The sibyl is weaving your cards&apos; deeper meanings
-              </div>
-            </div>
+             {/* AI Analysis Loading Indicator */}
+             {aiLoading ? (
+               <div className="text-center space-y-4">
+                 <div className="flex items-center justify-center gap-3">
+                   <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
+                   <span className="text-muted-foreground">Consulting the ancient wisdom...</span>
+                 </div>
+                 <div className="text-sm text-muted-foreground">
+                   The sibyl is weaving your cards&apos; deeper meanings
+                 </div>
+               </div>
+             ) : (
+               <div className="text-center space-y-4">
+                 <Button
+                   onClick={() => performAIAnalysis(drawnCards)}
+                   disabled={aiLoading || aiAttempted}
+                   className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                 >
+                   {aiAttempted ? 'AI Analysis Started' : '🔮 Get AI Interpretation'}
+                 </Button>
+                 {!aiAttempted && (
+                   <div className="text-sm text-muted-foreground">
+                     Click to receive AI-powered insights about your reading
+                   </div>
+                 )}
+               </div>
+             )}
           </motion.div>
         )}
 
