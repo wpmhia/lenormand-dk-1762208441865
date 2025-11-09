@@ -323,7 +323,7 @@ function NewReadingPageContent() {
       if (step === 'results' && drawnCards.length > 0 && !aiAttempted) {
         performAIAnalysis(drawnCards)
       }
-    }, [step, drawnCards.length, aiAttempted])
+    }, [step, drawnCards.length, aiAttempted, performAIAnalysis])
 
     // Since AI shows inline now, we don't need to transition to a separate step
     // The AI reading appears immediately in the results step
