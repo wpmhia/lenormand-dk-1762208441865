@@ -323,22 +323,6 @@ function NewReadingPageContent() {
     return () => clearTimeout(timeoutId)
   }, [question, aiAvailable, classifyQuestion])
 
-  // Auto-start AI analysis when entering results step
-  useEffect(() => {
-    if (step === 'results' && drawnCards.length > 0 && !aiReading && !aiLoading && !aiAttempted) {
-      console.log('🔮 Auto-starting AI analysis for results step')
-      performAIAnalysis(drawnCards)
-    }
-  }, [step, drawnCards, aiReading, aiLoading, aiAttempted, performAIAnalysis])
-
-  // Auto-transition to AI analysis step when AI reading is complete
-  useEffect(() => {
-    if (step === 'results' && aiReading && !aiLoading) {
-      console.log('✨ AI analysis complete, transitioning to ai-analysis step')
-      setStep('ai-analysis')
-    }
-  }, [step, aiReading, aiLoading])
-
   const performAIAnalysis = useCallback(async (readingCards: ReadingCard[], isRetry = false) => {
     console.log('🚀 performAIAnalysis called with:', { cardCount: readingCards.length, isRetry })
     console.log('🚀 AI analysis starting...')
@@ -465,6 +449,22 @@ function NewReadingPageContent() {
       }
     }
   }, [question, allCards, selectedSpread, mountedRef])
+
+  // Auto-start AI analysis when entering results step
+  useEffect(() => {
+    if (step === 'results' && drawnCards.length > 0 && !aiReading && !aiLoading && !aiAttempted) {
+      console.log('🔮 Auto-starting AI analysis for results step')
+      performAIAnalysis(drawnCards)
+    }
+  }, [step, drawnCards, aiReading, aiLoading, aiAttempted, performAIAnalysis])
+
+  // Auto-transition to AI analysis step when AI reading is complete
+  useEffect(() => {
+    if (step === 'results' && aiReading && !aiLoading) {
+      console.log('✨ AI analysis complete, transitioning to ai-analysis step')
+      setStep('ai-analysis')
+    }
+  }, [step, aiReading, aiLoading])
 
   const parsePhysicalCards = useCallback((allCards: CardType[]): ReadingCard[] => {
     const input = physicalCards.trim()
