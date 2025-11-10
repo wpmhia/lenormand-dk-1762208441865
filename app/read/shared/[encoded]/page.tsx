@@ -79,7 +79,7 @@ export default function SharedReadingPage({ params }: PageProps) {
   }, [params.encoded])
 
   // AI analysis function
-  const performAIAnalysis = async (readingCards: any[]) => {
+  const performAIAnalysis = useCallback(async (readingCards: any[]) => {
     if (!mountedRef.current || !reading) return
 
     setAiLoading(true)
@@ -180,7 +180,7 @@ export default function SharedReadingPage({ params }: PageProps) {
         setAiLoading(false)
       }
     }
-  }
+  }, [reading, allCards, mountedRef])
 
   // Trigger AI analysis when reading is loaded
   useEffect(() => {

@@ -56,7 +56,7 @@ function NewReadingPageContent() {
   const searchParams = useSearchParams()
   const mountedRef = useRef(true)
 
-  console.log('🔮 NewReadingPageContent component mounted')
+  // Component mounted
 
 
   const [allCards, setAllCards] = useState<CardType[]>([])
@@ -251,24 +251,15 @@ function NewReadingPageContent() {
           throw new Error('Invalid response format from server')
         }
 
-      console.log('📄 AI result:', aiResult)
-
-       if (mountedRef.current) {
-         console.log('🔄 Component still mounted, processing result...')
+      if (mountedRef.current) {
          if (aiResult) {
-           console.log('✅ Setting AI reading in state')
-           console.log('📊 aiResult keys:', Object.keys(aiResult))
            setAiReading(aiResult)
            setAiRetryCount(0) // Reset on success
-           console.log('✅ State updated, AI reading set')
          } else {
-           console.log('❌ AI result is null/empty')
            // API returned null, treat as error
            setAiError('AI service returned no analysis. Please try again.')
            setAiRetryCount(prev => prev + 1)
          }
-       } else {
-         console.log('⚠️ Component unmounted, skipping state update')
        }
     } catch (error) {
       console.error('❌ AI analysis failed:', error)
@@ -353,7 +344,6 @@ function NewReadingPageContent() {
   }, [physicalCards])
 
   const handleDraw = useCallback(async (cards: CardType[]) => {
-    console.log('🎯 handleDraw called with:', { cardCount: cards.length, path, spreadId: selectedSpread.id })
     const currentPath = path
     const currentSpread = selectedSpread
 
@@ -368,12 +358,8 @@ function NewReadingPageContent() {
         readingCards = drawCards(cards, currentSpread.cards);
       }
 
-        console.log('📋 Reading cards generated:', readingCards)
-        setDrawnCards(readingCards)
-
-        // Show results step
-        console.log('📊 Showing results step...')
-        setStep('results')
+      setDrawnCards(readingCards)
+      setStep('results')
     } catch (error) {
       console.error('Error in handleDraw:', error)
       setError(error instanceof Error ? error.message : 'An error occurred while processing your cards')
