@@ -275,10 +275,11 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
             'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
             'User-Agent': 'Lenormand-DK/1.0'
           },
-          body: JSON.stringify({
+           body: JSON.stringify({
             model: 'deepseek-chat',
             messages: [
-              { role: 'system', content: systemPrompt }
+              { role: 'system', content: systemPrompt },
+              { role: 'user', content: 'Please provide a Lenormand card reading interpretation based on the information above.' }
             ],
             temperature: 0.5,
             top_p: 0.85,
