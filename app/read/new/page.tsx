@@ -189,6 +189,14 @@ function NewReadingPageContent() {
 
 
 
+    // Prevent multiple simultaneous requests
+    if (aiLoading && !isRetry) {
+      console.log('⏳ Already loading, skipping')
+      return
+    }
+
+
+
     setAiLoading(true)
     setAiError(null)
     setAiErrorDetails(null)
@@ -208,8 +216,7 @@ function NewReadingPageContent() {
 
     try {
       const aiRequest: AIReadingRequest = {
-        question: question.trim(),
-
+        question: question.trim() || 'What guidance do these cards have for me?',
         cards: readingCards.map(card => ({
           id: card.id,
           name: getCardById(allCards, card.id)?.name || 'Unknown',
@@ -900,9 +907,10 @@ function NewReadingPageContent() {
               question={question}
             />
 
-             {/* AI Analysis Section - Shows inline with cards */}
-             <div className="mt-6">
-               {aiLoading && (
+              {/* AI Analysis Section - Shows inline with cards */}
+              <div className="mt-6">
+
+                {aiLoading && (
                  <div className="text-center space-y-4 p-6 bg-muted/30 rounded-lg border">
                    <div className="flex items-center justify-center gap-3">
                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
