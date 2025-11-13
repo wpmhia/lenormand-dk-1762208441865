@@ -215,6 +215,7 @@ function NewReadingPageContent() {
       }
 
         // Server-side AI call via API route
+        console.log('🌐 Making API call to /api/readings/interpret')
         const response = await fetch('/api/readings/interpret', {
           method: 'POST',
           headers: {
@@ -222,6 +223,7 @@ function NewReadingPageContent() {
           },
           body: JSON.stringify(aiRequest)
         })
+        console.log('📥 API response received:', { ok: response.ok, status: response.status })
 
         if (!response.ok) {
           // Safe error parsing
@@ -238,9 +240,11 @@ function NewReadingPageContent() {
 
         // Safe JSON parsing
         const responseText = await response.text()
+        console.log('📄 Response text preview:', responseText.substring(0, 200) + '...')
         let aiResult
         try {
           aiResult = JSON.parse(responseText)
+          console.log('✅ JSON parsed successfully:', aiResult ? 'Has result' : 'Null result')
         } catch (parseError) {
           console.error('Frontend JSON parse error:', parseError)
           throw new Error('Invalid response format from server')
@@ -248,6 +252,7 @@ function NewReadingPageContent() {
 
       if (mountedRef.current) {
          if (aiResult) {
+           console.log('🎉 Setting AI reading:', aiResult)
            setAiReading(aiResult)
            setAiRetryCount(0) // Reset on success
          } else {
