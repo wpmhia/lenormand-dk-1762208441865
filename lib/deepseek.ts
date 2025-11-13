@@ -166,13 +166,15 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
       spread: payload.spread
     })
 
-    // Retry logic for API calls
-    const maxRetries = 2
+    // Retry logic for API calls - optimized for better UX
+    // maxRetries = 1 means up to 2 total attempts (initial + 1 retry)
+    // This prevents the UI from appearing frozen for 2+ minutes on API failures
+    const maxRetries = 1
     let lastError: Error | null = null
 
     for (let attempt = 0; attempt <= maxRetries; attempt++) {
       const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), 40000) // 40 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 15000) // Reduced from 40s to 15s for better UX
 
       try {
         console.log(`🤖 DeepSeek API attempt ${attempt + 1}/${maxRetries + 1}`)
@@ -257,16 +259,24 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
 
         // Detect aborts more robustly (AbortError, DOMException, or abort-related messages)
         const isAbort = lastError.name === 'AbortError' ||
-                       lastError.name === 'DOMException' ||
-                       lastError.message?.includes('aborted') ||
-                       lastError.message?.includes('abort')
+                        lastError.name === 'DOMException' ||
+                        lastError.message?.includes('aborted') ||
+                        lastError.message?.includes('abort')
 
-        // Don't retry on aborts, client config errors, or JSON parsing errors
+        // Detect network/connectivity issues to fail faster
+        const isNetworkError = lastError.name === 'TypeError' ||
+                               lastError.message?.includes('fetch') ||
+                               lastError.message?.includes('network') ||
+                               lastError.message?.includes('ECONNREFUSED') ||
+                               lastError.message?.includes('ENOTFOUND')
+
+        // Don't retry on aborts, client config errors, network issues, or JSON parsing errors
         if (isAbort ||
-            lastError.message.includes('API key') ||
-            lastError.message.includes('Invalid JSON response') ||
-            lastError.message.includes('client error')) {
-          console.log('Not retrying due to:', isAbort ? 'abort' : 'non-retryable error')
+             lastError.message.includes('API key') ||
+             lastError.message.includes('Invalid JSON response') ||
+             lastError.message.includes('client error') ||
+             isNetworkError) {
+          console.log('Not retrying due to:', isAbort ? 'abort' : isNetworkError ? 'network error' : 'non-retryable error')
           break
         }
 
