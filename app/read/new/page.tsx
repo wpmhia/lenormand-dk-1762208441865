@@ -169,6 +169,7 @@ function NewReadingPageContent() {
 
 
   const performAIAnalysis = useCallback(async (readingCards: ReadingCard[], isRetry = false) => {
+    console.log('🎯 performAIAnalysis called with:', { cardCount: readingCards.length, isRetry })
     if (!mountedRef.current) return
 
     // Prevent multiple simultaneous requests
@@ -305,7 +306,9 @@ function NewReadingPageContent() {
     // Auto-start AI analysis when entering results step
     useEffect(() => {
       // Start AI analysis immediately when we have cards and haven't attempted yet
+      console.log('AI trigger check:', { step, drawnCardsLength: drawnCards.length, aiAttempted, aiAvailable })
       if (step === 'results' && drawnCards.length > 0 && !aiAttempted && aiAvailable) {
+        console.log('🚀 Triggering AI analysis...')
         performAIAnalysis(drawnCards)
       }
     }, [step, drawnCards, aiAttempted, aiAvailable, performAIAnalysis])
