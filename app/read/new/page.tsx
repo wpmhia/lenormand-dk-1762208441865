@@ -1,125 +1,3 @@
-"use client"
-
-import { useState, useEffect, useRef, useCallback, useMemo, Suspense } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Card as CardType, ReadingCard } from '@/lib/types'
-import { Deck } from '@/components/Deck'
-import { ReadingViewer } from '@/components/ReadingViewer'
-import { AIReadingDisplay } from '@/components/AIReadingDisplay'
-import { CardInterpretation } from '@/components/CardInterpretation'
-
-import { Button } from '@/components/ui/button'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
-import { Badge } from '@/components/ui/badge'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Switch } from '@/components/ui/switch'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { Eye } from 'lucide-react'
-import { getCards, drawCards, getCardById } from '@/lib/data'
-import { AIReadingResponse } from '@/lib/deepseek'
-import { COMPREHENSIVE_SPREADS } from '@/lib/spreads'
-
-
-
-function NewReadingPageContent() {
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const mountedRef = useRef(true)
-
-  // Component mounted
-
-
-  const [allCards, setAllCards] = useState<CardType[]>([])
-  const [drawnCards, setDrawnCards] = useState<ReadingCard[]>([])
-  const [selectedSpread, setSelectedSpread] = useState(COMPREHENSIVE_SPREADS[0]) // Default to first spread
-  const [path, setPath] = useState<'virtual' | 'physical' | null>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('preferredPath')
-      return saved ? (saved as 'virtual' | 'physical') : 'virtual'; // Default to 'virtual'
-    }
-    return 'virtual'; // Default to 'virtual'
-  })
-
-  const [physicalCards, setPhysicalCards] = useState('')
-  const [physicalCardsError, setPhysicalCardsError] = useState<string | null>(null)
-  const [parsedCards, setParsedCards] = useState<CardType[]>([])
-  const [cardSuggestions, setCardSuggestions] = useState<string[]>([])
-
-  const [question, setQuestion] = useState('')
-  const [questionCharCount, setQuestionCharCount] = useState(0)
-
-  const [error, setError] = useState('')
-   const [step, setStep] = useState<'setup' | 'drawing' | 'results'>('setup')
-
-  // AI-related state
-  const [aiReading, setAiReading] = useState<AIReadingResponse | null>(null)
-  const [aiLoading, setAiLoading] = useState(false)
-  const [aiError, setAiError] = useState<string | null>(null)
-   const [aiAvailable, setAiAvailable] = useState<boolean>(false) // Will be checked on mount
-    const [aiAttempted, setAiAttempted] = useState(false)
-    const aiStartedRef = useRef(false)
-    const cardsDrawnRef = useRef(false)
-    const [showStartOverConfirm, setShowStartOverConfirm] = useState(false)
-
-  // Computed values
-  const readingData = useMemo(() => ({
-    question,
-    cards: drawnCards,
-    spread: selectedSpread,
-    timestamp: Date.now()
-  }), [question, drawnCards, selectedSpread])
-
-   const canProceed = useMemo(() => {
-     if (step === 'setup') {
-       return question.trim().length >= 3 && selectedSpread
-     }
-     if (step === 'drawing') {
-       if (path === 'physical') {
-         return parsedCards.length === selectedSpread.cards && cardSuggestions.length === 0
-       } else {
-         return true // Virtual path always ready
-       }
-     }
-     if (step === 'results') {
-       return drawnCards.length > 0 // Can proceed if cards are drawn
-     }
-     return false
-   }, [step, question, selectedSpread, path, parsedCards.length, cardSuggestions.length, drawnCards.length])
-
-    // AI is assumed available since API key is configured in environment
-
-
-
-   // Load cards and check AI availability on mount
-   useEffect(() => {
-     async function initializeApp() {
-       try {
-         // Load cards
-         const cards = await getCards()
-         setAllCards(cards)
-         
-         // Check AI availability
-         const aiResponse = await fetch('/api/ai/status')
-         if (aiResponse.ok) {
-           const aiData = await aiResponse.json()
-           setAiAvailable(aiData.available)
-         } else {
-           setAiAvailable(false)
-         }
-       } catch (error) {
-         console.error('Failed to initialize app:', error)
-         setError('Failed to load card data. Please refresh the page.')
-         setAiAvailable(false)
-       }
-     }
-     initializeApp()
-   }, [])
-
   // Update question character count
   useEffect(() => {
     setQuestionCharCount(question.length)
@@ -155,10 +33,6 @@ function NewReadingPageContent() {
     setParsedCards(foundCards)
     setCardSuggestions(suggestions)
   }, [physicalCards, selectedSpread, path, allCards])
-
-
-
-
 
   const performAIAnalysis = useCallback(async (readingCards: ReadingCard[]) => {
     if (aiLoading) return
@@ -207,19 +81,19 @@ function NewReadingPageContent() {
     }
   }, [question, allCards, mountedRef, aiLoading])
 
-    // Auto-start AI analysis when entering results step
-    useEffect(() => {
-      // Start AI analysis immediately when we have cards and haven't attempted yet
-      console.log('AI trigger check:', { step, hasCards: cardsDrawnRef.current, aiAttempted, aiAvailable, aiStarted: aiStartedRef.current })
-      if (step === 'results' && cardsDrawnRef.current && !aiAttempted && aiAvailable && !aiStartedRef.current) {
-        console.log('🚀 Triggering AI analysis...')
-        aiStartedRef.current = true
-        performAIAnalysis(drawnCards)
-      }
-    }, [step, aiAttempted, aiAvailable, drawnCards, performAIAnalysis]) // Added drawnCards and performAIAnalysis to prevent re-runs
+   // Auto-start AI analysis when entering results step
+   useEffect(() => {
+     // Start AI analysis immediately when we have cards and haven't attempted yet
+     console.log('AI trigger check:', { step, hasCards: cardsDrawnRef.current, aiAttempted, aiStarted: aiStartedRef.current })
+     if (step === 'results' && cardsDrawnRef.current && !aiAttempted && !aiStartedRef.current) {
+       console.log('🚀 Triggering AI analysis...')
+       aiStartedRef.current = true
+       performAIAnalysis(drawnCards)
+     }
+   }, [step, aiAttempted, drawnCards, performAIAnalysis]) // Added drawnCards and performAIAnalysis to prevent re-runs
 
-    // Since AI shows inline now, we don't need to transition to a separate step
-    // The AI reading appears immediately in the results step
+   // Since AI shows inline now, we don't need to transition to a separate step
+   // The AI reading appears immediately in the results step
 
   const parsePhysicalCards = useCallback((allCards: CardType[]): ReadingCard[] => {
     const input = physicalCards.trim()
@@ -286,21 +160,21 @@ function NewReadingPageContent() {
   }, [path, parsedCards, selectedSpread.cards, allCards, canProceed, handleDraw])
 
   // Clear AI error when loading starts
-   useEffect(() => {
-     if (aiLoading) {
-       setAiError(null)
-     }
+  useEffect(() => {
+    if (aiLoading) {
+      setAiError(null)
+    }
    }, [aiLoading])
 
    const getButtonLabel = useCallback(() => {
-      if (step === 'setup') {
-        return '✨ Start Reading'
-      }
-      if (step === 'drawing') {
-        return path === 'physical' ? '✨ Read Physical Cards' : '🎴 Draw Cards'
-      }
-      return 'Continue'
-    }, [step, path])
+     if (step === 'setup') {
+       return '✨ Start Reading'
+     }
+     if (step === 'drawing') {
+       return path === 'physical' ? '✨ Read Physical Cards' : '🎴 Draw Cards'
+     }
+     return 'Continue'
+   }, [step, path])
 
   const resetReading = useCallback((options = { keepUrlParams: false, closeConfirmDialog: false }) => {
     setStep('setup')
@@ -311,9 +185,9 @@ function NewReadingPageContent() {
     setSelectedSpread(COMPREHENSIVE_SPREADS[0])
     setError('')
     setAiReading(null)
-     setAiLoading(false)
-     setAiError(null)
-     setAiAttempted(false)
+    setAiLoading(false)
+    setAiError(null)
+    setAiAttempted(false)
     aiStartedRef.current = false
     setPhysicalCards('')
     setPhysicalCardsError(null)
@@ -510,17 +384,17 @@ function NewReadingPageContent() {
                               >
                                🎴 I already have cards
                               </Button>
-                          </div>
-                          <div className="text-sm text-muted-foreground space-y-2 mt-4">
-                            <p className="flex items-center justify-center gap-2">
-                              <span className="w-2 h-2 bg-primary/60 rounded-full"></span>
-                              Cards are shuffled in your browser—no account needed.
-                            </p>
-                            <p className="flex items-center justify-center gap-2">
-                              <span className="w-2 h-2 bg-muted-foreground/60 rounded-full"></span>
-                              Your cards stay on your table; we only interpret them.
-                            </p>
-                          </div>
+                           </div>
+                           <div className="text-sm text-muted-foreground space-y-2 mt-4">
+                             <p className="flex items-center justify-center gap-2">
+                               <span className="w-2 h-2 bg-primary/60 rounded-full"></span>
+                               Cards are shuffled in your browser—no account needed.
+                             </p>
+                             <p className="flex items-center justify-center gap-2">
+                               <span className="w-2 h-2 bg-muted-foreground/60 rounded-full"></span>
+                               Your cards stay on your table; we only interpret them.
+                             </p>
+                           </div>
                         </div>
                       </div>
                     ) : (
@@ -560,7 +434,6 @@ function NewReadingPageContent() {
 
 
 
-
                          {/* Manual Spread Selection - Show for both paths */}
                          {(path === 'physical' || path === 'virtual') && (
                            <div className="space-y-2">
@@ -591,99 +464,100 @@ function NewReadingPageContent() {
                      </div>
                     )}
 
-                      {/* Physical Cards Input */}
-                      {path === 'physical' && selectedSpread && (
-                       <div className="space-y-4">
-                          <div className="space-y-3">
-                            <div className="flex items-center justify-between">
-                              <Label htmlFor="physical-cards" className="text-foreground font-medium">
-                                Enter Your Cards:
-                              </Label>
-                              <div className="flex items-center gap-2">
-                                <span className={`text-sm font-medium ${
-                                  parsedCards.length === selectedSpread.cards
-                                    ? 'text-green-600 dark:text-green-400'
-                                    : 'text-muted-foreground'
-                                }`}>
-                                  {parsedCards.length} / {selectedSpread.cards} cards
-                                </span>
-                                {parsedCards.length === selectedSpread.cards && (
-                                  <span className="w-2 h-2 bg-green-500 rounded-full" aria-hidden="true"></span>
-                                )}
-                              </div>
-                            </div>
-                            <Textarea
-                              id="physical-cards"
-                              value={physicalCards}
-                              onChange={(e) => {
-                                const newValue = e.target.value
-                                // Auto-truncate if too many cards
-                                const cardInputs = newValue.split(/[,;\s\n]+/).map(s => s.trim()).filter(s => s.length > 0)
-                                if (cardInputs.length > selectedSpread.cards) {
-                                  // Keep only first N cards
-                                  const truncatedInputs = cardInputs.slice(0, selectedSpread.cards)
-                                  const truncatedValue = truncatedInputs.join(', ')
-                                  setPhysicalCards(truncatedValue)
-                                  // Show toast notification
-                                  if (typeof window !== 'undefined' && window.alert) {
-                                    window.alert('Card input truncated to maximum allowed characters')
-                                  }
-                                } else {
-                                  setPhysicalCards(newValue)
-                                }
-                              }}
-                              placeholder={`Enter ${selectedSpread.cards} card numbers (1-36) or names\n\nExamples: 1 5 12 • Rider, Clover, Ship • Birds, 20, 36`}
-                              className={`bg-background border-border text-foreground placeholder:text-muted-foreground min-h-[120px] rounded-xl focus:border-primary focus:ring-primary/20 resize-none ${
-                                physicalCardsError ? 'border-destructive focus:border-destructive' : ''
-                              }`}
-                              rows={4}
-                              aria-describedby="physical-cards-help physical-cards-count physical-cards-error"
-                              aria-invalid={!!physicalCardsError}
-                            />
-
-                            {/* Live Card Chips */}
-                            {parsedCards.length > 0 && (
-                              <div className="flex flex-wrap gap-2" aria-live="polite" aria-label="Recognized cards">
-                                {parsedCards.map((card, index) => (
-                                  <div
-                                    key={`${card.id}-${index}`}
-                                    className="inline-flex items-center gap-1 px-2 py-1 bg-primary/10 text-primary rounded-md text-sm font-medium border border-primary/20"
-                                  >
-                                    <span className="w-4 h-4 bg-primary/20 rounded-full flex items-center justify-center text-xs font-bold">
-                                      {card.id}
-                                    </span>
-                                    {card.name}
-                                  </div>
-                                ))}
-                              </div>
+                  {/* Physical Cards Input */}
+                  {path === 'physical' && selectedSpread && (
+                   <div className="space-y-4">
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <Label htmlFor="physical-cards" className="text-foreground font-medium">
+                            Enter Your Cards:
+                          </Label>
+                          <div className="flex items-center gap-2">
+                            <span className={`text-sm font-medium ${
+                              parsedCards.length === selectedSpread.cards
+                                ? 'text-green-600 dark:text-green-400'
+                                : 'text-muted-foreground'
+                            }`}>
+                              {parsedCards.length} / {selectedSpread.cards} cards
+                            </span>
+                            {parsedCards.length === selectedSpread.cards && (
+                              <span className="w-2 h-2 bg-green-500 rounded-full" aria-hidden="true"></span>
                             )}
-
-                            {/* Suggestions for unrecognized cards */}
-                            {cardSuggestions.length > 0 && (
-                              <div className="space-y-1">
-                                <p className="text-xs text-amber-600 dark:text-amber-400">
-                                  Did you mean: {cardSuggestions.slice(0, 3).join(', ')}?
-                                </p>
-                              </div>
-                            )}
-
-                            {/* Error and Help Text */}
-                            <div className="space-y-1">
-                              {physicalCardsError && (
-                                <p id="physical-cards-error" className="text-xs text-destructive" role="alert">
-                                  {physicalCardsError}
-                                </p>
-                              )}
-                              <p id="physical-cards-help" className="text-xs text-muted-foreground">
-                               💡 Use numbers (1-36) or names. Try &quot;rider&quot;, &quot;clover&quot;, &quot;ship&quot;. Typo-tolerant!
-                              </p>
-                            </div>
                           </div>
-                       </div>
-                     )}
+                        </div>
+                        <Textarea
+                          id="physical-cards"
+                          value={physicalCards}
+                          onChange={(e) => {
+                            const newValue = e.target.value
+                            // Auto-truncate if too many cards
+                            const cardInputs = newValue.split(/[,;\s\n]+/).map(s => s.trim()).filter(s => s.length > 0)
+                            if (cardInputs.length > selectedSpread.cards) {
+                              // Keep only first N cards
+                              const truncatedInputs = cardInputs.slice(0, selectedSpread.cards)
+                              const truncatedValue = truncatedInputs.join(', ')
+                              setPhysicalCards(truncatedValue)
+                              // Show toast notification
+                              if (typeof window !== 'undefined' && window.alert) {
+                                window.alert('Card input truncated to maximum allowed characters')
+                              }
+                            } else {
+                              setPhysicalCards(newValue)
+                            }
+                          }}
+                          placeholder={`Enter ${selectedSpread.cards} card numbers (1-36) or names\n\nExamples: 1 5 12 • Rider, Clover, Ship • Birds, 20, 36`}
+                          className={`bg-background border-border text-foreground placeholder:text-muted-foreground min-h-[120px] rounded-xl focus:border-primary focus:ring-primary/20 resize-none ${
+                            physicalCardsError ? 'border-destructive focus:border-destructive' : ''
+                          }`}
+                          rows={4}
+                          aria-describedby="physical-cards-help physical-cards-count physical-cards-error"
+                          aria-invalid={!!physicalCardsError}
+                        />
+
+                        {/* Live Card Chips */}
+                        {parsedCards.length > 0 && (
+                          <div className="flex flex-wrap gap-2" aria-live="polite" aria-label="Recognized cards">
+                            {parsedCards.map((card, index) => (
+                              <div
+                                key={`${card.id}-${index}`}
+                                className="inline-flex items-center gap-1 px-2 py-1 bg-primary/10 text-primary rounded-md text-sm font-medium border border-primary/20"
+                              >
+                                <span className="w-4 h-4 bg-primary/20 rounded-full flex items-center justify-center text-xs font-bold">
+                                  {card.id}
+                                </span>
+                                {card.name}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Suggestions for unrecognized cards */}
+                        {cardSuggestions.length > 0 && (
+                          <div className="space-y-1">
+                            <p className="text-xs text-amber-600 dark:text-amber-400">
+                              Did you mean: {cardSuggestions.slice(0, 3).join(', ')}?
+                            </p>
+                          </div>
+                        )}
+
+                        {/* Error and Help Text */}
+                        <div className="space-y-1">
+                          {physicalCardsError && (
+                            <p id="physical-cards-error" className="text-xs text-destructive" role="alert">
+                              {physicalCardsError}
+                            </p>
+                          )}
+                          <p id="physical-cards-help" className="text-xs text-muted-foreground">
+                           💡 Use numbers (1-36) or names. Try &quot;rider&quot;, &quot;clover&quot;, &quot;ship&quot;. Typo-tolerant!
+                          </p>
+                        </div>
+                      </div>
+                   </div>
+                 )}
 
                  </CardContent>
               </Card>
+
 
 
 
@@ -801,7 +675,6 @@ function NewReadingPageContent() {
               </div>
           </motion.div>
         )}
-
 
 
 

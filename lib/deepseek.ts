@@ -24,8 +24,15 @@ export interface AIReadingResponse {
   reading: string
 }
 
-// Main function to get AI reading - super simple
+// Main function to get AI reading - ultra simple static response for testing
 export async function getAIReading(request: AIReadingRequest): Promise<AIReadingResponse | null> {
+  // Return a static response to test if the page works
+  return {
+    reading: "The cards suggest a period of reflection and new opportunities. Trust your intuition as you navigate this path."
+  }
+
+  // Uncomment below when ready to test real AI
+  /*
   if (!isDeepSeekAvailable()) {
     return null
   }
@@ -67,4 +74,5 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
   } catch (error) {
     return null
   }
+  */
 }
