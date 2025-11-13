@@ -124,178 +124,71 @@ function isSafePrompt(question: string): boolean {
 
 // Main function to get AI reading
 export async function getAIReading(request: AIReadingRequest): Promise<AIReadingResponse | null> {
-  console.log('getAIReading called with:', {
-    question: request.question?.substring(0, 50) + '...',
-    cardCount: request.cards?.length,
-    spreadId: request.spreadId
-  })
-
-  console.log('🔍 Checking isDeepSeekAvailable...')
+  // Quick validation
   if (!isDeepSeekAvailable()) {
-    console.warn('DeepSeek API not configured - isDeepSeekAvailable returned false')
     return null
   }
 
-  console.log('🔍 Checking safety...')
   if (!isSafePrompt(request.question)) {
-    throw new Error('Cannot provide readings for medical, legal, or sensitive topics. Please consult appropriate professionals.')
+    throw new Error('Cannot provide readings for medical, legal, or sensitive topics.')
   }
 
-  console.log('✅ Passed initial checks, proceeding...')
+  try {
+    // Simple payload - just cards and question
+    const cardsText = request.cards.map(card => `${card.name}:${card.position}`).join(',')
+    const question = request.question || 'What guidance do these cards have for me?'
 
-  // Parse spreadId to get layout information
-  const spreadInfo = parseSpreadId(request.spreadId)
-  const layoutType = request.layoutType || spreadInfo.layoutType
-  const threeCardSpreadType = request.threeCardSpreadType || spreadInfo.threeCardSpreadType
-  const fiveCardSpreadType = request.fiveCardSpreadType || spreadInfo.fiveCardSpreadType
-  const sevenCardSpreadType = request.sevenCardSpreadType || spreadInfo.sevenCardSpreadType
+    // Simple system prompt
+    const systemPrompt = `You are a Lenormand card reader. Provide a brief, practical reading based on: Question: ${question}, Cards: ${cardsText}. Keep it under 150 words.`
 
-    // Build optimized payload for faster processing
-      const payload = {
-        lang: 'en',
-        q: request.question,
-        spread: `${layoutType}card${layoutType === 3 ? `-${threeCardSpreadType}` : layoutType === 5 ? `-${fiveCardSpreadType}` : layoutType === 7 ? `-${sevenCardSpreadType}` : ''}`,
-        cards: request.cards.map(card => `${card.name}:${card.position}`).join(',')
-      }
+    // Single API call with 10s timeout
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 10000)
 
-    // Build system prompt with variables
-    const systemPrompt = buildSystemPrompt({
-      lang: payload.lang,
-      q: payload.q,
-      cards: payload.cards,
-      spread: payload.spread
+    const response = await fetch(`${DEEPSEEK_BASE_URL}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${DEEPSEEK_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: 'deepseek-chat',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: 'Provide the reading.' }
+        ],
+        temperature: 0.7,
+        max_tokens: 200
+      }),
+      signal: controller.signal
     })
 
-    // Retry logic for API calls - optimized for better UX
-    // maxRetries = 1 means up to 2 total attempts (initial + 1 retry)
-    // This prevents the UI from appearing frozen for 2+ minutes on API failures
-    const maxRetries = 1
-    let lastError: Error | null = null
+    clearTimeout(timeoutId)
 
-    for (let attempt = 0; attempt <= maxRetries; attempt++) {
-      const controller = new AbortController()
-      const timeoutId = setTimeout(() => controller.abort(), 15000) // Reduced from 40s to 15s for better UX
-
-      try {
-        console.log(`🤖 DeepSeek API attempt ${attempt + 1}/${maxRetries + 1}`)
-        console.log('Request payload:', {
-          model: 'deepseek-chat',
-          messages: [{
-            role: 'system',
-            content: systemPrompt.substring(0, 100) + '...'
-          }],
-          temperature: 0.5,
-          max_tokens: 300
-        })
-
-        console.log('🌐 About to make fetch call to DeepSeek API...')
-        const response = await fetch(`${DEEPSEEK_BASE_URL}/chat/completions`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
-            'User-Agent': 'Lenormand-DK/1.0'
-          },
-           body: JSON.stringify({
-            model: 'deepseek-chat',
-            messages: [
-              { role: 'system', content: systemPrompt },
-              { role: 'user', content: 'Please provide a Lenormand card reading interpretation based on the information above.' }
-            ],
-            temperature: 0.5,
-            top_p: 0.85,
-            max_tokens: 300 // Reduced for faster responses
-          }),
-          signal: controller.signal
-        })
-
-        console.log('📥 DeepSeek API response received:', { ok: response.ok, status: response.status, contentType: response.headers.get('content-type') })
-        clearTimeout(timeoutId)
-
-        if (!response.ok) {
-          // For client errors (4xx), don't retry unless it's 429 (rate limit)
-          if (response.status >= 400 && response.status < 500 && response.status !== 429) {
-            const errorText = await response.text()
-            console.error('Client error (no retry):', { status: response.status, body: errorText.substring(0, 500) })
-            throw new Error(`DeepSeek API client error: ${response.status} ${response.statusText} - ${errorText}`)
-          }
-          // For 5xx or 429, let it retry
-          const errorText = await response.text()
-          throw new Error(`DeepSeek API error: ${response.status} ${response.statusText} - ${errorText}`)
-        }
-
-        // Safe JSON parsing with diagnostics
-        const responseText = await response.text()
-        let data
-        try {
-          data = JSON.parse(responseText)
-        } catch (parseError) {
-           console.error('JSON parse error:', parseError)
-           console.error('Raw response (first 1000 chars):', responseText.substring(0, 1000))
-           throw new Error(`Invalid JSON response from DeepSeek API: ${parseError instanceof Error ? parseError.message : 'Unknown parse error'}`)
-        }
-        const rawResponse = data.choices[0]?.message?.content
-
-        if (!rawResponse) {
-          throw new Error('No response content from DeepSeek API')
-        }
-
-        console.log(`✅ DeepSeek API attempt ${attempt + 1} succeeded`)
-        console.log('Raw response preview:', rawResponse.substring(0, 100) + '...')
-
-        const result = parseAIResponse(rawResponse, layoutType, threeCardSpreadType, fiveCardSpreadType)
-        console.log('Parsed result:', result ? 'SUCCESS' : 'FAILED')
-
-        return result
-
-      } catch (error) {
-        clearTimeout(timeoutId)
-        lastError = error instanceof Error ? error : new Error('Unknown error')
-
-        if (process.env.NODE_ENV === 'development') {
-          console.log(`❌ DeepSeek API attempt ${attempt + 1} failed:`, lastError.message)
-          console.log('Error details:', { name: lastError.name, message: lastError.message })
-        }
-
-        // Detect aborts more robustly (AbortError, DOMException, or abort-related messages)
-        const isAbort = lastError.name === 'AbortError' ||
-                        lastError.name === 'DOMException' ||
-                        lastError.message?.includes('aborted') ||
-                        lastError.message?.includes('abort')
-
-        // Detect network/connectivity issues to fail faster
-        const isNetworkError = lastError.name === 'TypeError' ||
-                               lastError.message?.includes('fetch') ||
-                               lastError.message?.includes('network') ||
-                               lastError.message?.includes('ECONNREFUSED') ||
-                               lastError.message?.includes('ENOTFOUND')
-
-        // Don't retry on aborts, client config errors, network issues, or JSON parsing errors
-        if (isAbort ||
-             lastError.message.includes('API key') ||
-             lastError.message.includes('Invalid JSON response') ||
-             lastError.message.includes('client error') ||
-             isNetworkError) {
-          console.log('Not retrying due to:', isAbort ? 'abort' : isNetworkError ? 'network error' : 'non-retryable error')
-          break
-        }
-
-        // Wait before retry (exponential backoff)
-        if (attempt < maxRetries) {
-          const waitTime = Math.pow(2, attempt) * 1000 // 1s, 2s, 4s
-          if (process.env.NODE_ENV === 'development') {
-            console.log(`⏳ Waiting ${waitTime}ms before retry...`)
-          }
-          await new Promise(resolve => setTimeout(resolve, waitTime))
-        }
-      }
+    if (!response.ok) {
+      throw new Error(`API error: ${response.status}`)
     }
 
-    // All retries failed
-    if (process.env.NODE_ENV === 'development') {
-      console.error('❌ All DeepSeek API attempts failed:', lastError?.message)
+    const data = await response.json()
+    const content = data.choices?.[0]?.message?.content
+
+    if (!content) {
+      throw new Error('No response content')
     }
+
+    // Simple response parsing
+    return {
+      storyline: content,
+      risk: 'Trust your intuition',
+      timing: 'The timing will become clear',
+      action: 'Follow your inner guidance',
+      rawResponse: content
+    }
+
+  } catch (error) {
+    console.error('DeepSeek API error:', error)
     return null
+  }
 }
 
 // Simplified user prompt (now handled in system prompt)

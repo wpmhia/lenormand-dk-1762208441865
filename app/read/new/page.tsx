@@ -306,7 +306,7 @@ function NewReadingPageContent() {
         setAiLoading(false)
       }
     }
-  }, [question, allCards, selectedSpread, mountedRef]) // Removed aiLoading to prevent callback recreation
+    }, [question, allCards, selectedSpread, mountedRef, aiLoading]) // Added aiLoading to prevent callback recreation
 
     // Auto-start AI analysis when entering results step
     useEffect(() => {
@@ -317,7 +317,7 @@ function NewReadingPageContent() {
         aiStartedRef.current = true
         performAIAnalysis(drawnCards)
       }
-    }, [step, aiAttempted, aiAvailable]) // Removed drawnCards to prevent re-runs on array changes
+    }, [step, aiAttempted, aiAvailable, drawnCards, performAIAnalysis]) // Added drawnCards and performAIAnalysis to prevent re-runs
 
     // Since AI shows inline now, we don't need to transition to a separate step
     // The AI reading appears immediately in the results step
