@@ -172,12 +172,8 @@ function NewReadingPageContent() {
     console.log('🎯 performAIAnalysis called with:', { cardCount: readingCards.length, isRetry })
     console.log('🔍 Initial checks:', { mounted: mountedRef.current, aiLoading, isRetry })
 
-    if (!mountedRef.current) {
-      console.log('❌ Not mounted, returning early')
-      return
-    }
-
-    // Prevent multiple simultaneous requests
+    // Allow the AI analysis to proceed even if component unmounts - we'll just skip state updates
+    // Only prevent multiple simultaneous requests
     if (aiLoading && !isRetry) {
       console.log('⏳ Already loading, skipping')
       return
