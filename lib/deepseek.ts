@@ -187,7 +187,7 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
         })
 
         console.log('🌐 About to make fetch call to DeepSeek API...')
-        const response = await fetch(`${DEEPSEEK_BASE_URL}/v1/chat/completions`, {
+        const response = await fetch(`${DEEPSEEK_BASE_URL}/chat/completions`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
