@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button'
 import { Calendar, User, Share2, Sparkles } from 'lucide-react'
 import { Reading } from '@/lib/types'
 import { getCards, decodeReadingFromUrl, getCardById } from '@/lib/data'
-import { getAIReading, AIReadingRequest, AIReadingResponse, parseSpreadId } from '@/lib/deepseek'
+import { AIReadingResponse } from '@/lib/deepseek'
 
 interface PageProps {
   params: {
@@ -95,17 +95,13 @@ export default function SharedReadingPage({ params }: PageProps) {
     }, 35000)
 
     try {
-      const spreadInfo = parseSpreadId('past-present-future') // Default spread for shared readings
-      const aiRequest: AIReadingRequest = {
+      const aiRequest = {
         question: reading.question || 'What guidance do these cards have for me?',
         cards: readingCards.map(card => ({
           id: card.id,
           name: getCardById(allCards, card.id)?.name || 'Unknown',
           position: card.position
-        })),
-        spreadId: 'past-present-future',
-        layoutType: spreadInfo.layoutType,
-        userLocale: navigator.language
+        }))
       }
 
       const response = await fetch('/api/readings/interpret', {

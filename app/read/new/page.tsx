@@ -21,7 +21,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { Eye } from 'lucide-react'
 import { getCards, drawCards, getCardById } from '@/lib/data'
-import { getAIReading, AIReadingRequest, AIReadingResponse } from '@/lib/deepseek'
+import { AIReadingResponse } from '@/lib/deepseek'
 import { COMPREHENSIVE_SPREADS } from '@/lib/spreads'
 
 
@@ -60,16 +60,6 @@ function NewReadingPageContent() {
   const [aiReading, setAiReading] = useState<AIReadingResponse | null>(null)
   const [aiLoading, setAiLoading] = useState(false)
   const [aiError, setAiError] = useState<string | null>(null)
-  const [aiErrorDetails, setAiErrorDetails] = useState<{
-    type?: string
-    helpUrl?: string
-    action?: string
-    waitTime?: number
-    fields?: string[]
-    suggestion?: string
-  } | null>(null)
-  const [aiRetryCount, setAiRetryCount] = useState(0)
-  const [aiRetryCooldown, setAiRetryCooldown] = useState(0)
    const [aiAvailable, setAiAvailable] = useState<boolean>(false) // Will be checked on mount
     const [aiAttempted, setAiAttempted] = useState(false)
     const aiStartedRef = useRef(false)
@@ -170,143 +160,52 @@ function NewReadingPageContent() {
 
 
 
-  const performAIAnalysis = useCallback(async (readingCards: ReadingCard[], isRetry = false) => {
-    console.log('🎯 performAIAnalysis called with:', { cardCount: readingCards.length, isRetry })
-    console.log('🔍 Initial checks:', { mounted: mountedRef.current, aiLoading, isRetry })
-
-    // Allow the AI analysis to proceed even if component unmounts - we'll just skip state updates
-    // Only prevent multiple simultaneous requests
-    if (aiLoading && !isRetry) {
-      console.log('⏳ Already loading, skipping')
-      return
-    }
-
-    console.log('✅ Passed initial checks, proceeding with AI analysis')
-
-
+  const performAIAnalysis = useCallback(async (readingCards: ReadingCard[]) => {
+    if (aiLoading) return
 
     setAiLoading(true)
     setAiError(null)
-    setAiErrorDetails(null)
     setAiAttempted(true)
 
-    if (!isRetry) {
-      setAiRetryCount(0)
-    }
-
-    // Set a timeout to prevent indefinite loading
-    const loadingTimeout = setTimeout(() => {
-      if (mountedRef.current) {
-        setAiLoading(false)
-        setAiError('AI analysis timed out. You can still save your reading.')
-      }
-    }, 35000) // 35 seconds
-
     try {
-      const aiRequest: AIReadingRequest = {
+      const aiRequest = {
         question: question.trim() || 'What guidance do these cards have for me?',
         cards: readingCards.map(card => ({
           id: card.id,
           name: getCardById(allCards, card.id)?.name || 'Unknown',
           position: card.position
-        })),
-        spreadId: selectedSpread.id,
-        userLocale: navigator.language
+        }))
       }
 
-        // Server-side AI call via API route
-        console.log('🌐 Making API call to /api/readings/interpret')
-        const response = await fetch('/api/readings/interpret', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(aiRequest)
-        })
-        console.log('📥 API response received:', { ok: response.ok, status: response.status })
+      const response = await fetch('/api/readings/interpret', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(aiRequest)
+      })
 
-        if (!response.ok) {
-          // Safe error parsing
-          const errorText = await response.text()
-          let errorData
-          try {
-            errorData = JSON.parse(errorText)
-          } catch {
-            // If not JSON, use the text as error message
-            errorData = { error: errorText || 'Server error' }
-          }
-          throw new Error(errorData.error || 'Server error')
-        }
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Server error' }))
+        throw new Error(errorData.error || 'Server error')
+      }
 
-        // Safe JSON parsing
-        const responseText = await response.text()
-        console.log('📄 Response text preview:', responseText.substring(0, 200) + '...')
-        let aiResult
-        try {
-          aiResult = JSON.parse(responseText)
-          console.log('✅ JSON parsed successfully:', aiResult ? 'Has result' : 'Null result')
-        } catch (parseError) {
-          console.error('Frontend JSON parse error:', parseError)
-          throw new Error('Invalid response format from server')
-        }
+      const aiResult = await response.json()
 
       if (mountedRef.current) {
-         if (aiResult) {
-           console.log('🎉 Setting AI reading:', aiResult)
-           setAiReading(aiResult)
-           setAiRetryCount(0) // Reset on success
-         } else {
-           // API returned null, treat as error
-           setAiError('AI service returned no analysis. Please try again.')
-           setAiRetryCount(prev => prev + 1)
-         }
-       }
+        setAiReading(aiResult)
+      }
     } catch (error) {
-      console.error('❌ AI analysis failed:', error)
-
       if (mountedRef.current) {
         const errorMessage = error instanceof Error ? error.message : 'AI analysis failed'
         setAiError(errorMessage)
-
-        // Set error details based on error type
-        if (errorMessage.includes('rate_limit')) {
-          setAiErrorDetails({
-            type: 'rate_limit',
-            action: 'Wait 2 seconds before retrying',
-            waitTime: 2000
-          })
-        } else if (errorMessage.includes('API key')) {
-          setAiErrorDetails({
-            type: 'configuration_needed',
-            helpUrl: 'https://platform.deepseek.com/',
-            action: 'Configure API key'
-          })
-        } else if (errorMessage.includes('temporarily unavailable')) {
-          setAiErrorDetails({
-            type: 'service_unavailable',
-            action: 'Try again later'
-          })
-        } else if (errorMessage.includes('Cannot provide readings')) {
-          setAiErrorDetails({
-            type: 'safety_violation',
-            suggestion: 'Please consult appropriate professionals for medical, legal, or financial advice.'
-          })
-        } else {
-          setAiErrorDetails({
-            type: 'service_error',
-            action: 'Try the reading again'
-          })
-        }
-
-        setAiRetryCount(prev => prev + 1)
       }
     } finally {
-      clearTimeout(loadingTimeout)
       if (mountedRef.current) {
         setAiLoading(false)
       }
     }
-    }, [question, allCards, selectedSpread, mountedRef, aiLoading]) // Added aiLoading to prevent callback recreation
+  }, [question, allCards, mountedRef, aiLoading])
 
     // Auto-start AI analysis when entering results step
     useEffect(() => {
@@ -386,22 +285,11 @@ function NewReadingPageContent() {
     }
   }, [path, parsedCards, selectedSpread.cards, allCards, canProceed, handleDraw])
 
-  // AI retry cooldown timer
-  useEffect(() => {
-    if (aiRetryCooldown > 0) {
-      const timer = setTimeout(() => {
-        setAiRetryCooldown(prev => prev - 1)
-      }, 1000)
-      return () => clearTimeout(timer)
-    }
-  }, [aiRetryCooldown])
-
   // Clear AI error when loading starts
-  useEffect(() => {
-    if (aiLoading) {
-      setAiError(null)
-      setAiErrorDetails(null)
-    }
+   useEffect(() => {
+     if (aiLoading) {
+       setAiError(null)
+     }
    }, [aiLoading])
 
    const getButtonLabel = useCallback(() => {
@@ -423,12 +311,9 @@ function NewReadingPageContent() {
     setSelectedSpread(COMPREHENSIVE_SPREADS[0])
     setError('')
     setAiReading(null)
-    setAiLoading(false)
-    setAiError(null)
-    setAiErrorDetails(null)
-    setAiRetryCount(0)
-    setAiRetryCooldown(0)
-    setAiAttempted(false)
+     setAiLoading(false)
+     setAiError(null)
+     setAiAttempted(false)
     aiStartedRef.current = false
     setPhysicalCards('')
     setPhysicalCardsError(null)
@@ -482,9 +367,9 @@ function NewReadingPageContent() {
 
   const retryAIAnalysis = useCallback(() => {
     if (drawnCards.length > 0) {
-      performAIAnalysis(drawnCards, true)
+      performAIAnalysis(drawnCards)
     }
-   }, [drawnCards, performAIAnalysis])
+  }, [drawnCards, performAIAnalysis])
 
    // Cleanup on unmount
   useEffect(() => {
@@ -911,17 +796,7 @@ function NewReadingPageContent() {
                   aiReading={aiReading}
                   isLoading={aiLoading}
                   error={aiError}
-                  errorDetails={aiErrorDetails}
                   onRetry={() => performAIAnalysis(drawnCards)}
-                  retryCount={aiRetryCount}
-                  cards={drawnCards.map(card => ({
-                    id: card.id,
-                    name: getCardById(allCards, card.id)?.name || 'Unknown',
-                    position: card.position
-                  }))}
-                  allCards={allCards}
-                  spreadId={selectedSpread.id}
-                  question={question}
                 />
               </div>
           </motion.div>
