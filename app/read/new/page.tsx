@@ -73,6 +73,7 @@ function NewReadingPageContent() {
    const [aiAvailable, setAiAvailable] = useState<boolean>(false) // Will be checked on mount
     const [aiAttempted, setAiAttempted] = useState(false)
     const aiStartedRef = useRef(false)
+    const cardsDrawnRef = useRef(false)
     const [showStartOverConfirm, setShowStartOverConfirm] = useState(false)
 
   // Computed values
@@ -310,13 +311,13 @@ function NewReadingPageContent() {
     // Auto-start AI analysis when entering results step
     useEffect(() => {
       // Start AI analysis immediately when we have cards and haven't attempted yet
-      console.log('AI trigger check:', { step, drawnCardsLength: drawnCards.length, aiAttempted, aiAvailable, aiStarted: aiStartedRef.current })
-      if (step === 'results' && drawnCards.length > 0 && !aiAttempted && aiAvailable && !aiStartedRef.current) {
+      console.log('AI trigger check:', { step, hasCards: cardsDrawnRef.current, aiAttempted, aiAvailable, aiStarted: aiStartedRef.current })
+      if (step === 'results' && cardsDrawnRef.current && !aiAttempted && aiAvailable && !aiStartedRef.current) {
         console.log('🚀 Triggering AI analysis...')
         aiStartedRef.current = true
         performAIAnalysis(drawnCards)
       }
-    }, [step, drawnCards, aiAttempted, aiAvailable]) // Removed performAIAnalysis to prevent infinite loops
+    }, [step, aiAttempted, aiAvailable]) // Removed drawnCards to prevent re-runs on array changes
 
     // Since AI shows inline now, we don't need to transition to a separate step
     // The AI reading appears immediately in the results step
@@ -360,6 +361,7 @@ function NewReadingPageContent() {
       }
 
       setDrawnCards(readingCards)
+      cardsDrawnRef.current = true
       setStep('results')
     } catch (error) {
       console.error('Error in handleDraw:', error)
@@ -415,6 +417,7 @@ function NewReadingPageContent() {
   const resetReading = useCallback((options = { keepUrlParams: false, closeConfirmDialog: false }) => {
     setStep('setup')
     setDrawnCards([])
+    cardsDrawnRef.current = false
     setQuestion('')
     setQuestionCharCount(0)
     setSelectedSpread(COMPREHENSIVE_SPREADS[0])
