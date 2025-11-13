@@ -71,8 +71,9 @@ function NewReadingPageContent() {
   const [aiRetryCount, setAiRetryCount] = useState(0)
   const [aiRetryCooldown, setAiRetryCooldown] = useState(0)
    const [aiAvailable, setAiAvailable] = useState<boolean>(false) // Will be checked on mount
-   const [aiAttempted, setAiAttempted] = useState(false)
-   const [showStartOverConfirm, setShowStartOverConfirm] = useState(false)
+    const [aiAttempted, setAiAttempted] = useState(false)
+    const aiStartedRef = useRef(false)
+    const [showStartOverConfirm, setShowStartOverConfirm] = useState(false)
 
   // Computed values
   const readingData = useMemo(() => ({
@@ -309,9 +310,10 @@ function NewReadingPageContent() {
     // Auto-start AI analysis when entering results step
     useEffect(() => {
       // Start AI analysis immediately when we have cards and haven't attempted yet
-      console.log('AI trigger check:', { step, drawnCardsLength: drawnCards.length, aiAttempted, aiAvailable })
-      if (step === 'results' && drawnCards.length > 0 && !aiAttempted && aiAvailable) {
+      console.log('AI trigger check:', { step, drawnCardsLength: drawnCards.length, aiAttempted, aiAvailable, aiStarted: aiStartedRef.current })
+      if (step === 'results' && drawnCards.length > 0 && !aiAttempted && aiAvailable && !aiStartedRef.current) {
         console.log('🚀 Triggering AI analysis...')
+        aiStartedRef.current = true
         performAIAnalysis(drawnCards)
       }
     }, [step, drawnCards, aiAttempted, aiAvailable]) // Removed performAIAnalysis to prevent infinite loops
@@ -424,10 +426,11 @@ function NewReadingPageContent() {
     setAiRetryCount(0)
     setAiRetryCooldown(0)
     setAiAttempted(false)
+    aiStartedRef.current = false
     setPhysicalCards('')
     setPhysicalCardsError(null)
-     setParsedCards([])
-     setCardSuggestions([])
+      setParsedCards([])
+      setCardSuggestions([])
 
     if (!options.keepUrlParams) {
       const newUrl = new URL(window.location.href)
