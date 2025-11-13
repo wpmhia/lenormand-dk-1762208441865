@@ -294,14 +294,14 @@ function NewReadingPageContent() {
     }
   }, [drawnCards, performAIAnalysis])
 
+  const canProceed = step === 'setup' ? (question.trim().length > 0 && path && (path === 'virtual' || parsedCards.length === selectedSpread.cards)) : true
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
       mountedRef.current = false
     }
   }, [])
-
-  const canProceed = step === 'setup' ? (question.trim().length > 0 && path && (path === 'virtual' || parsedCards.length === selectedSpread.cards)) : true
 
   return (
     <TooltipProvider>
