@@ -170,18 +170,20 @@ function NewReadingPageContent() {
 
   const performAIAnalysis = useCallback(async (readingCards: ReadingCard[], isRetry = false) => {
     console.log('🎯 performAIAnalysis called with:', { cardCount: readingCards.length, isRetry })
-    if (!mountedRef.current) return
+    console.log('🔍 Initial checks:', { mounted: mountedRef.current, aiLoading, isRetry })
 
-    // Prevent multiple simultaneous requests
-    if (aiLoading && !isRetry) return
-
-
+    if (!mountedRef.current) {
+      console.log('❌ Not mounted, returning early')
+      return
+    }
 
     // Prevent multiple simultaneous requests
     if (aiLoading && !isRetry) {
       console.log('⏳ Already loading, skipping')
       return
     }
+
+    console.log('✅ Passed initial checks, proceeding with AI analysis')
 
 
 
