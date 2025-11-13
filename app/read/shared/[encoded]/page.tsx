@@ -1,7 +1,7 @@
 "use client"
 
 import { notFound } from 'next/navigation'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { ReadingViewer } from '@/components/ReadingViewer'
 import { AIReadingDisplay } from '@/components/AIReadingDisplay'
 import { CardInterpretation } from '@/components/CardInterpretation'
@@ -97,7 +97,7 @@ export default function SharedReadingPage({ params }: PageProps) {
     try {
       const spreadInfo = parseSpreadId('past-present-future') // Default spread for shared readings
       const aiRequest: AIReadingRequest = {
-        question: reading.question,
+        question: reading.question || 'What guidance do these cards have for me?',
         cards: readingCards.map(card => ({
           id: card.id,
           name: getCardById(allCards, card.id)?.name || 'Unknown',
@@ -237,7 +237,7 @@ export default function SharedReadingPage({ params }: PageProps) {
           cards={reading.cards}
           allCards={allCards}
           spreadId="past-present-future"
-          question={reading.question}
+          question={reading.question || ''}
         />
 
         {/* AI Analysis Section */}

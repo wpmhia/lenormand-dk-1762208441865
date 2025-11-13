@@ -187,7 +187,7 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
         })
 
         console.log('🌐 About to make fetch call to DeepSeek API...')
-        const response = await fetch(`${DEEPSEEK_BASE_URL}/chat/completions`, {
+        const response = await fetch(`${DEEPSEEK_BASE_URL}/v1/chat/completions`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -228,9 +228,9 @@ export async function getAIReading(request: AIReadingRequest): Promise<AIReading
         try {
           data = JSON.parse(responseText)
         } catch (parseError) {
-          console.error('JSON parse error:', parseError)
-          console.error('Raw response (first 1000 chars):', responseText.substring(0, 1000))
-          throw new Error(`Invalid JSON response from DeepSeek API: ${parseError.message}`)
+           console.error('JSON parse error:', parseError)
+           console.error('Raw response (first 1000 chars):', responseText.substring(0, 1000))
+           throw new Error(`Invalid JSON response from DeepSeek API: ${parseError instanceof Error ? parseError.message : 'Unknown parse error'}`)
         }
         const rawResponse = data.choices[0]?.message?.content
 

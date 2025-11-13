@@ -91,10 +91,11 @@ function NewReadingPageContent() {
     action?: string
     waitTime?: number
     fields?: string[]
+    suggestion?: string
   } | null>(null)
   const [aiRetryCount, setAiRetryCount] = useState(0)
   const [aiRetryCooldown, setAiRetryCooldown] = useState(0)
-   const [aiAvailable, setAiAvailable] = useState<boolean>(true) // AI is available since API key is configured
+   const [aiAvailable, setAiAvailable] = useState<boolean>(false) // Will be checked on mount
    const [aiAttempted, setAiAttempted] = useState(false)
    const [showStartOverConfirm, setShowStartOverConfirm] = useState(false)
 
@@ -127,19 +128,30 @@ function NewReadingPageContent() {
 
 
 
-  // Load cards on mount
-  useEffect(() => {
-    async function loadCards() {
-      try {
-        const cards = await getCards()
-        setAllCards(cards)
-      } catch (error) {
-        console.error('Failed to load cards:', error)
-        setError('Failed to load card data. Please refresh the page.')
-      }
-    }
-    loadCards()
-  }, [])
+   // Load cards and check AI availability on mount
+   useEffect(() => {
+     async function initializeApp() {
+       try {
+         // Load cards
+         const cards = await getCards()
+         setAllCards(cards)
+         
+         // Check AI availability
+         const aiResponse = await fetch('/api/ai/status')
+         if (aiResponse.ok) {
+           const aiData = await aiResponse.json()
+           setAiAvailable(aiData.available)
+         } else {
+           setAiAvailable(false)
+         }
+       } catch (error) {
+         console.error('Failed to initialize app:', error)
+         setError('Failed to load card data. Please refresh the page.')
+         setAiAvailable(false)
+       }
+     }
+     initializeApp()
+   }, [])
 
   // Update question character count
   useEffect(() => {
@@ -318,10 +330,10 @@ function NewReadingPageContent() {
     // Auto-start AI analysis when entering results step
     useEffect(() => {
       // Start AI analysis immediately when we have cards and haven't attempted yet
-      if (step === 'results' && drawnCards.length > 0 && !aiAttempted) {
+      if (step === 'results' && drawnCards.length > 0 && !aiAttempted && aiAvailable) {
         performAIAnalysis(drawnCards)
       }
-    }, [step, drawnCards.length, aiAttempted, performAIAnalysis])
+    }, [step, drawnCards.length, aiAttempted, aiAvailable, performAIAnalysis])
 
     // Since AI shows inline now, we don't need to transition to a separate step
     // The AI reading appears immediately in the results step
@@ -339,11 +351,10 @@ function NewReadingPageContent() {
         c.keywords.some(k => k.toLowerCase().includes(cardInput.toLowerCase()))
       )
       if (card) {
-        readingCards.push({
-          id: card.id,
-          name: card.name,
-          position: i
-        })
+         readingCards.push({
+           id: card.id,
+           position: i
+         })
       }
     })
 
@@ -449,7 +460,7 @@ function NewReadingPageContent() {
   }, [router])
 
   const confirmStartOver = useCallback(() => {
-    resetReading({ closeConfirmDialog: true })
+    resetReading({ keepUrlParams: false, closeConfirmDialog: true })
   }, [resetReading])
 
   const liveParseCards = useCallback((input: string, targetCount: number) => {

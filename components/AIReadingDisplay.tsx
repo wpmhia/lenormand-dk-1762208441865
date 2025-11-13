@@ -310,19 +310,58 @@ export function AIReadingDisplay({
       <CardContent className="space-y-6">
         {/* Continuous Prose Reading */}
         {aiReading && (
-          <section aria-labelledby="reading-heading">
-            <div className="text-muted-foreground leading-relaxed text-base font-light">
-              <ReactMarkdown>{aiReading.storyline}</ReactMarkdown>
-            </div>
-          </section>
+          <>
+            <section aria-labelledby="reading-heading">
+              <div className="text-muted-foreground leading-relaxed text-base font-light">
+                <ReactMarkdown>{aiReading.storyline}</ReactMarkdown>
+              </div>
+            </section>
+
+            {/* Risk Section */}
+            {aiReading.risk && (
+              <div className="border-t border-border pt-4">
+                <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                  <AlertTriangle className="w-4 h-4 text-amber-500" />
+                  Risks & Cautions
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  <ReactMarkdown>{aiReading.risk}</ReactMarkdown>
+                </p>
+              </div>
+            )}
+
+            {/* Timing Section */}
+            {aiReading.timing && (
+              <div className="border-t border-border pt-4">
+                <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-primary/80" />
+                  Timing
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  <ReactMarkdown>{aiReading.timing}</ReactMarkdown>
+                </p>
+              </div>
+            )}
+
+            {/* Action Section */}
+            {aiReading.action && (
+              <div className="border-t border-border pt-4 bg-primary/5 rounded-lg p-4">
+                <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                  <Zap className="w-4 h-4 text-primary" />
+                  Recommended Action
+                </h3>
+                <p className="text-sm text-primary-foreground font-medium leading-relaxed">
+                  <ReactMarkdown>{aiReading.action}</ReactMarkdown>
+                </p>
+              </div>
+            )}
+          </>
         )}
 
 
 
 
-
-
-      </CardContent>
+</CardContent>
     </Card>
     </motion.div>
   )

@@ -150,7 +150,7 @@ async function analyzeQuestion(question: string): Promise<{ spreadId: string; co
 // AI classification function using DeepSeek
 async function classifyQuestion(question: string): Promise<string | null> {
   try {
-    const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
+    const response = await fetch(`${process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com'}/v1/chat/completions`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${process.env.DEEPSEEK_API_KEY}`,

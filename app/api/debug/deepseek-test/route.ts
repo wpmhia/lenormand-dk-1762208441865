@@ -32,7 +32,7 @@ export async function GET() {
     const controller = new AbortController()
     const timeoutId = setTimeout(() => controller.abort(), 10000) // 10 second timeout for test
 
-    const testResponse = await fetch(`${DEEPSEEK_BASE_URL}/chat/completions`, {
+    const testResponse = await fetch(`${DEEPSEEK_BASE_URL}/v1/chat/completions`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
