@@ -920,53 +920,23 @@ function NewReadingPageContent() {
 
               {/* AI Analysis Section - Shows inline with cards */}
               <div className="mt-6">
-
-                {aiLoading && (
-                 <div className="text-center space-y-4 p-6 bg-muted/30 rounded-lg border">
-                   <div className="flex items-center justify-center gap-3">
-                     <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
-                     <span className="text-muted-foreground">Consulting the ancient wisdom...</span>
-                   </div>
-                   <div className="text-sm text-muted-foreground">
-                     The sibyl is weaving your cards&apos; deeper meanings
-                   </div>
-                 </div>
-               )}
-
-               {aiReading && (
-                 <AIReadingDisplay
-                   aiReading={aiReading}
-                   isLoading={false}
-                   error={null}
-                   errorDetails={null}
-                   onRetry={() => performAIAnalysis(drawnCards)}
-                   retryCount={aiRetryCount}
-                   cards={drawnCards.map(card => ({
-                     id: card.id,
-                     name: getCardById(allCards, card.id)?.name || 'Unknown',
-                     position: card.position
-                   }))}
-                   allCards={allCards}
-                   spreadId={selectedSpread.id}
-                   question={question}
-                 />
-               )}
-
-               {aiError && !aiLoading && (
-                 <div className="text-center space-y-4 p-6 bg-destructive/5 rounded-lg border border-destructive/20">
-                   <div className="text-destructive font-medium">AI Analysis Failed</div>
-                   <div className="text-sm text-muted-foreground">{aiError}</div>
-                   <Button
-                     onClick={() => performAIAnalysis(drawnCards)}
-                     variant="outline"
-                     size="sm"
-                     className="border-destructive text-destructive hover:bg-destructive/10"
-                   >
-                     Try Again
-                   </Button>
-                 </div>
-               )}
-             </div>
+                <AIReadingDisplay
+                  aiReading={aiReading}
+                  isLoading={aiLoading}
+                  error={aiError}
+                  errorDetails={aiErrorDetails}
+                  onRetry={() => performAIAnalysis(drawnCards)}
+                  retryCount={aiRetryCount}
+                  cards={drawnCards.map(card => ({
+                    id: card.id,
+                    name: getCardById(allCards, card.id)?.name || 'Unknown',
+                    position: card.position
+                  }))}
+                  allCards={allCards}
+                  spreadId={selectedSpread.id}
+                  question={question}
+                />
+              </div>
           </motion.div>
         )}
 

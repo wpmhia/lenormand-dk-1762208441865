@@ -44,8 +44,8 @@ export function AIReadingDisplay({
   question = ''
 }: AIReadingDisplayProps) {
 
-  // Show loading state if loading and no error
-  if (isLoading && !error) {
+  // Show loading state if loading and no data/error
+  if (isLoading && !aiReading && !error) {
     return (
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -223,74 +223,7 @@ export function AIReadingDisplay({
     )
   }
 
-  if (isLoading) {
-    return (
-      <Card className="border-border bg-card fade-in-scale">
-        <CardHeader>
-          <CardTitle className="text-card-foreground flex items-center gap-2">
-            <motion.div
-              className="w-5 h-5 border-2 border-amber-400/60 border-t-transparent rounded-full"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-              aria-hidden="true"
-            />
-            Your reading unfolds...
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="text-sm text-muted-foreground mb-4">
-              Let the cards reveal their wisdom...
-            </div>
-            <div className="space-y-3">
-              <div className="space-y-2">
-                <div className="h-4 bg-muted rounded w-full" />
-                <div className="h-4 bg-muted rounded w-11/12" />
-                <div className="h-4 bg-muted rounded w-10/12" />
-                <div className="h-4 bg-muted rounded w-9/12" />
-                <div className="h-4 bg-muted rounded w-8/12" />
-                <div className="h-4 bg-muted rounded w-7/12" />
-              </div>
-              <div className="border-t border-amber-400/20 pt-3 mt-4">
-                <div className="h-4 bg-primary/20 rounded w-3/4 mx-auto" />
-              </div>
-            </div>
-            <div className="text-xs text-muted-foreground mt-4 text-center">
-              This may take a few moments...
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    )
-  }
 
-  // Only show "not available" if AI has been attempted (isLoading is false and no error)
-  // This prevents showing fallback on initial load before AI is attempted
-  if (!aiReading && !isLoading && !error) {
-    return (
-      <Card className="border-border bg-card slide-in-left">
-        <CardContent className="pt-6">
-          <div className="text-center text-muted-foreground space-y-4">
-            <div>
-              <p>AI analysis not available for this reading.</p>
-              <p className="text-sm mt-1">Traditional card meanings are shown below.</p>
-            </div>
-            {onRetry && (
-              <Button
-                onClick={onRetry}
-                variant="outline"
-                size="sm"
-                className="border-primary text-primary hover:bg-primary/10"
-              >
-                <Zap className="w-4 h-4 mr-2" />
-                Try AI Analysis Again
-              </Button>
-            )}
-          </div>
-        </CardContent>
-      </Card>
-    )
-  }
 
   return (
     <motion.div
