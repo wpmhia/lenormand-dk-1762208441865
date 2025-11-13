@@ -15,21 +15,6 @@ export function getCardById(cards: Card[], id: number): Card | undefined {
 
 
 
-export function deleteReading(slug: string): void {
-  if (typeof window === 'undefined') return
-  
-  const STORAGE_KEY = 'lenormand-readings'
-  const stored = localStorage.getItem(STORAGE_KEY)
-  const readings = stored ? JSON.parse(stored) : []
-  const filtered = readings.filter((reading: Reading) => reading.slug !== slug)
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(filtered))
-}
-
-// Generate unique slug
-export function generateSlug(): string {
-  return Math.random().toString(36).substring(2, 15)
-}
-
 // Encode reading data for URL sharing
 export function encodeReadingForUrl(reading: Reading): string {
   const data = {
@@ -66,22 +51,6 @@ export function decodeReadingFromUrl(encoded: string): Partial<Reading> | null {
   } catch {
     return null
   }
-}
-
-// Create shareable URL for reading
-export function createShareableUrl(reading: Reading): string {
-  const encoded = encodeReadingForUrl(reading)
-  return `${window.location.origin}/read/shared/${encoded}`
-}
-
-// Shuffle cards
-export function shuffleCards<T>(array: T[]): T[] {
-  const shuffled = [...array]
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-  }
-  return shuffled
 }
 
 // Draw cards for reading - ensures complete randomness with no repetition

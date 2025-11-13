@@ -19,35 +19,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { Eye, Timer, Zap } from 'lucide-react'
-import { CollapsibleCard } from '@/components/CollapsibleCard'
+import { Eye } from 'lucide-react'
 import { getCards, drawCards, getCardById } from '@/lib/data'
-import { getAIReading, AIReadingRequest, AIReadingResponse, parseSpreadId } from '@/lib/deepseek'
-
-
-// Comprehensive spread selection - direct manual control
-const COMPREHENSIVE_SPREADS = [
-   // 3-Card Spreads
-   { id: "sentence-3", cards: 3, label: "Sentence Reading", description: "Flowing 3-card sentence interpretation" },
-   { id: "past-present-future", cards: 3, label: "Past, Present, Future", description: "Classic timeline reading" },
-   { id: "yes-no-maybe", cards: 3, label: "Yes or No", description: "Binary decision guidance" },
-   { id: "situation-challenge-advice", cards: 3, label: "Situation, Challenge, Advice", description: "Problem-solving spread" },
-   { id: "mind-body-spirit", cards: 3, label: "Mind, Body, Spirit", description: "Holistic balance reading" },
-
-   // 5-Card Spreads
-   { id: "sentence-5", cards: 5, label: "Sentence Reading", description: "Flowing 5-card sentence interpretation" },
-   { id: "structured-reading", cards: 5, label: "Structured Reading", description: "Detailed situation analysis" },
-
-   // 7-Card Spreads
-   { id: "week-ahead", cards: 7, label: "Week Ahead", description: "7-day forecast" },
-   { id: "relationship-double-significator", cards: 7, label: "Relationship Reading", description: "Love and partnership guidance" },
-
-   // 9-Card Spreads
-   { id: "comprehensive", cards: 9, label: "Annual Forecast", description: "Year-ahead comprehensive reading" },
-
-   // 36-Card Spreads
-   { id: "grand-tableau", cards: 36, label: "Grand Tableau", description: "Full deck comprehensive reading" }
- ]
+import { getAIReading, AIReadingRequest, AIReadingResponse } from '@/lib/deepseek'
+import { COMPREHENSIVE_SPREADS } from '@/lib/spreads'
 
 
 
@@ -325,7 +300,7 @@ function NewReadingPageContent() {
         setAiLoading(false)
       }
     }
-  }, [question, allCards, selectedSpread, mountedRef])
+  }, [question, allCards, selectedSpread, mountedRef, aiLoading])
 
     // Auto-start AI analysis when entering results step
     useEffect(() => {
@@ -333,7 +308,7 @@ function NewReadingPageContent() {
       if (step === 'results' && drawnCards.length > 0 && !aiAttempted && aiAvailable) {
         performAIAnalysis(drawnCards)
       }
-    }, [step, drawnCards.length, aiAttempted, aiAvailable, performAIAnalysis])
+    }, [step, drawnCards, aiAttempted, aiAvailable, performAIAnalysis])
 
     // Since AI shows inline now, we don't need to transition to a separate step
     // The AI reading appears immediately in the results step

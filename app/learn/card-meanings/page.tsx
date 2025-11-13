@@ -1,6 +1,7 @@
 "use client"
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -176,11 +177,13 @@ export default function CardMeaningsPage() {
                    </CardTitle>
                  </CardHeader>
                  <CardContent className="pt-0">
-                    <img
-                      src={`/images/cards/${card.number.toString().padStart(2, '0')}-${card.number === 22 ? 'paths' : card.name.toLowerCase().replace('the ', '').replace(/ /g, '-')}.png`}
-                      alt={card.name}
-                      className="mb-3 h-32 w-full rounded-lg object-cover"
-                    />
+                     <Image
+                       src={`/images/cards/${card.number.toString().padStart(2, '0')}-${card.number === 22 ? 'paths' : card.name.toLowerCase().replace('the ', '').replace(/ /g, '-')}.png`}
+                       alt={card.name}
+                       width={128}
+                       height={128}
+                       className="mb-3 h-32 w-full rounded-lg object-cover"
+                     />
                    <div className="space-y-3">
                     <div>
                       <h4 className="mb-1 text-sm font-semibold text-foreground">Keywords:</h4>
@@ -210,11 +213,13 @@ export default function CardMeaningsPage() {
                  <CardContent className="p-4">
                    <div className="flex items-center justify-between">
                      <div className="flex items-center space-x-4">
-                        <img
-                          src={`/images/cards/${card.number.toString().padStart(2, '0')}-${card.number === 22 ? 'paths' : card.name.toLowerCase().replace('the ', '').replace(/ /g, '-')}.png`}
-                          alt={card.name}
-                          className="h-16 w-16 rounded-lg object-cover"
-                        />
+                         <Image
+                           src={`/images/cards/${card.number.toString().padStart(2, '0')}-${card.number === 22 ? 'paths' : card.name.toLowerCase().replace('the ', '').replace(/ /g, '-')}.png`}
+                           alt={card.name}
+                           width={64}
+                           height={64}
+                           className="h-16 w-16 rounded-lg object-cover"
+                         />
                        <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-primary to-primary/80">
                          <span className="text-sm font-bold text-white">{card.number}</span>
                        </div>

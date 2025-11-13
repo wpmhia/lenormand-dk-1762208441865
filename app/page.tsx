@@ -1,6 +1,7 @@
 "use client"
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { useScrollAnimation } from '@/hooks/use-scroll-animation'
@@ -52,11 +53,11 @@ export default function Home() {
           <div className="relative z-10 order-last lg:order-last flex justify-center lg:justify-start">
             {/* Remove any visible background or border: transparent wrapper */}
             <div className="hero-image-cell bg-transparent rounded-none p-0">
-              <img
-                src="/images/hero-image.jpg"
-                alt="Mystical Lenormand cards arranged in a reading spread"
-                width={1200}
-                height={800}
+               <Image
+                 src="/images/hero-image.jpg"
+                 alt="Mystical Lenormand cards arranged in a reading spread"
+                 width={1200}
+                 height={800}
                 className="block w-full max-w-xs lg:max-w-none lg:w-[75%] h-auto object-contain rounded-md lg:rounded-md shadow-none border-0"
               />
             </div>

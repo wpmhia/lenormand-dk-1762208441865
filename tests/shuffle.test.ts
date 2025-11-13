@@ -93,11 +93,11 @@ describe('Card Drawing', () => {
     const remainingIds = new Set(remaining.map(card => card.id))
     
     // No overlap between drawn and remaining
-    const overlap = [...drawnIds].filter(id => remainingIds.has(id))
+    const overlap = Array.from(drawnIds).filter(id => remainingIds.has(id))
     expect(overlap).toHaveLength(0)
-    
+
     // Combined they should make the full deck
-    const combinedIds = new Set([...drawnIds, ...remainingIds])
+    const combinedIds = new Set([...Array.from(drawnIds), ...Array.from(remainingIds)])
     expect(combinedIds.size).toBe(testDeck.length)
   })
 
