@@ -43,95 +43,53 @@ export function AIReadingDisplay({
   spreadId,
   question = ''
 }: AIReadingDisplayProps) {
-
-  // Show loading state if loading and no data/error
-  if (isLoading && !aiReading && !error) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        aria-live="polite"
-        aria-atomic="true"
-      >
-        <Card className="border-border bg-card slide-in-up">
-          <CardHeader>
-            <CardTitle className="text-card-foreground flex items-center gap-2">
-              <Zap className="w-5 h-5 text-primary/80 animate-pulse" />
-              The Sibyl Speaks
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      aria-live="polite"
+      aria-atomic="true"
+    >
+      <Card className="border-border bg-card slide-in-up">
+        <CardHeader>
+          <CardTitle className="text-card-foreground flex items-center gap-2">
+            <Zap className="w-5 h-5 text-primary/80" />
+            The Sibyl Speaks
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Loading State */}
+          {isLoading && (
             <div className="text-center space-y-4">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
               <p className="text-muted-foreground">Consulting the ancient wisdom...</p>
             </div>
-          </CardContent>
-        </Card>
-      </motion.div>
-    )
-  }
+          )}
 
-  // Show initial state if no AI reading, not loading, and no error
-  if (!aiReading && !error && !isLoading) {
-    return (
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        aria-live="polite"
-        aria-atomic="true"
-      >
-        <Card className="border-border bg-card slide-in-up">
-          <CardHeader>
-            <CardTitle className="text-card-foreground flex items-center gap-2">
-              <Zap className="w-5 h-5 text-primary/80" />
-              The Sibyl Speaks
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="text-center space-y-4">
-              <div className="text-muted-foreground">
-                <p className="text-sm">AI-powered insights will appear here after your cards are drawn.</p>
-                <p className="text-xs mt-2 opacity-75">The ancient wisdom awaits your question...</p>
+          {/* Error State */}
+          {error && !isLoading && (
+            <div className="space-y-4">
+              <div className="text-center text-destructive space-y-2">
+                {errorDetails?.type === 'rate_limit' && <Timer className="w-8 h-8 mx-auto" />}
+                {errorDetails?.type === 'configuration_needed' && <Settings className="w-8 h-8 mx-auto" />}
+                {errorDetails?.type === 'service_unavailable' && <Clock className="w-8 h-8 mx-auto" />}
+                {errorDetails?.type === 'safety_violation' && <AlertTriangle className="w-8 h-8 mx-auto" />}
+                {!errorDetails?.type && <AlertTriangle className="w-8 h-8 mx-auto" />}
+                
+                <div>
+                  <p className="font-medium">
+                    {errorDetails?.type === 'rate_limit' && 'Please Wait Before Next Reading'}
+                    {errorDetails?.type === 'configuration_needed' && 'AI Configuration Required'}
+                    {errorDetails?.type === 'service_unavailable' && 'AI Service Temporarily Unavailable'}
+                    {errorDetails?.type === 'safety_violation' && 'Question Guidelines'}
+                    {!errorDetails?.type && 'AI Analysis Unavailable'}
+                  </p>
+                  <p className="text-sm mt-2">{error}</p>
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-      </motion.div>
-    )
-  }
 
-  if (error) {
-    const getErrorIcon = () => {
-      switch (errorDetails?.type) {
-        case 'rate_limit': return <Timer className="w-8 h-8 mx-auto" />
-        case 'configuration_needed': return <Settings className="w-8 h-8 mx-auto" />
-        case 'service_unavailable': return <Clock className="w-8 h-8 mx-auto" />
-        case 'safety_violation': return <AlertTriangle className="w-8 h-8 mx-auto" />
-        default: return <AlertTriangle className="w-8 h-8 mx-auto" />
-      }
-    }
-
-    const getErrorTitle = () => {
-      switch (errorDetails?.type) {
-        case 'rate_limit': return 'Please Wait Before Next Reading'
-        case 'configuration_needed': return 'AI Configuration Required'
-        case 'service_unavailable': return 'AI Service Temporarily Unavailable'
-        case 'safety_violation': return 'Question Guidelines'
-        default: return 'AI Analysis Unavailable'
-      }
-    }
-
-    return (
-      <Card className="border-destructive bg-destructive/10 slide-in-up">
-        <CardContent className="pt-6">
-          <div className="text-center text-destructive space-y-4">
-            {getErrorIcon()}
-            <div>
-              <p className="font-medium">{getErrorTitle()}</p>
-              <p className="text-sm mt-2">{error}</p>
-              
               {/* Specific error guidance */}
               {errorDetails?.type === 'rate_limit' && (
                 <div className="mt-3 p-3 border-destructive/20 rounded-lg border border-red-200">
@@ -192,110 +150,82 @@ export function AIReadingDisplay({
                 </div>
               )}
 
-              {retryCount > 0 && (
-                <p className="text-xs text-destructive mt-3">
-                  Attempt {retryCount} of 3
-                </p>
+              {onRetry && retryCount < 3 && errorDetails?.type !== 'configuration_needed' && (
+                <Button
+                  onClick={onRetry}
+                  variant="outline"
+                  size="sm"
+                  className="border-destructive text-destructive hover:bg-destructive/10 w-full mt-3"
+                  aria-label="Seek wisdom again"
+                >
+                  <AlertTriangle className="w-4 h-4 mr-2" />
+                  Retry Analysis
+                </Button>
               )}
             </div>
-            
-            {onRetry && retryCount < 3 && errorDetails?.type !== 'configuration_needed' && (
-              <Button
-                onClick={onRetry}
-                variant="outline"
-                size="sm"
-                className="border-destructive text-destructive hover:bg-destructive/10"
-                aria-label="Seek wisdom again"
-              >
-                <AlertTriangle className="w-4 h-4 mr-2" />
-                Retry Analysis
-              </Button>
-            )}
-            
-            {retryCount >= 3 && (
-              <p className="text-xs text-destructive">
-                The mystical connection needs a moment. Please try again later or continue with your intuition.
-              </p>
-            )}
-          </div>
+          )}
+
+          {/* Success State - Show Reading */}
+          {aiReading && !isLoading && !error && (
+            <>
+              <section aria-labelledby="reading-heading">
+                <div className="text-muted-foreground leading-relaxed text-base font-light">
+                  <ReactMarkdown>{aiReading.storyline}</ReactMarkdown>
+                </div>
+              </section>
+
+              {/* Risk Section */}
+              {aiReading.risk && (
+                <div className="border-t border-border pt-4">
+                  <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                    <AlertTriangle className="w-4 h-4 text-amber-500" />
+                    Risks & Cautions
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    <ReactMarkdown>{aiReading.risk}</ReactMarkdown>
+                  </p>
+                </div>
+              )}
+
+              {/* Timing Section */}
+              {aiReading.timing && (
+                <div className="border-t border-border pt-4">
+                  <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                    <Clock className="w-4 h-4 text-primary/80" />
+                    Timing
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    <ReactMarkdown>{aiReading.timing}</ReactMarkdown>
+                  </p>
+                </div>
+              )}
+
+              {/* Action Section */}
+              {aiReading.action && (
+                <div className="border-t border-border pt-4 bg-primary/5 rounded-lg p-4">
+                  <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+                    <Zap className="w-4 h-4 text-primary" />
+                    Recommended Action
+                  </h3>
+                  <p className="text-sm text-primary-foreground font-medium leading-relaxed">
+                    <ReactMarkdown>{aiReading.action}</ReactMarkdown>
+                  </p>
+                </div>
+              )}
+            </>
+          )}
+
+          {/* Initial State - No data yet */}
+          {!aiReading && !isLoading && !error && (
+            <div className="text-center text-muted-foreground space-y-4 py-8">
+              <div>
+                <p className="text-sm">AI-powered insights will appear here after your cards are drawn.</p>
+                <p className="text-xs mt-2 opacity-75">The ancient wisdom awaits your question...</p>
+              </div>
+            </div>
+          )}
         </CardContent>
       </Card>
-    )
-  }
-
-
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      aria-live="polite"
-      aria-atomic="true"
-    >
-      <Card className="border-border bg-card slide-in-up">
-      <CardHeader>
-        <CardTitle className="text-card-foreground flex items-center gap-2">
-          <Zap className="w-5 h-5 text-primary/80" />
-          The Sibyl Speaks
-        </CardTitle>
-      </CardHeader>
-       <CardContent className="space-y-6">
-         {/* Continuous Prose Reading */}
-         {aiReading ? (
-           <>
-             <section aria-labelledby="reading-heading">
-               <div className="text-muted-foreground leading-relaxed text-base font-light">
-                 <ReactMarkdown>{aiReading.storyline}</ReactMarkdown>
-               </div>
-             </section>
-
-             {/* Risk Section */}
-             {aiReading.risk && (
-               <div className="border-t border-border pt-4">
-                 <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
-                   <AlertTriangle className="w-4 h-4 text-amber-500" />
-                   Risks & Cautions
-                 </h3>
-                 <p className="text-sm text-muted-foreground leading-relaxed">
-                   <ReactMarkdown>{aiReading.risk}</ReactMarkdown>
-                 </p>
-               </div>
-             )}
-
-             {/* Timing Section */}
-             {aiReading.timing && (
-               <div className="border-t border-border pt-4">
-                 <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
-                   <Clock className="w-4 h-4 text-primary/80" />
-                   Timing
-                 </h3>
-                 <p className="text-sm text-muted-foreground leading-relaxed">
-                   <ReactMarkdown>{aiReading.timing}</ReactMarkdown>
-                 </p>
-               </div>
-             )}
-
-             {/* Action Section */}
-             {aiReading.action && (
-               <div className="border-t border-border pt-4 bg-primary/5 rounded-lg p-4">
-                 <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
-                   <Zap className="w-4 h-4 text-primary" />
-                   Recommended Action
-                 </h3>
-                 <p className="text-sm text-primary-foreground font-medium leading-relaxed">
-                   <ReactMarkdown>{aiReading.action}</ReactMarkdown>
-                 </p>
-               </div>
-             )}
-           </>
-         ) : (
-           <div className="text-center text-muted-foreground py-8">
-             <p className="text-sm">No AI reading available</p>
-           </div>
-         )}
-       </CardContent>
-    </Card>
     </motion.div>
   )
 }
