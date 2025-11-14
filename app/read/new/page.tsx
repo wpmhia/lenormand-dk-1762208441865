@@ -25,7 +25,6 @@ function NewReadingPageContent() {
   const [allCards, setAllCards] = useState<CardType[]>([])
   const [step, setStep] = useState<'setup' | 'drawing' | 'results'>('setup')
   const [question, setQuestion] = useState('')
-  const [questionCharCount, setQuestionCharCount] = useState(0)
   const [selectedSpread, setSelectedSpread] = useState(COMPREHENSIVE_SPREADS[0])
   const [path, setPath] = useState<'virtual' | 'physical' | null>(null)
   const [physicalCards, setPhysicalCards] = useState('')
@@ -44,18 +43,13 @@ function NewReadingPageContent() {
   const mountedRef = useRef(true)
   const aiStartedRef = useRef(false)
 
-  const canProceed = step === 'setup' ? (question.trim().length > 0 && path && (path === 'virtual' || parsedCards.length === selectedSpread.cards)) : true
+  const canProceed = step === 'setup' ? (question.trim().length > 0 && path) : true
 
   // Load cards on mount
   useEffect(() => {
     const cards = getCards()
     setAllCards(cards)
   }, [])
-
-  // Update question character count
-  useEffect(() => {
-    setQuestionCharCount(question.length)
-  }, [question])
 
   // Parse physical cards input
   useEffect(() => {
@@ -232,7 +226,6 @@ function NewReadingPageContent() {
     setDrawnCards([])
     cardsDrawnRef.current = false
     setQuestion('')
-    setQuestionCharCount(0)
     setSelectedSpread(COMPREHENSIVE_SPREADS[0])
     setError('')
     setAiReading(null)
