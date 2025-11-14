@@ -44,6 +44,8 @@ function NewReadingPageContent() {
   const mountedRef = useRef(true)
   const aiStartedRef = useRef(false)
 
+  const canProceed = step === 'setup' ? (question.trim().length > 0 && path && (path === 'virtual' || parsedCards.length === selectedSpread.cards)) : true
+
   // Load cards on mount
   useEffect(() => {
     const cards = getCards()
@@ -293,8 +295,6 @@ function NewReadingPageContent() {
       performAIAnalysis(drawnCards)
     }
   }, [drawnCards, performAIAnalysis])
-
-  const canProceed = step === 'setup' ? (question.trim().length > 0 && path && (path === 'virtual' || parsedCards.length === selectedSpread.cards)) : true
 
   // Cleanup on unmount
   useEffect(() => {
