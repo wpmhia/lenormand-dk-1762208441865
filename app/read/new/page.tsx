@@ -38,6 +38,7 @@ function NewReadingPageContent() {
   const [aiError, setAiError] = useState<string | null>(null)
   const [aiAttempted, setAiAttempted] = useState(false)
   const [showStartOverConfirm, setShowStartOverConfirm] = useState(false)
+  const [questionCharCount, setQuestionCharCount] = useState(0)
 
   const cardsDrawnRef = useRef(false)
   const mountedRef = useRef(true)
@@ -131,10 +132,7 @@ function NewReadingPageContent() {
 
   // Auto-start AI analysis when entering results step
   useEffect(() => {
-    // Start AI analysis immediately when we have cards and haven't attempted yet
-    console.log('AI trigger check:', { step, hasCards: cardsDrawnRef.current, aiAttempted, aiStarted: aiStartedRef.current })
     if (step === 'results' && cardsDrawnRef.current && !aiAttempted && !aiStartedRef.current) {
-      console.log('🚀 Triggering AI analysis...')
       aiStartedRef.current = true
       performAIAnalysis(drawnCards)
     }
@@ -253,35 +251,7 @@ function NewReadingPageContent() {
     resetReading({ keepUrlParams: false, closeConfirmDialog: true })
   }, [resetReading])
 
-  const liveParseCards = useCallback((input: string, targetCount: number) => {
-    if (!input.trim()) {
-      setParsedCards([])
-      setCardSuggestions([])
-      return
-    }
 
-    const cardInputs = input.split(/[,;\s\n]+/).map(s => s.trim()).filter(s => s.length > 0)
-    const foundCards: CardType[] = []
-    const suggestions: string[] = []
-
-    cardInputs.forEach(input => {
-      const lower = input.toLowerCase()
-      if (!['cards', 'card', 'the', 'a', 'an'].includes(lower)) {
-        const card = allCards.find(c =>
-          c.name.toLowerCase().includes(lower) ||
-          c.keywords.some(k => k.toLowerCase().includes(lower))
-        )
-        if (card) {
-          foundCards.push(card)
-        } else {
-          suggestions.push(input)
-        }
-      }
-    })
-
-    setParsedCards(foundCards)
-    setCardSuggestions(suggestions)
-  }, [allCards])
 
   const retryAIAnalysis = useCallback(() => {
     if (drawnCards.length > 0) {
