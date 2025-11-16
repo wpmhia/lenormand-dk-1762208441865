@@ -20,34 +20,38 @@ export function Deck({
   drawCount = 3,
   showAnimation = true
 }: DeckProps) {
-  const [deck, setDeck] = useState<CardType[]>(cards)
+  const [deck, setDeck] = useState<CardType[]>(cards || [])
   const [isShuffling, setIsShuffling] = useState(false)
   const [isDrawing, setIsDrawing] = useState(false)
   const [drawnCards, setDrawnCards] = useState<CardType[]>([])
 
   useEffect(() => {
-    setDeck(cards)
+    setDeck(cards || [])
     setDrawnCards([])
   }, [cards])
 
   const shuffle = () => {
+    if (!Array.isArray(deck)) return
+
     setIsShuffling(true)
-    
+
     // Fisher-Yates shuffle algorithm
     const shuffled = [...deck]
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
     }
-    
+
     setDeck(shuffled)
-    
+
     setTimeout(() => {
       setIsShuffling(false)
     }, 500)
   }
 
   const drawCards = () => {
+    if (!Array.isArray(deck)) return
+
     console.log('drawCards called, deck.length:', deck.length, 'drawCount:', drawCount)
     if (deck.length < drawCount) {
       console.log('Not enough cards')
@@ -55,7 +59,7 @@ export function Deck({
     }
 
     setIsDrawing(true)
-    
+
     const newDrawnCards: CardType[] = []
     const remainingDeck = [...deck]
 
@@ -78,7 +82,7 @@ export function Deck({
   }
 
   const reset = () => {
-    setDeck(cards)
+    setDeck(cards || [])
     setDrawnCards([])
   }
 
@@ -88,7 +92,7 @@ export function Deck({
       <div className="flex gap-3 justify-center slide-in-up">
         <Button
           onClick={shuffle}
-          disabled={isShuffling || deck.length < drawCount}
+          disabled={isShuffling || !Array.isArray(deck) || deck.length < drawCount}
           variant="outline"
           size="sm"
           aria-label={isShuffling ? 'Shuffling deck...' : 'Shuffle the deck to randomize card order'}
@@ -99,7 +103,7 @@ export function Deck({
         
         <Button
           onClick={drawCards}
-          disabled={isDrawing || deck.length < drawCount}
+          disabled={isDrawing || !Array.isArray(deck) || deck.length < drawCount}
           size="sm"
           aria-label={isDrawing ? `Drawing ${drawCount} cards...` : `Draw ${drawCount} cards from the deck`}
         >
@@ -126,17 +130,17 @@ export function Deck({
           className={cn(
             'relative',
             // show disabled visual when drawing or insufficient cards
-            (isDrawing || deck.length < drawCount) ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'
+            (isDrawing || !Array.isArray(deck) || deck.length < drawCount) ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'
           )}
           role="button"
-          tabIndex={isDrawing || deck.length < drawCount ? -1 : 0}
-          aria-label={isDrawing ? 'Drawing cards...' : `Deck: ${deck.length} cards. Click to draw ${drawCount} cards`}
-          aria-disabled={isDrawing || deck.length < drawCount}
+          tabIndex={isDrawing || !Array.isArray(deck) || deck.length < drawCount ? -1 : 0}
+          aria-label={isDrawing ? 'Drawing cards...' : `Deck: ${Array.isArray(deck) ? deck.length : 0} cards. Click to draw ${drawCount} cards`}
+          aria-disabled={isDrawing || !Array.isArray(deck) || deck.length < drawCount}
           onClick={() => {
-            if (!isDrawing && deck.length >= drawCount) drawCards()
+            if (!isDrawing && Array.isArray(deck) && deck.length >= drawCount) drawCards()
           }}
           onKeyDown={(e) => {
-            if (isDrawing || deck.length < drawCount) return
+            if (isDrawing || !Array.isArray(deck) || deck.length < drawCount) return
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault()
               drawCards()
@@ -145,7 +149,7 @@ export function Deck({
         >
           <div>
             {/* Stack effect for remaining cards */}
-            {deck.length > 0 && (
+            {Array.isArray(deck) && deck.length > 0 && (
               <div className="relative">
                 {deck.slice(-3).map((card, index) => (
                   <div
@@ -166,20 +170,22 @@ export function Deck({
                     />
                   </div>
                 ))}
-                <div className="relative">
-                  <Card
-                    card={deck[deck.length - 1]}
-                    showBack={true}
-                    size="md"
-                    className={isDrawing || deck.length < drawCount ? 'opacity-75' : ''}
-                  />
-                  {/* removed the separate absolute inset overlay in favor of the container handler above */}
-                  <div className="absolute top-2 right-2 pointer-events-none">
-                    <span className="bg-card/90 px-2 py-1 rounded text-sm font-bold">
-                      {deck.length}
-                    </span>
+                {Array.isArray(deck) && deck.length > 0 && (
+                  <div className="relative">
+                    <Card
+                      card={deck[deck.length - 1]}
+                      showBack={true}
+                      size="md"
+                      className={isDrawing || deck.length < drawCount ? 'opacity-75' : ''}
+                    />
+                    {/* removed the separate absolute inset overlay in favor of the container handler above */}
+                    <div className="absolute top-2 right-2 pointer-events-none">
+                      <span className="bg-card/90 px-2 py-1 rounded text-sm font-bold">
+                        {deck.length}
+                      </span>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             )}
           </div>

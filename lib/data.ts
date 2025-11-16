@@ -2,7 +2,7 @@ import { Card, Reading, ReadingCard } from './types'
 import cardsData from '../public/data/cards.json'
 
 // Load cards from JSON file
-export async function getCards(): Promise<Card[]> {
+export function getCards(): Card[] {
   // Use imported JSON data for both server and client
   const data = cardsData as Card[]
   console.log('✅ Cards loaded:', data.length, 'cards')
