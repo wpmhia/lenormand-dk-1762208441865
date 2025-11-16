@@ -44,7 +44,7 @@ function NewReadingPageContent() {
   const mountedRef = useRef(true)
   const aiStartedRef = useRef(false)
 
-  const canProceed = step === 'setup' ? (question.trim().length > 0 && path) : true
+  const canProceed = true
 
   // Load cards on mount
   useEffect(() => {
