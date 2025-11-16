@@ -46,22 +46,22 @@ export default function EnvCheckPage() {
 
   return (
     <div className="page-layout">
-      <div className="container max-w-4xl mx-auto p-6">
+      <div className="container mx-auto max-w-4xl p-6">
         <div className="mb-6">
           <h1 className="mb-2 text-3xl font-bold text-foreground">Environment Variables Status</h1>
-        <p className="mt-2 flex items-center flex-wrap gap-1 text-base text-muted-foreground">
-          <span className="bg-muted px-2 py-1 rounded-md text-muted-foreground font-semibold">Steps</span> Switch to{' '}
-          <span className="inline-flex items-center gap-1 text-primary font-medium">
+        <p className="mt-2 text-base text-muted-foreground flex items-center flex-wrap gap-1">
+            <span className="bg-muted px-2 py-1 text-muted-foreground font-semibold rounded-md">Steps</span> Switch to{' '}
+          <span className="inline-flex items-center gap-1 font-medium text-primary">
             <Code className="h-4 w-4" />
             Code
           </span>
           {' '}tab → Select{' '}
-          <span className="inline-flex items-center gap-1 text-primary font-medium">
+          <span className="inline-flex items-center gap-1 font-medium text-primary">
             <Settings className="h-4 w-4" />
             .env
           </span>
           {' '}file → Add/Update the missing variables →{' '}
-          <span className="inline-flex items-center gap-1 text-primary font-medium">
+          <span className="inline-flex items-center gap-1 font-medium text-primary">
             <Save className="h-4 w-4" />
             Save
           </span>
@@ -70,7 +70,7 @@ export default function EnvCheckPage() {
 
       {missingCount > 0 && (
         <>
-           <Alert className="mb-3 p-3 bg-destructive/10 border-destructive text-destructive">
+           <Alert className="mb-3 p-3 bg-destructive/10 text-destructive border-destructive">
             <div className="flex items-center gap-2">
               <XCircle className="h-4 w-4 flex-shrink-0" />
               <AlertDescription>
@@ -85,7 +85,7 @@ export default function EnvCheckPage() {
       )}
 
       {missingCount === 0 && (
-        <Alert className="mb-6 p-4 bg-primary/10 border-primary/20 dark:bg-primary/20 dark:border-primary/30 dark:text-primary">
+        <Alert className="mb-6 p-4 bg-primary/10 border-primary/20 text-primary dark:bg-primary/20 dark:border-primary/30 dark:text-primary">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <CheckCircle className="h-4 w-4" />
@@ -121,9 +121,9 @@ export default function EnvCheckPage() {
               <CardContent>
                 <div className="space-y-3">
                   <div>
-                    <h4 className="mb-1 font-semibold text-sm">How to get this variable:</h4>
+                    <h4 className="mb-1 text-sm font-semibold">How to get this variable:</h4>
                     <div 
-                      className="prose prose-sm max-w-none text-sm text-muted-foreground"
+                      className="prose prose-sm max-w-none text-muted-foreground text-sm"
                       dangerouslySetInnerHTML={{
                         __html: envVar.instructions
                           .replace(/\n/g, '<br>')
@@ -136,8 +136,8 @@ export default function EnvCheckPage() {
                   </div>
                   {isSet && (
                     <div>
-                      <h4 className="mb-1 font-semibold text-sm">Current value (debug):</h4>
-                      <div className="break-all rounded bg-muted p-2 text-xs font-mono">
+                      <h4 className="mb-1 text-sm font-semibold">Current value (debug):</h4>
+                      <div className="break-all bg-muted p-2 text-xs font-mono rounded">
                         {envVar.name.includes('KEY') 
                           ? `${envValues[envVar.name].substring(0, 8)}...${envValues[envVar.name].substring(envValues[envVar.name].length - 4)}`
                           : envValues[envVar.name]

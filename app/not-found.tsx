@@ -4,8 +4,8 @@ import { Home, ArrowLeft } from 'lucide-react'
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="max-w-md w-full text-center space-y-6">
+    <div className="min-h-screen bg-background p-4 flex items-center justify-center">
+      <div className="max-w-md w-full space-y-6 text-center">
         <div className="space-y-2">
           <h1 className="text-4xl font-bold text-foreground">
             404
@@ -18,7 +18,7 @@ export default function NotFound() {
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <div className="flex flex-col sm:flex-row justify-center gap-3">
           <Button asChild className="flex items-center gap-2">
             <Link href="/">
               <Home className="w-4 h-4" />

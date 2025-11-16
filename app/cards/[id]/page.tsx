@@ -81,9 +81,9 @@ export default function CardDetailPage({ params }: PageProps) {
 
   return (
     <div className="page-layout">
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="container mx-auto max-w-4xl px-4 py-8">
         <div className="text-center mb-8">
-          <h1 className="mb-2 text-4xl font-bold text-foreground">{card.name}</h1>
+          <h1 className="text-4xl font-bold text-foreground mb-2">{card.name}</h1>
           <p className="text-muted-foreground">Card #{card.id}</p>
         </div>
 

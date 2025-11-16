@@ -16,8 +16,8 @@ export default function Error({
   }, [error])
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="max-w-md w-full text-center space-y-6">
+    <div className="min-h-screen bg-background p-4 flex items-center justify-center">
+      <div className="max-w-md w-full space-y-6 text-center">
         <div className="flex justify-center">
           <AlertTriangle className="w-16 h-16 text-destructive" />
         </div>
@@ -31,7 +31,7 @@ export default function Error({
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <div className="flex flex-col sm:flex-row justify-center gap-3">
           <Button onClick={reset} className="flex items-center gap-2">
             <RefreshCw className="w-4 h-4" />
             Try again
@@ -51,7 +51,7 @@ export default function Error({
             <summary className="cursor-pointer text-sm text-muted-foreground hover:text-foreground">
               Error details (development only)
             </summary>
-            <pre className="mt-2 p-3 bg-muted rounded text-xs overflow-auto">
+            <pre className="mt-2 p-3 bg-muted text-xs overflow-auto rounded">
               {error.message}
               {error.stack && `\n\n${error.stack}`}
             </pre>
